@@ -9,5 +9,5 @@ track of through the use of facts and instances within the expert system. The
 only part that has to be handled outside the expert system is things such as
 input handling, sound playing, and drawing to the screen. 
 
-Inside of the src folder there are two folders (adventure and clips), adventure
-is the expert system code and clips contains all of the code for CLIPS.
+The src folder contains the C source code that clips interacts with. The game
+folder contains all of the types and game logic that are written within CLIPS
