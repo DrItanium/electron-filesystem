@@ -357,7 +357,7 @@ globle void ShowFactHashTable(
     struct factHashEntry *theEntry;
     char buffer[20];
 
-    for (i = 0; i < FactData(theEnv)->FactHashTableSize; i++)
+    for (i = 0; (unsigned long)i < FactData(theEnv)->FactHashTableSize; i++)
       {
        for (theEntry =  FactData(theEnv)->FactHashTable[i], count = 0;
             theEntry != NULL;

@@ -143,7 +143,7 @@ globle void SetupGenericFunctions(
   void *theEnv)
   {
    ENTITY_RECORD genericEntityRecord =
-                     { "GCALL", GCALL,0,0,1,
+                     { (char*)"GCALL", GCALL,0,0,1,
                        PrintGenericCall,PrintGenericCall,
                        NULL,EvaluateGenericCall,NULL,
                        DecrementGenericBusyCount,IncrementGenericBusyCount,
@@ -155,7 +155,7 @@ globle void SetupGenericFunctions(
    InstallPrimitive(theEnv,&DefgenericData(theEnv)->GenericEntityRecord,GCALL);
 
    DefgenericData(theEnv)->DefgenericModuleIndex =
-                RegisterModuleItem(theEnv,"defgeneric",
+                RegisterModuleItem(theEnv,(char*)"defgeneric",
 #if (! RUN_TIME)
                                     AllocateDefgenericModule,FreeDefgenericModule,
 #else
@@ -173,7 +173,7 @@ globle void SetupGenericFunctions(
 #endif
                                     EnvFindDefgeneric);
 
-   DefgenericData(theEnv)->DefgenericConstruct =  AddConstruct(theEnv,"defgeneric","defgenerics",
+   DefgenericData(theEnv)->DefgenericConstruct =  AddConstruct(theEnv,(char*)"defgeneric",(char*)"defgenerics",
 #if (! BLOAD_ONLY) && (! RUN_TIME)
                                        ParseDefgeneric,
 #else
@@ -192,7 +192,7 @@ globle void SetupGenericFunctions(
                                        );
 
 #if ! RUN_TIME
-   AddClearReadyFunction(theEnv,"defgeneric",ClearDefgenericsReady,0);
+   AddClearReadyFunction(theEnv,(char*)"defgeneric",ClearDefgenericsReady,0);
 
 #if BLOAD || BLOAD_ONLY || BLOAD_AND_BSAVE
    SetupGenericsBload(theEnv);
@@ -204,9 +204,9 @@ globle void SetupGenericFunctions(
 
 #if ! BLOAD_ONLY
 #if DEFMODULE_CONSTRUCT
-   AddPortConstructItem(theEnv,"defgeneric",SYMBOL);
+   AddPortConstructItem(theEnv,(char*)"defgeneric",SYMBOL);
 #endif
-   AddConstruct(theEnv,"defmethod","defmethods",ParseDefmethod,
+   AddConstruct(theEnv,(char*)"defmethod",(char*)"defmethods",ParseDefmethod,
                 NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
 
   /* ================================================================
@@ -216,55 +216,55 @@ globle void SetupGenericFunctions(
      Need to be cleared in two stages so that mutually dependent
        constructs (like classes) can be cleared
      ================================================================ */
-   AddSaveFunction(theEnv,"defgeneric",SaveDefgenerics,1000);
-   AddSaveFunction(theEnv,"defmethod",SaveDefmethods,-1000);
-   EnvDefineFunction2(theEnv,"undefgeneric",'v',PTIEF UndefgenericCommand,"UndefgenericCommand","11w");
-   EnvDefineFunction2(theEnv,"undefmethod",'v',PTIEF UndefmethodCommand,"UndefmethodCommand","22*wg");
+   AddSaveFunction(theEnv,(char*)"defgeneric",SaveDefgenerics,1000);
+   AddSaveFunction(theEnv,(char*)"defmethod",SaveDefmethods,-1000);
+   EnvDefineFunction2(theEnv,(char*)"undefgeneric",'v',PTIEF UndefgenericCommand,(char*)"UndefgenericCommand",(char*)"11w");
+   EnvDefineFunction2(theEnv,(char*)"undefmethod",'v',PTIEF UndefmethodCommand,(char*)"UndefmethodCommand",(char*)"22*wg");
 #endif
 
-   EnvDefineFunction2(theEnv,"call-next-method",'u',PTIEF CallNextMethod,"CallNextMethod","00");
-   FuncSeqOvlFlags(theEnv,"call-next-method",TRUE,FALSE);
-   EnvDefineFunction2(theEnv,"call-specific-method",'u',PTIEF CallSpecificMethod,
-                   "CallSpecificMethod","2**wi");
-   FuncSeqOvlFlags(theEnv,"call-specific-method",TRUE,FALSE);
-   EnvDefineFunction2(theEnv,"override-next-method",'u',PTIEF OverrideNextMethod,
-                   "OverrideNextMethod",NULL);
-   FuncSeqOvlFlags(theEnv,"override-next-method",TRUE,FALSE);
-   EnvDefineFunction2(theEnv,"next-methodp",'b',PTIEF NextMethodP,"NextMethodP","00");
-   FuncSeqOvlFlags(theEnv,"next-methodp",TRUE,FALSE);
+   EnvDefineFunction2(theEnv,(char*)"call-next-method",'u',PTIEF CallNextMethod,(char*)"CallNextMethod",(char*)"00");
+   FuncSeqOvlFlags(theEnv,(char*)"call-next-method",TRUE,FALSE);
+   EnvDefineFunction2(theEnv,(char*)"call-specific-method",'u',PTIEF CallSpecificMethod,
+                   (char*)"CallSpecificMethod",(char*)"2**wi");
+   FuncSeqOvlFlags(theEnv,(char*)"call-specific-method",TRUE,FALSE);
+   EnvDefineFunction2(theEnv,(char*)"override-next-method",'u',PTIEF OverrideNextMethod,
+                   (char*)"OverrideNextMethod",NULL);
+   FuncSeqOvlFlags(theEnv,(char*)"override-next-method",TRUE,FALSE);
+   EnvDefineFunction2(theEnv,(char*)"next-methodp",'b',PTIEF NextMethodP,(char*)"NextMethodP",(char*)"00");
+   FuncSeqOvlFlags(theEnv,(char*)"next-methodp",TRUE,FALSE);
 
-   EnvDefineFunction2(theEnv,"(gnrc-current-arg)",'u',PTIEF GetGenericCurrentArgument,
-                   "GetGenericCurrentArgument",NULL);
+   EnvDefineFunction2(theEnv,(char*)"(gnrc-current-arg)",'u',PTIEF GetGenericCurrentArgument,
+                   (char*)"GetGenericCurrentArgument",NULL);
 
 #if DEBUGGING_FUNCTIONS
-   EnvDefineFunction2(theEnv,"ppdefgeneric",'v',PTIEF PPDefgenericCommand,"PPDefgenericCommand","11w");
-   EnvDefineFunction2(theEnv,"list-defgenerics",'v',PTIEF ListDefgenericsCommand,"ListDefgenericsCommand","01");
-   EnvDefineFunction2(theEnv,"ppdefmethod",'v',PTIEF PPDefmethodCommand,"PPDefmethodCommand","22*wi");
-   EnvDefineFunction2(theEnv,"list-defmethods",'v',PTIEF ListDefmethodsCommand,"ListDefmethodsCommand","01w");
-   EnvDefineFunction2(theEnv,"preview-generic",'v',PTIEF PreviewGeneric,"PreviewGeneric","1**w");
+   EnvDefineFunction2(theEnv,(char*)"ppdefgeneric",'v',PTIEF PPDefgenericCommand,(char*)"PPDefgenericCommand",(char*)"11w");
+   EnvDefineFunction2(theEnv,(char*)"list-defgenerics",'v',PTIEF ListDefgenericsCommand,(char*)"ListDefgenericsCommand",(char*)"01");
+   EnvDefineFunction2(theEnv,(char*)"ppdefmethod",'v',PTIEF PPDefmethodCommand,(char*)"PPDefmethodCommand",(char*)"22*wi");
+   EnvDefineFunction2(theEnv,(char*)"list-defmethods",'v',PTIEF ListDefmethodsCommand,(char*)"ListDefmethodsCommand",(char*)"01w");
+   EnvDefineFunction2(theEnv,(char*)"preview-generic",'v',PTIEF PreviewGeneric,(char*)"PreviewGeneric",(char*)"1**w");
 #endif
 
-   EnvDefineFunction2(theEnv,"get-defgeneric-list",'m',PTIEF GetDefgenericListFunction,
-                   "GetDefgenericListFunction","01");
-   EnvDefineFunction2(theEnv,"get-defmethod-list",'m',PTIEF GetDefmethodListCommand,
-                   "GetDefmethodListCommand","01w");
-   EnvDefineFunction2(theEnv,"get-method-restrictions",'m',PTIEF GetMethodRestrictionsCommand,
-                   "GetMethodRestrictionsCommand","22iw");
-   EnvDefineFunction2(theEnv,"defgeneric-module",'w',PTIEF GetDefgenericModuleCommand,
-                   "GetDefgenericModuleCommand","11w");
+   EnvDefineFunction2(theEnv,(char*)"get-defgeneric-list",'m',PTIEF GetDefgenericListFunction,
+                   (char*)"GetDefgenericListFunction",(char*)"01");
+   EnvDefineFunction2(theEnv,(char*)"get-defmethod-list",'m',PTIEF GetDefmethodListCommand,
+                   (char*)"GetDefmethodListCommand",(char*)"01w");
+   EnvDefineFunction2(theEnv,(char*)"get-method-restrictions",'m',PTIEF GetMethodRestrictionsCommand,
+                   (char*)"GetMethodRestrictionsCommand",(char*)"22iw");
+   EnvDefineFunction2(theEnv,(char*)"defgeneric-module",'w',PTIEF GetDefgenericModuleCommand,
+                   (char*)"GetDefgenericModuleCommand",(char*)"11w");
 
 #if OBJECT_SYSTEM
-   EnvDefineFunction2(theEnv,"type",'u',PTIEF ClassCommand,"ClassCommand","11u");
+   EnvDefineFunction2(theEnv,(char*)"type",'u',PTIEF ClassCommand,(char*)"ClassCommand",(char*)"11u");
 #else
-   EnvDefineFunction2(theEnv,"type",'u',PTIEF TypeCommand,"TypeCommand","11u");
+   EnvDefineFunction2(theEnv,(char*)"type",'u',PTIEF TypeCommand,(char*)"TypeCommand",(char*)"11u");
 #endif
 
 #endif
 
 #if DEBUGGING_FUNCTIONS
-   AddWatchItem(theEnv,"generic-functions",0,&DefgenericData(theEnv)->WatchGenerics,34,
+   AddWatchItem(theEnv,(char*)"generic-functions",0,&DefgenericData(theEnv)->WatchGenerics,34,
                 DefgenericWatchAccess,DefgenericWatchPrint);
-   AddWatchItem(theEnv,"methods",0,&DefgenericData(theEnv)->WatchMethods,33,
+   AddWatchItem(theEnv,(char*)"methods",0,&DefgenericData(theEnv)->WatchMethods,33,
                 DefmethodWatchAccess,DefmethodWatchPrint);
 #endif
   }
@@ -525,7 +525,7 @@ globle int EnvIsDefmethodDeletable(
 globle void UndefgenericCommand(
   void *theEnv)
   {
-   UndefconstructCommand(theEnv,"undefgeneric",DefgenericData(theEnv)->DefgenericConstruct);
+   UndefconstructCommand(theEnv,(char*)"undefgeneric",DefgenericData(theEnv)->DefgenericConstruct);
   }
 
 /****************************************************************
@@ -539,7 +539,7 @@ globle void UndefgenericCommand(
 globle void *GetDefgenericModuleCommand(
   void *theEnv)
   {
-   return(GetConstructModuleCommand(theEnv,"defgeneric-module",DefgenericData(theEnv)->DefgenericConstruct));
+   return(GetConstructModuleCommand(theEnv,(char*)"defgeneric-module",DefgenericData(theEnv)->DefgenericConstruct));
   }
 
 /**************************************************************
@@ -557,15 +557,15 @@ globle void UndefmethodCommand(
    DEFGENERIC *gfunc;
    long mi;
 
-   if (EnvArgTypeCheck(theEnv,"undefmethod",1,SYMBOL,&temp) == FALSE)
+   if (EnvArgTypeCheck(theEnv,(char*)"undefmethod",1,SYMBOL,&temp) == FALSE)
      return;
    gfunc = LookupDefgenericByMdlOrScope(theEnv,DOToString(temp));
    if ((gfunc == NULL) ? (strcmp(DOToString(temp),"*") != 0) : FALSE)
      {
-      PrintErrorID(theEnv,"GENRCCOM",1,FALSE);
-      EnvPrintRouter(theEnv,WERROR,"No such generic function ");
+      PrintErrorID(theEnv,(char*)"GENRCCOM",1,FALSE);
+      EnvPrintRouter(theEnv,WERROR,(char*)"No such generic function ");
       EnvPrintRouter(theEnv,WERROR,DOToString(temp));
-      EnvPrintRouter(theEnv,WERROR," in function undefmethod.\n");
+      EnvPrintRouter(theEnv,WERROR,(char*)" in function undefmethod.\n");
       return;
      }
    EnvRtnUnknown(theEnv,2,&temp);
@@ -573,8 +573,8 @@ globle void UndefmethodCommand(
      {
       if (strcmp(DOToString(temp),"*") != 0)
         {
-         PrintErrorID(theEnv,"GENRCCOM",2,FALSE);
-         EnvPrintRouter(theEnv,WERROR,"Expected a valid method index in function undefmethod.\n");
+         PrintErrorID(theEnv,(char*)"GENRCCOM",2,FALSE);
+         EnvPrintRouter(theEnv,WERROR,(char*)"Expected a valid method index in function undefmethod.\n");
          return;
         }
       mi = 0;
@@ -584,15 +584,15 @@ globle void UndefmethodCommand(
       mi = (long) DOToLong(temp);
       if (mi == 0)
         {
-         PrintErrorID(theEnv,"GENRCCOM",2,FALSE);
-         EnvPrintRouter(theEnv,WERROR,"Expected a valid method index in function undefmethod.\n");
+         PrintErrorID(theEnv,(char*)"GENRCCOM",2,FALSE);
+         EnvPrintRouter(theEnv,WERROR,(char*)"Expected a valid method index in function undefmethod.\n");
          return;
         }
      }
    else
      {
-      PrintErrorID(theEnv,"GENRCCOM",2,FALSE);
-      EnvPrintRouter(theEnv,WERROR,"Expected a valid method index in function undefmethod.\n");
+      PrintErrorID(theEnv,(char*)"GENRCCOM",2,FALSE);
+      EnvPrintRouter(theEnv,WERROR,(char*)"Expected a valid method index in function undefmethod.\n");
       return;
      }
    EnvUndefmethod(theEnv,(void *) gfunc,mi);
@@ -657,17 +657,17 @@ globle intBool EnvUndefmethod(
 
 #if RUN_TIME || BLOAD_ONLY
    gfunc = (DEFGENERIC *) vptr;
-   PrintErrorID(theEnv,"PRNTUTIL",4,FALSE);
-   EnvPrintRouter(theEnv,WERROR,"Unable to delete method ");
+   PrintErrorID(theEnv,(char*)"PRNTUTIL",4,FALSE);
+   EnvPrintRouter(theEnv,WERROR,(char*)"Unable to delete method ");
    if (gfunc != NULL)
      {
       PrintGenericName(theEnv,WERROR,gfunc);
-      EnvPrintRouter(theEnv,WERROR," #");
+      EnvPrintRouter(theEnv,WERROR,(char*)" #");
       PrintLongInteger(theEnv,WERROR,(long long) mi);
      }
    else
-     EnvPrintRouter(theEnv,WERROR,"*");
-   EnvPrintRouter(theEnv,WERROR,".\n");
+     EnvPrintRouter(theEnv,WERROR,(char*)"*");
+   EnvPrintRouter(theEnv,WERROR,(char*)".\n");
    return(FALSE);
 #else
    long nmi;
@@ -676,17 +676,17 @@ globle intBool EnvUndefmethod(
 #if BLOAD || BLOAD_AND_BSAVE
    if (Bloaded(theEnv) == TRUE)
      {
-      PrintErrorID(theEnv,"PRNTUTIL",4,FALSE);
-      EnvPrintRouter(theEnv,WERROR,"Unable to delete method ");
+      PrintErrorID(theEnv,(char*)"PRNTUTIL",4,FALSE);
+      EnvPrintRouter(theEnv,WERROR,(char*)"Unable to delete method ");
       if (gfunc != NULL)
         {
          EnvPrintRouter(theEnv,WERROR,EnvGetDefgenericName(theEnv,(void *) gfunc));
-         EnvPrintRouter(theEnv,WERROR," #");
+         EnvPrintRouter(theEnv,WERROR,(char*)" #");
          PrintLongInteger(theEnv,WERROR,(long long) mi);
         }
       else
-        EnvPrintRouter(theEnv,WERROR,"*");
-      EnvPrintRouter(theEnv,WERROR,".\n");
+        EnvPrintRouter(theEnv,WERROR,(char*)"*");
+      EnvPrintRouter(theEnv,WERROR,(char*)".\n");
       return(FALSE);
      }
 #endif
@@ -694,8 +694,8 @@ globle intBool EnvUndefmethod(
      {
       if (mi != 0)
         {
-         PrintErrorID(theEnv,"GENRCCOM",3,FALSE);
-         EnvPrintRouter(theEnv,WERROR,"Incomplete method specification for deletion.\n");
+         PrintErrorID(theEnv,(char*)"GENRCCOM",3,FALSE);
+         EnvPrintRouter(theEnv,WERROR,(char*)"Incomplete method specification for deletion.\n");
          return(FALSE);
         }
       return(ClearDefmethods(theEnv));
@@ -709,7 +709,7 @@ globle intBool EnvUndefmethod(
      RemoveAllExplicitMethods(theEnv,gfunc);
    else
      {
-      nmi = CheckMethodExists(theEnv,"undefmethod",gfunc,mi);
+      nmi = CheckMethodExists(theEnv,(char*)"undefmethod",gfunc,mi);
       if (nmi == -1)
         return(FALSE);
       RemoveDefgenericMethod(theEnv,gfunc,nmi);
@@ -876,7 +876,7 @@ globle void EnvSetDefmethodWatch(
 globle void PPDefgenericCommand(
   void *theEnv)
   {
-   PPConstructCommand(theEnv,"ppdefgeneric",DefgenericData(theEnv)->DefgenericConstruct);
+   PPConstructCommand(theEnv,(char*)"ppdefgeneric",DefgenericData(theEnv)->DefgenericConstruct);
   }
 
 /**********************************************************
@@ -896,15 +896,15 @@ globle void PPDefmethodCommand(
    DEFGENERIC *gfunc;
    int gi;
    
-   if (EnvArgTypeCheck(theEnv,"ppdefmethod",1,SYMBOL,&temp) == FALSE)
+   if (EnvArgTypeCheck(theEnv,(char*)"ppdefmethod",1,SYMBOL,&temp) == FALSE)
      return;
    gname = DOToString(temp);
-   if (EnvArgTypeCheck(theEnv,"ppdefmethod",2,INTEGER,&temp) == FALSE)
+   if (EnvArgTypeCheck(theEnv,(char*)"ppdefmethod",2,INTEGER,&temp) == FALSE)
      return;
-   gfunc = CheckGenericExists(theEnv,"ppdefmethod",gname);
+   gfunc = CheckGenericExists(theEnv,(char*)"ppdefmethod",gname);
    if (gfunc == NULL)
      return;
-   gi = CheckMethodExists(theEnv,"ppdefmethod",gfunc,(long) DOToLong(temp));
+   gi = CheckMethodExists(theEnv,(char*)"ppdefmethod",gfunc,(long) DOToLong(temp));
    if (gi == -1)
      return;
    if (gfunc->methods[gi].ppForm != NULL)
@@ -930,9 +930,9 @@ globle void ListDefmethodsCommand(
      EnvListDefmethods(theEnv,WDISPLAY,NULL);
    else
      {
-      if (EnvArgTypeCheck(theEnv,"list-defmethods",1,SYMBOL,&temp) == FALSE)
+      if (EnvArgTypeCheck(theEnv,(char*)"list-defmethods",1,SYMBOL,&temp) == FALSE)
         return;
-      gfunc = CheckGenericExists(theEnv,"list-defmethods",DOToString(temp));
+      gfunc = CheckGenericExists(theEnv,(char*)"list-defmethods",DOToString(temp));
       if (gfunc != NULL)
         EnvListDefmethods(theEnv,WDISPLAY,(void *) gfunc);
      }
@@ -977,7 +977,7 @@ globle char *EnvGetDefmethodPPForm(
 globle void ListDefgenericsCommand(
   void *theEnv)
   {
-   ListConstructCommand(theEnv,"list-defgenerics",DefgenericData(theEnv)->DefgenericConstruct);
+   ListConstructCommand(theEnv,(char*)"list-defgenerics",DefgenericData(theEnv)->DefgenericConstruct);
   }
 
 /***************************************************
@@ -1026,10 +1026,10 @@ globle void EnvListDefmethods(
         {
          count += ListMethodsForGeneric(theEnv,logicalName,gfunc);
          if (EnvGetNextDefgeneric(theEnv,(void *) gfunc) != NULL)
-           EnvPrintRouter(theEnv,logicalName,"\n");
+           EnvPrintRouter(theEnv,logicalName,(char*)"\n");
         }
      }
-   PrintTally(theEnv,logicalName,count,"method","methods");
+   PrintTally(theEnv,logicalName,count,(char*)"method",(char*)"methods");
   }
 
 #endif
@@ -1048,7 +1048,7 @@ globle void GetDefgenericListFunction(
   void *theEnv,
   DATA_OBJECT*returnValue)
   {
-   GetConstructListFunction(theEnv,"get-defgeneric-list",returnValue,DefgenericData(theEnv)->DefgenericConstruct);
+   GetConstructListFunction(theEnv,(char*)"get-defgeneric-list",returnValue,DefgenericData(theEnv)->DefgenericConstruct);
   }
 
 /***************************************************************
@@ -1091,12 +1091,12 @@ globle void GetDefmethodListCommand(
      EnvGetDefmethodList(theEnv,NULL,returnValue);
    else
      {
-      if (EnvArgTypeCheck(theEnv,"get-defmethod-list",1,SYMBOL,&temp) == FALSE)
+      if (EnvArgTypeCheck(theEnv,(char*)"get-defmethod-list",1,SYMBOL,&temp) == FALSE)
         {
          EnvSetMultifieldErrorValue(theEnv,returnValue);
          return;
         }
-      gfunc = CheckGenericExists(theEnv,"get-defmethod-list",DOToString(temp));
+      gfunc = CheckGenericExists(theEnv,(char*)"get-defmethod-list",DOToString(temp));
       if (gfunc != NULL)
         EnvGetDefmethodList(theEnv,(void *) gfunc,returnValue);
       else
@@ -1178,23 +1178,23 @@ globle void GetMethodRestrictionsCommand(
    DATA_OBJECT temp;
    DEFGENERIC *gfunc;
 
-   if (EnvArgTypeCheck(theEnv,"get-method-restrictions",1,SYMBOL,&temp) == FALSE)
+   if (EnvArgTypeCheck(theEnv,(char*)"get-method-restrictions",1,SYMBOL,&temp) == FALSE)
      {
       EnvSetMultifieldErrorValue(theEnv,result);
       return;
      }
-   gfunc = CheckGenericExists(theEnv,"get-method-restrictions",DOToString(temp));
+   gfunc = CheckGenericExists(theEnv,(char*)"get-method-restrictions",DOToString(temp));
    if (gfunc == NULL)
      {
       EnvSetMultifieldErrorValue(theEnv,result);
       return;
      }
-   if (EnvArgTypeCheck(theEnv,"get-method-restrictions",2,INTEGER,&temp) == FALSE)
+   if (EnvArgTypeCheck(theEnv,(char*)"get-method-restrictions",2,INTEGER,&temp) == FALSE)
      {
       EnvSetMultifieldErrorValue(theEnv,result);
       return;
      }
-   if (CheckMethodExists(theEnv,"get-method-restrictions",gfunc,(long) DOToLong(temp)) == -1)
+   if (CheckMethodExists(theEnv,(char*)"get-method-restrictions",gfunc,(long) DOToLong(temp)) == -1)
      {
       EnvSetMultifieldErrorValue(theEnv,result);
       return;
@@ -1315,14 +1315,14 @@ static void PrintGenericCall(
   {
 #if DEVELOPER
 
-   EnvPrintRouter(theEnv,logName,"(");
+   EnvPrintRouter(theEnv,logName,(char*)"(");
    EnvPrintRouter(theEnv,logName,EnvGetDefgenericName(theEnv,value));
    if (GetFirstArgument() != NULL)
      {
-      EnvPrintRouter(theEnv,logName," ");
+      EnvPrintRouter(theEnv,logName,(char*)" ");
       PrintExpression(theEnv,logName,GetFirstArgument());
      }
-   EnvPrintRouter(theEnv,logName,")");
+   EnvPrintRouter(theEnv,logName,(char*)")");
 #else
 #if MAC_MCW || WIN_MCW || MAC_XCD
 #pragma unused(theEnv)
@@ -1465,7 +1465,7 @@ static void SaveDefmethodsForDefgeneric(
       if (gfunc->methods[i].ppForm != NULL)
         {
          PrintInChunks(theEnv,logName,gfunc->methods[i].ppForm);
-         EnvPrintRouter(theEnv,logName,"\n");
+         EnvPrintRouter(theEnv,logName,(char*)"\n");
         }
      }
   }
@@ -1493,10 +1493,10 @@ static void RemoveDefgenericMethod(
    if (gfunc->methods[gi].system)
      {
       SetEvaluationError(theEnv,TRUE);
-      PrintErrorID(theEnv,"GENRCCOM",4,FALSE);
-      EnvPrintRouter(theEnv,WERROR,"Cannot remove implicit system function method for generic function ");
+      PrintErrorID(theEnv,(char*)"GENRCCOM",4,FALSE);
+      EnvPrintRouter(theEnv,WERROR,(char*)"Cannot remove implicit system function method for generic function ");
       EnvPrintRouter(theEnv,WERROR,EnvGetDefgenericName(theEnv,(void *) gfunc));
-      EnvPrintRouter(theEnv,WERROR,".\n");
+      EnvPrintRouter(theEnv,WERROR,(char*)".\n");
       return;
      }
    DeleteMethodInfo(theEnv,gfunc,&gfunc->methods[gi]);
@@ -1546,10 +1546,10 @@ static long ListMethodsForGeneric(
    for (gi = 0 ; gi < gfunc->mcnt ; gi++)
      {
       EnvPrintRouter(theEnv,logicalName,EnvGetDefgenericName(theEnv,(void *) gfunc));
-      EnvPrintRouter(theEnv,logicalName," #");
+      EnvPrintRouter(theEnv,logicalName,(char*)" #");
       PrintMethod(theEnv,buf,255,&gfunc->methods[gi]);
       EnvPrintRouter(theEnv,logicalName,buf);
-      EnvPrintRouter(theEnv,logicalName,"\n");
+      EnvPrintRouter(theEnv,logicalName,(char*)"\n");
      }
    return((long) gfunc->mcnt);
   }
@@ -1640,9 +1640,9 @@ static unsigned DefmethodWatchAccess(
 #pragma unused(code)
 #endif
    if (newState)
-     return(DefmethodWatchSupport(theEnv,"watch",NULL,newState,NULL,EnvSetDefmethodWatch,argExprs));
+     return(DefmethodWatchSupport(theEnv,(char*)"watch",NULL,newState,NULL,EnvSetDefmethodWatch,argExprs));
    else
-     return(DefmethodWatchSupport(theEnv,"unwatch",NULL,newState,NULL,EnvSetDefmethodWatch,argExprs));
+     return(DefmethodWatchSupport(theEnv,(char*)"unwatch",NULL,newState,NULL,EnvSetDefmethodWatch,argExprs));
   }
 
 /***********************************************************************
@@ -1670,7 +1670,7 @@ static unsigned DefmethodWatchPrint(
 #if MAC_MCW || WIN_MCW || MAC_XCD
 #pragma unused(code)
 #endif
-   return(DefmethodWatchSupport(theEnv,"list-watch-items",logName,0,
+   return(DefmethodWatchSupport(theEnv,(char*)"list-watch-items",logName,0,
                                 PrintMethodWatchFlag,NULL,argExprs));
   }
 
@@ -1719,7 +1719,7 @@ static unsigned DefmethodWatchSupport(
          if (traceFunc == NULL)
            {
             EnvPrintRouter(theEnv,logName,EnvGetDefmoduleName(theEnv,(void *) theModule));
-            EnvPrintRouter(theEnv,logName,":\n");
+            EnvPrintRouter(theEnv,logName,(char*)":\n");
            }
          theGeneric = EnvGetNextDefgeneric(theEnv,NULL);
          while (theGeneric != NULL)
@@ -1731,7 +1731,7 @@ static unsigned DefmethodWatchSupport(
                   (*traceFunc)(theEnv,newState,theGeneric,theMethod);
                 else
                   {
-                   EnvPrintRouter(theEnv,logName,"   ");
+                   EnvPrintRouter(theEnv,logName,(char*)"   ");
                    (*printFunc)(theEnv,logName,theGeneric,theMethod);
                   }
                 theMethod = EnvGetNextDefmethod(theEnv,theGeneric,theMethod);
@@ -1755,7 +1755,7 @@ static unsigned DefmethodWatchSupport(
           ((theGeneric = (void *)
               LookupDefgenericByMdlOrScope(theEnv,DOToString(genericName))) == NULL))
         {
-         ExpectedTypeError1(theEnv,funcName,argIndex,"generic function name");
+         ExpectedTypeError1(theEnv,funcName,argIndex,(char*)"generic function name");
          return(FALSE);
         }
       if (GetNextArgument(argExprs) == NULL)
@@ -1772,7 +1772,7 @@ static unsigned DefmethodWatchSupport(
            theMethod = (long) DOToLong(methodIndex);
          else
            {
-            ExpectedTypeError1(theEnv,funcName,argIndex,"method index");
+            ExpectedTypeError1(theEnv,funcName,argIndex,(char*)"method index");
             return(FALSE);
            }
         }
@@ -1820,13 +1820,13 @@ static void PrintMethodWatchFlag(
    char buf[60];
 
    EnvPrintRouter(theEnv,logName,EnvGetDefgenericName(theEnv,theGeneric));
-   EnvPrintRouter(theEnv,logName," ");
+   EnvPrintRouter(theEnv,logName,(char*)" ");
    EnvGetDefmethodDescription(theEnv,buf,59,theGeneric,theMethod);
    EnvPrintRouter(theEnv,logName,buf);
    if (EnvGetDefmethodWatch(theEnv,theGeneric,theMethod))
-     EnvPrintRouter(theEnv,logName," = on\n");
+     EnvPrintRouter(theEnv,logName,(char*)" = on\n");
    else
-     EnvPrintRouter(theEnv,logName," = off\n");
+     EnvPrintRouter(theEnv,logName,(char*)" = off\n");
   }
 
 #endif

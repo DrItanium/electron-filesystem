@@ -60,7 +60,7 @@
 globle void DeftemplateCompilerSetup(
   void *theEnv)
   {
-   DeftemplateData(theEnv)->DeftemplateCodeItem = AddCodeGeneratorItem(theEnv,"deftemplate",0,NULL,InitDeftemplateCode,ConstructToCode,3);
+   DeftemplateData(theEnv)->DeftemplateCodeItem = AddCodeGeneratorItem(theEnv,(char*)"deftemplate",0,NULL,InitDeftemplateCode,ConstructToCode,3);
   }
 
 /*************************************************************/
@@ -106,7 +106,7 @@ static int ConstructToCode(
 
       moduleFile = OpenFileIfNeeded(theEnv,moduleFile,fileName,pathName,fileNameBuffer,fileID,imageID,&fileCount,
                                     moduleArrayVersion,headerFP,
-                                    "struct deftemplateModule",ModulePrefix(DeftemplateData(theEnv)->DeftemplateCodeItem),
+                                    (char*)"struct deftemplateModule",ModulePrefix(DeftemplateData(theEnv)->DeftemplateCodeItem),
                                     FALSE,NULL);
 
       if (moduleFile == NULL)
@@ -129,7 +129,7 @@ static int ConstructToCode(
         {
          templateFile = OpenFileIfNeeded(theEnv,templateFile,fileName,pathName,fileNameBuffer,fileID,imageID,&fileCount,
                                          templateArrayVersion,headerFP,
-                                         "struct deftemplate",ConstructPrefix(DeftemplateData(theEnv)->DeftemplateCodeItem),
+                                         (char*)"struct deftemplate",ConstructPrefix(DeftemplateData(theEnv)->DeftemplateCodeItem),
                                          FALSE,NULL);
          if (templateFile == NULL)
            {
@@ -152,7 +152,7 @@ static int ConstructToCode(
            {
             slotFile = OpenFileIfNeeded(theEnv,slotFile,fileName,pathName,fileNameBuffer,fileID,imageID,&fileCount,
                                         slotArrayVersion,headerFP,
-                                       "struct templateSlot",SlotPrefix(),FALSE,NULL);
+                                       (char*)"struct templateSlot",SlotPrefix(),FALSE,NULL);
             if (slotFile == NULL)
               {
                CloseDeftemplateFiles(theEnv,moduleFile,templateFile,slotFile,maxIndices);

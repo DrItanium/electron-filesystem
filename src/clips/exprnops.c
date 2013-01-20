@@ -359,22 +359,22 @@ globle void PrintExpression(
         {
          case SF_VARIABLE:
          case GBL_VARIABLE:
-            EnvPrintRouter(theEnv,fileid,"?");
+            EnvPrintRouter(theEnv,fileid,(char*)"?");
             EnvPrintRouter(theEnv,fileid,ValueToString(theExpression->value));
             break;
 
          case MF_VARIABLE:
          case MF_GBL_VARIABLE:
-            EnvPrintRouter(theEnv,fileid,"$?");
+            EnvPrintRouter(theEnv,fileid,(char*)"$?");
             EnvPrintRouter(theEnv,fileid,ValueToString(theExpression->value));
             break;
 
          case FCALL:
-           EnvPrintRouter(theEnv,fileid,"(");
+           EnvPrintRouter(theEnv,fileid,(char*)"(");
            EnvPrintRouter(theEnv,fileid,ValueToString(ExpressionFunctionCallName(theExpression)));
-           if (theExpression->argList != NULL) { EnvPrintRouter(theEnv,fileid," "); }
+           if (theExpression->argList != NULL) { EnvPrintRouter(theEnv,fileid,(char*)" "); }
            PrintExpression(theEnv,fileid,theExpression->argList);
-           EnvPrintRouter(theEnv,fileid,")");
+           EnvPrintRouter(theEnv,fileid,(char*)")");
            break;
 
          default:
@@ -386,7 +386,7 @@ globle void PrintExpression(
         }
 
       theExpression = theExpression->nextArg;
-      if (theExpression != NULL) EnvPrintRouter(theEnv,fileid," ");
+      if (theExpression != NULL) EnvPrintRouter(theEnv,fileid,(char*)" ");
      }
 
    return;

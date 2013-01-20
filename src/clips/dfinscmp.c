@@ -64,7 +64,7 @@ static void SingleDefinstancesToCode(void *,FILE *,DEFINSTANCES *,int,int,int);
 globle void SetupDefinstancesCompiler(
   void *theEnv)
   {
-   DefinstancesData(theEnv)->DefinstancesCodeItem = AddCodeGeneratorItem(theEnv,"definstances",0,ReadyDefinstancesForCode,
+   DefinstancesData(theEnv)->DefinstancesCodeItem = AddCodeGeneratorItem(theEnv,(char*)"definstances",0,ReadyDefinstancesForCode,
                                                NULL,DefinstancesToCode,2);
   }
 
@@ -166,7 +166,7 @@ static int DefinstancesToCode(
 
       moduleFile = OpenFileIfNeeded(theEnv,moduleFile,fileName,pathName,fileNameBuffer,fileID,imageID,&fileCount,
                                     moduleArrayVersion,headerFP,
-                                    "DEFINSTANCES_MODULE",ModulePrefix(DefinstancesData(theEnv)->DefinstancesCodeItem),
+                                    (char*)"DEFINSTANCES_MODULE",ModulePrefix(DefinstancesData(theEnv)->DefinstancesCodeItem),
                                     FALSE,NULL);
 
       if (moduleFile == NULL)
@@ -185,7 +185,7 @@ static int DefinstancesToCode(
         {
          definstancesFile = OpenFileIfNeeded(theEnv,definstancesFile,fileName,pathName,fileNameBuffer,fileID,imageID,&fileCount,
                                              definstancesArrayVersion,headerFP,
-                                             "DEFINSTANCES",ConstructPrefix(DefinstancesData(theEnv)->DefinstancesCodeItem),
+                                             (char*)"DEFINSTANCES",ConstructPrefix(DefinstancesData(theEnv)->DefinstancesCodeItem),
                                              FALSE,NULL);
          if (definstancesFile == NULL)
            {

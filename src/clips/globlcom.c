@@ -53,14 +53,14 @@ globle void DefglobalCommandDefinitions(
   void *theEnv)
   {
 #if ! RUN_TIME
-   EnvDefineFunction2(theEnv,"set-reset-globals",'b',
-                  SetResetGlobalsCommand,"SetResetGlobalsCommand", "11");
-   EnvDefineFunction2(theEnv,"get-reset-globals",'b',
-                   GetResetGlobalsCommand,"GetResetGlobalsCommand", "00");
+   EnvDefineFunction2(theEnv,(char*)"set-reset-globals",'b',
+                  SetResetGlobalsCommand,(char*)"SetResetGlobalsCommand", (char*)"11");
+   EnvDefineFunction2(theEnv,(char*)"get-reset-globals",'b',
+                   GetResetGlobalsCommand,(char*)"GetResetGlobalsCommand", (char*)"00");
 
 #if DEBUGGING_FUNCTIONS
-   EnvDefineFunction2(theEnv,"show-defglobals",'v',
-                   PTIEF ShowDefglobalsCommand,"ShowDefglobalsCommand", "01w");
+   EnvDefineFunction2(theEnv,(char*)"show-defglobals",'v',
+                   PTIEF ShowDefglobalsCommand,(char*)"ShowDefglobalsCommand", (char*)"01w");
 #endif
 
 #else
@@ -90,7 +90,7 @@ globle int SetResetGlobalsCommand(
    /* Check for the correct number of arguments. */
    /*============================================*/
 
-   if (EnvArgCountCheck(theEnv,"set-reset-globals",EXACTLY,1) == -1)
+   if (EnvArgCountCheck(theEnv,(char*)"set-reset-globals",EXACTLY,1) == -1)
      { return(oldValue); }
 
    /*===========================================*/
@@ -137,7 +137,7 @@ globle int GetResetGlobalsCommand(
 
    oldValue = EnvGetResetGlobals(theEnv);
 
-   if (EnvArgCountCheck(theEnv,"get-reset-globals",EXACTLY,0) == -1)
+   if (EnvArgCountCheck(theEnv,(char*)"get-reset-globals",EXACTLY,0) == -1)
      { return(oldValue); }
 
    return(oldValue);
@@ -165,11 +165,11 @@ globle void ShowDefglobalsCommand(
    struct defmodule *theModule;
    int numArgs, error;
 
-   if ((numArgs = EnvArgCountCheck(theEnv,"show-defglobals",NO_MORE_THAN,1)) == -1) return;
+   if ((numArgs = EnvArgCountCheck(theEnv,(char*)"show-defglobals",NO_MORE_THAN,1)) == -1) return;
 
    if (numArgs == 1)
      {
-      theModule = GetModuleName(theEnv,"show-defglobals",1,&error);
+      theModule = GetModuleName(theEnv,(char*)"show-defglobals",1,&error);
       if (error) return;
      }
    else
@@ -220,7 +220,7 @@ globle void EnvShowDefglobals(
       if (allModules)
         {
          EnvPrintRouter(theEnv,logicalName,EnvGetDefmoduleName(theEnv,theModule));
-         EnvPrintRouter(theEnv,logicalName,":\n");
+         EnvPrintRouter(theEnv,logicalName,(char*)":\n");
         }
 
       /*=====================================*/
@@ -236,9 +236,9 @@ globle void EnvShowDefglobals(
         {
          if (EvaluationData(theEnv)->HaltExecution == TRUE) return;
 
-         if (allModules) EnvPrintRouter(theEnv,logicalName,"   ");
+         if (allModules) EnvPrintRouter(theEnv,logicalName,(char*)"   ");
          PrintDefglobalValueForm(theEnv,logicalName,(void *) constructPtr);
-         EnvPrintRouter(theEnv,logicalName,"\n");
+         EnvPrintRouter(theEnv,logicalName,(char*)"\n");
         }
 
       /*===================================*/
@@ -262,9 +262,9 @@ static void PrintDefglobalValueForm(
   {
    struct defglobal *theGlobal = (struct defglobal *) vTheGlobal;
 
-   EnvPrintRouter(theEnv,logicalName,"?*");
+   EnvPrintRouter(theEnv,logicalName,(char*)"?*");
    EnvPrintRouter(theEnv,logicalName,ValueToString(theGlobal->header.name));
-   EnvPrintRouter(theEnv,logicalName,"* = ");
+   EnvPrintRouter(theEnv,logicalName,(char*)"* = ");
    PrintDataObject(theEnv,logicalName,&theGlobal->current);
   }
 

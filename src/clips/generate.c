@@ -102,7 +102,7 @@ globle void FieldConversion(
 
    if (theField == NULL)
      {
-      SystemError(theEnv,"ANALYSIS",3);
+      SystemError(theEnv,(char*)"ANALYSIS",3);
       EnvExitRouter(theEnv,EXIT_FAILURE);
      }
 

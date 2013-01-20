@@ -56,17 +56,17 @@
 globle void DefmoduleBasicCommands(
   void *theEnv)
   {
-   EnvAddClearFunction(theEnv,"defmodule",ClearDefmodules,2000);
+   EnvAddClearFunction(theEnv,(char*)"defmodule",ClearDefmodules,2000);
 
 #if DEFMODULE_CONSTRUCT
-   AddSaveFunction(theEnv,"defmodule",SaveDefmodules,1100);
+   AddSaveFunction(theEnv,(char*)"defmodule",SaveDefmodules,1100);
 
 #if ! RUN_TIME
-   EnvDefineFunction2(theEnv,"get-defmodule-list",'m',PTIEF EnvGetDefmoduleList,"EnvGetDefmoduleList","00");
+   EnvDefineFunction2(theEnv,(char*)"get-defmodule-list",'m',PTIEF EnvGetDefmoduleList,(char*)"EnvGetDefmoduleList",(char*)"00");
 
 #if DEBUGGING_FUNCTIONS
-   EnvDefineFunction2(theEnv,"list-defmodules",'v', PTIEF ListDefmodulesCommand,"ListDefmodulesCommand","00");
-   EnvDefineFunction2(theEnv,"ppdefmodule",'v',PTIEF PPDefmoduleCommand,"PPDefmoduleCommand","11w");
+   EnvDefineFunction2(theEnv,(char*)"list-defmodules",'v', PTIEF ListDefmodulesCommand,(char*)"ListDefmodulesCommand",(char*)"00");
+   EnvDefineFunction2(theEnv,(char*)"ppdefmodule",'v',PTIEF PPDefmoduleCommand,(char*)"PPDefmoduleCommand",(char*)"11w");
 #endif
 #endif
 #endif
@@ -119,7 +119,7 @@ static void SaveDefmodules(
    if (ppform != NULL)
      {
       PrintInChunks(theEnv,logicalName,ppform);
-      EnvPrintRouter(theEnv,logicalName,"\n");
+      EnvPrintRouter(theEnv,logicalName,(char*)"\n");
      }
   }
 
@@ -145,7 +145,7 @@ globle void PPDefmoduleCommand(
   {
    char *defmoduleName;
 
-   defmoduleName = GetConstructName(theEnv,"ppdefmodule","defmodule name");
+   defmoduleName = GetConstructName(theEnv,(char*)"ppdefmodule",(char*)"defmodule name");
    if (defmoduleName == NULL) return;
 
    PPDefmodule(theEnv,defmoduleName,WDISPLAY);
@@ -167,7 +167,7 @@ globle int PPDefmodule(
    defmodulePtr = EnvFindDefmodule(theEnv,defmoduleName);
    if (defmodulePtr == NULL)
      {
-      CantFindItemErrorMessage(theEnv,"defmodule",defmoduleName);
+      CantFindItemErrorMessage(theEnv,(char*)"defmodule",defmoduleName);
       return(FALSE);
      }
 
@@ -183,7 +183,7 @@ globle int PPDefmodule(
 globle void ListDefmodulesCommand(
   void *theEnv)
   {
-   if (EnvArgCountCheck(theEnv,"list-defmodules",EXACTLY,0) == -1) return;
+   if (EnvArgCountCheck(theEnv,(char*)"list-defmodules",EXACTLY,0) == -1) return;
 
    EnvListDefmodules(theEnv,WDISPLAY);
   }
@@ -204,11 +204,11 @@ globle void EnvListDefmodules(
         theModule = EnvGetNextDefmodule(theEnv,theModule))
     {
      EnvPrintRouter(theEnv,logicalName,EnvGetDefmoduleName(theEnv,theModule));
-     EnvPrintRouter(theEnv,logicalName,"\n");
+     EnvPrintRouter(theEnv,logicalName,(char*)"\n");
      count++;
     }
 
-   PrintTally(theEnv,logicalName,count,"defmodule","defmodules");
+   PrintTally(theEnv,logicalName,count,(char*)"defmodule",(char*)"defmodules");
   }
 
 #endif /* DEBUGGING_FUNCTIONS */

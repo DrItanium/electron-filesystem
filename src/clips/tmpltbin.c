@@ -70,13 +70,13 @@ globle void DeftemplateBinarySetup(
   {
    AllocateEnvironmentData(theEnv,TMPLTBIN_DATA,sizeof(struct deftemplateBinaryData),DeallocateDeftemplateBloadData);
 #if BLOAD_AND_BSAVE
-   AddBinaryItem(theEnv,"deftemplate",0,BsaveFind,NULL,
+   AddBinaryItem(theEnv,(char*)"deftemplate",0,BsaveFind,NULL,
                              BsaveStorage,BsaveBinaryItem,
                              BloadStorage,BloadBinaryItem,
                              ClearBload);
 #endif
 #if (BLOAD || BLOAD_ONLY)
-   AddBinaryItem(theEnv,"deftemplate",0,NULL,NULL,NULL,NULL,
+   AddBinaryItem(theEnv,(char*)"deftemplate",0,NULL,NULL,NULL,NULL,
                              BloadStorage,BloadBinaryItem,
                              ClearBload);
 #endif
@@ -248,7 +248,7 @@ static void BsaveBinaryItem(
       EnvSetCurrentModule(theEnv,(void *) theModule);
 
       theModuleItem = (struct deftemplateModule *)
-                      GetModuleItem(theEnv,NULL,FindModuleItem(theEnv,"deftemplate")->moduleIndex);
+                      GetModuleItem(theEnv,NULL,FindModuleItem(theEnv,(char*)"deftemplate")->moduleIndex);
       AssignBsaveDefmdlItemHdrVals(&tempTemplateModule.header,
                                            &theModuleItem->header);
       GenWrite(&tempTemplateModule,sizeof(struct bsaveDeftemplateModule),fp);
@@ -585,7 +585,7 @@ static void ClearBload(
    /*======================================*/
 
 #if (! BLOAD_ONLY)
-   CreateImpliedDeftemplate(theEnv,(SYMBOL_HN *) EnvAddSymbol(theEnv,"initial-fact"),FALSE);
+   CreateImpliedDeftemplate(theEnv,(SYMBOL_HN *) EnvAddSymbol(theEnv,(char*)"initial-fact"),FALSE);
 #endif
   }
 

@@ -280,7 +280,7 @@ globle int ClearDefgenerics(
       gfunc = (DEFGENERIC *) EnvGetNextDefgeneric(theEnv,(void *) gfunc);
       if (RemoveAllExplicitMethods(theEnv,gtmp) == FALSE)
         {
-         CantDeleteItemErrorMessage(theEnv,"generic function",EnvGetDefgenericName(theEnv,gtmp));
+         CantDeleteItemErrorMessage(theEnv,(char*)"generic function",EnvGetDefgenericName(theEnv,gtmp));
          success = FALSE;
         }
       else
@@ -307,10 +307,10 @@ globle void MethodAlterError(
   void *theEnv,
   DEFGENERIC *gfunc)
   {
-   PrintErrorID(theEnv,"GENRCFUN",1,FALSE);
-   EnvPrintRouter(theEnv,WERROR,"Defgeneric ");
+   PrintErrorID(theEnv,(char*)"GENRCFUN",1,FALSE);
+   EnvPrintRouter(theEnv,WERROR,(char*)"Defgeneric ");
    EnvPrintRouter(theEnv,WERROR,EnvGetDefgenericName(theEnv,(void *) gfunc));
-   EnvPrintRouter(theEnv,WERROR," cannot be modified while one of its methods is executing.\n");
+   EnvPrintRouter(theEnv,WERROR,(char*)" cannot be modified while one of its methods is executing.\n");
   }
 
 /***************************************************
@@ -510,15 +510,15 @@ globle void PreviewGeneric(
    DATA_OBJECT temp;
 
    EvaluationData(theEnv)->EvaluationError = FALSE;
-   if (EnvArgTypeCheck(theEnv,"preview-generic",1,SYMBOL,&temp) == FALSE)
+   if (EnvArgTypeCheck(theEnv,(char*)"preview-generic",1,SYMBOL,&temp) == FALSE)
      return;
    gfunc = LookupDefgenericByMdlOrScope(theEnv,DOToString(temp));
    if (gfunc == NULL)
      {
-      PrintErrorID(theEnv,"GENRCFUN",3,FALSE);
-      EnvPrintRouter(theEnv,WERROR,"Unable to find generic function ");
+      PrintErrorID(theEnv,(char*)"GENRCFUN",3,FALSE);
+      EnvPrintRouter(theEnv,WERROR,(char*)"Unable to find generic function ");
       EnvPrintRouter(theEnv,WERROR,DOToString(temp));
-      EnvPrintRouter(theEnv,WERROR," in function preview-generic.\n");
+      EnvPrintRouter(theEnv,WERROR,(char*)" in function preview-generic.\n");
       return;
      }
    oldce = ExecutingConstruct(theEnv);
@@ -528,7 +528,7 @@ globle void PreviewGeneric(
    EvaluationData(theEnv)->CurrentEvaluationDepth++;
    PushProcParameters(theEnv,GetFirstArgument()->nextArg,
                           CountArguments(GetFirstArgument()->nextArg),
-                          EnvGetDefgenericName(theEnv,(void *) gfunc),"generic function",
+                          EnvGetDefgenericName(theEnv,(void *) gfunc),(char*)"generic function",
                           UnboundMethodErr);
    if (EvaluationData(theEnv)->EvaluationError)
      {
@@ -638,12 +638,12 @@ globle DEFGENERIC *CheckGenericExists(
    gfunc = LookupDefgenericByMdlOrScope(theEnv,gname);
    if (gfunc == NULL)
      {
-      PrintErrorID(theEnv,"GENRCFUN",3,FALSE);
-      EnvPrintRouter(theEnv,WERROR,"Unable to find generic function ");
+      PrintErrorID(theEnv,(char*)"GENRCFUN",3,FALSE);
+      EnvPrintRouter(theEnv,WERROR,(char*)"Unable to find generic function ");
       EnvPrintRouter(theEnv,WERROR,gname);
-      EnvPrintRouter(theEnv,WERROR," in function ");
+      EnvPrintRouter(theEnv,WERROR,(char*)" in function ");
       EnvPrintRouter(theEnv,WERROR,fname);
-      EnvPrintRouter(theEnv,WERROR,".\n");
+      EnvPrintRouter(theEnv,WERROR,(char*)".\n");
       SetEvaluationError(theEnv,TRUE);
      }
    return(gfunc);
@@ -672,14 +672,14 @@ globle long CheckMethodExists(
    fi = FindMethodByIndex(gfunc,mi);
    if (fi == -1)
      {
-      PrintErrorID(theEnv,"GENRCFUN",2,FALSE);
-      EnvPrintRouter(theEnv,WERROR,"Unable to find method ");
+      PrintErrorID(theEnv,(char*)"GENRCFUN",2,FALSE);
+      EnvPrintRouter(theEnv,WERROR,(char*)"Unable to find method ");
       EnvPrintRouter(theEnv,WERROR,EnvGetDefgenericName(theEnv,(void *) gfunc));
-      EnvPrintRouter(theEnv,WERROR," #");
+      EnvPrintRouter(theEnv,WERROR,(char*)" #");
       PrintLongInteger(theEnv,WERROR,mi);
-      EnvPrintRouter(theEnv,WERROR," in function ");
+      EnvPrintRouter(theEnv,WERROR,(char*)" in function ");
       EnvPrintRouter(theEnv,WERROR,fname);
-      EnvPrintRouter(theEnv,WERROR,".\n");
+      EnvPrintRouter(theEnv,WERROR,(char*)".\n");
       SetEvaluationError(theEnv,TRUE);
      }
    return(fi);
@@ -721,8 +721,8 @@ globle char *TypeName(
       case LEXEME_TYPE_CODE    : return(LEXEME_TYPE_NAME);
       case ADDRESS_TYPE_CODE   : return(ADDRESS_TYPE_NAME);
       case INSTANCE_TYPE_CODE  : return(INSTANCE_TYPE_NAME);
-      default                  : PrintErrorID(theEnv,"INSCOM",1,FALSE);
-                                 EnvPrintRouter(theEnv,WERROR,"Undefined type in function type.\n");
+      default                  : PrintErrorID(theEnv,(char*)"INSCOM",1,FALSE);
+                                 EnvPrintRouter(theEnv,WERROR,(char*)"Undefined type in function type.\n");
                                  SetEvaluationError(theEnv,TRUE);
                                  return("<UNKNOWN-TYPE>");
      }
@@ -750,7 +750,7 @@ globle void PrintGenericName(
      {
       EnvPrintRouter(theEnv,logName,EnvGetDefmoduleName(theEnv,(void *)
                         gfunc->header.whichModule->theModule));
-      EnvPrintRouter(theEnv,logName,"::");
+      EnvPrintRouter(theEnv,logName,(char*)"::");
      }
    EnvPrintRouter(theEnv,logName,ValueToString((void *) gfunc->header.name));
   }
@@ -788,18 +788,18 @@ static void DisplayGenericCore(
         {
          rtn = TRUE;
          EnvPrintRouter(theEnv,WDISPLAY,EnvGetDefgenericName(theEnv,(void *) gfunc));
-         EnvPrintRouter(theEnv,WDISPLAY," #");
+         EnvPrintRouter(theEnv,WDISPLAY,(char*)" #");
          PrintMethod(theEnv,buf,255,&gfunc->methods[i]);
          EnvPrintRouter(theEnv,WDISPLAY,buf);
-         EnvPrintRouter(theEnv,WDISPLAY,"\n");
+         EnvPrintRouter(theEnv,WDISPLAY,(char*)"\n");
         }
       gfunc->methods[i].busy--;
      }
    if (rtn == FALSE)
      {
-      EnvPrintRouter(theEnv,WDISPLAY,"No applicable methods for ");
+      EnvPrintRouter(theEnv,WDISPLAY,(char*)"No applicable methods for ");
       EnvPrintRouter(theEnv,WDISPLAY,EnvGetDefgenericName(theEnv,(void *) gfunc));
-      EnvPrintRouter(theEnv,WDISPLAY,".\n");
+      EnvPrintRouter(theEnv,WDISPLAY,(char*)".\n");
      }
   }
 

@@ -556,14 +556,14 @@ globle void ConstraintViolationErrorMessage(
 
       if (violationType == FUNCTION_RETURN_TYPE_VIOLATION)
         {
-         PrintErrorID(theEnv,"CSTRNCHK",1,TRUE);
-         EnvPrintRouter(theEnv,WERROR,"The function return value ");
+         PrintErrorID(theEnv,(char*)"CSTRNCHK",1,TRUE);
+         EnvPrintRouter(theEnv,WERROR,(char*)"The function return value ");
         }
       else if (theWhat != NULL)
         {
-         PrintErrorID(theEnv,"CSTRNCHK",1,TRUE);
+         PrintErrorID(theEnv,(char*)"CSTRNCHK",1,TRUE);
          EnvPrintRouter(theEnv,WERROR,theWhat);
-         EnvPrintRouter(theEnv,WERROR," ");
+         EnvPrintRouter(theEnv,WERROR,(char*)" ");
         }
 
       /*=======================================*/
@@ -573,10 +573,10 @@ globle void ConstraintViolationErrorMessage(
 
       if (thePlace != NULL)
         {
-         EnvPrintRouter(theEnv,WERROR,"found in ");
-         if (command) EnvPrintRouter(theEnv,WERROR,"the ");
+         EnvPrintRouter(theEnv,WERROR,(char*)"found in ");
+         if (command) EnvPrintRouter(theEnv,WERROR,(char*)"the ");
          EnvPrintRouter(theEnv,WERROR,thePlace);
-         if (command) EnvPrintRouter(theEnv,WERROR," command");
+         if (command) EnvPrintRouter(theEnv,WERROR,(char*)" command");
         }
 
       /*================================================*/
@@ -586,7 +586,7 @@ globle void ConstraintViolationErrorMessage(
 
       if (thePattern > 0)
         {
-         EnvPrintRouter(theEnv,WERROR,"found in CE #");
+         EnvPrintRouter(theEnv,WERROR,(char*)"found in CE #");
          PrintLongInteger(theEnv,WERROR,(long int) thePattern);
         }
      }
@@ -597,18 +597,18 @@ globle void ConstraintViolationErrorMessage(
 
    if ((violationType == TYPE_VIOLATION) ||
        (violationType == FUNCTION_RETURN_TYPE_VIOLATION))
-     { EnvPrintRouter(theEnv,WERROR,"\ndoes not match the allowed types"); }
+     { EnvPrintRouter(theEnv,WERROR,(char*)"\ndoes not match the allowed types"); }
    else if (violationType == RANGE_VIOLATION)
      {
-      EnvPrintRouter(theEnv,WERROR,"\ndoes not fall in the allowed range ");
+      EnvPrintRouter(theEnv,WERROR,(char*)"\ndoes not fall in the allowed range ");
       PrintRange(theEnv,WERROR,theConstraint);
      }
    else if (violationType == ALLOWED_VALUES_VIOLATION)
-     { EnvPrintRouter(theEnv,WERROR,"\ndoes not match the allowed values"); }
+     { EnvPrintRouter(theEnv,WERROR,(char*)"\ndoes not match the allowed values"); }
    else if (violationType == CARDINALITY_VIOLATION)
-     { EnvPrintRouter(theEnv,WERROR,"\ndoes not satisfy the cardinality restrictions"); }
+     { EnvPrintRouter(theEnv,WERROR,(char*)"\ndoes not satisfy the cardinality restrictions"); }
    else if (violationType == ALLOWED_CLASSES_VIOLATION)
-     { EnvPrintRouter(theEnv,WERROR,"\ndoes not match the allowed classes"); }
+     { EnvPrintRouter(theEnv,WERROR,(char*)"\ndoes not match the allowed classes"); }
 
    /*==============================================*/
    /* Print either the slot name or field position */
@@ -617,16 +617,16 @@ globle void ConstraintViolationErrorMessage(
 
    if (theSlot != NULL)
      {
-      EnvPrintRouter(theEnv,WERROR," for slot ");
+      EnvPrintRouter(theEnv,WERROR,(char*)" for slot ");
       EnvPrintRouter(theEnv,WERROR,ValueToString(theSlot));
      }
    else if (theField > 0)
      {
-      EnvPrintRouter(theEnv,WERROR," for field #");
+      EnvPrintRouter(theEnv,WERROR,(char*)" for field #");
       PrintLongInteger(theEnv,WERROR,(long long) theField);
      }
 
-   EnvPrintRouter(theEnv,WERROR,".\n");
+   EnvPrintRouter(theEnv,WERROR,(char*)".\n");
   }
 
 /********************************************************************/
@@ -641,7 +641,7 @@ static void PrintRange(
    if (theConstraint->minValue->value == SymbolData(theEnv)->NegativeInfinity)
      { EnvPrintRouter(theEnv,logicalName,ValueToString(SymbolData(theEnv)->NegativeInfinity)); }
    else PrintExpression(theEnv,logicalName,theConstraint->minValue);
-   EnvPrintRouter(theEnv,logicalName," to ");
+   EnvPrintRouter(theEnv,logicalName,(char*)" to ");
    if (theConstraint->maxValue->value == SymbolData(theEnv)->PositiveInfinity)
      { EnvPrintRouter(theEnv,logicalName,ValueToString(SymbolData(theEnv)->PositiveInfinity)); }
    else PrintExpression(theEnv,logicalName,theConstraint->maxValue);

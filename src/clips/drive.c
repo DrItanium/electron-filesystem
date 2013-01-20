@@ -1073,16 +1073,16 @@ static void JoinNetErrorMessage(
   void *theEnv,
   struct joinNode *joinPtr)
   {
-   PrintErrorID(theEnv,"DRIVE",1,TRUE);
-   EnvPrintRouter(theEnv,WERROR,"This error occurred in the join network\n");
+   PrintErrorID(theEnv,(char*)"DRIVE",1,TRUE);
+   EnvPrintRouter(theEnv,WERROR,(char*)"This error occurred in the join network\n");
 
-   EnvPrintRouter(theEnv,WERROR,"   Problem resides in associated join\n"); /* TBD generate test case for join with JFTR */
+   EnvPrintRouter(theEnv,WERROR,(char*)"   Problem resides in associated join\n"); /* TBD generate test case for join with JFTR */
 /*
    sprintf(buffer,"   Problem resides in join #%d in rule(s):\n",joinPtr->depth);
    EnvPrintRouter(theEnv,WERROR,buffer);
 */
-   TraceErrorToRule(theEnv,joinPtr,"      ");
-   EnvPrintRouter(theEnv,WERROR,"\n");
+   TraceErrorToRule(theEnv,joinPtr,(char*)"      ");
+   EnvPrintRouter(theEnv,WERROR,(char*)"\n");
   }
 
 #endif /* DEFRULE_CONSTRUCT */

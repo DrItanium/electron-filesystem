@@ -103,12 +103,12 @@ globle void SetupDefinstancesBload(
   {
    AllocateEnvironmentData(theEnv,DFINSBIN_DATA,sizeof(struct definstancesBinaryData),DeallocateDefinstancesBinaryData);
 #if BLOAD_AND_BSAVE
-   AddBinaryItem(theEnv,"definstances",0,BsaveDefinstancesFind,BsaveDefinstancesExpressions,
+   AddBinaryItem(theEnv,(char*)"definstances",0,BsaveDefinstancesFind,BsaveDefinstancesExpressions,
                              BsaveStorageDefinstances,BsaveDefinstancesDriver,
                              BloadStorageDefinstances,BloadDefinstances,
                              ClearDefinstancesBload);
 #else
-   AddBinaryItem(theEnv,"definstances",0,NULL,NULL,NULL,NULL,
+   AddBinaryItem(theEnv,(char*)"definstances",0,NULL,NULL,NULL,NULL,
                              BloadStorageDefinstances,BloadDefinstances,
                              ClearDefinstancesBload);
 #endif
@@ -299,7 +299,7 @@ static void BsaveDefinstancesDriver(
    while (theModule != NULL)
      {
       theModuleItem = (DEFINSTANCES_MODULE *)
-                      GetModuleItem(theEnv,theModule,FindModuleItem(theEnv,"definstances")->moduleIndex);
+                      GetModuleItem(theEnv,theModule,FindModuleItem(theEnv,(char*)"definstances")->moduleIndex);
       AssignBsaveDefmdlItemHdrVals(&dummy_mitem.header,&theModuleItem->header);
       GenWrite((void *) &dummy_mitem,sizeof(BSAVE_DEFINSTANCES_MODULE),fp);
       theModule = (struct defmodule *) EnvGetNextDefmodule(theEnv,(void *) theModule);

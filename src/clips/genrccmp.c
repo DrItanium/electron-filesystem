@@ -101,7 +101,7 @@ static void TypeToCode(void *,FILE *,int,void *,int);
 globle void SetupGenericsCompiler(
   void *theEnv)
   {
-   DefgenericData(theEnv)->DefgenericCodeItem = AddCodeGeneratorItem(theEnv,"generics",0,ReadyDefgenericsForCode,
+   DefgenericData(theEnv)->DefgenericCodeItem = AddCodeGeneratorItem(theEnv,(char*)"generics",0,ReadyDefgenericsForCode,
                                              NULL,DefgenericsToCode,5);
   }
 
@@ -249,7 +249,7 @@ static int DefgenericsToCode(
       itemFiles[MODULEI] =
          OpenFileIfNeeded(theEnv,itemFiles[MODULEI],fileName,pathName,fileNameBuffer,fileID,imageID,&fileCount,
                           itemArrayVersions[MODULEI],headerFP,
-                          "DEFGENERIC_MODULE",ModulePrefix(DefgenericData(theEnv)->DefgenericCodeItem),
+                          (char*)"DEFGENERIC_MODULE",ModulePrefix(DefgenericData(theEnv)->DefgenericCodeItem),
                           itemReopenFlags[MODULEI],&itemCodeFiles[MODULEI]);
       if (itemFiles[MODULEI] == NULL)
         goto GenericCodeError;
@@ -267,7 +267,7 @@ static int DefgenericsToCode(
          itemFiles[GENERICI] =
             OpenFileIfNeeded(theEnv,itemFiles[GENERICI],fileName,pathName,fileNameBuffer,fileID,imageID,&fileCount,
                              itemArrayVersions[GENERICI],headerFP,
-                             "DEFGENERIC",ConstructPrefix(DefgenericData(theEnv)->DefgenericCodeItem),
+                             (char*)"DEFGENERIC",ConstructPrefix(DefgenericData(theEnv)->DefgenericCodeItem),
                              itemReopenFlags[GENERICI],&itemCodeFiles[GENERICI]);
          if (itemFiles[GENERICI] == NULL)
            goto GenericCodeError;
@@ -290,7 +290,7 @@ static int DefgenericsToCode(
             itemFiles[METHODI] =
                 OpenFileIfNeeded(theEnv,itemFiles[METHODI],fileName,pathName,fileNameBuffer,fileID,imageID,&fileCount,
                                  itemArrayVersions[METHODI],headerFP,
-                                 "DEFMETHOD",MethodPrefix(),
+                                 (char*)"DEFMETHOD",MethodPrefix(),
                                  itemReopenFlags[METHODI],&itemCodeFiles[METHODI]);
             if (itemFiles[METHODI] == NULL)
               goto GenericCodeError;
@@ -312,7 +312,7 @@ static int DefgenericsToCode(
                      OpenFileIfNeeded(theEnv,itemFiles[RESTRICTIONI],fileName,pathName,fileNameBuffer,fileID,
                                       imageID,&fileCount,
                                       itemArrayVersions[RESTRICTIONI],headerFP,
-                                      "RESTRICTION",RestrictionPrefix(),
+                                      (char*)"RESTRICTION",RestrictionPrefix(),
                                       itemReopenFlags[RESTRICTIONI],&itemCodeFiles[RESTRICTIONI]);
                   if (itemFiles[RESTRICTIONI] == NULL)
                     goto GenericCodeError;
@@ -334,7 +334,7 @@ static int DefgenericsToCode(
                            OpenFileIfNeeded(theEnv,itemFiles[TYPEI],fileName,pathName,fileNameBuffer,fileID,
                                             imageID,&fileCount,
                                             itemArrayVersions[TYPEI],headerFP,
-                                            "void *",TypePrefix(),
+                                            (char*)"void *",TypePrefix(),
                                             itemReopenFlags[TYPEI],&itemCodeFiles[TYPEI]);
                         if (itemFiles[TYPEI] == NULL)
                           goto GenericCodeError;

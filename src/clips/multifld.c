@@ -179,9 +179,9 @@ globle struct multifield *StringToMultifield(
    /* list of values to be stored in the multifield.     */
    /*====================================================*/
 
-   OpenStringSource(theEnv,"multifield-str",theString,0);
+   OpenStringSource(theEnv,(char*)"multifield-str",theString,0);
 
-   GetToken(theEnv,"multifield-str",&theToken);
+   GetToken(theEnv,(char*)"multifield-str",&theToken);
    while (theToken.type != STOP)
      {
       if ((theToken.type == SYMBOL) || (theToken.type == STRING) ||
@@ -196,10 +196,10 @@ globle struct multifield *StringToMultifield(
       else lastAtom->nextArg = theAtom;
 
       lastAtom = theAtom;
-      GetToken(theEnv,"multifield-str",&theToken);
+      GetToken(theEnv,(char*)"multifield-str",&theToken);
      }
 
-   CloseStringSource(theEnv,"multifield-str");
+   CloseStringSource(theEnv,(char*)"multifield-str");
 
    /*====================================================================*/
    /* Create a multifield of the appropriate size for the values parsed. */
@@ -378,16 +378,16 @@ globle void PrintMultifield(
 
    theMultifield = segment->theFields;
    if (printParens)
-     EnvPrintRouter(theEnv,fileid,"(");
+     EnvPrintRouter(theEnv,fileid,(char*)"(");
    i = begin;
    while (i <= end)
      {
       PrintAtom(theEnv,fileid,theMultifield[i].type,theMultifield[i].value);
       i++;
-      if (i <= end) EnvPrintRouter(theEnv,fileid," ");
+      if (i <= end) EnvPrintRouter(theEnv,fileid,(char*)" ");
      }
    if (printParens)
-     EnvPrintRouter(theEnv,fileid,")");
+     EnvPrintRouter(theEnv,fileid,(char*)")");
   }
 
 /*****************************************************/
@@ -754,7 +754,7 @@ globle void *ImplodeMultifield(
    /* of the MULTIFIELD variable to it.           */
    /*=============================================*/
 
-   if (strsize == 0) return(EnvAddSymbol(theEnv,""));
+   if (strsize == 0) return(EnvAddSymbol(theEnv,(char*)""));
    ret_str = (char *) gm2(theEnv,strsize);
    for(j=0, i=GetpDOBegin(value); i <= GetpDOEnd(value) ; i++)
      {

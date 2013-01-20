@@ -611,7 +611,7 @@ globle void SaveConstruct(
       if (ppform != NULL)
         {
          PrintInChunks(theEnv,logicalName,ppform);
-         EnvPrintRouter(theEnv,logicalName,"\n");
+         EnvPrintRouter(theEnv,logicalName,(char*)"\n");
         }
       }
 
@@ -703,7 +703,7 @@ globle void GetConstructListFunction(
       if (GetType(result) != SYMBOL)
         {
          EnvSetMultifieldErrorValue(theEnv,returnValue);
-         ExpectedTypeError1(theEnv,functionName,1,"defmodule name");
+         ExpectedTypeError1(theEnv,functionName,1,(char*)"defmodule name");
          return;
         }
 
@@ -718,7 +718,7 @@ globle void GetConstructListFunction(
          if (strcmp("*",DOToString(result)) != 0)
            {
             EnvSetMultifieldErrorValue(theEnv,returnValue);
-            ExpectedTypeError1(theEnv,functionName,1,"defmodule name");
+            ExpectedTypeError1(theEnv,functionName,1,(char*)"defmodule name");
             return;
            }
 
@@ -956,7 +956,7 @@ globle void ListConstructCommand(
       EnvRtnUnknown(theEnv,1,&result);
       if (GetType(result) != SYMBOL)
         {
-         ExpectedTypeError1(theEnv,functionName,1,"defmodule name");
+         ExpectedTypeError1(theEnv,functionName,1,(char*)"defmodule name");
          return;
         }
 
@@ -970,7 +970,7 @@ globle void ListConstructCommand(
         {
          if (strcmp("*",DOToString(result)) != 0)
            {
-            ExpectedTypeError1(theEnv,functionName,1,"defmodule name");
+            ExpectedTypeError1(theEnv,functionName,1,(char*)"defmodule name");
             return;
            }
 
@@ -1041,7 +1041,7 @@ globle void ListConstruct(
       if (allModules)
         {
          EnvPrintRouter(theEnv,logicalName,EnvGetDefmoduleName(theEnv,theModule));
-         EnvPrintRouter(theEnv,logicalName,":\n");
+         EnvPrintRouter(theEnv,logicalName,(char*)":\n");
         }
 
       /*===============================*/
@@ -1065,9 +1065,9 @@ globle void ListConstruct(
 
          if (constructName != NULL)
            {
-            if (allModules) EnvPrintRouter(theEnv,WDISPLAY,"   ");
+            if (allModules) EnvPrintRouter(theEnv,WDISPLAY,(char*)"   ");
             EnvPrintRouter(theEnv,logicalName,ValueToString(constructName));
-            EnvPrintRouter(theEnv,logicalName,"\n");
+            EnvPrintRouter(theEnv,logicalName,(char*)"\n");
            }
 
          count++;
@@ -1386,7 +1386,7 @@ globle unsigned ConstructPrintWatchAccess(
   unsigned (*getWatchFunc)(void *,void *),
   void (*setWatchFunc)(void *,unsigned,void *))
   {
-   return(ConstructWatchSupport(theEnv,constructClass,"list-watch-items",logName,argExprs,
+   return(ConstructWatchSupport(theEnv,constructClass,(char*)"list-watch-items",logName,argExprs,
                                 FALSE,FALSE,getWatchFunc,setWatchFunc));
   }
 
@@ -1402,7 +1402,7 @@ globle unsigned ConstructSetWatchAccess(
   unsigned (*getWatchFunc)(void *,void *),
   void (*setWatchFunc)(void *,unsigned,void *))
   {
-   return(ConstructWatchSupport(theEnv,constructClass,"watch",WERROR,argExprs,
+   return(ConstructWatchSupport(theEnv,constructClass,(char*)"watch",WERROR,argExprs,
                                 TRUE,newState,getWatchFunc,setWatchFunc));
   }
 
@@ -1463,7 +1463,7 @@ static unsigned ConstructWatchSupport(
          if (setFlag == FALSE)
            {
             EnvPrintRouter(theEnv,logName,EnvGetDefmoduleName(theEnv,(void *) theModule));
-            EnvPrintRouter(theEnv,logName,":\n");
+            EnvPrintRouter(theEnv,logName,(char*)":\n");
            }
 
          /*============================================*/
@@ -1483,7 +1483,7 @@ static unsigned ConstructWatchSupport(
               { (*setWatchFunc)(theEnv,newState,theConstruct); }
             else
               {
-               EnvPrintRouter(theEnv,logName,"   ");
+               EnvPrintRouter(theEnv,logName,(char*)"   ");
                ConstructPrintWatch(theEnv,logName,constructClass,theConstruct,getWatchFunc);
               }
            }
@@ -1569,9 +1569,9 @@ static void ConstructPrintWatch(
   {
    EnvPrintRouter(theEnv,logName,ValueToString((*constructClass->getConstructNameFunction)((struct constructHeader *) theConstruct)));
    if ((*getWatchFunc)(theEnv,theConstruct))
-     EnvPrintRouter(theEnv,logName," = on\n");
+     EnvPrintRouter(theEnv,logName,(char*)" = on\n");
    else
-     EnvPrintRouter(theEnv,logName," = off\n");
+     EnvPrintRouter(theEnv,logName,(char*)" = off\n");
   }
 
 #endif /* DEBUGGING_FUNCTIONS */

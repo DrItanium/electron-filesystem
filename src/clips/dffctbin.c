@@ -64,14 +64,14 @@ globle void DeffactsBinarySetup(
   {
    AllocateEnvironmentData(theEnv,DFFCTBIN_DATA,sizeof(struct deffactsBinaryData),DeallocateDeffactsBloadData);
 #if BLOAD_AND_BSAVE
-   AddBinaryItem(theEnv,"deffacts",0,BsaveFind,BsaveExpressions,
+   AddBinaryItem(theEnv,(char*)"deffacts",0,BsaveFind,BsaveExpressions,
                              BsaveStorage,BsaveBinaryItem,
                              BloadStorage,BloadBinaryItem,
                              ClearBload);
 #endif
 
 #if (BLOAD || BLOAD_ONLY)
-   AddBinaryItem(theEnv,"deffacts",0,NULL,NULL,NULL,NULL,
+   AddBinaryItem(theEnv,(char*)"deffacts",0,NULL,NULL,NULL,NULL,
                              BloadStorage,BloadBinaryItem,
                              ClearBload);
 #endif

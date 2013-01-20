@@ -59,7 +59,7 @@ globle void InitializeFileRouter(
   {
    AllocateEnvironmentData(theEnv,FILE_ROUTER_DATA,sizeof(struct fileRouterData),DeallocateFileRouterData);
 
-   EnvAddRouter(theEnv,"fileio",0,FindFile,
+   EnvAddRouter(theEnv,(char*)"fileio",0,FindFile,
              PrintFile,GetcFile,
              UngetcFile,ExitFile);
   }

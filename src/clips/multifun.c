@@ -117,37 +117,37 @@ globle void MultifieldFunctionDefinitions(
    AllocateEnvironmentData(theEnv,MULTIFUN_DATA,sizeof(struct multiFunctionData),NULL);
 
 #if ! RUN_TIME
-   EnvDefineFunction2(theEnv,"first$", 'm', PTIEF FirstFunction, "FirstFunction", "11m");
-   EnvDefineFunction2(theEnv,"rest$", 'm', PTIEF RestFunction, "RestFunction", "11m");
-   EnvDefineFunction2(theEnv,"subseq$", 'm', PTIEF SubseqFunction, "SubseqFunction", "33im");
-   EnvDefineFunction2(theEnv,"delete-member$", 'm', PTIEF DeleteMemberFunction, "DeleteMemberFunction", "2*um");
-   EnvDefineFunction2(theEnv,"replace-member$", 'm', PTIEF ReplaceMemberFunction, "ReplaceMemberFunction","3*um");
-   EnvDefineFunction2(theEnv,"delete$", 'm', PTIEF DeleteFunction, "DeleteFunction", "33im");
-   EnvDefineFunction2(theEnv,"replace$", 'm', PTIEF ReplaceFunction, "ReplaceFunction","4**mii");
-   EnvDefineFunction2(theEnv,"insert$", 'm', PTIEF InsertFunction, "InsertFunction", "3**mi");
-   EnvDefineFunction2(theEnv,"explode$", 'm', PTIEF ExplodeFunction, "ExplodeFunction", "11s");
-   EnvDefineFunction2(theEnv,"implode$", 's', PTIEF ImplodeFunction, "ImplodeFunction", "11m");
-   EnvDefineFunction2(theEnv,"nth$", 'u', PTIEF NthFunction, "NthFunction", "22*im");
-   EnvDefineFunction2(theEnv,"member$", 'u', PTIEF MemberFunction, "MemberFunction", "22*um");
-   EnvDefineFunction2(theEnv,"subsetp", 'b', PTIEF SubsetpFunction, "SubsetpFunction", "22*mm");
-   EnvDefineFunction2(theEnv,"progn$", 'u', PTIEF MultifieldPrognFunction, "MultifieldPrognFunction", NULL);
-   EnvDefineFunction2(theEnv,"foreach", 'u', PTIEF ForeachFunction, "ForeachFunction", NULL);
-   EnvDefineFunction2(theEnv,"str-implode", 's', PTIEF ImplodeFunction, "ImplodeFunction", "11m");
-   EnvDefineFunction2(theEnv,"str-explode", 'm', PTIEF ExplodeFunction, "ExplodeFunction", "11s");
-   EnvDefineFunction2(theEnv,"subset", 'b', PTIEF SubsetpFunction, "SubsetpFunction", "22*mm");
-   EnvDefineFunction2(theEnv,"nth", 'u', PTIEF NthFunction, "NthFunction", "22*im");
-   EnvDefineFunction2(theEnv,"mv-replace", 'm', PTIEF MVReplaceFunction, "MVReplaceFunction","33*im");
-   EnvDefineFunction2(theEnv,"member", 'u', PTIEF MemberFunction, "MemberFunction", "22*um");
-   EnvDefineFunction2(theEnv,"mv-subseq", 'm', PTIEF MVSubseqFunction, "MVSubseqFunction", "33*iim");
-   EnvDefineFunction2(theEnv,"mv-delete", 'm', PTIEF MVDeleteFunction,"MVDeleteFunction", "22*im");
+   EnvDefineFunction2(theEnv,(char*)"first$", 'm', PTIEF FirstFunction, (char*)"FirstFunction", (char*)"11m");
+   EnvDefineFunction2(theEnv,(char*)"rest$", 'm', PTIEF RestFunction, (char*)"RestFunction", (char*)"11m");
+   EnvDefineFunction2(theEnv,(char*)"subseq$", 'm', PTIEF SubseqFunction, (char*)"SubseqFunction", (char*)"33im");
+   EnvDefineFunction2(theEnv,(char*)"delete-member$", 'm', PTIEF DeleteMemberFunction, (char*)"DeleteMemberFunction", (char*)"2*um");
+   EnvDefineFunction2(theEnv,(char*)"replace-member$", 'm', PTIEF ReplaceMemberFunction, (char*)"ReplaceMemberFunction",(char*)"3*um");
+   EnvDefineFunction2(theEnv,(char*)"delete$", 'm', PTIEF DeleteFunction, (char*)"DeleteFunction", (char*)"33im");
+   EnvDefineFunction2(theEnv,(char*)"replace$", 'm', PTIEF ReplaceFunction, (char*)"ReplaceFunction",(char*)"4**mii");
+   EnvDefineFunction2(theEnv,(char*)"insert$", 'm', PTIEF InsertFunction, (char*)"InsertFunction", (char*)"3**mi");
+   EnvDefineFunction2(theEnv,(char*)"explode$", 'm', PTIEF ExplodeFunction, (char*)"ExplodeFunction", (char*)"11s");
+   EnvDefineFunction2(theEnv,(char*)"implode$", 's', PTIEF ImplodeFunction, (char*)"ImplodeFunction", (char*)"11m");
+   EnvDefineFunction2(theEnv,(char*)"nth$", 'u', PTIEF NthFunction, (char*)"NthFunction", (char*)"22*im");
+   EnvDefineFunction2(theEnv,(char*)"member$", 'u', PTIEF MemberFunction, (char*)"MemberFunction", (char*)"22*um");
+   EnvDefineFunction2(theEnv,(char*)"subsetp", 'b', PTIEF SubsetpFunction, (char*)"SubsetpFunction", (char*)"22*mm");
+   EnvDefineFunction2(theEnv,(char*)"progn$", 'u', PTIEF MultifieldPrognFunction, (char*)"MultifieldPrognFunction", NULL);
+   EnvDefineFunction2(theEnv,(char*)"foreach", 'u', PTIEF ForeachFunction, (char*)"ForeachFunction", NULL);
+   EnvDefineFunction2(theEnv,(char*)"str-implode", 's', PTIEF ImplodeFunction, (char*)"ImplodeFunction", (char*)"11m");
+   EnvDefineFunction2(theEnv,(char*)"str-explode", 'm', PTIEF ExplodeFunction, (char*)"ExplodeFunction", (char*)"11s");
+   EnvDefineFunction2(theEnv,(char*)"subset", 'b', PTIEF SubsetpFunction, (char*)"SubsetpFunction", (char*)"22*mm");
+   EnvDefineFunction2(theEnv,(char*)"nth", 'u', PTIEF NthFunction, (char*)"NthFunction", (char*)"22*im");
+   EnvDefineFunction2(theEnv,(char*)"mv-replace", 'm', PTIEF MVReplaceFunction, (char*)"MVReplaceFunction",(char*)"33*im");
+   EnvDefineFunction2(theEnv,(char*)"member", 'u', PTIEF MemberFunction, (char*)"MemberFunction", (char*)"22*um");
+   EnvDefineFunction2(theEnv,(char*)"mv-subseq", 'm', PTIEF MVSubseqFunction, (char*)"MVSubseqFunction", (char*)"33*iim");
+   EnvDefineFunction2(theEnv,(char*)"mv-delete", 'm', PTIEF MVDeleteFunction,(char*)"MVDeleteFunction", (char*)"22*im");
 #if ! BLOAD_ONLY
-   AddFunctionParser(theEnv,"progn$",MultifieldPrognParser);
-   AddFunctionParser(theEnv,"foreach",ForeachParser);
+   AddFunctionParser(theEnv,(char*)"progn$",MultifieldPrognParser);
+   AddFunctionParser(theEnv,(char*)"foreach",ForeachParser);
 #endif
-   FuncSeqOvlFlags(theEnv,"progn$",FALSE,FALSE);
-   FuncSeqOvlFlags(theEnv,"foreach",FALSE,FALSE);
-   EnvDefineFunction2(theEnv,"(get-progn$-field)", 'u', PTIEF GetMvPrognField, "GetMvPrognField", "00");
-   EnvDefineFunction2(theEnv,"(get-progn$-index)", 'l', PTIEF GetMvPrognIndex, "GetMvPrognIndex", "00");
+   FuncSeqOvlFlags(theEnv,(char*)"progn$",FALSE,FALSE);
+   FuncSeqOvlFlags(theEnv,(char*)"foreach",FALSE,FALSE);
+   EnvDefineFunction2(theEnv,(char*)"(get-progn$-field)", 'u', PTIEF GetMvPrognField, (char*)"GetMvPrognField", (char*)"00");
+   EnvDefineFunction2(theEnv,(char*)"(get-progn$-index)", 'l', PTIEF GetMvPrognIndex, (char*)"GetMvPrognIndex", (char*)"00");
 #endif
   }
 
@@ -165,9 +165,9 @@ globle void DeleteFunction(
    /* Check for the correct argument types. */
    /*=======================================*/
 
-   if ((EnvArgTypeCheck(theEnv,"delete$",1,MULTIFIELD,&value1) == FALSE) ||
-       (EnvArgTypeCheck(theEnv,"delete$",2,INTEGER,&value2) == FALSE) ||
-       (EnvArgTypeCheck(theEnv,"delete$",3,INTEGER,&value3) == FALSE))
+   if ((EnvArgTypeCheck(theEnv,(char*)"delete$",1,MULTIFIELD,&value1) == FALSE) ||
+       (EnvArgTypeCheck(theEnv,(char*)"delete$",2,INTEGER,&value2) == FALSE) ||
+       (EnvArgTypeCheck(theEnv,(char*)"delete$",3,INTEGER,&value3) == FALSE))
      {
       SetEvaluationError(theEnv,TRUE);
       EnvSetMultifieldErrorValue(theEnv,returnValue);
@@ -179,7 +179,7 @@ globle void DeleteFunction(
    /*=================================================*/
 
    if (DeleteMultiValueField(theEnv,returnValue,&value1,
-            (long) DOToLong(value2),(long) DOToLong(value3),"delete$") == FALSE)/* TBD */
+            (long) DOToLong(value2),(long) DOToLong(value3),(char*)"delete$") == FALSE)/* TBD */
      {
       SetEvaluationError(theEnv,TRUE);
       EnvSetMultifieldErrorValue(theEnv,returnValue);
@@ -200,8 +200,8 @@ globle void MVDeleteFunction(
    /* Check for the correct argument types. */
    /*=======================================*/
 
-   if ((EnvArgTypeCheck(theEnv,"mv-delete",1,INTEGER,&value1) == FALSE) ||
-       (EnvArgTypeCheck(theEnv,"mv-delete",2,MULTIFIELD,&value2) == FALSE))
+   if ((EnvArgTypeCheck(theEnv,(char*)"mv-delete",1,INTEGER,&value1) == FALSE) ||
+       (EnvArgTypeCheck(theEnv,(char*)"mv-delete",2,MULTIFIELD,&value2) == FALSE))
      {
       SetEvaluationError(theEnv,TRUE);
       EnvSetMultifieldErrorValue(theEnv,returnValue);
@@ -213,7 +213,7 @@ globle void MVDeleteFunction(
    /*=================================================*/
 
    if (DeleteMultiValueField(theEnv,returnValue,&value2,
-            (long) DOToLong(value1),(long) DOToLong(value1),"mv-delete") == FALSE) /* TBD */
+            (long) DOToLong(value1),(long) DOToLong(value1),(char*)"mv-delete") == FALSE) /* TBD */
      {
       SetEvaluationError(theEnv,TRUE);
       EnvSetMultifieldErrorValue(theEnv,returnValue);
@@ -235,9 +235,9 @@ globle void ReplaceFunction(
    /* Check for the correct argument types. */
    /*=======================================*/
 
-   if ((EnvArgTypeCheck(theEnv,"replace$",1,MULTIFIELD,&value1) == FALSE) ||
-       (EnvArgTypeCheck(theEnv,"replace$",2,INTEGER,&value2) == FALSE) ||
-       (EnvArgTypeCheck(theEnv,"replace$",3,INTEGER,&value3) == FALSE))
+   if ((EnvArgTypeCheck(theEnv,(char*)"replace$",1,MULTIFIELD,&value1) == FALSE) ||
+       (EnvArgTypeCheck(theEnv,(char*)"replace$",2,INTEGER,&value2) == FALSE) ||
+       (EnvArgTypeCheck(theEnv,(char*)"replace$",3,INTEGER,&value3) == FALSE))
      {
       SetEvaluationError(theEnv,TRUE);
       EnvSetMultifieldErrorValue(theEnv,returnValue);
@@ -259,7 +259,7 @@ globle void ReplaceFunction(
    /*==============================================*/
 
    if (ReplaceMultiValueField(theEnv,returnValue,&value1,(long) DOToLong(value2),
-                   (long) DOToLong(value3),&value4,"replace$") == FALSE) /* TBD */
+                   (long) DOToLong(value3),&value4,(char*)"replace$") == FALSE) /* TBD */
      {
       SetEvaluationError(theEnv,TRUE);
       EnvSetMultifieldErrorValue(theEnv,returnValue);
@@ -280,8 +280,8 @@ globle void MVReplaceFunction(
    /* Check for the correct argument types. */
    /*=======================================*/
 
-   if ((EnvArgTypeCheck(theEnv,"mv-replace",1,INTEGER,&value1) == FALSE) ||
-       (EnvArgTypeCheck(theEnv,"mv-replace",2,MULTIFIELD,&value2) == FALSE))
+   if ((EnvArgTypeCheck(theEnv,(char*)"mv-replace",1,INTEGER,&value1) == FALSE) ||
+       (EnvArgTypeCheck(theEnv,(char*)"mv-replace",2,MULTIFIELD,&value2) == FALSE))
      {
       SetEvaluationError(theEnv,TRUE);
       EnvSetMultifieldErrorValue(theEnv,returnValue);
@@ -299,7 +299,7 @@ globle void MVReplaceFunction(
    /*==============================================*/
 
    if (ReplaceMultiValueField(theEnv,returnValue,&value2,(long) DOToLong(value1),
-                   (long) DOToLong(value1),&value3,"mv-replace") == FALSE) /* TBD */
+                   (long) DOToLong(value1),&value3,(char*)"mv-replace") == FALSE) /* TBD */
      {
       SetEvaluationError(theEnv,TRUE);
       EnvSetMultifieldErrorValue(theEnv,returnValue);
@@ -323,7 +323,7 @@ globle void DeleteMemberFunction(
    /* Check for the correct number of arguments. */
    /*============================================*/
 
-   argCnt = EnvArgCountCheck(theEnv,"delete-member$",AT_LEAST,2);
+   argCnt = EnvArgCountCheck(theEnv,(char*)"delete-member$",AT_LEAST,2);
    if (argCnt == -1)
      {
       SetEvaluationError(theEnv,TRUE);
@@ -334,7 +334,7 @@ globle void DeleteMemberFunction(
    /*=======================================*/
    /* Check for the correct argument types. */
    /*=======================================*/
-   if (EnvArgTypeCheck(theEnv,"delete-member$",1,MULTIFIELD,&resultValue) == FALSE)
+   if (EnvArgTypeCheck(theEnv,(char*)"delete-member$",1,MULTIFIELD,&resultValue) == FALSE)
      {
       SetEvaluationError(theEnv,TRUE);
       EnvSetMultifieldErrorValue(theEnv,returnValue);
@@ -361,7 +361,7 @@ globle void DeleteMemberFunction(
    while (FindDOsInSegment(delVals,argCnt-1,&resultValue,&j,&k,NULL,0))
      {
       if (DeleteMultiValueField(theEnv,&tmpVal,&resultValue,
-                                j,k,"delete-member$") == FALSE)
+                                j,k,(char*)"delete-member$") == FALSE)
         {
          rm(theEnv,(void *) delVals,delSize);
          SetEvaluationError(theEnv,TRUE);
@@ -391,7 +391,7 @@ globle void ReplaceMemberFunction(
    /*============================================*/
    /* Check for the correct number of arguments. */
    /*============================================*/
-   argCnt = EnvArgCountCheck(theEnv,"replace-member$",AT_LEAST,3);
+   argCnt = EnvArgCountCheck(theEnv,(char*)"replace-member$",AT_LEAST,3);
    if (argCnt == -1)
      {
       SetEvaluationError(theEnv,TRUE);
@@ -402,7 +402,7 @@ globle void ReplaceMemberFunction(
    /*=======================================*/
    /* Check for the correct argument types. */
    /*=======================================*/
-   if (EnvArgTypeCheck(theEnv,"replace-member$",1,MULTIFIELD,&resultValue) == FALSE)
+   if (EnvArgTypeCheck(theEnv,(char*)"replace-member$",1,MULTIFIELD,&resultValue) == FALSE)
      {
       SetEvaluationError(theEnv,TRUE);
       EnvSetMultifieldErrorValue(theEnv,returnValue);
@@ -439,7 +439,7 @@ globle void ReplaceMemberFunction(
    while (FindDOsInSegment(delVals,argCnt-2,&resultValue,&j,&k,minkp,minkp ? 1 : 0))
      {
       if (ReplaceMultiValueField(theEnv,&tmpVal,&resultValue,j,k,
-                                 &replVal,"replace-member$") == FALSE)
+                                 &replVal,(char*)"replace-member$") == FALSE)
         {
          rm(theEnv,(void *) delVals,delSize);
          SetEvaluationError(theEnv,TRUE);
@@ -470,8 +470,8 @@ globle void InsertFunction(
    /* Check for the correct argument types. */
    /*=======================================*/
 
-   if ((EnvArgTypeCheck(theEnv,"insert$",1,MULTIFIELD,&value1) == FALSE) ||
-       (EnvArgTypeCheck(theEnv,"insert$",2,INTEGER,&value2) == FALSE))
+   if ((EnvArgTypeCheck(theEnv,(char*)"insert$",1,MULTIFIELD,&value1) == FALSE) ||
+       (EnvArgTypeCheck(theEnv,(char*)"insert$",2,INTEGER,&value2) == FALSE))
      {
       SetEvaluationError(theEnv,TRUE);
       EnvSetMultifieldErrorValue(theEnv,returnValue);
@@ -493,7 +493,7 @@ globle void InsertFunction(
    /*===========================================*/
 
    if (InsertMultiValueField(theEnv,returnValue,&value1,(long) DOToLong(value2), /* TBD */
-                             &value3,"insert$") == FALSE)
+                             &value3,(char*)"insert$") == FALSE)
      {
       SetEvaluationError(theEnv,TRUE);
       EnvSetMultifieldErrorValue(theEnv,returnValue);
@@ -516,7 +516,7 @@ globle void ExplodeFunction(
    /* Explode$ expects a single argument. */
    /*=====================================*/
 
-   if (EnvArgCountCheck(theEnv,"explode$",EXACTLY,1) == -1)
+   if (EnvArgCountCheck(theEnv,(char*)"explode$",EXACTLY,1) == -1)
      {
       SetHaltExecution(theEnv,TRUE);
       SetEvaluationError(theEnv,TRUE);
@@ -528,7 +528,7 @@ globle void ExplodeFunction(
    /* The argument should be a string. */
    /*==================================*/
 
-   if (EnvArgTypeCheck(theEnv,"explode$",1,STRING,&value) == FALSE)
+   if (EnvArgTypeCheck(theEnv,(char*)"explode$",1,STRING,&value) == FALSE)
      {
       SetHaltExecution(theEnv,TRUE);
       SetEvaluationError(theEnv,TRUE);
@@ -573,15 +573,15 @@ globle void *ImplodeFunction(
    /* Implode$ expects a single argument. */
    /*=====================================*/
 
-   if (EnvArgCountCheck(theEnv,"implode$",EXACTLY,1) == -1)
-     { return(EnvAddSymbol(theEnv,"")); }
+   if (EnvArgCountCheck(theEnv,(char*)"implode$",EXACTLY,1) == -1)
+     { return(EnvAddSymbol(theEnv,(char*)"")); }
 
    /*======================================*/
    /* The argument should be a multifield. */
    /*======================================*/
 
-   if (EnvArgTypeCheck(theEnv,"implode$",1,MULTIFIELD,&value) == FALSE)
-     { return(EnvAddSymbol(theEnv,"")); }
+   if (EnvArgTypeCheck(theEnv,(char*)"implode$",1,MULTIFIELD,&value) == FALSE)
+     { return(EnvAddSymbol(theEnv,(char*)"")); }
 
    /*====================*/
    /* Return the string. */
@@ -606,7 +606,7 @@ globle void SubseqFunction(
    /* Get the segment to be subdivided. */
    /*===================================*/
 
-   if (EnvArgTypeCheck(theEnv,"subseq$",1,MULTIFIELD,&value) == FALSE)
+   if (EnvArgTypeCheck(theEnv,(char*)"subseq$",1,MULTIFIELD,&value) == FALSE)
      {
       EnvSetMultifieldErrorValue(theEnv,sub_value);
       return;
@@ -620,14 +620,14 @@ globle void SubseqFunction(
    /* appropriate ranges, return a null segment.  */
    /*=============================================*/
 
-   if (EnvArgTypeCheck(theEnv,"subseq$",2,INTEGER,&value) == FALSE)
+   if (EnvArgTypeCheck(theEnv,(char*)"subseq$",2,INTEGER,&value) == FALSE)
      {
       EnvSetMultifieldErrorValue(theEnv,sub_value);
       return;
      }
    start = DOToLong(value);
 
-   if (EnvArgTypeCheck(theEnv,"subseq$",3,INTEGER,&value) == FALSE)
+   if (EnvArgTypeCheck(theEnv,(char*)"subseq$",3,INTEGER,&value) == FALSE)
      {
       EnvSetMultifieldErrorValue(theEnv,sub_value);
       return;
@@ -679,14 +679,14 @@ globle void MVSubseqFunction(
    /* appropriate ranges, return a null segment.  */
    /*=============================================*/
 
-   if (EnvArgTypeCheck(theEnv,"mv-subseq",1,INTEGER,&value) == FALSE)
+   if (EnvArgTypeCheck(theEnv,(char*)"mv-subseq",1,INTEGER,&value) == FALSE)
      {
       EnvSetMultifieldErrorValue(theEnv,sub_value);
       return;
      }
    start = DOToLong(value);
 
-   if (EnvArgTypeCheck(theEnv,"mv-subseq",2,INTEGER,&value) == FALSE)
+   if (EnvArgTypeCheck(theEnv,(char*)"mv-subseq",2,INTEGER,&value) == FALSE)
      {
       EnvSetMultifieldErrorValue(theEnv,sub_value);
       return;
@@ -703,7 +703,7 @@ globle void MVSubseqFunction(
    /* Get the segment to be subdivided. */
    /*===================================*/
 
-   if (EnvArgTypeCheck(theEnv,"mv-subseq",3,MULTIFIELD,&value) == FALSE)
+   if (EnvArgTypeCheck(theEnv,(char*)"mv-subseq",3,MULTIFIELD,&value) == FALSE)
      {
       EnvSetMultifieldErrorValue(theEnv,sub_value);
       return;
@@ -749,7 +749,7 @@ globle void FirstFunction(
    /* Get the segment to be subdivided. */
    /*===================================*/
 
-   if (EnvArgTypeCheck(theEnv,"first$",1,MULTIFIELD,&theValue) == FALSE)
+   if (EnvArgTypeCheck(theEnv,(char*)"first$",1,MULTIFIELD,&theValue) == FALSE)
      {
       EnvSetMultifieldErrorValue(theEnv,returnValue);
       return;
@@ -785,7 +785,7 @@ globle void RestFunction(
    /* Get the segment to be subdivided. */
    /*===================================*/
 
-   if (EnvArgTypeCheck(theEnv,"rest$",1,MULTIFIELD,&theValue) == FALSE)
+   if (EnvArgTypeCheck(theEnv,(char*)"rest$",1,MULTIFIELD,&theValue) == FALSE)
      {
       EnvSetMultifieldErrorValue(theEnv,returnValue);
       return;
@@ -818,18 +818,18 @@ globle void NthFunction(
    struct multifield *elm_ptr;
    long long n; /* 6.04 Bug Fix */
 
-   if (EnvArgCountCheck(theEnv,"nth$",EXACTLY,2) == -1)
+   if (EnvArgCountCheck(theEnv,(char*)"nth$",EXACTLY,2) == -1)
 	 {
 	  SetpType(nth_value,SYMBOL);
-	  SetpValue(nth_value,(void *) EnvAddSymbol(theEnv,"nil"));
+	  SetpValue(nth_value,(void *) EnvAddSymbol(theEnv,(char*)"nil"));
 	  return;
 	 }
 
-   if ((EnvArgTypeCheck(theEnv,"nth$",1,INTEGER,&value1) == FALSE) ||
-	   (EnvArgTypeCheck(theEnv,"nth$",2,MULTIFIELD,&value2) == FALSE))
+   if ((EnvArgTypeCheck(theEnv,(char*)"nth$",1,INTEGER,&value1) == FALSE) ||
+	   (EnvArgTypeCheck(theEnv,(char*)"nth$",2,MULTIFIELD,&value2) == FALSE))
 	 {
 	  SetpType(nth_value,SYMBOL);
-	  SetpValue(nth_value,(void *) EnvAddSymbol(theEnv,"nil"));
+	  SetpValue(nth_value,(void *) EnvAddSymbol(theEnv,(char*)"nil"));
 	  return;
 	 }
 
@@ -837,7 +837,7 @@ globle void NthFunction(
    if ((n > GetDOLength(value2)) || (n < 1))
 	 {
 	  SetpType(nth_value,SYMBOL);
-	  SetpValue(nth_value,(void *) EnvAddSymbol(theEnv,"nil"));
+	  SetpValue(nth_value,(void *) EnvAddSymbol(theEnv,(char*)"nil"));
 	  return;
 	 }
 
@@ -871,13 +871,13 @@ globle intBool SubsetpFunction(
    DATA_OBJECT item1, item2, tmpItem;
    long i,j,k; 
 
-   if (EnvArgCountCheck(theEnv,"subsetp",EXACTLY,2) == -1)
+   if (EnvArgCountCheck(theEnv,(char*)"subsetp",EXACTLY,2) == -1)
      return(FALSE);
 
-   if (EnvArgTypeCheck(theEnv,"subsetp",1,MULTIFIELD,&item1) == FALSE)
+   if (EnvArgTypeCheck(theEnv,(char*)"subsetp",1,MULTIFIELD,&item1) == FALSE)
      return(FALSE);
 
-   if (EnvArgTypeCheck(theEnv,"subsetp",2,MULTIFIELD,&item2) == FALSE)
+   if (EnvArgTypeCheck(theEnv,(char*)"subsetp",2,MULTIFIELD,&item2) == FALSE)
      return(FALSE);
 
    if (GetDOLength(item1) == 0) return(TRUE);
@@ -910,11 +910,11 @@ globle void MemberFunction(
    result->type = SYMBOL;
    result->value = EnvFalseSymbol(theEnv);
 
-   if (EnvArgCountCheck(theEnv,"member$",EXACTLY,2) == -1) return;
+   if (EnvArgCountCheck(theEnv,(char*)"member$",EXACTLY,2) == -1) return;
 
    EnvRtnUnknown(theEnv,1,&item1);
 
-   if (EnvArgTypeCheck(theEnv,"member$",2,MULTIFIELD,&item2) == FALSE) return;
+   if (EnvArgTypeCheck(theEnv,(char*)"member$",2,MULTIFIELD,&item2) == FALSE) return;
 
    if (FindDOsInSegment(&item1,1,&item2,&j,&k,NULL,0))
      {
@@ -1026,7 +1026,7 @@ static struct expr *MultifieldPrognParser(
    struct expr *tmp;
    SYMBOL_HN *fieldVar = NULL;
 
-   SavePPBuffer(theEnv," ");
+   SavePPBuffer(theEnv,(char*)" ");
    GetToken(theEnv,infile,&tkn);
 
    /* ================================
@@ -1062,7 +1062,7 @@ static struct expr *MultifieldPrognParser(
       else
         {
          fieldVar = (SYMBOL_HN *) tkn.value;
-         SavePPBuffer(theEnv," ");
+         SavePPBuffer(theEnv,(char*)" ");
          top->argList = ParseAtomOrExpression(theEnv,infile,NULL);
          if (top->argList == NULL)
            {
@@ -1075,7 +1075,7 @@ static struct expr *MultifieldPrognParser(
          PPBackup(theEnv);
          /* PPBackup(theEnv); */
          SavePPBuffer(theEnv,tkn.printForm);
-         SavePPBuffer(theEnv," ");
+         SavePPBuffer(theEnv,(char*)" ");
         }
      }
 
@@ -1112,8 +1112,8 @@ static struct expr *MultifieldPrognParser(
         {
          ClearParsedBindNames(theEnv);
          SetParsedBindNames(theEnv,oldBindList);
-         PrintErrorID(theEnv,"MULTIFUN",2,FALSE);
-         EnvPrintRouter(theEnv,WERROR,"Cannot rebind field variable in function progn$.\n");
+         PrintErrorID(theEnv,(char*)"MULTIFUN",2,FALSE);
+         EnvPrintRouter(theEnv,WERROR,(char*)"Cannot rebind field variable in function progn$.\n");
          ReturnExpression(theEnv,top);
          return(NULL);
         }
@@ -1129,7 +1129,7 @@ static struct expr *MultifieldPrognParser(
    return(top);
 
 MvPrognParseError:
-   SyntaxErrorMessage(theEnv,"progn$");
+   SyntaxErrorMessage(theEnv,(char*)"progn$");
    ReturnExpression(theEnv,top);
    return(NULL);
   }
@@ -1147,14 +1147,14 @@ static struct expr *ForeachParser(
    struct expr *tmp;
    SYMBOL_HN *fieldVar;
 
-   SavePPBuffer(theEnv," ");
+   SavePPBuffer(theEnv,(char*)" ");
    GetToken(theEnv,infile,&tkn);
 
    if (tkn.type != SF_VARIABLE)
      { goto ForeachParseError; }
 
    fieldVar = (SYMBOL_HN *) tkn.value;
-   SavePPBuffer(theEnv," ");
+   SavePPBuffer(theEnv,(char*)" ");
    top->argList = ParseAtomOrExpression(theEnv,infile,NULL);
    if (top->argList == NULL)
      {
@@ -1195,8 +1195,8 @@ static struct expr *ForeachParser(
         {
          ClearParsedBindNames(theEnv);
          SetParsedBindNames(theEnv,oldBindList);
-         PrintErrorID(theEnv,"MULTIFUN",2,FALSE);
-         EnvPrintRouter(theEnv,WERROR,"Cannot rebind field variable in function foreach.\n");
+         PrintErrorID(theEnv,(char*)"MULTIFUN",2,FALSE);
+         EnvPrintRouter(theEnv,WERROR,(char*)"Cannot rebind field variable in function foreach.\n");
          ReturnExpression(theEnv,top);
          return(NULL);
         }
@@ -1212,7 +1212,7 @@ static struct expr *ForeachParser(
    return(top);
 
 ForeachParseError:
-   SyntaxErrorMessage(theEnv,"foreach");
+   SyntaxErrorMessage(theEnv,(char*)"foreach");
    ReturnExpression(theEnv,top);
    return(NULL);
   }
@@ -1239,20 +1239,20 @@ static void ReplaceMvPrognFieldVars(
          if (ValueToString(theExp->value)[flen] == '\0')
            {
             theExp->type = FCALL;
-            theExp->value = (void *) FindFunction(theEnv,"(get-progn$-field)");
+            theExp->value = (void *) FindFunction(theEnv,(char*)"(get-progn$-field)");
             theExp->argList = GenConstant(theEnv,INTEGER,EnvAddLong(theEnv,(long long) depth));
            }
-         else if (strcmp(ValueToString(theExp->value) + flen,"-index") == 0)
+         else if (strcmp(ValueToString(theExp->value) + flen,(char*)"-index") == 0)
            {
             theExp->type = FCALL;
-            theExp->value = (void *) FindFunction(theEnv,"(get-progn$-index)");
+            theExp->value = (void *) FindFunction(theEnv,(char*)"(get-progn$-index)");
             theExp->argList = GenConstant(theEnv,INTEGER,EnvAddLong(theEnv,(long long) depth));
            }
         }
       else if (theExp->argList != NULL)
         {
-         if ((theExp->type == FCALL) && ((theExp->value == (void *) FindFunction(theEnv,"progn$")) ||
-                                        (theExp->value == (void *) FindFunction(theEnv,"foreach")) ))
+         if ((theExp->type == FCALL) && ((theExp->value == (void *) FindFunction(theEnv,(char*)"progn$")) ||
+                                        (theExp->value == (void *) FindFunction(theEnv,(char*)"foreach")) ))
            ReplaceMvPrognFieldVars(theEnv,fieldVar,theExp->argList,depth+1);
          else
            ReplaceMvPrognFieldVars(theEnv,fieldVar,theExp->argList,depth);
@@ -1271,7 +1271,7 @@ globle void MultifieldPrognFunction(
   void *theEnv,
   DATA_OBJECT_PTR result)
   {
-   MultifieldPrognDriver(theEnv,result,"progn$");
+   MultifieldPrognDriver(theEnv,result,(char*)"progn$");
   }
 
 /***************************************/
@@ -1282,7 +1282,7 @@ globle void ForeachFunction(
   void *theEnv,
   DATA_OBJECT_PTR result)
   {
-   MultifieldPrognDriver(theEnv,result,"foreach");
+   MultifieldPrognDriver(theEnv,result,(char*)"foreach");
   }
     
 /*******************************************/
@@ -1589,25 +1589,25 @@ static void MVRangeError(
   long max,
   char *funcName)
   {
-   PrintErrorID(theEnv,"MULTIFUN",1,FALSE);
-   EnvPrintRouter(theEnv,WERROR,"Multifield index ");
+   PrintErrorID(theEnv,(char*)"MULTIFUN",1,FALSE);
+   EnvPrintRouter(theEnv,WERROR,(char*)"Multifield index ");
    if (brb == bre)
      PrintLongInteger(theEnv,WERROR,(long long) brb);
    else
      {
-      EnvPrintRouter(theEnv,WERROR,"range ");
+      EnvPrintRouter(theEnv,WERROR,(char*)"range ");
       PrintLongInteger(theEnv,WERROR,(long long) brb);
-      EnvPrintRouter(theEnv,WERROR,"..");
+      EnvPrintRouter(theEnv,WERROR,(char*)"..");
       PrintLongInteger(theEnv,WERROR,(long long) bre);
      }
-   EnvPrintRouter(theEnv,WERROR," out of range 1..");
+   EnvPrintRouter(theEnv,WERROR,(char*)" out of range 1..");
    PrintLongInteger(theEnv,WERROR,(long long) max);
    if (funcName != NULL)
      {
-      EnvPrintRouter(theEnv,WERROR," in function ");
+      EnvPrintRouter(theEnv,WERROR,(char*)" in function ");
       EnvPrintRouter(theEnv,WERROR,funcName);
      }
-   EnvPrintRouter(theEnv,WERROR,".\n");
+   EnvPrintRouter(theEnv,WERROR,(char*)".\n");
   }
 
 /**************************************************************************

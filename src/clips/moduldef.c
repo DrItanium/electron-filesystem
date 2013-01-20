@@ -70,7 +70,7 @@ globle void AllocateDefmoduleGlobals(
   void *theEnv)
   {
    AllocateEnvironmentData(theEnv,DEFMODULE_DATA,sizeof(struct defmoduleData),NULL);
-   AddEnvironmentCleanupFunction(theEnv,"defmodules",DeallocateDefmoduleData,-1000);
+   AddEnvironmentCleanupFunction(theEnv,(char*)"defmodules",DeallocateDefmoduleData,-1000);
    DefmoduleData(theEnv)->CallModuleChangeFunctions = TRUE;
    DefmoduleData(theEnv)->MainModuleRedefinable = TRUE;
   }
@@ -167,18 +167,18 @@ globle void InitializeDefmodules(
 #endif
 
 #if DEFMODULE_CONSTRUCT && (! RUN_TIME) && (! BLOAD_ONLY)
-   AddConstruct(theEnv,"defmodule","defmodules",ParseDefmodule,NULL,NULL,NULL,NULL,
+   AddConstruct(theEnv,(char*)"defmodule",(char*)"defmodules",ParseDefmodule,NULL,NULL,NULL,NULL,
                                                         NULL,NULL,NULL,NULL,NULL);
 #endif
 
 #if (! RUN_TIME) && DEFMODULE_CONSTRUCT
-   EnvDefineFunction2(theEnv,"get-current-module", 'w',
+   EnvDefineFunction2(theEnv,(char*)"get-current-module", 'w',
                    PTIEF GetCurrentModuleCommand,
-                   "GetCurrentModuleCommand", "00");
+                   (char*)"GetCurrentModuleCommand", (char*)"00");
 
-   EnvDefineFunction2(theEnv,"set-current-module", 'w',
+   EnvDefineFunction2(theEnv,(char*)"set-current-module", 'w',
                    PTIEF SetCurrentModuleCommand,
-                   "SetCurrentModuleCommand", "11w");
+                   (char*)"SetCurrentModuleCommand", (char*)"11w");
 #endif
   }
 
@@ -409,7 +409,7 @@ globle void CreateMainModule(
    /*=======================================*/
 
    newDefmodule = get_struct(theEnv,defmodule);
-   newDefmodule->name = (SYMBOL_HN *) EnvAddSymbol(theEnv,"MAIN");
+   newDefmodule->name = (SYMBOL_HN *) EnvAddSymbol(theEnv,(char*)"MAIN");
    IncrementSymbolCount(newDefmodule->name);
    newDefmodule->next = NULL;
    newDefmodule->ppForm = NULL;
@@ -694,7 +694,7 @@ globle void *GetCurrentModuleCommand(
   {
    struct defmodule *theModule;
 
-   EnvArgCountCheck(theEnv,"get-current-module",EXACTLY,0);
+   EnvArgCountCheck(theEnv,(char*)"get-current-module",EXACTLY,0);
 
    theModule = (struct defmodule *) EnvGetCurrentModule(theEnv);
 
@@ -724,10 +724,10 @@ globle void *SetCurrentModuleCommand(
 
    defaultReturn = (SYMBOL_HN *) EnvAddSymbol(theEnv,ValueToString(((struct defmodule *) EnvGetCurrentModule(theEnv))->name));
 
-   if (EnvArgCountCheck(theEnv,"set-current-module",EXACTLY,1) == -1)
+   if (EnvArgCountCheck(theEnv,(char*)"set-current-module",EXACTLY,1) == -1)
      { return(defaultReturn); }
 
-   if (EnvArgTypeCheck(theEnv,"set-current-module",1,SYMBOL,&argPtr) == FALSE)
+   if (EnvArgTypeCheck(theEnv,(char*)"set-current-module",1,SYMBOL,&argPtr) == FALSE)
      { return(defaultReturn); }
 
    argument = DOToString(argPtr);
@@ -740,7 +740,7 @@ globle void *SetCurrentModuleCommand(
 
    if (theModule == NULL)
      {
-      CantFindItemErrorMessage(theEnv,"defmodule",argument);
+      CantFindItemErrorMessage(theEnv,(char*)"defmodule",argument);
       return(defaultReturn);
      }
 
@@ -775,8 +775,8 @@ globle void AddAfterModuleChangeFunction(
 globle void IllegalModuleSpecifierMessage(
   void *theEnv)
   {
-   PrintErrorID(theEnv,"MODULDEF",1,TRUE);
-   EnvPrintRouter(theEnv,WERROR,"Illegal use of the module specifier.\n");
+   PrintErrorID(theEnv,(char*)"MODULDEF",1,TRUE);
+   EnvPrintRouter(theEnv,WERROR,(char*)"Illegal use of the module specifier.\n");
   }
 
 

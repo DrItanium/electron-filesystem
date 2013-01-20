@@ -89,25 +89,25 @@ globle void FactCommandDefinitions(
   {
 #if ! RUN_TIME
 #if DEBUGGING_FUNCTIONS
-   EnvDefineFunction2(theEnv,"facts", 'v', PTIEF FactsCommand,        "FactsCommand", "*4iu");
+   EnvDefineFunction2(theEnv,(char*)"facts", 'v', PTIEF FactsCommand,        (char*)"FactsCommand", (char*)"*4iu");
 #endif
 
-   EnvDefineFunction(theEnv,"assert", 'u', PTIEF AssertCommand,  "AssertCommand");
-   EnvDefineFunction2(theEnv,"retract", 'v', PTIEF RetractCommand, "RetractCommand","1*z");
-   EnvDefineFunction2(theEnv,"assert-string", 'u', PTIEF AssertStringFunction,   "AssertStringFunction", "11s");
-   EnvDefineFunction2(theEnv,"str-assert", 'u', PTIEF AssertStringFunction,   "AssertStringFunction", "11s");
+   EnvDefineFunction(theEnv,(char*)"assert", 'u', PTIEF AssertCommand,  (char*)"AssertCommand");
+   EnvDefineFunction2(theEnv,(char*)"retract", 'v', PTIEF RetractCommand, (char*)"RetractCommand",(char*)"1*z");
+   EnvDefineFunction2(theEnv,(char*)"assert-string", 'u', PTIEF AssertStringFunction,   (char*)"AssertStringFunction", (char*)"11s");
+   EnvDefineFunction2(theEnv,(char*)"str-assert", 'u', PTIEF AssertStringFunction,   (char*)"AssertStringFunction", (char*)"11s");
 
-   EnvDefineFunction2(theEnv,"get-fact-duplication",'b',
-                   GetFactDuplicationCommand,"GetFactDuplicationCommand", "00");
-   EnvDefineFunction2(theEnv,"set-fact-duplication",'b',
-                   SetFactDuplicationCommand,"SetFactDuplicationCommand", "11");
+   EnvDefineFunction2(theEnv,(char*)"get-fact-duplication",'b',
+                   GetFactDuplicationCommand,(char*)"GetFactDuplicationCommand", (char*)"00");
+   EnvDefineFunction2(theEnv,(char*)"set-fact-duplication",'b',
+                   SetFactDuplicationCommand,(char*)"SetFactDuplicationCommand", (char*)"11");
 
-   EnvDefineFunction2(theEnv,"save-facts", 'b', PTIEF SaveFactsCommand, "SaveFactsCommand", "1*wk");
-   EnvDefineFunction2(theEnv,"load-facts", 'b', PTIEF LoadFactsCommand, "LoadFactsCommand", "11k");
-   EnvDefineFunction2(theEnv,"fact-index", 'g', PTIEF FactIndexFunction,"FactIndexFunction", "11y");
+   EnvDefineFunction2(theEnv,(char*)"save-facts", 'b', PTIEF SaveFactsCommand, (char*)"SaveFactsCommand", (char*)"1*wk");
+   EnvDefineFunction2(theEnv,(char*)"load-facts", 'b', PTIEF LoadFactsCommand, (char*)"LoadFactsCommand", (char*)"11k");
+   EnvDefineFunction2(theEnv,(char*)"fact-index", 'g', PTIEF FactIndexFunction,(char*)"FactIndexFunction", (char*)"11y");
 
-   AddFunctionParser(theEnv,"assert",AssertParse);
-   FuncSeqOvlFlags(theEnv,"assert",FALSE,FALSE);
+   AddFunctionParser(theEnv,(char*)"assert",AssertParse);
+   FuncSeqOvlFlags(theEnv,(char*)"assert",FALSE,FALSE);
 #else
 #if MAC_MCW || WIN_MCW || MAC_XCD
 #pragma unused(theEnv)
@@ -289,7 +289,7 @@ globle void RetractCommand(
          factIndex = ValueToLong(theResult.value);
          if (factIndex < 0)
            {
-            ExpectedTypeError1(theEnv,"retract",argNumber,"fact-address, fact-index, or the symbol *");
+            ExpectedTypeError1(theEnv,(char*)"retract",argNumber,(char*)"fact-address, fact-index, or the symbol *");
             return;
            }
 
@@ -310,7 +310,7 @@ globle void RetractCommand(
            {
             char tempBuffer[20];
             gensprintf(tempBuffer,"f-%lld",factIndex);
-            CantFindItemErrorMessage(theEnv,"fact",tempBuffer);
+            CantFindItemErrorMessage(theEnv,(char*)"fact",tempBuffer);
            }
         }
 
@@ -341,7 +341,7 @@ globle void RetractCommand(
 
       else
         {
-         ExpectedTypeError1(theEnv,"retract",argNumber,"fact-address, fact-index, or the symbol *");
+         ExpectedTypeError1(theEnv,(char*)"retract",argNumber,(char*)"fact-address, fact-index, or the symbol *");
          SetEvaluationError(theEnv,TRUE);
         }
      }
@@ -367,7 +367,7 @@ globle int SetFactDuplicationCommand(
    /* Check for the correct number of arguments. */
    /*============================================*/
 
-   if (EnvArgCountCheck(theEnv,"set-fact-duplication",EXACTLY,1) == -1)
+   if (EnvArgCountCheck(theEnv,(char*)"set-fact-duplication",EXACTLY,1) == -1)
      { return(oldValue); }
 
    /*========================*/
@@ -412,7 +412,7 @@ globle int GetFactDuplicationCommand(
    /* Check for the correct number of arguments. */
    /*============================================*/
 
-   if (EnvArgCountCheck(theEnv,"get-fact-duplication",EXACTLY,0) == -1)
+   if (EnvArgCountCheck(theEnv,(char*)"get-fact-duplication",EXACTLY,0) == -1)
      { return(currentValue); }
 
    /*============================================================*/
@@ -435,7 +435,7 @@ globle long long FactIndexFunction(
    /* Check for the correct number of arguments. */
    /*============================================*/
 
-   if (EnvArgCountCheck(theEnv,"fact-index",EXACTLY,1) == -1) return(-1LL);
+   if (EnvArgCountCheck(theEnv,(char*)"fact-index",EXACTLY,1) == -1) return(-1LL);
 
    /*========================*/
    /* Evaluate the argument. */
@@ -449,7 +449,7 @@ globle long long FactIndexFunction(
 
    if (GetType(item) != FACT_ADDRESS)
      {
-      ExpectedTypeError1(theEnv,"fact-index",1,"fact-address");
+      ExpectedTypeError1(theEnv,(char*)"fact-index",1,(char*)"fact-address");
       return(-1L);
      }
 
@@ -483,7 +483,7 @@ globle void FactsCommand(
    /* Determine the number of arguments to the facts command. */
    /*=========================================================*/
 
-   if ((argumentCount = EnvArgCountCheck(theEnv,"facts",NO_MORE_THAN,4)) == -1) return;
+   if ((argumentCount = EnvArgCountCheck(theEnv,(char*)"facts",NO_MORE_THAN,4)) == -1) return;
 
    /*==================================*/
    /* The default module for the facts */
@@ -521,7 +521,7 @@ globle void FactsCommand(
       if ((theModule == NULL) && (strcmp(ValueToString(theValue.value),"*") != 0))
         {
          SetEvaluationError(theEnv,TRUE);
-         CantFindItemErrorMessage(theEnv,"defmodule",ValueToString(theValue.value));
+         CantFindItemErrorMessage(theEnv,(char*)"defmodule",ValueToString(theValue.value));
          return;
         }
 
@@ -540,7 +540,7 @@ globle void FactsCommand(
       start = DOToLong(theValue);
       if (start < 0)
         {
-         ExpectedTypeError1(theEnv,"facts",1,"symbol or positive number");
+         ExpectedTypeError1(theEnv,(char*)"facts",1,(char*)"symbol or positive number");
          SetHaltExecution(theEnv,TRUE);
          SetEvaluationError(theEnv,TRUE);
          return;
@@ -554,7 +554,7 @@ globle void FactsCommand(
 
    else
      {
-      ExpectedTypeError1(theEnv,"facts",1,"symbol or positive number");
+      ExpectedTypeError1(theEnv,(char*)"facts",1,(char*)"symbol or positive number");
       SetHaltExecution(theEnv,TRUE);
       SetEvaluationError(theEnv,TRUE);
       return;
@@ -636,7 +636,7 @@ globle void EnvFacts(
 
       if ((factPtr->factIndex > end) && (end != UNSPECIFIED))
         {
-         PrintTally(theEnv,logicalName,count,"fact","facts");
+         PrintTally(theEnv,logicalName,count,(char*)"fact",(char*)"facts");
          EnvSetCurrentModule(theEnv,(void *) oldModule);
          return;
         }
@@ -648,7 +648,7 @@ globle void EnvFacts(
 
       if (max == 0)
         {
-         PrintTally(theEnv,logicalName,count,"fact","facts");
+         PrintTally(theEnv,logicalName,count,(char*)"fact",(char*)"facts");
          EnvSetCurrentModule(theEnv,(void *) oldModule);
          return;
         }
@@ -661,7 +661,7 @@ globle void EnvFacts(
       if (factPtr->factIndex >= start)
         {
          PrintFactWithIdentifier(theEnv,logicalName,factPtr);
-         EnvPrintRouter(theEnv,logicalName,"\n");
+         EnvPrintRouter(theEnv,logicalName,(char*)"\n");
          count++;
          if (max > 0) max--;
         }
@@ -678,7 +678,7 @@ globle void EnvFacts(
    /* Print the total of the number of facts displayed. */
    /*===================================================*/
 
-   PrintTally(theEnv,logicalName,count,"fact","facts");
+   PrintTally(theEnv,logicalName,count,(char*)"fact",(char*)"facts");
 
    /*=============================*/
    /* Restore the current module. */
@@ -703,13 +703,13 @@ static long long GetFactsArgument(
 
    if (whichOne > argumentCount) return(UNSPECIFIED);
 
-   if (EnvArgTypeCheck(theEnv,"facts",whichOne,INTEGER,&theValue) == FALSE) return(INVALID);
+   if (EnvArgTypeCheck(theEnv,(char*)"facts",whichOne,INTEGER,&theValue) == FALSE) return(INVALID);
 
    factIndex = DOToLong(theValue);
 
    if (factIndex < 0)
      {
-      ExpectedTypeError1(theEnv,"facts",whichOne,"positive number");
+      ExpectedTypeError1(theEnv,(char*)"facts",whichOne,(char*)"positive number");
       SetHaltExecution(theEnv,TRUE);
       SetEvaluationError(theEnv,TRUE);
       return(INVALID);
@@ -742,9 +742,9 @@ globle void AssertStringFunction(
    /* Check for the correct number and type of arguments. */
    /*=====================================================*/
 
-   if (EnvArgCountCheck(theEnv,"assert-string",EXACTLY,1) == -1) return;
+   if (EnvArgCountCheck(theEnv,(char*)"assert-string",EXACTLY,1) == -1) return;
 
-   if (EnvArgTypeCheck(theEnv,"assert-string",1,STRING,&argPtr) == FALSE)
+   if (EnvArgTypeCheck(theEnv,(char*)"assert-string",1,STRING,&argPtr) == FALSE)
      { return; }
 
    /*==========================================*/
@@ -779,13 +779,13 @@ globle int SaveFactsCommand(
    /* Check for the correct number of arguments. */
    /*============================================*/
 
-   if ((numArgs = EnvArgCountCheck(theEnv,"save-facts",AT_LEAST,1)) == -1) return(FALSE);
+   if ((numArgs = EnvArgCountCheck(theEnv,(char*)"save-facts",AT_LEAST,1)) == -1) return(FALSE);
 
    /*=================================================*/
    /* Get the file name to which facts will be saved. */
    /*=================================================*/
 
-   if ((fileName = GetFileName(theEnv,"save-facts",1)) == NULL) return(FALSE);
+   if ((fileName = GetFileName(theEnv,(char*)"save-facts",1)) == NULL) return(FALSE);
 
    /*=============================================================*/
    /* If specified, the second argument to save-facts indicates   */
@@ -795,7 +795,7 @@ globle int SaveFactsCommand(
 
    if (numArgs > 1)
      {
-      if (EnvArgTypeCheck(theEnv,"save-facts",2,SYMBOL,&theValue) == FALSE) return(FALSE);
+      if (EnvArgTypeCheck(theEnv,(char*)"save-facts",2,SYMBOL,&theValue) == FALSE) return(FALSE);
 
       argument = DOToString(theValue);
 
@@ -805,7 +805,7 @@ globle int SaveFactsCommand(
         { saveCode = VISIBLE_SAVE; }
       else
         {
-         ExpectedTypeError1(theEnv,"save-facts",2,"symbol with value local or visible");
+         ExpectedTypeError1(theEnv,(char*)"save-facts",2,(char*)"symbol with value local or visible");
          return(FALSE);
         }
      }
@@ -841,13 +841,13 @@ globle int LoadFactsCommand(
    /* Check for the correct number of arguments. */
    /*============================================*/
 
-   if (EnvArgCountCheck(theEnv,"load-facts",EXACTLY,1) == -1) return(FALSE);
+   if (EnvArgCountCheck(theEnv,(char*)"load-facts",EXACTLY,1) == -1) return(FALSE);
 
    /*====================================================*/
    /* Get the file name from which facts will be loaded. */
    /*====================================================*/
 
-   if ((fileName = GetFileName(theEnv,"load-facts",1)) == NULL) return(FALSE);
+   if ((fileName = GetFileName(theEnv,(char*)"load-facts",1)) == NULL) return(FALSE);
 
    /*====================================*/
    /* Call the LoadFacts driver routine. */
@@ -878,9 +878,9 @@ globle intBool EnvSaveFacts(
    /* Open the file. Use either "fast save" or I/O Router. */
    /*======================================================*/
 
-   if ((filePtr = GenOpen(theEnv,fileName,"w")) == NULL)
+   if ((filePtr = GenOpen(theEnv,fileName,(char*)"w")) == NULL)
      {
-      OpenErrorMessage(theEnv,"save-facts",fileName);
+      OpenErrorMessage(theEnv,(char*)"save-facts",fileName);
       return(FALSE);
      }
 
@@ -970,7 +970,7 @@ globle intBool EnvSaveFacts(
       if (printFact)
         {
          PrintFact(theEnv,(char *) filePtr,theFact,FALSE,FALSE);
-         EnvPrintRouter(theEnv,(char *) filePtr,"\n");
+         EnvPrintRouter(theEnv,(char *) filePtr,(char*)"\n");
         }
      }
 
@@ -1080,7 +1080,7 @@ static DATA_OBJECT_PTR GetSaveFactsDeftemplateNames(
       if (theDOArray[i].type != SYMBOL)
         {
          *error = TRUE;
-         ExpectedTypeError1(theEnv,"save-facts",3+i,"symbol");
+         ExpectedTypeError1(theEnv,(char*)"save-facts",3+i,(char*)"symbol");
          rm3(theEnv,theDOArray,(long) sizeof(DATA_OBJECT) * *count);
          return(NULL);
         }
@@ -1098,7 +1098,7 @@ static DATA_OBJECT_PTR GetSaveFactsDeftemplateNames(
          if (theDeftemplate == NULL)
            {
             *error = TRUE;
-            ExpectedTypeError1(theEnv,"save-facts",3+i,"local deftemplate name");
+            ExpectedTypeError1(theEnv,(char*)"save-facts",3+i,(char*)"local deftemplate name");
             rm3(theEnv,theDOArray,(long) sizeof(DATA_OBJECT) * *count);
             return(NULL);
            }
@@ -1106,13 +1106,13 @@ static DATA_OBJECT_PTR GetSaveFactsDeftemplateNames(
       else if (saveCode == VISIBLE_SAVE)
         {
          theDeftemplate = (struct deftemplate *)
-           FindImportedConstruct(theEnv,"deftemplate",NULL,
+           FindImportedConstruct(theEnv,(char*)"deftemplate",NULL,
                                  ValueToString(theDOArray[i].value),
                                  &tempCount,TRUE,NULL);
          if (theDeftemplate == NULL)
            {
             *error = TRUE;
-            ExpectedTypeError1(theEnv,"save-facts",3+i,"visible deftemplate name");
+            ExpectedTypeError1(theEnv,(char*)"save-facts",3+i,(char*)"visible deftemplate name");
             rm3(theEnv,theDOArray,(long) sizeof(DATA_OBJECT) * *count);
             return(NULL);
            }
@@ -1150,9 +1150,9 @@ globle intBool EnvLoadFacts(
    /* Open the file. Use either "fast save" or I/O Router. */
    /*======================================================*/
 
-   if ((filePtr = GenOpen(theEnv,fileName,"r")) == NULL)
+   if ((filePtr = GenOpen(theEnv,fileName,(char*)"r")) == NULL)
      {
-      OpenErrorMessage(theEnv,"load-facts",fileName);
+      OpenErrorMessage(theEnv,(char*)"load-facts",fileName);
       return(FALSE);
      }
 
@@ -1195,7 +1195,7 @@ globle intBool EnvLoadFactsFromString(
   char *theString,
   int theMax)
   {
-   char * theStrRouter = "*** load-facts-from-string ***";
+   char * theStrRouter = (char*)"*** load-facts-from-string ***";
    struct token theToken;
    struct expr *testPtr;
    DATA_OBJECT rv;
@@ -1250,13 +1250,13 @@ static struct expr *StandardLoadFact(
    GetToken(theEnv,logicalName,theToken);
    if (theToken->type != LPAREN) return(NULL);
 
-   temp = GenConstant(theEnv,FCALL,FindFunction(theEnv,"assert"));
+   temp = GenConstant(theEnv,FCALL,FindFunction(theEnv,(char*)"assert"));
    temp->argList = GetRHSPattern(theEnv,logicalName,theToken,&error,
                                   TRUE,FALSE,TRUE,RPAREN);
 
    if (error == TRUE)
      {
-      EnvPrintRouter(theEnv,WERROR,"Function load-facts encountered an error\n");
+      EnvPrintRouter(theEnv,WERROR,(char*)"Function load-facts encountered an error\n");
       SetEvaluationError(theEnv,TRUE);
       ReturnExpression(theEnv,temp);
       return(NULL);
@@ -1286,9 +1286,9 @@ static struct expr *AssertParse(
    struct token theToken;
 
    ReturnExpression(theEnv,top);
-   SavePPBuffer(theEnv," ");
+   SavePPBuffer(theEnv,(char*)" ");
    IncrementIndentDepth(theEnv,8);
-   rv = BuildRHSAssert(theEnv,logicalName,&theToken,&error,TRUE,TRUE,"assert command");
+   rv = BuildRHSAssert(theEnv,logicalName,&theToken,&error,TRUE,TRUE,(char*)"assert command");
    DecrementIndentDepth(theEnv,8);
    return(rv);
   }

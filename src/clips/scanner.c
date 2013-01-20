@@ -97,7 +97,7 @@ globle void GetToken(
 
    theToken->type = UNKNOWN_VALUE;
    theToken->value = NULL;
-   theToken->printForm = "unknown";
+   theToken->printForm = (char*)"unknown";
    ScannerData(theEnv)->GlobalPos = 0;
    ScannerData(theEnv)->GlobalMax = 0;
 
@@ -192,7 +192,7 @@ globle void GetToken(
                 size_t count;
 
                 theToken->type = GBL_VARIABLE;
-                theToken->printForm = AppendStrings(theEnv,"?",ValueToString(theToken->value));
+                theToken->printForm = AppendStrings(theEnv,(char*)"?",ValueToString(theToken->value));
                 count = strlen(ScannerData(theEnv)->GlobalString);
                 ScannerData(theEnv)->GlobalString[count-1] = EOS;
                 theToken->value = EnvAddSymbol(theEnv,ScannerData(theEnv)->GlobalString+1);
@@ -201,14 +201,14 @@ globle void GetToken(
                }
              else
 #endif
-             theToken->printForm = AppendStrings(theEnv,"?",ValueToString(theToken->value));
+             theToken->printForm = AppendStrings(theEnv,(char*)"?",ValueToString(theToken->value));
             }
           else
             {
              theToken->type = SF_WILDCARD;
-             theToken->value = (void *) EnvAddSymbol(theEnv,"?");
+             theToken->value = (void *) EnvAddSymbol(theEnv,(char*)"?");
              EnvUngetcRouter(theEnv,inchar,logicalName);
-             theToken->printForm = "?";
+             theToken->printForm = (char*)"?";
             }
           break;
 
@@ -238,7 +238,7 @@ globle void GetToken(
                 size_t count;
 
                 theToken->type = MF_GBL_VARIABLE;
-                theToken->printForm = AppendStrings(theEnv,"$?",ValueToString(theToken->value));
+                theToken->printForm = AppendStrings(theEnv,(char*)"$?",ValueToString(theToken->value));
                 count = strlen(ScannerData(theEnv)->GlobalString);
                 ScannerData(theEnv)->GlobalString[count-1] = EOS;
                 theToken->value = EnvAddSymbol(theEnv,ScannerData(theEnv)->GlobalString+1);
@@ -246,13 +246,13 @@ globle void GetToken(
                }
              else
 #endif
-               theToken->printForm = AppendStrings(theEnv,"$?",ValueToString(theToken->value));
+               theToken->printForm = AppendStrings(theEnv,(char*)"$?",ValueToString(theToken->value));
               }
             else
               {
                theToken->type = MF_WILDCARD;
-               theToken->value = (void *) EnvAddSymbol(theEnv,"$?");
-               theToken->printForm = "$?";
+               theToken->value = (void *) EnvAddSymbol(theEnv,(char*)"$?");
+               theToken->printForm = (char*)"$?";
                EnvUngetcRouter(theEnv,inchar,logicalName);
               }
            }
@@ -283,32 +283,32 @@ globle void GetToken(
 
       case '(':
          theToken->type = LPAREN;
-         theToken->value = (void *) EnvAddSymbol(theEnv,"(");
-         theToken->printForm = "(";
+         theToken->value = (void *) EnvAddSymbol(theEnv,(char*)"(");
+         theToken->printForm = (char*)"(";
          break;
 
       case ')':
          theToken->type= RPAREN;
-         theToken->value = (void *) EnvAddSymbol(theEnv,")");
-         theToken->printForm = ")";
+         theToken->value = (void *) EnvAddSymbol(theEnv,(char*)")");
+         theToken->printForm = (char*)")";
          break;
 
       case '~':
          theToken->type = NOT_CONSTRAINT;
-         theToken->value = (void *) EnvAddSymbol(theEnv,"~");
-         theToken->printForm = "~";
+         theToken->value = (void *) EnvAddSymbol(theEnv,(char*)"~");
+         theToken->printForm = (char*)"~";
          break;
 
       case '|':
          theToken->type = OR_CONSTRAINT;
-         theToken->value = (void *) EnvAddSymbol(theEnv,"|");
-         theToken->printForm = "|";
+         theToken->value = (void *) EnvAddSymbol(theEnv,(char*)"|");
+         theToken->printForm = (char*)"|";
          break;
 
       case '&':
          theToken->type =  AND_CONSTRAINT;
-         theToken->value = (void *) EnvAddSymbol(theEnv,"&");
-         theToken->printForm = "&";
+         theToken->value = (void *) EnvAddSymbol(theEnv,(char*)"&");
+         theToken->printForm = (char*)"&";
          break;
 
       /*============================*/
@@ -319,8 +319,8 @@ globle void GetToken(
       case 0:
       case 3:
          theToken->type = STOP;
-         theToken->value = (void *) EnvAddSymbol(theEnv,"stop");
-         theToken->printForm = "";
+         theToken->value = (void *) EnvAddSymbol(theEnv,(char*)"stop");
+         theToken->printForm = (char*)"";
          break;
 
       /*=======================*/
@@ -336,7 +336,7 @@ globle void GetToken(
             theToken->printForm = ValueToString(theToken->value);
            }
          else
-           { theToken->printForm = "<<<unprintable character>>>"; }
+           { theToken->printForm = (char*)"<<<unprintable character>>>"; }
          break;
      }
 
@@ -347,9 +347,9 @@ globle void GetToken(
 #if (! RUN_TIME) && (! BLOAD_ONLY)
    if (theToken->type == INSTANCE_NAME)
      {
-      SavePPBuffer(theEnv,"[");
+      SavePPBuffer(theEnv,(char*)"[");
       SavePPBuffer(theEnv,theToken->printForm);
-      SavePPBuffer(theEnv,"]");
+      SavePPBuffer(theEnv,(char*)"]");
      }
    else
      { SavePPBuffer(theEnv,theToken->printForm); }
@@ -478,8 +478,8 @@ static void *ScanString(
 
    if ((inchar == EOF) && (ScannerData(theEnv)->IgnoreCompletionErrors == FALSE))
      { 
-      PrintErrorID(theEnv,"SCANNER",1,TRUE);
-      EnvPrintRouter(theEnv,WERROR,"Encountered End-Of-File while scanning a string\n"); 
+      PrintErrorID(theEnv,(char*)"SCANNER",1,TRUE);
+      EnvPrintRouter(theEnv,WERROR,(char*)"Encountered End-Of-File while scanning a string\n"); 
      }
 
    /*===============================================*/
@@ -488,7 +488,7 @@ static void *ScanString(
    /*===============================================*/
 
    if (theString == NULL)
-     { thePtr = EnvAddSymbol(theEnv,""); }
+     { thePtr = EnvAddSymbol(theEnv,(char*)""); }
    else
      {
       thePtr = EnvAddSymbol(theEnv,theString);
@@ -731,8 +731,8 @@ static void ScanNumber(
 #endif
       if (errno)
         {
-         PrintWarningID(theEnv,"SCANNER",1,FALSE);
-         EnvPrintRouter(theEnv,WWARNING,"Over or underflow of long long integer.\n");
+         PrintWarningID(theEnv,(char*)"SCANNER",1,FALSE);
+         EnvPrintRouter(theEnv,WWARNING,(char*)"Over or underflow of long long integer.\n");
         }
       theToken->type = INTEGER;
       theToken->value = (void *) EnvAddLong(theEnv,lvalue);

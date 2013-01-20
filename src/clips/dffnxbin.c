@@ -107,12 +107,12 @@ globle void SetupDeffunctionsBload(
   {
    AllocateEnvironmentData(theEnv,DFFNXBIN_DATA,sizeof(struct deffunctionBinaryData),DeallocateDeffunctionBloadData);
 #if BLOAD_AND_BSAVE
-   AddBinaryItem(theEnv,"deffunctions",0,BsaveDeffunctionFind,BsaveDeffunctionExpressions,
+   AddBinaryItem(theEnv,(char*)"deffunctions",0,BsaveDeffunctionFind,BsaveDeffunctionExpressions,
                              BsaveStorageDeffunctions,BsaveDeffunctions,
                              BloadStorageDeffunctions,BloadDeffunctions,
                              ClearDeffunctionBload);
 #else
-   AddBinaryItem(theEnv,"deffunctions",0,NULL,NULL,NULL,NULL,
+   AddBinaryItem(theEnv,(char*)"deffunctions",0,NULL,NULL,NULL,NULL,
                              BloadStorageDeffunctions,BloadDeffunctions,
                              ClearDeffunctionBload);
 #endif
@@ -302,7 +302,7 @@ static void BsaveDeffunctions(
    while (theModule != NULL)
      {
       theModuleItem = (DEFFUNCTION_MODULE *)
-                      GetModuleItem(theEnv,theModule,FindModuleItem(theEnv,"deffunction")->moduleIndex);
+                      GetModuleItem(theEnv,theModule,FindModuleItem(theEnv,(char*)"deffunction")->moduleIndex);
       AssignBsaveDefmdlItemHdrVals(&dummy_mitem.header,&theModuleItem->header);
       GenWrite((void *) &dummy_mitem,sizeof(BSAVE_DEFFUNCTION_MODULE),fp);
       theModule = (struct defmodule *) EnvGetNextDefmodule(theEnv,(void *) theModule);

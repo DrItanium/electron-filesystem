@@ -141,21 +141,21 @@ globle int VariableAnalysis(
             errorFlag = TRUE;
             if (patternPtr->referringNode->index == -1)
               {
-               PrintErrorID(theEnv,"ANALYSIS",1,TRUE);
-               EnvPrintRouter(theEnv,WERROR,"Duplicate pattern-address ?");
+               PrintErrorID(theEnv,(char*)"ANALYSIS",1,TRUE);
+               EnvPrintRouter(theEnv,WERROR,(char*)"Duplicate pattern-address ?");
                EnvPrintRouter(theEnv,WERROR,ValueToString(patternPtr->value));
-               EnvPrintRouter(theEnv,WERROR," found in CE #");
+               EnvPrintRouter(theEnv,WERROR,(char*)" found in CE #");
                PrintLongInteger(theEnv,WERROR,(long) patternPtr->whichCE);
-               EnvPrintRouter(theEnv,WERROR,".\n");
+               EnvPrintRouter(theEnv,WERROR,(char*)".\n");
               }
             else
               {
-               PrintErrorID(theEnv,"ANALYSIS",2,TRUE);
-               EnvPrintRouter(theEnv,WERROR,"Pattern-address ?");
+               PrintErrorID(theEnv,(char*)"ANALYSIS",2,TRUE);
+               EnvPrintRouter(theEnv,WERROR,(char*)"Pattern-address ?");
                EnvPrintRouter(theEnv,WERROR,ValueToString(patternPtr->value));
-               EnvPrintRouter(theEnv,WERROR," used in CE #");
+               EnvPrintRouter(theEnv,WERROR,(char*)" used in CE #");
                PrintLongInteger(theEnv,WERROR,(long) patternPtr->whichCE);
-               EnvPrintRouter(theEnv,WERROR," was previously bound within a pattern CE.\n");
+               EnvPrintRouter(theEnv,WERROR,(char*)" was previously bound within a pattern CE.\n");
               }
            }
 
@@ -790,7 +790,7 @@ static intBool UnboundVariablesInPattern(
             result = ConstraintCheckValue(theEnv,andField->type,andField->value,theConstraints);
             if (result != NO_VIOLATION)
               {
-               ConstraintViolationErrorMessage(theEnv,"A literal restriction value",
+               ConstraintViolationErrorMessage(theEnv,(char*)"A literal restriction value",
                                                NULL,FALSE,pattern,
                                                slotName,theField,result,
                                                theConstraints,TRUE);
@@ -872,7 +872,7 @@ static struct lhsParseNode *CheckExpression(
         {
          int count;
 
-         if (FindImportedConstruct(theEnv,"defglobal",NULL,ValueToString(exprPtr->value),
+         if (FindImportedConstruct(theEnv,(char*)"defglobal",NULL,ValueToString(exprPtr->value),
                                    &count,TRUE,NULL) == NULL)
            {
             VariableReferenceErrorMessage(theEnv,(SYMBOL_HN *) exprPtr->value,lastOne,
@@ -933,15 +933,15 @@ static void VariableReferenceErrorMessage(
    /* Print the error message ID. */
    /*=============================*/
 
-   PrintErrorID(theEnv,"ANALYSIS",4,TRUE);
+   PrintErrorID(theEnv,(char*)"ANALYSIS",4,TRUE);
 
    /*=================================*/
    /* Print the name of the variable. */
    /*=================================*/
 
-   EnvPrintRouter(theEnv,WERROR,"Variable ?");
+   EnvPrintRouter(theEnv,WERROR,(char*)"Variable ?");
    EnvPrintRouter(theEnv,WERROR,ValueToString(theVariable));
-   EnvPrintRouter(theEnv,WERROR," ");
+   EnvPrintRouter(theEnv,WERROR,(char*)" ");
 
    /*=================================================*/
    /* If the variable was found inside an expression, */
@@ -953,9 +953,9 @@ static void VariableReferenceErrorMessage(
       temprv = LHSParseNodesToExpression(theEnv,theExpression);
       ReturnExpression(theEnv,temprv->nextArg);
       temprv->nextArg = NULL;
-      EnvPrintRouter(theEnv,WERROR,"found in the expression ");
+      EnvPrintRouter(theEnv,WERROR,(char*)"found in the expression ");
       PrintExpression(theEnv,WERROR,temprv);
-      EnvPrintRouter(theEnv,WERROR,"\n");
+      EnvPrintRouter(theEnv,WERROR,(char*)"\n");
       ReturnExpression(theEnv,temprv);
      }
 
@@ -963,7 +963,7 @@ static void VariableReferenceErrorMessage(
    /* Print the CE in which the variable was referenced. */
    /*====================================================*/
 
-   EnvPrintRouter(theEnv,WERROR,"was referenced in CE #");
+   EnvPrintRouter(theEnv,WERROR,(char*)"was referenced in CE #");
    PrintLongInteger(theEnv,WERROR,(long int) whichCE);
 
    /*=====================================*/
@@ -975,17 +975,17 @@ static void VariableReferenceErrorMessage(
      {
       if (theField > 0)
         {
-         EnvPrintRouter(theEnv,WERROR," field #");
+         EnvPrintRouter(theEnv,WERROR,(char*)" field #");
          PrintLongInteger(theEnv,WERROR,(long int) theField);
         }
      }
    else
      {
-      EnvPrintRouter(theEnv,WERROR," slot ");
+      EnvPrintRouter(theEnv,WERROR,(char*)" slot ");
       EnvPrintRouter(theEnv,WERROR,ValueToString(slotName));
      }
 
-   EnvPrintRouter(theEnv,WERROR," before being defined.\n");
+   EnvPrintRouter(theEnv,WERROR,(char*)" before being defined.\n");
   }
 
 /************************************************************/
@@ -997,10 +997,10 @@ static void VariableMixingErrorMessage(
   void *theEnv,
   struct symbolHashNode *theVariable)
   {
-   PrintErrorID(theEnv,"ANALYSIS",3,TRUE);
-   EnvPrintRouter(theEnv,WERROR,"Variable ?");
+   PrintErrorID(theEnv,(char*)"ANALYSIS",3,TRUE);
+   EnvPrintRouter(theEnv,WERROR,(char*)"Variable ?");
    EnvPrintRouter(theEnv,WERROR,ValueToString(theVariable));
-   EnvPrintRouter(theEnv,WERROR," is used as both a single and multifield variable in the LHS\n");
+   EnvPrintRouter(theEnv,WERROR,(char*)" is used as both a single and multifield variable in the LHS\n");
   }
 
 /*************************************************************/

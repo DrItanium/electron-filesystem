@@ -85,7 +85,7 @@ globle void ObjectPatternsCompilerSetup(
   void *theEnv)
   {
    ObjectReteData(theEnv)->ObjectPatternCodeItem =
-         AddCodeGeneratorItem(theEnv,"object-patterns",0,BeforeObjectPatternsToCode,
+         AddCodeGeneratorItem(theEnv,(char*)"object-patterns",0,BeforeObjectPatternsToCode,
                               InitObjectPatternsCode,ObjectPatternsToCode,2);
   }
 

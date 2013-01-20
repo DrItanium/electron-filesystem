@@ -572,30 +572,30 @@ globle void RerouteStdin(
 #endif
       else if (theSwitch == NO_SWITCH)
         {
-         PrintErrorID(theEnv,"SYSDEP",2,FALSE);
-         EnvPrintRouter(theEnv,WERROR,"Invalid option\n");
+         PrintErrorID(theEnv,(char*)"SYSDEP",2,FALSE);
+         EnvPrintRouter(theEnv,WERROR,(char*)"Invalid option\n");
         }
 
       if (i > (argc-1))
         {
-         PrintErrorID(theEnv,"SYSDEP",1,FALSE);
-         EnvPrintRouter(theEnv,WERROR,"No file found for ");
+         PrintErrorID(theEnv,(char*)"SYSDEP",1,FALSE);
+         EnvPrintRouter(theEnv,WERROR,(char*)"No file found for ");
 
          switch(theSwitch)
            {
             case BATCH_SWITCH:
-               EnvPrintRouter(theEnv,WERROR,"-f");
+               EnvPrintRouter(theEnv,WERROR,(char*)"-f");
                break;
 
             case BATCH_STAR_SWITCH:
-               EnvPrintRouter(theEnv,WERROR,"-f2");
+               EnvPrintRouter(theEnv,WERROR,(char*)"-f2");
                break;
 
             case LOAD_SWITCH:
-               EnvPrintRouter(theEnv,WERROR,"-l");
+               EnvPrintRouter(theEnv,WERROR,(char*)"-l");
            }
 
-         EnvPrintRouter(theEnv,WERROR," option\n");
+         EnvPrintRouter(theEnv,WERROR,(char*)" option\n");
          return;
         }
 
@@ -764,7 +764,7 @@ globle void gensystem(
    /* Check for the corret number of arguments. */
    /*===========================================*/
 
-   if ((numa = EnvArgCountCheck(theEnv,"system",AT_LEAST,1)) == -1) return;
+   if ((numa = EnvArgCountCheck(theEnv,(char*)"system",AT_LEAST,1)) == -1) return;
 
    /*============================================================*/
    /* Concatenate the arguments together to form a single string */
@@ -779,7 +779,7 @@ globle void gensystem(
         {
          SetHaltExecution(theEnv,TRUE);
          SetEvaluationError(theEnv,TRUE);
-         ExpectedTypeError2(theEnv,"system",i);
+         ExpectedTypeError2(theEnv,(char*)"system",i);
          return;
         }
 
@@ -811,7 +811,7 @@ globle void gensystem(
 
 #if ! VAX_VMS
    EnvPrintRouter(theEnv,WDIALOG,
-            "System function not fully defined for this system.\n");
+            (char*)"System function not fully defined for this system.\n");
 #endif
 
 #endif

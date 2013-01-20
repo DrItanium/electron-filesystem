@@ -80,7 +80,7 @@
 globle void InitializeDefglobals(
   void *theEnv)
   {  
-   struct entityRecord globalInfo = { "GBL_VARIABLE", GBL_VARIABLE,0,0,0,
+   struct entityRecord globalInfo = { (char*)"GBL_VARIABLE", GBL_VARIABLE,0,0,0,
                                                        NULL,
                                                        NULL,
                                                        NULL,
@@ -88,7 +88,7 @@ globle void InitializeDefglobals(
                                                        NULL,NULL,
                                                        NULL,NULL,NULL,NULL,NULL,NULL };
 
-   struct entityRecord defglobalPtrRecord = { "DEFGLOBAL_PTR", DEFGLOBAL_PTR,0,0,0,
+   struct entityRecord defglobalPtrRecord = { (char*)"DEFGLOBAL_PTR", DEFGLOBAL_PTR,0,0,0,
                                                        NULL,NULL,NULL,
                                                        QGetDefglobalValue,
                                                        NULL,
@@ -113,7 +113,7 @@ globle void InitializeDefglobals(
    DefglobalCommandDefinitions(theEnv);
 
    DefglobalData(theEnv)->DefglobalConstruct =
-      AddConstruct(theEnv,"defglobal","defglobals",ParseDefglobal,EnvFindDefglobal,
+      AddConstruct(theEnv,(char*)"defglobal",(char*)"defglobals",ParseDefglobal,EnvFindDefglobal,
                    GetConstructNamePointer,GetConstructPPForm,
                    GetConstructModuleItem,EnvGetNextDefglobal,SetNextConstruct,
                    EnvIsDefglobalDeletable,EnvUndefglobal,ReturnDefglobal);
@@ -185,7 +185,7 @@ static void DestroyDefglobalAction(
 static void InitializeDefglobalModules(
   void *theEnv)
   {
-   DefglobalData(theEnv)->DefglobalModuleIndex = RegisterModuleItem(theEnv,"defglobal",
+   DefglobalData(theEnv)->DefglobalModuleIndex = RegisterModuleItem(theEnv,(char*)"defglobal",
                                     AllocateModule,
                                     ReturnModule,
 #if BLOAD_AND_BSAVE || BLOAD || BLOAD_ONLY
@@ -201,7 +201,7 @@ static void InitializeDefglobalModules(
                                     EnvFindDefglobal);
 
 #if (! BLOAD_ONLY) && (! RUN_TIME) && DEFMODULE_CONSTRUCT
-   AddPortConstructItem(theEnv,"defglobal",SYMBOL);
+   AddPortConstructItem(theEnv,(char*)"defglobal",SYMBOL);
 #endif
   }
 
@@ -406,13 +406,13 @@ globle void QSetDefglobalValue(
 #if DEBUGGING_FUNCTIONS
    if (theGlobal->watch)
      {
-      EnvPrintRouter(theEnv,WTRACE,":== ?*");
+      EnvPrintRouter(theEnv,WTRACE,(char*)":== ?*");
       EnvPrintRouter(theEnv,WTRACE,ValueToString(theGlobal->header.name));
-      EnvPrintRouter(theEnv,WTRACE,"* ==> ");
+      EnvPrintRouter(theEnv,WTRACE,(char*)"* ==> ");
       PrintDataObject(theEnv,WTRACE,vPtr);
-      EnvPrintRouter(theEnv,WTRACE," <== ");
+      EnvPrintRouter(theEnv,WTRACE,(char*)" <== ");
       PrintDataObject(theEnv,WTRACE,&theGlobal->current);
-      EnvPrintRouter(theEnv,WTRACE,"\n");
+      EnvPrintRouter(theEnv,WTRACE,(char*)"\n");
      }
 #endif
 
@@ -478,12 +478,12 @@ globle void EnvGetDefglobalValueForm(
   {
    struct defglobal *theGlobal = (struct defglobal *) vTheGlobal;
 
-   OpenStringDestination(theEnv,"GlobalValueForm",buffer,bufferLength);
-   EnvPrintRouter(theEnv,"GlobalValueForm","?*");
-   EnvPrintRouter(theEnv,"GlobalValueForm",ValueToString(theGlobal->header.name));
-   EnvPrintRouter(theEnv,"GlobalValueForm","* = ");
-   PrintDataObject(theEnv,"GlobalValueForm",&theGlobal->current);
-   CloseStringDestination(theEnv,"GlobalValueForm");
+   OpenStringDestination(theEnv,(char*)"GlobalValueForm",buffer,bufferLength);
+   EnvPrintRouter(theEnv,(char*)"GlobalValueForm",(char*)"?*");
+   EnvPrintRouter(theEnv,(char*)"GlobalValueForm",ValueToString(theGlobal->header.name));
+   EnvPrintRouter(theEnv,(char*)"GlobalValueForm",(char*)"* = ");
+   PrintDataObject(theEnv,(char*)"GlobalValueForm",&theGlobal->current);
+   CloseStringDestination(theEnv,(char*)"GlobalValueForm");
   }
 
 /************************************************************/
@@ -523,7 +523,7 @@ static intBool GetDefglobalValue2(
    /*===========================================*/
 
    theGlobal = (struct defglobal *)
-               FindImportedConstruct(theEnv,"defglobal",NULL,ValueToString(theValue),
+               FindImportedConstruct(theEnv,(char*)"defglobal",NULL,ValueToString(theValue),
                &count,TRUE,NULL);
 
    /*=============================================*/
@@ -532,10 +532,10 @@ static intBool GetDefglobalValue2(
 
    if (theGlobal == NULL)
      {
-      PrintErrorID(theEnv,"GLOBLDEF",1,FALSE);
-      EnvPrintRouter(theEnv,WERROR,"Global variable ?*");
+      PrintErrorID(theEnv,(char*)"GLOBLDEF",1,FALSE);
+      EnvPrintRouter(theEnv,WERROR,(char*)"Global variable ?*");
       EnvPrintRouter(theEnv,WERROR,ValueToString(theValue));
-      EnvPrintRouter(theEnv,WERROR,"* is unbound.\n");
+      EnvPrintRouter(theEnv,WERROR,(char*)"* is unbound.\n");
       vPtr->type = SYMBOL;
       vPtr->value = EnvFalseSymbol(theEnv);
       SetEvaluationError(theEnv,TRUE);
@@ -550,7 +550,7 @@ static intBool GetDefglobalValue2(
 
    if (count > 1)
      {
-      AmbiguousReferenceErrorMessage(theEnv,"defglobal",ValueToString(theValue));
+      AmbiguousReferenceErrorMessage(theEnv,(char*)"defglobal",ValueToString(theValue));
       vPtr->type = SYMBOL;
       vPtr->value = EnvFalseSymbol(theEnv);
       SetEvaluationError(theEnv,TRUE);
@@ -708,7 +708,7 @@ globle void UpdateDefglobalScope(
          /* as being out of scope.                             */
          /*====================================================*/
 
-         if (FindImportedConstruct(theEnv,"defglobal",theModule,
+         if (FindImportedConstruct(theEnv,(char*)"defglobal",theModule,
                                    ValueToString(theDefglobal->header.name),
                                    &moduleCount,TRUE,NULL) != NULL)
            { theDefglobal->inScope = TRUE; }

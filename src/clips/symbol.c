@@ -57,10 +57,10 @@
 /* DEFINITIONS */
 /***************/
 
-#define FALSE_STRING "FALSE"
-#define TRUE_STRING  "TRUE"
-#define POSITIVE_INFINITY_STRING "+oo"
-#define NEGATIVE_INFINITY_STRING "-oo"
+#define FALSE_STRING (char*)"FALSE"
+#define TRUE_STRING  (char*)"TRUE"
+#define POSITIVE_INFINITY_STRING (char*)"+oo"
+#define NEGATIVE_INFINITY_STRING (char*)"-oo"
 
 #define AVERAGE_STRING_SIZE 10
 #define AVERAGE_BITMAP_SIZE sizeof(long)
@@ -361,7 +361,7 @@ globle void *EnvAddSymbol(
 
     if (str == NULL)
       {
-       SystemError(theEnv,"SYMBOL",1);
+       SystemError(theEnv,(char*)"SYMBOL",1);
        EnvExitRouter(theEnv,EXIT_FAILURE);
       }
 
@@ -611,7 +611,7 @@ globle void *EnvAddBitMap(
 
     if (theBitMap == NULL)
       {
-       SystemError(theEnv,"SYMBOL",2);
+       SystemError(theEnv,(char*)"SYMBOL",2);
        EnvExitRouter(theEnv,EXIT_FAILURE);
       }
 
@@ -887,13 +887,13 @@ globle void DecrementSymbolCount(
   {
    if (theValue->count < 0)
      {
-      SystemError(theEnv,"SYMBOL",3);
+      SystemError(theEnv,(char*)"SYMBOL",3);
       EnvExitRouter(theEnv,EXIT_FAILURE);
      }
 
    if (theValue->count == 0)
      {
-      SystemError(theEnv,"SYMBOL",4);
+      SystemError(theEnv,(char*)"SYMBOL",4);
       EnvExitRouter(theEnv,EXIT_FAILURE);
      }
 
@@ -921,7 +921,7 @@ globle void DecrementFloatCount(
   {
    if (theValue->count <= 0)
      {
-      SystemError(theEnv,"SYMBOL",5);
+      SystemError(theEnv,(char*)"SYMBOL",5);
       EnvExitRouter(theEnv,EXIT_FAILURE);
      }
 
@@ -949,7 +949,7 @@ globle void DecrementIntegerCount(
   {
    if (theValue->count <= 0)
      {
-      SystemError(theEnv,"SYMBOL",6);
+      SystemError(theEnv,(char*)"SYMBOL",6);
       EnvExitRouter(theEnv,EXIT_FAILURE);
      }
 
@@ -977,13 +977,13 @@ globle void DecrementBitMapCount(
   {
    if (theValue->count < 0)
      {
-      SystemError(theEnv,"SYMBOL",7);
+      SystemError(theEnv,(char*)"SYMBOL",7);
       EnvExitRouter(theEnv,EXIT_FAILURE);
      }
 
    if (theValue->count == 0)
      {
-      SystemError(theEnv,"SYMBOL",8);
+      SystemError(theEnv,(char*)"SYMBOL",8);
       EnvExitRouter(theEnv,EXIT_FAILURE);
      }
 
@@ -1011,13 +1011,13 @@ globle void DecrementExternalAddressCount(
   {
    if (theValue->count < 0)
      {
-      SystemError(theEnv,"SYMBOL",9);
+      SystemError(theEnv,(char*)"SYMBOL",9);
       EnvExitRouter(theEnv,EXIT_FAILURE);
      }
 
    if (theValue->count == 0)
      {
-      SystemError(theEnv,"SYMBOL",10);
+      SystemError(theEnv,(char*)"SYMBOL",10);
       EnvExitRouter(theEnv,EXIT_FAILURE);
      }
 
@@ -1063,7 +1063,7 @@ static void RemoveHashNode(
 
       if (currentNode == NULL)
         {
-         SystemError(theEnv,"SYMBOL",11);
+         SystemError(theEnv,(char*)"SYMBOL",11);
          EnvExitRouter(theEnv,EXIT_FAILURE);
         }
      }
@@ -1132,7 +1132,7 @@ static void AddEphemeralHashNode(
 
    if (theHashNode->count != 0)
      {
-      SystemError(theEnv,"SYMBOL",12);
+      SystemError(theEnv,(char*)"SYMBOL",12);
       EnvExitRouter(theEnv,EXIT_FAILURE);
      }
 
@@ -1644,7 +1644,7 @@ globle void SetAtomicValueIndices(
            {
             symbolPtr->bucket = count++;
             if (symbolPtr->bucket != (count - 1))
-              { SystemError(theEnv,"SYMBOL",13); }
+              { SystemError(theEnv,(char*)"SYMBOL",13); }
            }
         }
      }
@@ -1666,7 +1666,7 @@ globle void SetAtomicValueIndices(
            {
             floatPtr->bucket = count++;
             if (floatPtr->bucket != (count - 1))
-              { SystemError(theEnv,"SYMBOL",14); }
+              { SystemError(theEnv,(char*)"SYMBOL",14); }
            }
         }
      }
@@ -1688,7 +1688,7 @@ globle void SetAtomicValueIndices(
            {
             integerPtr->bucket = count++;
             if (integerPtr->bucket != (count - 1))
-              { SystemError(theEnv,"SYMBOL",15); }
+              { SystemError(theEnv,(char*)"SYMBOL",15); }
            }
         }
      }
@@ -1710,7 +1710,7 @@ globle void SetAtomicValueIndices(
            {
             bitMapPtr->bucket = count++;
             if (bitMapPtr->bucket != (count - 1))
-              { SystemError(theEnv,"SYMBOL",16); }
+              { SystemError(theEnv,(char*)"SYMBOL",16); }
            }
         }
      }

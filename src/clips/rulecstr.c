@@ -97,7 +97,7 @@ static void ConstraintConflictMessage(
    /* Print the error header. */
    /*=========================*/
 
-   PrintErrorID(theEnv,"RULECSTR",1,TRUE);
+   PrintErrorID(theEnv,(char*)"RULECSTR",1,TRUE);
 
    /*======================================================*/
    /* Print the variable name (if available) and CE number */
@@ -106,14 +106,14 @@ static void ConstraintConflictMessage(
 
    if (variableName != NULL)
      {
-      EnvPrintRouter(theEnv,WERROR,"Variable ?");
+      EnvPrintRouter(theEnv,WERROR,(char*)"Variable ?");
       EnvPrintRouter(theEnv,WERROR,ValueToString(variableName));
-      EnvPrintRouter(theEnv,WERROR," in CE #");
+      EnvPrintRouter(theEnv,WERROR,(char*)" in CE #");
       PrintLongInteger(theEnv,WERROR,(long int) thePattern);
      }
    else
      {
-      EnvPrintRouter(theEnv,WERROR,"Pattern #");
+      EnvPrintRouter(theEnv,WERROR,(char*)"Pattern #");
       PrintLongInteger(theEnv,WERROR,(long int) thePattern);
      }
 
@@ -124,12 +124,12 @@ static void ConstraintConflictMessage(
 
    if (theSlot == NULL)
      {
-      EnvPrintRouter(theEnv,WERROR," field #");
+      EnvPrintRouter(theEnv,WERROR,(char*)" field #");
       PrintLongInteger(theEnv,WERROR,(long int) theField);
      }
    else
      {
-      EnvPrintRouter(theEnv,WERROR," slot ");
+      EnvPrintRouter(theEnv,WERROR,(char*)" slot ");
       EnvPrintRouter(theEnv,WERROR,ValueToString(theSlot));
      }
 
@@ -137,7 +137,7 @@ static void ConstraintConflictMessage(
    /* Print the rest of the error message. */
    /*======================================*/
 
-   EnvPrintRouter(theEnv,WERROR,"\nhas constraint conflicts which make the pattern unmatchable.\n");
+   EnvPrintRouter(theEnv,WERROR,(char*)"\nhas constraint conflicts which make the pattern unmatchable.\n");
   }
 
 /***************************************************************/
@@ -378,7 +378,7 @@ globle intBool ProcessConnectedConstraints(
      {
       if (MultifieldCardinalityViolation(theEnv,multifieldHeader))
         {
-         ConstraintViolationErrorMessage(theEnv,"The group of restrictions",
+         ConstraintViolationErrorMessage(theEnv,(char*)"The group of restrictions",
                                                   NULL,FALSE,
                                                   (int) patternHead->whichCE,
                                                   multifieldHeader->slot,
@@ -413,33 +413,33 @@ globle void ConstraintReferenceErrorMessage(
   {
    struct expr *temprv;
 
-   PrintErrorID(theEnv,"RULECSTR",2,TRUE);
+   PrintErrorID(theEnv,(char*)"RULECSTR",2,TRUE);
 
    /*==========================*/
    /* Print the variable name. */
    /*==========================*/
 
-   EnvPrintRouter(theEnv,WERROR,"Previous variable bindings of ?");
+   EnvPrintRouter(theEnv,WERROR,(char*)"Previous variable bindings of ?");
    EnvPrintRouter(theEnv,WERROR,ValueToString(theVariable));
-   EnvPrintRouter(theEnv,WERROR," caused the type restrictions");
+   EnvPrintRouter(theEnv,WERROR,(char*)" caused the type restrictions");
 
    /*============================*/
    /* Print the argument number. */
    /*============================*/
 
-   EnvPrintRouter(theEnv,WERROR,"\nfor argument #");
+   EnvPrintRouter(theEnv,WERROR,(char*)"\nfor argument #");
    PrintLongInteger(theEnv,WERROR,(long int) whichArgument);
 
    /*=======================*/
    /* Print the expression. */
    /*=======================*/
 
-   EnvPrintRouter(theEnv,WERROR," of the expression ");
+   EnvPrintRouter(theEnv,WERROR,(char*)" of the expression ");
    temprv = LHSParseNodesToExpression(theEnv,theExpression);
    ReturnExpression(theEnv,temprv->nextArg);
    temprv->nextArg = NULL;
    PrintExpression(theEnv,WERROR,temprv);
-   EnvPrintRouter(theEnv,WERROR,"\n");
+   EnvPrintRouter(theEnv,WERROR,(char*)"\n");
    ReturnExpression(theEnv,temprv);
 
    /*========================================*/
@@ -448,23 +448,23 @@ globle void ConstraintReferenceErrorMessage(
    /* index where the violation occured.     */
    /*========================================*/
 
-   EnvPrintRouter(theEnv,WERROR,"found in CE #");
+   EnvPrintRouter(theEnv,WERROR,(char*)"found in CE #");
    PrintLongInteger(theEnv,WERROR,(long int) whichCE);
    if (slotName == NULL)
      {
       if (theField > 0)
         {
-         EnvPrintRouter(theEnv,WERROR," field #");
+         EnvPrintRouter(theEnv,WERROR,(char*)" field #");
          PrintLongInteger(theEnv,WERROR,(long int) theField);
         }
      }
    else
      {
-      EnvPrintRouter(theEnv,WERROR," slot ");
+      EnvPrintRouter(theEnv,WERROR,(char*)" slot ");
       EnvPrintRouter(theEnv,WERROR,ValueToString(slotName));
      }
 
-   EnvPrintRouter(theEnv,WERROR," to be violated.\n");
+   EnvPrintRouter(theEnv,WERROR,(char*)" to be violated.\n");
   }
 
 /********************************************************/
@@ -827,18 +827,18 @@ static intBool CheckArgumentForConstraintError(
 
    if (UnmatchableConstraint(constraint4) && EnvGetStaticConstraintChecking(theEnv))
      {
-      PrintErrorID(theEnv,"RULECSTR",3,TRUE);
-      EnvPrintRouter(theEnv,WERROR,"Previous variable bindings of ?");
+      PrintErrorID(theEnv,(char*)"RULECSTR",3,TRUE);
+      EnvPrintRouter(theEnv,WERROR,(char*)"Previous variable bindings of ?");
       EnvPrintRouter(theEnv,WERROR,ValueToString((SYMBOL_HN *) expressionList->value));
-      EnvPrintRouter(theEnv,WERROR," caused the type restrictions");
-      EnvPrintRouter(theEnv,WERROR,"\nfor argument #");
+      EnvPrintRouter(theEnv,WERROR,(char*)" caused the type restrictions");
+      EnvPrintRouter(theEnv,WERROR,(char*)"\nfor argument #");
       PrintLongInteger(theEnv,WERROR,(long int) i);
-      EnvPrintRouter(theEnv,WERROR," of the expression ");
+      EnvPrintRouter(theEnv,WERROR,(char*)" of the expression ");
       tmpPtr = lastOne->nextArg;
       lastOne->nextArg = NULL;
       PrintExpression(theEnv,WERROR,lastOne);
       lastOne->nextArg = tmpPtr;
-      EnvPrintRouter(theEnv,WERROR,"\nfound in the rule's RHS to be violated.\n");
+      EnvPrintRouter(theEnv,WERROR,(char*)"\nfound in the rule's RHS to be violated.\n");
 
       rv = TRUE;
      }

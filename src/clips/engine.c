@@ -92,8 +92,8 @@ globle void InitializeEngine(
    EngineData(theEnv)->IncrementalResetFlag = TRUE;
    
 #if DEBUGGING_FUNCTIONS
-   AddWatchItem(theEnv,"statistics",0,&EngineData(theEnv)->WatchStatistics,20,NULL,NULL);
-   AddWatchItem(theEnv,"focus",0,&EngineData(theEnv)->WatchFocus,0,NULL,NULL);
+   AddWatchItem(theEnv,(char*)"statistics",0,&EngineData(theEnv)->WatchStatistics,20,NULL,NULL);
+   AddWatchItem(theEnv,(char*)"focus",0,&EngineData(theEnv)->WatchFocus,0,NULL,NULL);
 #endif
   }
   
@@ -249,9 +249,9 @@ globle long long EnvRun(
          gensprintf(printSpace,"FIRE %4lld ",rulesFired);
          EnvPrintRouter(theEnv,WTRACE,printSpace);
          EnvPrintRouter(theEnv,WTRACE,ruleFiring);
-         EnvPrintRouter(theEnv,WTRACE,": ");
+         EnvPrintRouter(theEnv,WTRACE,(char*)": ");
          PrintPartialMatch(theEnv,WTRACE,theBasis);
-         EnvPrintRouter(theEnv,WTRACE,"\n");
+         EnvPrintRouter(theEnv,WTRACE,(char*)"\n");
         }
 #endif
 
@@ -342,10 +342,10 @@ globle long long EnvRun(
 #endif
 
         {
-         PrintErrorID(theEnv,"PRCCODE",4,FALSE);
-         EnvPrintRouter(theEnv,WERROR,"Execution halted during the actions of defrule ");
+         PrintErrorID(theEnv,(char*)"PRCCODE",4,FALSE);
+         EnvPrintRouter(theEnv,WERROR,(char*)"Execution halted during the actions of defrule ");
          EnvPrintRouter(theEnv,WERROR,ruleFiring);
-         EnvPrintRouter(theEnv,WERROR,".\n");
+         EnvPrintRouter(theEnv,WERROR,(char*)".\n");
         }
 
       /*===================================================*/
@@ -454,9 +454,9 @@ globle long long EnvRun(
          if (((struct defrule *) GetActivationRule(theActivation))->afterBreakpoint)
            {
             EngineData(theEnv)->HaltRules = TRUE;
-            EnvPrintRouter(theEnv,WDIALOG,"Breaking on rule ");
+            EnvPrintRouter(theEnv,WDIALOG,(char*)"Breaking on rule ");
             EnvPrintRouter(theEnv,WDIALOG,EnvGetActivationName(theEnv,theActivation));
-            EnvPrintRouter(theEnv,WDIALOG,".\n");
+            EnvPrintRouter(theEnv,WDIALOG,(char*)".\n");
            }
         }
      }
@@ -484,7 +484,7 @@ globle long long EnvRun(
    /*======================================================*/
 
    if (runLimit == rulesFired)
-     { EnvPrintRouter(theEnv,WDIALOG,"rule firing limit reached\n"); }
+     { EnvPrintRouter(theEnv,WDIALOG,(char*)"rule firing limit reached\n"); }
 
    /*==============================*/
    /* Restore execution variables. */
@@ -505,19 +505,19 @@ globle long long EnvRun(
       endTime = gentime();
 
       PrintLongInteger(theEnv,WDIALOG,rulesFired);
-      EnvPrintRouter(theEnv,WDIALOG," rules fired");
+      EnvPrintRouter(theEnv,WDIALOG,(char*)" rules fired");
 
 #if (! GENERIC)
       if (startTime != endTime)
         {
-         EnvPrintRouter(theEnv,WDIALOG,"        Run time is ");
+         EnvPrintRouter(theEnv,WDIALOG,(char*)"        Run time is ");
          PrintFloat(theEnv,WDIALOG,endTime - startTime);
-         EnvPrintRouter(theEnv,WDIALOG," seconds.\n");
+         EnvPrintRouter(theEnv,WDIALOG,(char*)" seconds.\n");
          PrintFloat(theEnv,WDIALOG,(double) rulesFired / (endTime - startTime));
-         EnvPrintRouter(theEnv,WDIALOG," rules per second.\n");
+         EnvPrintRouter(theEnv,WDIALOG,(char*)" rules per second.\n");
         }
       else
-        { EnvPrintRouter(theEnv,WDIALOG,"\n"); }
+        { EnvPrintRouter(theEnv,WDIALOG,(char*)"\n"); }
 #endif
 
 #if DEFTEMPLATE_CONSTRUCT
@@ -620,7 +620,7 @@ static struct activation *NextActivationToFire(
 
    if (EngineData(theEnv)->CurrentFocus == NULL)
      {
-      theModule = (struct defmodule *) EnvFindDefmodule(theEnv,"MAIN");
+      theModule = (struct defmodule *) EnvFindDefmodule(theEnv,(char*)"MAIN");
       EnvFocus(theEnv,theModule);
      }
 
@@ -711,16 +711,16 @@ static struct defmodule *RemoveFocus(
 #if DEBUGGING_FUNCTIONS
    if (EngineData(theEnv)->WatchFocus)
      {
-      EnvPrintRouter(theEnv,WTRACE,"<== Focus ");
+      EnvPrintRouter(theEnv,WTRACE,(char*)"<== Focus ");
       EnvPrintRouter(theEnv,WTRACE,ValueToString(theModule->name));
 
       if ((EngineData(theEnv)->CurrentFocus != NULL) && currentFocusRemoved)
         {
-         EnvPrintRouter(theEnv,WTRACE," to ");
+         EnvPrintRouter(theEnv,WTRACE,(char*)" to ");
          EnvPrintRouter(theEnv,WTRACE,ValueToString(EngineData(theEnv)->CurrentFocus->theModule->name));
         }
 
-      EnvPrintRouter(theEnv,WTRACE,"\n");
+      EnvPrintRouter(theEnv,WTRACE,(char*)"\n");
      }
 #endif
 
@@ -802,14 +802,14 @@ globle void EnvFocus(
 #if DEBUGGING_FUNCTIONS
    if (EngineData(theEnv)->WatchFocus)
      {
-      EnvPrintRouter(theEnv,WTRACE,"==> Focus ");
+      EnvPrintRouter(theEnv,WTRACE,(char*)"==> Focus ");
       EnvPrintRouter(theEnv,WTRACE,ValueToString(theModule->name));
       if (EngineData(theEnv)->CurrentFocus != NULL)
         {
-         EnvPrintRouter(theEnv,WTRACE," from ");
+         EnvPrintRouter(theEnv,WTRACE,(char*)" from ");
          EnvPrintRouter(theEnv,WTRACE,ValueToString(EngineData(theEnv)->CurrentFocus->theModule->name));
         }
-      EnvPrintRouter(theEnv,WTRACE,"\n");
+      EnvPrintRouter(theEnv,WTRACE,(char*)"\n");
      }
 #endif
 
@@ -832,7 +832,7 @@ globle void EnvFocus(
 globle void ClearFocusStackCommand(
   void *theEnv)
   {
-   if (EnvArgCountCheck(theEnv,"list-focus-stack",EXACTLY,0) == -1) return;
+   if (EnvArgCountCheck(theEnv,(char*)"list-focus-stack",EXACTLY,0) == -1) return;
 
    EnvClearFocusStack(theEnv);
   }
@@ -932,13 +932,13 @@ globle void RunCommand(
    long long runLimit = -1LL;
    DATA_OBJECT argPtr;
 
-   if ((numArgs = EnvArgCountCheck(theEnv,"run",NO_MORE_THAN,1)) == -1) return;
+   if ((numArgs = EnvArgCountCheck(theEnv,(char*)"run",NO_MORE_THAN,1)) == -1) return;
 
    if (numArgs == 0)
      { runLimit = -1LL; }
    else if (numArgs == 1)
      {
-      if (EnvArgTypeCheck(theEnv,"run",1,INTEGER,&argPtr) == FALSE) return;
+      if (EnvArgTypeCheck(theEnv,(char*)"run",1,INTEGER,&argPtr) == FALSE) return;
       runLimit = DOToLong(argPtr);
      }
 
@@ -953,7 +953,7 @@ globle void RunCommand(
 globle void HaltCommand(
   void *theEnv)
   {
-   EnvArgCountCheck(theEnv,"halt",EXACTLY,0);
+   EnvArgCountCheck(theEnv,(char*)"halt",EXACTLY,0);
    EnvHalt(theEnv);
   }
 
@@ -1083,15 +1083,15 @@ globle void SetBreakCommand(
    char *argument;
    void *defrulePtr;
 
-   if (EnvArgCountCheck(theEnv,"set-break",EXACTLY,1) == -1) return;
+   if (EnvArgCountCheck(theEnv,(char*)"set-break",EXACTLY,1) == -1) return;
 
-   if (EnvArgTypeCheck(theEnv,"set-break",1,SYMBOL,&argPtr) == FALSE) return;
+   if (EnvArgTypeCheck(theEnv,(char*)"set-break",1,SYMBOL,&argPtr) == FALSE) return;
 
    argument = DOToString(argPtr);
 
    if ((defrulePtr = EnvFindDefrule(theEnv,argument)) == NULL)
      {
-      CantFindItemErrorMessage(theEnv,"defrule",argument);
+      CantFindItemErrorMessage(theEnv,(char*)"defrule",argument);
       return;
      }
 
@@ -1110,7 +1110,7 @@ globle void RemoveBreakCommand(
    int nargs;
    void *defrulePtr;
 
-   if ((nargs = EnvArgCountCheck(theEnv,"remove-break",NO_MORE_THAN,1)) == -1)
+   if ((nargs = EnvArgCountCheck(theEnv,(char*)"remove-break",NO_MORE_THAN,1)) == -1)
      { return; }
 
    if (nargs == 0)
@@ -1119,21 +1119,21 @@ globle void RemoveBreakCommand(
       return;
      }
 
-   if (EnvArgTypeCheck(theEnv,"remove-break",1,SYMBOL,&argPtr) == FALSE) return;
+   if (EnvArgTypeCheck(theEnv,(char*)"remove-break",1,SYMBOL,&argPtr) == FALSE) return;
 
    argument = DOToString(argPtr);
 
    if ((defrulePtr = EnvFindDefrule(theEnv,argument)) == NULL)
      {
-      CantFindItemErrorMessage(theEnv,"defrule",argument);
+      CantFindItemErrorMessage(theEnv,(char*)"defrule",argument);
       return;
      }
 
    if (EnvRemoveBreak(theEnv,defrulePtr) == FALSE)
      {
-      EnvPrintRouter(theEnv,WERROR,"Rule ");
+      EnvPrintRouter(theEnv,WERROR,(char*)"Rule ");
       EnvPrintRouter(theEnv,WERROR,argument);
-      EnvPrintRouter(theEnv,WERROR," does not have a breakpoint set.\n");
+      EnvPrintRouter(theEnv,WERROR,(char*)" does not have a breakpoint set.\n");
      }
   }
 
@@ -1147,11 +1147,11 @@ globle void ShowBreaksCommand(
    int numArgs, error;
    struct defmodule *theModule;
 
-   if ((numArgs = EnvArgCountCheck(theEnv,"show-breaks",NO_MORE_THAN,1)) == -1) return;
+   if ((numArgs = EnvArgCountCheck(theEnv,(char*)"show-breaks",NO_MORE_THAN,1)) == -1) return;
 
    if (numArgs == 1)
      {
-      theModule = GetModuleName(theEnv,"show-breaks",1,&error);
+      theModule = GetModuleName(theEnv,(char*)"show-breaks",1,&error);
       if (error) return;
      }
    else
@@ -1167,7 +1167,7 @@ globle void ShowBreaksCommand(
 globle void ListFocusStackCommand(
   void *theEnv)
   {
-   if (EnvArgCountCheck(theEnv,"list-focus-stack",EXACTLY,0) == -1) return;
+   if (EnvArgCountCheck(theEnv,(char*)"list-focus-stack",EXACTLY,0) == -1) return;
 
    EnvListFocusStack(theEnv,WDISPLAY);
   }
@@ -1187,7 +1187,7 @@ globle void EnvListFocusStack(
         theFocus = theFocus->next)
      {
       EnvPrintRouter(theEnv,logicalName,EnvGetDefmoduleName(theEnv,theFocus->theModule));
-      EnvPrintRouter(theEnv,logicalName,"\n");
+      EnvPrintRouter(theEnv,logicalName,(char*)"\n");
      }
   }
 
@@ -1201,7 +1201,7 @@ globle void GetFocusStackFunction(
   void *theEnv,
   DATA_OBJECT_PTR returnValue)
   {
-   if (EnvArgCountCheck(theEnv,"get-focus-stack",EXACTLY,0) == -1) return;
+   if (EnvArgCountCheck(theEnv,(char*)"get-focus-stack",EXACTLY,0) == -1) return;
 
    EnvGetFocusStack(theEnv,returnValue);
   }
@@ -1272,7 +1272,7 @@ globle void *PopFocusFunction(
   {
    struct defmodule *theModule;
 
-   EnvArgCountCheck(theEnv,"pop-focus",EXACTLY,0);
+   EnvArgCountCheck(theEnv,(char*)"pop-focus",EXACTLY,0);
 
    theModule = (struct defmodule *) EnvPopFocus(theEnv);
    if (theModule == NULL) return((SYMBOL_HN *) EnvFalseSymbol(theEnv));
@@ -1288,7 +1288,7 @@ globle void *GetFocusFunction(
   {
    struct defmodule *rv;
 
-   EnvArgCountCheck(theEnv,"get-focus",EXACTLY,0);
+   EnvArgCountCheck(theEnv,(char*)"get-focus",EXACTLY,0);
    rv = (struct defmodule *) EnvGetFocus(theEnv);
    if (rv == NULL) return((SYMBOL_HN *) EnvFalseSymbol(theEnv));
    return(rv->name);
@@ -1322,7 +1322,7 @@ globle int FocusCommand(
    /* Check for the correct number and type of arguments. */
    /*=====================================================*/
 
-   if ((argCount = EnvArgCountCheck(theEnv,"focus",AT_LEAST,1)) == -1)
+   if ((argCount = EnvArgCountCheck(theEnv,(char*)"focus",AT_LEAST,1)) == -1)
      { return(FALSE); }
 
    /*===========================================*/
@@ -1331,7 +1331,7 @@ globle int FocusCommand(
 
    for (i = argCount; i > 0; i--)
      {
-      if (EnvArgTypeCheck(theEnv,"focus",i,SYMBOL,&argPtr) == FALSE)
+      if (EnvArgTypeCheck(theEnv,(char*)"focus",i,SYMBOL,&argPtr) == FALSE)
         { return(FALSE); }
 
       argument = DOToString(argPtr);
@@ -1339,7 +1339,7 @@ globle int FocusCommand(
 
       if (theModule == NULL)
         {
-         CantFindItemErrorMessage(theEnv,"defmodule",argument);
+         CantFindItemErrorMessage(theEnv,(char*)"defmodule",argument);
          return(FALSE);
         }
 

@@ -80,7 +80,7 @@ globle char *EnvRtnLexeme(
 
    if (argPtr == NULL)
      {
-      NonexistantError(theEnv,"RtnLexeme",
+      NonexistantError(theEnv,(char*)"RtnLexeme",
                        ValueToString(ExpressionFunctionCallName(EvaluationData(theEnv)->CurrentExpression)),
                        argumentPosition);
       SetHaltExecution(theEnv,TRUE);
@@ -106,9 +106,9 @@ globle char *EnvRtnLexeme(
    /* Generate an error if the argument is the wrong type. */
    /*======================================================*/
 
-   ExpectedTypeError3(theEnv,"RtnLexeme",
+   ExpectedTypeError3(theEnv,(char*)"RtnLexeme",
                   ValueToString(ExpressionFunctionCallName(EvaluationData(theEnv)->CurrentExpression)),
-                  argumentPosition,"symbol, string, or instance name");
+                  argumentPosition,(char*)"symbol, string, or instance name");
    SetHaltExecution(theEnv,TRUE);
    SetEvaluationError(theEnv,TRUE);
    return(NULL);
@@ -142,7 +142,7 @@ globle double EnvRtnDouble(
 
    if (argPtr == NULL)
      {
-      NonexistantError(theEnv,"RtnDouble",
+      NonexistantError(theEnv,(char*)"RtnDouble",
                        ValueToString(ExpressionFunctionCallName(EvaluationData(theEnv)->CurrentExpression)),
                        argumentPosition);
       SetHaltExecution(theEnv,TRUE);
@@ -166,9 +166,9 @@ globle double EnvRtnDouble(
    /* Generate an error if the argument is the wrong type. */
    /*======================================================*/
 
-   ExpectedTypeError3(theEnv,"RtnDouble",
+   ExpectedTypeError3(theEnv,(char*)"RtnDouble",
                   ValueToString(ExpressionFunctionCallName(EvaluationData(theEnv)->CurrentExpression)),
-                  argumentPosition,"number");
+                  argumentPosition,(char*)"number");
    SetHaltExecution(theEnv,TRUE);
    SetEvaluationError(theEnv,TRUE);
    return(1.0);
@@ -202,7 +202,7 @@ globle long long EnvRtnLong(
 
    if (argPtr == NULL)
      {
-      NonexistantError(theEnv,"RtnLong",
+      NonexistantError(theEnv,(char*)"RtnLong",
                        ValueToString(ExpressionFunctionCallName(EvaluationData(theEnv)->CurrentExpression)),
                        argumentPosition);
       SetHaltExecution(theEnv,TRUE);
@@ -226,9 +226,9 @@ globle long long EnvRtnLong(
    /* Generate an error if the argument is the wrong type. */
    /*======================================================*/
 
-   ExpectedTypeError3(theEnv,"RtnLong",
+   ExpectedTypeError3(theEnv,(char*)"RtnLong",
                   ValueToString(ExpressionFunctionCallName(EvaluationData(theEnv)->CurrentExpression)),
-                  argumentPosition,"number");
+                  argumentPosition,(char*)"number");
    SetHaltExecution(theEnv,TRUE);
    SetEvaluationError(theEnv,TRUE);
    return(1L);
@@ -260,7 +260,7 @@ globle DATA_OBJECT_PTR EnvRtnUnknown(
 
    if (argPtr == NULL)
      {
-      NonexistantError(theEnv,"RtnUnknown",
+      NonexistantError(theEnv,(char*)"RtnUnknown",
                        ValueToString(ExpressionFunctionCallName(EvaluationData(theEnv)->CurrentExpression)),
                        argumentPosition);
       SetHaltExecution(theEnv,TRUE);
@@ -361,14 +361,14 @@ globle int EnvArgRangeCheck(
    numberOfArguments = EnvRtnArgCount(theEnv);
    if ((numberOfArguments < min) || (numberOfArguments > max))
      {
-      PrintErrorID(theEnv,"ARGACCES",1,FALSE);
-      EnvPrintRouter(theEnv,WERROR,"Function ");
+      PrintErrorID(theEnv,(char*)"ARGACCES",1,FALSE);
+      EnvPrintRouter(theEnv,WERROR,(char*)"Function ");
       EnvPrintRouter(theEnv,WERROR,functionName);
-      EnvPrintRouter(theEnv,WERROR," expected at least ");
+      EnvPrintRouter(theEnv,WERROR,(char*)" expected at least ");
       PrintLongInteger(theEnv,WERROR,(long) min);
-      EnvPrintRouter(theEnv,WERROR," and no more than ");
+      EnvPrintRouter(theEnv,WERROR,(char*)" and no more than ");
       PrintLongInteger(theEnv,WERROR,(long) max);
-      EnvPrintRouter(theEnv,WERROR," arguments.\n");
+      EnvPrintRouter(theEnv,WERROR,(char*)" arguments.\n");
       SetHaltExecution(theEnv,TRUE);
       SetEvaluationError(theEnv,TRUE);
       return(-1);
@@ -460,17 +460,17 @@ globle int EnvArgTypeCheck(
    /* Print an error message and return FALSE.            */
    /*=====================================================*/
 
-   if (expectedType == FLOAT) ExpectedTypeError1(theEnv,functionName,argumentPosition,"float");
-   else if (expectedType == INTEGER) ExpectedTypeError1(theEnv,functionName,argumentPosition,"integer");
-   else if (expectedType == SYMBOL) ExpectedTypeError1(theEnv,functionName,argumentPosition,"symbol");
-   else if (expectedType == STRING) ExpectedTypeError1(theEnv,functionName,argumentPosition,"string");
-   else if (expectedType == MULTIFIELD) ExpectedTypeError1(theEnv,functionName,argumentPosition,"multifield");
-   else if (expectedType == INTEGER_OR_FLOAT)  ExpectedTypeError1(theEnv,functionName,argumentPosition,"integer or float");
-   else if (expectedType == SYMBOL_OR_STRING) ExpectedTypeError1(theEnv,functionName,argumentPosition,"symbol or string");
+   if (expectedType == FLOAT) ExpectedTypeError1(theEnv,functionName,argumentPosition,(char*)"float");
+   else if (expectedType == INTEGER) ExpectedTypeError1(theEnv,functionName,argumentPosition,(char*)"integer");
+   else if (expectedType == SYMBOL) ExpectedTypeError1(theEnv,functionName,argumentPosition,(char*)"symbol");
+   else if (expectedType == STRING) ExpectedTypeError1(theEnv,functionName,argumentPosition,(char*)"string");
+   else if (expectedType == MULTIFIELD) ExpectedTypeError1(theEnv,functionName,argumentPosition,(char*)"multifield");
+   else if (expectedType == INTEGER_OR_FLOAT)  ExpectedTypeError1(theEnv,functionName,argumentPosition,(char*)"integer or float");
+   else if (expectedType == SYMBOL_OR_STRING) ExpectedTypeError1(theEnv,functionName,argumentPosition,(char*)"symbol or string");
 #if OBJECT_SYSTEM
-   else if (expectedType == INSTANCE_NAME) ExpectedTypeError1(theEnv,functionName,argumentPosition,"instance name");
-   else if (expectedType == INSTANCE_ADDRESS) ExpectedTypeError1(theEnv,functionName,argumentPosition,"instance address");
-   else if (expectedType == INSTANCE_OR_INSTANCE_NAME) ExpectedTypeError1(theEnv,functionName,argumentPosition,"instance address or instance name");
+   else if (expectedType == INSTANCE_NAME) ExpectedTypeError1(theEnv,functionName,argumentPosition,(char*)"instance name");
+   else if (expectedType == INSTANCE_ADDRESS) ExpectedTypeError1(theEnv,functionName,argumentPosition,(char*)"instance address");
+   else if (expectedType == INSTANCE_OR_INSTANCE_NAME) ExpectedTypeError1(theEnv,functionName,argumentPosition,(char*)"instance address or instance name");
 #endif
 
    SetHaltExecution(theEnv,TRUE);
@@ -525,7 +525,7 @@ globle intBool GetNumericArgument(
 
    if ((theType != FLOAT) && (theType != INTEGER))
      {
-      ExpectedTypeError1(theEnv,functionName,whichArgument,"integer or float");
+      ExpectedTypeError1(theEnv,functionName,whichArgument,(char*)"integer or float");
       SetHaltExecution(theEnv,TRUE);
       SetEvaluationError(theEnv,TRUE);
       result->type = INTEGER;
@@ -609,7 +609,7 @@ globle char *GetFileName(
    EnvRtnUnknown(theEnv,whichArgument,&result);
    if ((GetType(result) != STRING) && (GetType(result) != SYMBOL))
      {
-      ExpectedTypeError1(theEnv,functionName,whichArgument,"file name");
+      ExpectedTypeError1(theEnv,functionName,whichArgument,(char*)"file name");
       return(NULL);
      }
 
@@ -624,12 +624,12 @@ globle void OpenErrorMessage(
   char *functionName,
   char *fileName)
   {
-   PrintErrorID(theEnv,"ARGACCES",2,FALSE);
-   EnvPrintRouter(theEnv,WERROR,"Function ");
+   PrintErrorID(theEnv,(char*)"ARGACCES",2,FALSE);
+   EnvPrintRouter(theEnv,WERROR,(char*)"Function ");
    EnvPrintRouter(theEnv,WERROR,functionName);
-   EnvPrintRouter(theEnv,WERROR," was unable to open file ");
+   EnvPrintRouter(theEnv,WERROR,(char*)" was unable to open file ");
    EnvPrintRouter(theEnv,WERROR,fileName);
-   EnvPrintRouter(theEnv,WERROR,".\n");
+   EnvPrintRouter(theEnv,WERROR,(char*)".\n");
   }
 
 /************************************************************/
@@ -662,7 +662,7 @@ globle struct defmodule *GetModuleName(
 
    if (GetType(result) != SYMBOL)
      {
-      ExpectedTypeError1(theEnv,functionName,whichArgument,"defmodule name");
+      ExpectedTypeError1(theEnv,functionName,whichArgument,(char*)"defmodule name");
       *error = TRUE;
       return(NULL);
      }
@@ -676,7 +676,7 @@ globle struct defmodule *GetModuleName(
      {
       if (strcmp("*",DOToString(result)) != 0)
         {
-         ExpectedTypeError1(theEnv,functionName,whichArgument,"defmodule name");
+         ExpectedTypeError1(theEnv,functionName,whichArgument,(char*)"defmodule name");
          *error = TRUE;
         }
       return(NULL);
@@ -730,14 +730,14 @@ static void NonexistantError(
   char *functionName,
   int argumentPosition)
   {
-   PrintErrorID(theEnv,"ARGACCES",3,FALSE);
-   EnvPrintRouter(theEnv,WERROR,"Function ");
+   PrintErrorID(theEnv,(char*)"ARGACCES",3,FALSE);
+   EnvPrintRouter(theEnv,WERROR,(char*)"Function ");
    EnvPrintRouter(theEnv,WERROR,accessFunction);
-   EnvPrintRouter(theEnv,WERROR," received a request from function ");
+   EnvPrintRouter(theEnv,WERROR,(char*)" received a request from function ");
    EnvPrintRouter(theEnv,WERROR,functionName);
-   EnvPrintRouter(theEnv,WERROR," for argument #");
+   EnvPrintRouter(theEnv,WERROR,(char*)" for argument #");
    PrintLongInteger(theEnv,WERROR,(long int) argumentPosition);
-   EnvPrintRouter(theEnv,WERROR," which is non-existent\n");
+   EnvPrintRouter(theEnv,WERROR,(char*)" which is non-existent\n");
   }
 
 /*********************************************************/
@@ -750,21 +750,21 @@ globle void ExpectedCountError(
   int countRelation,
   int expectedNumber)
   {
-   PrintErrorID(theEnv,"ARGACCES",4,FALSE);
-   EnvPrintRouter(theEnv,WERROR,"Function ");
+   PrintErrorID(theEnv,(char*)"ARGACCES",4,FALSE);
+   EnvPrintRouter(theEnv,WERROR,(char*)"Function ");
    EnvPrintRouter(theEnv,WERROR,functionName);
 
    if (countRelation == EXACTLY)
-     { EnvPrintRouter(theEnv,WERROR," expected exactly "); }
+     { EnvPrintRouter(theEnv,WERROR,(char*)" expected exactly "); }
    else if (countRelation == AT_LEAST)
-     { EnvPrintRouter(theEnv,WERROR," expected at least "); }
+     { EnvPrintRouter(theEnv,WERROR,(char*)" expected at least "); }
    else if (countRelation == NO_MORE_THAN)
-     { EnvPrintRouter(theEnv,WERROR," expected no more than "); }
+     { EnvPrintRouter(theEnv,WERROR,(char*)" expected no more than "); }
    else
-     { EnvPrintRouter(theEnv,WERROR," generated an illegal argument check for "); }
+     { EnvPrintRouter(theEnv,WERROR,(char*)" generated an illegal argument check for "); }
 
    PrintLongInteger(theEnv,WERROR,(long int) expectedNumber);
-   EnvPrintRouter(theEnv,WERROR," argument(s)\n");
+   EnvPrintRouter(theEnv,WERROR,(char*)" argument(s)\n");
   }
 
 /*************************************************************/
@@ -885,14 +885,14 @@ globle void ExpectedTypeError1(
   int whichArg,
   char *expectedType)
   {
-   PrintErrorID(theEnv,"ARGACCES",5,FALSE);
-   EnvPrintRouter(theEnv,WERROR,"Function ");
+   PrintErrorID(theEnv,(char*)"ARGACCES",5,FALSE);
+   EnvPrintRouter(theEnv,WERROR,(char*)"Function ");
    EnvPrintRouter(theEnv,WERROR,functionName);
-   EnvPrintRouter(theEnv,WERROR," expected argument #");
+   EnvPrintRouter(theEnv,WERROR,(char*)" expected argument #");
    PrintLongInteger(theEnv,WERROR,(long int) whichArg);
-   EnvPrintRouter(theEnv,WERROR," to be of type ");
+   EnvPrintRouter(theEnv,WERROR,(char*)" to be of type ");
    EnvPrintRouter(theEnv,WERROR,expectedType);
-   EnvPrintRouter(theEnv,WERROR,"\n");
+   EnvPrintRouter(theEnv,WERROR,(char*)"\n");
   }
 
 /**************************************************************/
@@ -931,16 +931,16 @@ static void ExpectedTypeError3(
   int argumentPosition,
   char *type)
   {
-   PrintErrorID(theEnv,"ARGACCES",6,FALSE);
-   EnvPrintRouter(theEnv,WERROR,"Function ");
+   PrintErrorID(theEnv,(char*)"ARGACCES",6,FALSE);
+   EnvPrintRouter(theEnv,WERROR,(char*)"Function ");
    EnvPrintRouter(theEnv,WERROR,accessFunction);
-   EnvPrintRouter(theEnv,WERROR," received a request from function ");
+   EnvPrintRouter(theEnv,WERROR,(char*)" received a request from function ");
    EnvPrintRouter(theEnv,WERROR,functionName);
-   EnvPrintRouter(theEnv,WERROR," for argument #");
+   EnvPrintRouter(theEnv,WERROR,(char*)" for argument #");
    PrintLongInteger(theEnv,WERROR,(long int) argumentPosition);
-   EnvPrintRouter(theEnv,WERROR," which is not of type ");
+   EnvPrintRouter(theEnv,WERROR,(char*)" which is not of type ");
    EnvPrintRouter(theEnv,WERROR,type);
-   EnvPrintRouter(theEnv,WERROR,"\n");
+   EnvPrintRouter(theEnv,WERROR,(char*)"\n");
   }
 
 /***************************************************/
@@ -983,7 +983,7 @@ void *GetFactOrInstanceArgument(
         {
          char tempBuffer[20];
          gensprintf(tempBuffer,"f-%lld",DOPToLong(item));
-         CantFindItemErrorMessage(theEnv,"fact",tempBuffer);
+         CantFindItemErrorMessage(theEnv,(char*)"fact",tempBuffer);
         }
       return(ptr);
      }
@@ -999,7 +999,7 @@ void *GetFactOrInstanceArgument(
      {
       if ((ptr = (void *) FindInstanceBySymbol(theEnv,(SYMBOL_HN *) GetpValue(item))) == NULL)
         {
-         CantFindItemErrorMessage(theEnv,"instance",ValueToString(GetpValue(item)));
+         CantFindItemErrorMessage(theEnv,(char*)"instance",ValueToString(GetpValue(item)));
         }
       return(ptr);
      }
@@ -1021,8 +1021,8 @@ void IllegalLogicalNameMessage(
   void *theEnv,
   char *theFunction)
   {
-   PrintErrorID(theEnv,"IOFUN",1,FALSE);
-   EnvPrintRouter(theEnv,WERROR,"Illegal logical name used for ");
+   PrintErrorID(theEnv,(char*)"IOFUN",1,FALSE);
+   EnvPrintRouter(theEnv,WERROR,(char*)"Illegal logical name used for ");
    EnvPrintRouter(theEnv,WERROR,theFunction);
-   EnvPrintRouter(theEnv,WERROR," function.\n");
+   EnvPrintRouter(theEnv,WERROR,(char*)" function.\n");
   }

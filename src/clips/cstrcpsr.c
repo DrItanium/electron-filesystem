@@ -85,7 +85,7 @@ globle int EnvLoad(
    /* Open the file specified by file name. */
    /*=======================================*/
 
-   if ((theFile = GenOpen(theEnv,fileName,"r")) == NULL) return(0);
+   if ((theFile = GenOpen(theEnv,fileName,(char*)"r")) == NULL) return(0);
 
    /*===================================================*/
    /* Read in the constructs. Enabling fast load allows */
@@ -169,9 +169,9 @@ globle int LoadConstructsFromLogicalName(
 
       if (constructFlag == 1)
         {
-         EnvPrintRouter(theEnv,WERROR,"\nERROR:\n");
+         EnvPrintRouter(theEnv,WERROR,(char*)"\nERROR:\n");
          PrintInChunks(theEnv,WERROR,GetPPBuffer(theEnv));
-         EnvPrintRouter(theEnv,WERROR,"\n");
+         EnvPrintRouter(theEnv,WERROR,(char*)"\n");
          noErrors = FALSE;
          GetToken(theEnv,readSource,&theToken);
          foundConstruct = FindConstructBeginning(theEnv,readSource,&theToken,TRUE,&noErrors);
@@ -209,11 +209,11 @@ globle int LoadConstructsFromLogicalName(
    /*========================================================*/
 
 #if DEBUGGING_FUNCTIONS
-   if ((EnvGetWatchItem(theEnv,"compilations") != TRUE) && GetPrintWhileLoading(theEnv))
+   if ((EnvGetWatchItem(theEnv,(char*)"compilations") != TRUE) && GetPrintWhileLoading(theEnv))
 #else
    if (GetPrintWhileLoading(theEnv))
 #endif
-     { EnvPrintRouter(theEnv,WDIALOG,"\n"); }
+     { EnvPrintRouter(theEnv,WDIALOG,(char*)"\n"); }
 
    /*=============================================================*/
    /* Once the load is complete, destroy the pretty print buffer. */
@@ -290,8 +290,8 @@ static int FindConstructBeginning(
            {
             errorCorrection = TRUE;
             *noErrors = FALSE;
-            PrintErrorID(theEnv,"CSTRCPSR",1,TRUE);
-            EnvPrintRouter(theEnv,WERROR,"Expected the beginning of a construct.\n");
+            PrintErrorID(theEnv,(char*)"CSTRCPSR",1,TRUE);
+            EnvPrintRouter(theEnv,WERROR,(char*)"Expected the beginning of a construct.\n");
            }
 
          /*======================================================*/
@@ -316,8 +316,8 @@ static int FindConstructBeginning(
            {
             errorCorrection = TRUE;
             *noErrors = FALSE;
-            PrintErrorID(theEnv,"CSTRCPSR",1,TRUE);
-            EnvPrintRouter(theEnv,WERROR,"Expected the beginning of a construct.\n");
+            PrintErrorID(theEnv,(char*)"CSTRCPSR",1,TRUE);
+            EnvPrintRouter(theEnv,WERROR,(char*)"Expected the beginning of a construct.\n");
            }
 
          firstAttempt = FALSE;
@@ -437,10 +437,10 @@ globle SYMBOL_HN *GetConstructNameAndComment(
    GetToken(theEnv,readSource,inputToken);
    if (inputToken->type != SYMBOL)
      {
-      PrintErrorID(theEnv,"CSTRCPSR",2,TRUE);
-      EnvPrintRouter(theEnv,WERROR,"Missing name for ");
+      PrintErrorID(theEnv,(char*)"CSTRCPSR",2,TRUE);
+      EnvPrintRouter(theEnv,WERROR,(char*)"Missing name for ");
       EnvPrintRouter(theEnv,WERROR,constructName);
-      EnvPrintRouter(theEnv,WERROR," construct\n");
+      EnvPrintRouter(theEnv,WERROR,(char*)" construct\n");
       return(NULL);
      }
 
@@ -455,21 +455,21 @@ globle SYMBOL_HN *GetConstructNameAndComment(
      {
       if (moduleNameAllowed == FALSE)
         {
-         SyntaxErrorMessage(theEnv,"module specifier");
+         SyntaxErrorMessage(theEnv,(char*)"module specifier");
          return(NULL);
         }
 
       moduleName = ExtractModuleName(theEnv,separatorPosition,ValueToString(name));
       if (moduleName == NULL)
         {
-         SyntaxErrorMessage(theEnv,"construct name");
+         SyntaxErrorMessage(theEnv,(char*)"construct name");
          return(NULL);
         }
 
       theModule = (struct defmodule *) EnvFindDefmodule(theEnv,ValueToString(moduleName));
       if (theModule == NULL)
         {
-         CantFindItemErrorMessage(theEnv,"defmodule",ValueToString(moduleName));
+         CantFindItemErrorMessage(theEnv,(char*)"defmodule",ValueToString(moduleName));
          return(NULL);
         }
 
@@ -477,7 +477,7 @@ globle SYMBOL_HN *GetConstructNameAndComment(
       name = ExtractConstructName(theEnv,separatorPosition,ValueToString(name));
       if (name == NULL)
         {
-         SyntaxErrorMessage(theEnv,"construct name");
+         SyntaxErrorMessage(theEnv,(char*)"construct name");
          return(NULL);
         }
      }
@@ -494,7 +494,7 @@ globle SYMBOL_HN *GetConstructNameAndComment(
         {
          PPBackup(theEnv);
          SavePPBuffer(theEnv,EnvGetDefmoduleName(theEnv,theModule));
-         SavePPBuffer(theEnv,"::");
+         SavePPBuffer(theEnv,(char*)"::");
          SavePPBuffer(theEnv,ValueToString(name));
         }
      }
@@ -526,12 +526,12 @@ globle SYMBOL_HN *GetConstructNameAndComment(
            {
             if ((*deleteFunction)(theEnv,theConstruct) == FALSE)
               {
-               PrintErrorID(theEnv,"CSTRCPSR",4,TRUE);
-               EnvPrintRouter(theEnv,WERROR,"Cannot redefine ");
+               PrintErrorID(theEnv,(char*)"CSTRCPSR",4,TRUE);
+               EnvPrintRouter(theEnv,WERROR,(char*)"Cannot redefine ");
                EnvPrintRouter(theEnv,WERROR,constructName);
-               EnvPrintRouter(theEnv,WERROR," ");
+               EnvPrintRouter(theEnv,WERROR,(char*)" ");
                EnvPrintRouter(theEnv,WERROR,ValueToString(name));
-               EnvPrintRouter(theEnv,WERROR," while it is in use.\n");
+               EnvPrintRouter(theEnv,WERROR,(char*)" while it is in use.\n");
                return(NULL);
               }
            }
@@ -544,22 +544,22 @@ globle SYMBOL_HN *GetConstructNameAndComment(
    /*=============================================*/
 
 #if DEBUGGING_FUNCTIONS
-   if ((EnvGetWatchItem(theEnv,"compilations") == TRUE) &&
+   if ((EnvGetWatchItem(theEnv,(char*)"compilations") == TRUE) &&
        GetPrintWhileLoading(theEnv) && (! ConstructData(theEnv)->CheckSyntaxMode))
      {
       if (redefining) 
         {
-         PrintWarningID(theEnv,"CSTRCPSR",1,TRUE);
-         EnvPrintRouter(theEnv,WDIALOG,"Redefining ");
+         PrintWarningID(theEnv,(char*)"CSTRCPSR",1,TRUE);
+         EnvPrintRouter(theEnv,WDIALOG,(char*)"Redefining ");
         }
-      else EnvPrintRouter(theEnv,WDIALOG,"Defining ");
+      else EnvPrintRouter(theEnv,WDIALOG,(char*)"Defining ");
 
       EnvPrintRouter(theEnv,WDIALOG,constructName);
-      EnvPrintRouter(theEnv,WDIALOG,": ");
+      EnvPrintRouter(theEnv,WDIALOG,(char*)": ");
       EnvPrintRouter(theEnv,WDIALOG,ValueToString(name));
 
-      if (fullMessageCR) EnvPrintRouter(theEnv,WDIALOG,"\n");
-      else EnvPrintRouter(theEnv,WDIALOG," ");
+      if (fullMessageCR) EnvPrintRouter(theEnv,WDIALOG,(char*)"\n");
+      else EnvPrintRouter(theEnv,WDIALOG,(char*)" ");
      }
    else
 #endif
@@ -576,20 +576,20 @@ globle SYMBOL_HN *GetConstructNameAndComment(
    if ((inputToken->type == STRING) && getComment)
      {
       PPBackup(theEnv);
-      SavePPBuffer(theEnv," ");
+      SavePPBuffer(theEnv,(char*)" ");
       SavePPBuffer(theEnv,inputToken->printForm);
       GetToken(theEnv,readSource,inputToken);
       if (inputToken->type != RPAREN)
         {
          PPBackup(theEnv);
-         SavePPBuffer(theEnv,"\n   ");
+         SavePPBuffer(theEnv,(char*)"\n   ");
          SavePPBuffer(theEnv,inputToken->printForm);
         }
      }
    else if (inputToken->type != RPAREN)
      {
       PPBackup(theEnv);
-      SavePPBuffer(theEnv,"\n   ");
+      SavePPBuffer(theEnv,(char*)"\n   ");
       SavePPBuffer(theEnv,inputToken->printForm);
      }
 
@@ -629,7 +629,7 @@ globle void RemoveConstructFromModule(
 
    if (currentConstruct == NULL)
      {
-      SystemError(theEnv,"CSTRCPSR",1);
+      SystemError(theEnv,(char*)"CSTRCPSR",1);
       EnvExitRouter(theEnv,EXIT_FAILURE);
      }
 
@@ -663,21 +663,21 @@ globle void ImportExportConflictMessage(
   char *causedByConstruct,
   char *causedByName)
   {
-   PrintErrorID(theEnv,"CSTRCPSR",3,TRUE);
-   EnvPrintRouter(theEnv,WERROR,"Cannot define ");
+   PrintErrorID(theEnv,(char*)"CSTRCPSR",3,TRUE);
+   EnvPrintRouter(theEnv,WERROR,(char*)"Cannot define ");
    EnvPrintRouter(theEnv,WERROR,constructName);
-   EnvPrintRouter(theEnv,WERROR," ");
+   EnvPrintRouter(theEnv,WERROR,(char*)" ");
    EnvPrintRouter(theEnv,WERROR,itemName);
-   EnvPrintRouter(theEnv,WERROR," because of an import/export conflict");
+   EnvPrintRouter(theEnv,WERROR,(char*)" because of an import/export conflict");
 
-   if (causedByConstruct == NULL) EnvPrintRouter(theEnv,WERROR,".\n");
+   if (causedByConstruct == NULL) EnvPrintRouter(theEnv,WERROR,(char*)".\n");
    else
      {
-      EnvPrintRouter(theEnv,WERROR," caused by the ");
+      EnvPrintRouter(theEnv,WERROR,(char*)" caused by the ");
       EnvPrintRouter(theEnv,WERROR,causedByConstruct);
-      EnvPrintRouter(theEnv,WERROR," ");
+      EnvPrintRouter(theEnv,WERROR,(char*)" ");
       EnvPrintRouter(theEnv,WERROR,causedByName);
-      EnvPrintRouter(theEnv,WERROR,".\n");
+      EnvPrintRouter(theEnv,WERROR,(char*)".\n");
      }
   }
 

@@ -88,11 +88,11 @@ globle void InitializeConstraints(
 #endif
 
 #if (! RUN_TIME)
-   EnvDefineFunction2(theEnv,"get-dynamic-constraint-checking",'b',GDCCommand,"GDCCommand", "00");
-   EnvDefineFunction2(theEnv,"set-dynamic-constraint-checking",'b',SDCCommand,"SDCCommand", "11");
+   EnvDefineFunction2(theEnv,(char*)"get-dynamic-constraint-checking",'b',GDCCommand,(char*)"GDCCommand", (char*)"00");
+   EnvDefineFunction2(theEnv,(char*)"set-dynamic-constraint-checking",'b',SDCCommand,(char*)"SDCCommand", (char*)"11");
 
-   EnvDefineFunction2(theEnv,"get-static-constraint-checking",'b',GSCCommand,"GSCCommand", "00");
-   EnvDefineFunction2(theEnv,"set-static-constraint-checking",'b',SSCCommand,"SSCCommand", "11");
+   EnvDefineFunction2(theEnv,(char*)"get-static-constraint-checking",'b',GSCCommand,(char*)"GSCCommand", (char*)"00");
+   EnvDefineFunction2(theEnv,(char*)"set-static-constraint-checking",'b',SSCCommand,(char*)"SSCCommand", (char*)"11");
 #endif
   }
   
@@ -498,7 +498,7 @@ globle int SDCCommand(
 
    oldValue = EnvGetDynamicConstraintChecking(theEnv);
 
-   if (EnvArgCountCheck(theEnv,"set-dynamic-constraint-checking",EXACTLY,1) == -1)
+   if (EnvArgCountCheck(theEnv,(char*)"set-dynamic-constraint-checking",EXACTLY,1) == -1)
      { return(oldValue); }
 
    EnvRtnUnknown(theEnv,1,&arg_ptr);
@@ -522,7 +522,7 @@ globle int GDCCommand(
 
    oldValue = EnvGetDynamicConstraintChecking(theEnv);
 
-   if (EnvArgCountCheck(theEnv,"get-dynamic-constraint-checking",EXACTLY,0) == -1)
+   if (EnvArgCountCheck(theEnv,(char*)"get-dynamic-constraint-checking",EXACTLY,0) == -1)
      { return(oldValue); }
 
    return(oldValue);
@@ -540,7 +540,7 @@ globle int SSCCommand(
 
    oldValue = EnvGetStaticConstraintChecking(theEnv);
 
-   if (EnvArgCountCheck(theEnv,"set-static-constraint-checking",EXACTLY,1) == -1)
+   if (EnvArgCountCheck(theEnv,(char*)"set-static-constraint-checking",EXACTLY,1) == -1)
      { return(oldValue); }
 
    EnvRtnUnknown(theEnv,1,&arg_ptr);
@@ -564,7 +564,7 @@ globle int GSCCommand(
 
    oldValue = EnvGetStaticConstraintChecking(theEnv);
 
-   if (EnvArgCountCheck(theEnv,"get-static-constraint-checking",EXACTLY,0) == -1)
+   if (EnvArgCountCheck(theEnv,(char*)"get-static-constraint-checking",EXACTLY,0) == -1)
      { return(oldValue); }
 
    return(oldValue);

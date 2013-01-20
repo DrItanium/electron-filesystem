@@ -87,7 +87,7 @@ globle void DeriveDefaultFromConstraints(
       else
         {
          theDefault->type = SYMBOL;
-         theDefault->value = EnvAddSymbol(theEnv,"nil");
+         theDefault->value = EnvAddSymbol(theEnv,(char*)"nil");
         }
 
       return;
@@ -100,13 +100,13 @@ globle void DeriveDefaultFromConstraints(
    if (constraints->anyAllowed || constraints->symbolsAllowed)
      {
       theType = SYMBOL;
-      theValue = FindDefaultValue(theEnv,SYMBOL,constraints,EnvAddSymbol(theEnv,"nil"));
+      theValue = FindDefaultValue(theEnv,SYMBOL,constraints,EnvAddSymbol(theEnv,(char*)"nil"));
      }
 
    else if (constraints->stringsAllowed)
      {
       theType = STRING;
-      theValue = FindDefaultValue(theEnv,STRING,constraints,EnvAddSymbol(theEnv,""));
+      theValue = FindDefaultValue(theEnv,STRING,constraints,EnvAddSymbol(theEnv,(char*)""));
      }
 
    else if (constraints->integersAllowed)
@@ -124,7 +124,7 @@ globle void DeriveDefaultFromConstraints(
    else if (constraints->instanceNamesAllowed)
      {
       theType = INSTANCE_NAME;
-      theValue = FindDefaultValue(theEnv,INSTANCE_NAME,constraints,EnvAddSymbol(theEnv,"nil"));
+      theValue = FindDefaultValue(theEnv,INSTANCE_NAME,constraints,EnvAddSymbol(theEnv,(char*)"nil"));
      }
 
    else if (constraints->instanceAddressesAllowed)
@@ -149,7 +149,7 @@ globle void DeriveDefaultFromConstraints(
    else
      {
       theType = SYMBOL;
-      theValue = EnvAddSymbol(theEnv,"nil");
+      theValue = EnvAddSymbol(theEnv,(char*)"nil");
      }
 
    /*=========================================================*/
@@ -277,7 +277,7 @@ globle struct expr *ParseDefault(
    *noneSpecified = FALSE;
    *deriveSpecified = FALSE;
 
-   SavePPBuffer(theEnv," ");
+   SavePPBuffer(theEnv,(char*)" ");
    GetToken(theEnv,readSource,&theToken);
 
    /*===================================================*/
@@ -319,8 +319,8 @@ globle struct expr *ParseDefault(
              (specialVarCode == -1) ||
              ((specialVarCode != -1) && (defaultList != NULL)))
            {
-            if (dynamic) SyntaxErrorMessage(theEnv,"default-dynamic attribute");
-            else SyntaxErrorMessage(theEnv,"default attribute");
+            if (dynamic) SyntaxErrorMessage(theEnv,(char*)"default-dynamic attribute");
+            else SyntaxErrorMessage(theEnv,(char*)"default attribute");
             ReturnExpression(theEnv,newItem);
             ReturnExpression(theEnv,defaultList);
             *error = TRUE;
@@ -338,10 +338,10 @@ globle struct expr *ParseDefault(
 
          if (theToken.type != RPAREN)
            {
-            if (dynamic) SyntaxErrorMessage(theEnv,"default-dynamic attribute");
-            else SyntaxErrorMessage(theEnv,"default attribute");
+            if (dynamic) SyntaxErrorMessage(theEnv,(char*)"default-dynamic attribute");
+            else SyntaxErrorMessage(theEnv,(char*)"default attribute");
             PPBackup(theEnv);
-            SavePPBuffer(theEnv," ");
+            SavePPBuffer(theEnv,(char*)" ");
             SavePPBuffer(theEnv,theToken.printForm);
             *error = TRUE;
            }
@@ -363,8 +363,8 @@ globle struct expr *ParseDefault(
          ReturnExpression(theEnv,defaultList);
          ReturnExpression(theEnv,newItem);
          *error = TRUE;
-         if (dynamic) SyntaxErrorMessage(theEnv,"default-dynamic attribute");
-         else SyntaxErrorMessage(theEnv,"default attribute");
+         if (dynamic) SyntaxErrorMessage(theEnv,(char*)"default-dynamic attribute");
+         else SyntaxErrorMessage(theEnv,(char*)"default attribute");
          return(NULL);
         }
 
@@ -382,7 +382,7 @@ globle struct expr *ParseDefault(
       /* Begin parsing the next default value. */
       /*=======================================*/
 
-      SavePPBuffer(theEnv," ");
+      SavePPBuffer(theEnv,(char*)" ");
       GetToken(theEnv,readSource,&theToken);
      }
 
@@ -392,7 +392,7 @@ globle struct expr *ParseDefault(
 
    PPBackup(theEnv);
    PPBackup(theEnv);
-   SavePPBuffer(theEnv,")");
+   SavePPBuffer(theEnv,(char*)")");
 
    /*=========================================*/
    /* A single field slot's default attribute */
@@ -415,8 +415,8 @@ globle struct expr *ParseDefault(
 
       if (*error)
         {
-         PrintErrorID(theEnv,"DEFAULT",1,TRUE);
-         EnvPrintRouter(theEnv,WERROR,"The default value for a single field slot must be a single field value\n");
+         PrintErrorID(theEnv,(char*)"DEFAULT",1,TRUE);
+         EnvPrintRouter(theEnv,WERROR,(char*)"The default value for a single field slot must be a single field value\n");
          ReturnExpression(theEnv,defaultList);
          return(NULL);
         }
@@ -443,8 +443,8 @@ globle struct expr *ParseDefault(
           (multifield == FALSE) &&
           (*error == FALSE))
         {
-         PrintErrorID(theEnv,"DEFAULT",1,TRUE);
-         EnvPrintRouter(theEnv,WERROR,"The default value for a single field slot must be a single field value\n");
+         PrintErrorID(theEnv,(char*)"DEFAULT",1,TRUE);
+         EnvPrintRouter(theEnv,WERROR,(char*)"The default value for a single field slot must be a single field value\n");
          *error = TRUE;
         }
 

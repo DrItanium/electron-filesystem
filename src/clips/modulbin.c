@@ -60,19 +60,19 @@
 globle void DefmoduleBinarySetup(
   void *theEnv)
   {
-   AddBeforeBloadFunction(theEnv,"defmodule",RemoveAllDefmodules,2000);
+   AddBeforeBloadFunction(theEnv,(char*)"defmodule",RemoveAllDefmodules,2000);
 
 #if BLOAD_AND_BSAVE
-   AddBinaryItem(theEnv,"defmodule",0,BsaveFind,NULL,
+   AddBinaryItem(theEnv,(char*)"defmodule",0,BsaveFind,NULL,
                              BsaveStorage,BsaveBinaryItem,
                              BloadStorage,BloadBinaryItem,
                              ClearBload);
 #endif
 
-   AddAbortBloadFunction(theEnv,"defmodule",CreateMainModule,0);
+   AddAbortBloadFunction(theEnv,(char*)"defmodule",CreateMainModule,0);
 
 #if (BLOAD || BLOAD_ONLY)
-   AddBinaryItem(theEnv,"defmodule",0,NULL,NULL,NULL,NULL,
+   AddBinaryItem(theEnv,(char*)"defmodule",0,NULL,NULL,NULL,NULL,
                              BloadStorage,BloadBinaryItem,
                              ClearBload);
 #endif

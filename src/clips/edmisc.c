@@ -125,12 +125,12 @@ globle int compile_region(
 
    /* Create IO router for the region (CLIPS.C) */
 
-   EnvAddRouter(theEnv,"emacs_region",90,region_fnd,
+   EnvAddRouter(theEnv,(char*)"emacs_region",90,region_fnd,
 		NULL,region_getc,region_ungetc,NULL);
 
    /* COMPILE */
 
-   if (get_compile(theEnv,"emacs_region","Emacs_region") == 0)
+   if (get_compile(theEnv,(char*)"emacs_region",(char*)"Emacs_region") == 0)
      mlwrite("Error while forming compilation buffer!");
    else
      mlwrite("Compilation done.");
@@ -163,12 +163,12 @@ globle int compile_file(
 
    /*  Create a IO router for the file   (CLIPS.C)  */
 
-   EnvAddRouter(theEnv,"emacs_file",90,buffer_fnd,
+   EnvAddRouter(theEnv,(char*)"emacs_file",90,buffer_fnd,
 		NULL,buffer_getc,buffer_ungetc,NULL);
 
    /*   COMPILE   */
 
-   if (get_compile(theEnv,"emacs_file","Emacs_buffer") == 0)
+   if (get_compile(theEnv,(char*)"emacs_file",(char*)"Emacs_buffer") == 0)
      mlwrite("Error while forming compilation buffer!");
    else
      mlwrite("Compilation done.");
@@ -196,7 +196,7 @@ globle int get_compile(
    CompileLine[0] = '\0';
 
    EnvActivateRouter(theEnv,str1);	
-   EnvActivateRouter(theEnv,"cmp_router");
+   EnvActivateRouter(theEnv,(char*)"cmp_router");
    SetPrintWhileLoading(theEnv,TRUE);
    LoadConstructsFromLogicalName(theEnv,str2);
    DestroyPPBuffer(theEnv);
@@ -204,7 +204,7 @@ globle int get_compile(
    if (CompileLineIndex != 0)
      addline(theEnv,CompileBufferp,CompileLine);
    EnvDeactivateRouter(theEnv,str1);	
-   EnvDeactivateRouter(theEnv,"cmp_router");
+   EnvDeactivateRouter(theEnv,(char*)"cmp_router");
    SetPrintWhileLoading(theEnv,FALSE);
    EnvDeleteRouter(theEnv,str1);
 
@@ -428,7 +428,7 @@ globle int print_cmp(
 globle void init_cmp_router(
   void *theEnv)
   {
-   EnvAddRouter(theEnv,"cmp_router",
+   EnvAddRouter(theEnv,(char*)"cmp_router",
 	      20,
 	      query_cmp,
 	      print_cmp,
@@ -441,7 +441,7 @@ globle void init_cmp_router(
 globle void kill_cmp_router(
   void *theEnv)
   {
-   EnvDeleteRouter(theEnv,"cmp_router");
+   EnvDeleteRouter(theEnv,(char*)"cmp_router");
   }
 
 /* =========================================================================

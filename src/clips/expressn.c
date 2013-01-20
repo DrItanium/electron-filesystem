@@ -140,16 +140,16 @@ static void DeallocateExpressionData(
 globle void InitExpressionPointers(
   void *theEnv)
   {
-   ExpressionData(theEnv)->PTR_AND = (void *) FindFunction(theEnv,"and");
-   ExpressionData(theEnv)->PTR_OR = (void *) FindFunction(theEnv,"or");
-   ExpressionData(theEnv)->PTR_EQ = (void *) FindFunction(theEnv,"eq");
-   ExpressionData(theEnv)->PTR_NEQ = (void *) FindFunction(theEnv,"neq");
-   ExpressionData(theEnv)->PTR_NOT = (void *) FindFunction(theEnv,"not");
+   ExpressionData(theEnv)->PTR_AND = (void *) FindFunction(theEnv,(char*)"and");
+   ExpressionData(theEnv)->PTR_OR = (void *) FindFunction(theEnv,(char*)"or");
+   ExpressionData(theEnv)->PTR_EQ = (void *) FindFunction(theEnv,(char*)"eq");
+   ExpressionData(theEnv)->PTR_NEQ = (void *) FindFunction(theEnv,(char*)"neq");
+   ExpressionData(theEnv)->PTR_NOT = (void *) FindFunction(theEnv,(char*)"not");
 
    if ((ExpressionData(theEnv)->PTR_AND == NULL) || (ExpressionData(theEnv)->PTR_OR == NULL) ||
        (ExpressionData(theEnv)->PTR_EQ == NULL) || (ExpressionData(theEnv)->PTR_NEQ == NULL) || (ExpressionData(theEnv)->PTR_NOT == NULL))
      {
-      SystemError(theEnv,"EXPRESSN",1);
+      SystemError(theEnv,(char*)"EXPRESSN",1);
       EnvExitRouter(theEnv,EXIT_FAILURE);
      }
   }

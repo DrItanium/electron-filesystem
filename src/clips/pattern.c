@@ -300,13 +300,13 @@ void ReservedPatternSymbolErrorMsg(
   char *theSymbol,
   char *usedFor)
   {
-   PrintErrorID(theEnv,"PATTERN",1,TRUE);
-   EnvPrintRouter(theEnv,WERROR,"The symbol ");
+   PrintErrorID(theEnv,(char*)"PATTERN",1,TRUE);
+   EnvPrintRouter(theEnv,WERROR,(char*)"The symbol ");
    EnvPrintRouter(theEnv,WERROR,theSymbol);
-   EnvPrintRouter(theEnv,WERROR," has special meaning\n");
-   EnvPrintRouter(theEnv,WERROR,"and may not be used as ");
+   EnvPrintRouter(theEnv,WERROR,(char*)" has special meaning\n");
+   EnvPrintRouter(theEnv,WERROR,(char*)"and may not be used as ");
    EnvPrintRouter(theEnv,WERROR,usedFor);
-   EnvPrintRouter(theEnv,WERROR,".\n");
+   EnvPrintRouter(theEnv,WERROR,(char*)".\n");
   }
 
 /************************************************************/
@@ -360,7 +360,7 @@ globle void GetNextPatternEntity(
 
    else
      {
-      SystemError(theEnv,"PATTERN",1);
+      SystemError(theEnv,(char*)"PATTERN",1);
       EnvExitRouter(theEnv,EXIT_FAILURE);
      }
 
@@ -625,7 +625,7 @@ struct lhsParseNode *RestrictionParse(
       if ((theToken->type != RPAREN) && (multifieldSlot == TRUE))
         {
          PPBackup(theEnv);
-         SavePPBuffer(theEnv," ");
+         SavePPBuffer(theEnv,(char*)" ");
          SavePPBuffer(theEnv,theToken->printForm);
         }
 
@@ -685,7 +685,7 @@ struct lhsParseNode *RestrictionParse(
 
    if ((topNode == NULL) && (! multifieldSlot))
      {
-      SyntaxErrorMessage(theEnv,"defrule");
+      SyntaxErrorMessage(theEnv,(char*)"defrule");
       return(NULL);
      }
 
@@ -977,7 +977,7 @@ static struct lhsParseNode *ConjuctiveRestrictionParse(
         }
       else
         {
-         SystemError(theEnv,"RULEPSR",1);
+         SystemError(theEnv,(char*)"RULEPSR",1);
          EnvExitRouter(theEnv,EXIT_FAILURE);
         }
 
@@ -1086,8 +1086,8 @@ static int CheckForVariableMixing(
        (multifield || multiReturnValue))
 
      {
-      PrintErrorID(theEnv,"PATTERN",2,TRUE);
-      EnvPrintRouter(theEnv,WERROR,"Single and multifield constraints cannot be mixed in a field constraint\n");
+      PrintErrorID(theEnv,(char*)"PATTERN",2,TRUE);
+      EnvPrintRouter(theEnv,WERROR,(char*)"Single and multifield constraints cannot be mixed in a field constraint\n");
       return(TRUE);
      }
 
@@ -1225,7 +1225,7 @@ static struct lhsParseNode *LiteralRestrictionParse(
 
    else
      {
-      SyntaxErrorMessage(theEnv,"defrule");
+      SyntaxErrorMessage(theEnv,(char*)"defrule");
       *error = TRUE;
       ReturnLHSParseNodes(theEnv,topNode);
       return(NULL);

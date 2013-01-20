@@ -68,7 +68,7 @@ globle void InitializeDefaultRouters(
    RouterData(theEnv)->AwaitingInput = TRUE;
    
 #if (! RUN_TIME)
-   EnvDefineFunction2(theEnv,"exit",    'v', PTIEF ExitCommand,    "ExitCommand", "*1i");
+   EnvDefineFunction2(theEnv,(char*)"exit", 'v', PTIEF ExitCommand, (char*)"ExitCommand", (char*)"*1i");
 #endif
    InitializeFileRouter(theEnv);
    InitializeStringRouter(theEnv);
@@ -328,7 +328,7 @@ globle void ExitCommand(
    int argCnt;
    int status;
 
-   if ((argCnt = EnvArgCountCheck(theEnv,"exit",NO_MORE_THAN,1)) == -1) return;
+   if ((argCnt = EnvArgCountCheck(theEnv,(char*)"exit",NO_MORE_THAN,1)) == -1) return;
    if (argCnt == 0)
      { EnvExitRouter(theEnv,EXIT_SUCCESS); }
    else
@@ -718,10 +718,10 @@ globle void UnrecognizedRouterMessage(
   void *theEnv,
   char *logicalName)
   {
-   PrintErrorID(theEnv,"ROUTER",1,FALSE);
-   EnvPrintRouter(theEnv,WERROR,"Logical name ");
+   PrintErrorID(theEnv,(char*)"ROUTER",1,FALSE);
+   EnvPrintRouter(theEnv,WERROR,(char*)"Logical name ");
    EnvPrintRouter(theEnv,WERROR,logicalName);
-   EnvPrintRouter(theEnv,WERROR," was not recognized by any routers\n");
+   EnvPrintRouter(theEnv,WERROR,(char*)" was not recognized by any routers\n");
   }
 
 /*****************************************/

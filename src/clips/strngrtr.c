@@ -60,7 +60,7 @@ globle void InitializeStringRouter(
   {
    AllocateEnvironmentData(theEnv,STRING_ROUTER_DATA,sizeof(struct stringRouterData),DeallocateStringRouterData);
 
-   EnvAddRouter(theEnv,"string",0,FindString,PrintString,GetcString,UngetcString,NULL);
+   EnvAddRouter(theEnv,(char*)"string",0,FindString,PrintString,GetcString,UngetcString,NULL);
   }
   
 /*******************************************/
@@ -115,7 +115,7 @@ static int PrintString(
    head = FindStringRouter(theEnv,logicalName);
    if (head == NULL)
      {
-      SystemError(theEnv,"ROUTER",3);
+      SystemError(theEnv,(char*)"ROUTER",3);
       EnvExitRouter(theEnv,EXIT_FAILURE);
      }
 
@@ -146,7 +146,7 @@ static int GetcString(
    head = FindStringRouter(theEnv,logicalName);
    if (head == NULL)
      {
-      SystemError(theEnv,"ROUTER",1);
+      SystemError(theEnv,(char*)"ROUTER",1);
       EnvExitRouter(theEnv,EXIT_FAILURE);
      }
 
@@ -183,7 +183,7 @@ static int UngetcString(
 
    if (head == NULL)
      {
-      SystemError(theEnv,"ROUTER",2);
+      SystemError(theEnv,(char*)"ROUTER",2);
       EnvExitRouter(theEnv,EXIT_FAILURE);
      }
 

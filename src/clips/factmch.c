@@ -699,11 +699,11 @@ static void PatternNetErrorMessage(
    /* Print the fact being pattern matched. */
    /*=======================================*/
 
-   PrintErrorID(theEnv,"FACTMCH",1,TRUE);
-   EnvPrintRouter(theEnv,WERROR,"This error occurred in the fact pattern network\n");
-   EnvPrintRouter(theEnv,WERROR,"   Currently active fact: ");
+   PrintErrorID(theEnv,(char*)"FACTMCH",1,TRUE);
+   EnvPrintRouter(theEnv,WERROR,(char*)"This error occurred in the fact pattern network\n");
+   EnvPrintRouter(theEnv,WERROR,(char*)"   Currently active fact: ");
    PrintFact(theEnv,WERROR,FactData(theEnv)->CurrentPatternFact,FALSE,FALSE);
-   EnvPrintRouter(theEnv,WERROR,"\n");
+   EnvPrintRouter(theEnv,WERROR,(char*)"\n");
 
    /*==============================================*/
    /* Print the field position or slot name of the */
@@ -711,12 +711,12 @@ static void PatternNetErrorMessage(
    /*==============================================*/
 
    if (FactData(theEnv)->CurrentPatternFact->whichDeftemplate->implied)
-     { gensprintf(buffer,"   Problem resides in field #%d\n",patternPtr->whichField); }
+     { gensprintf(buffer,(char*)"   Problem resides in field #%d\n",patternPtr->whichField); }
    else
      {
       theSlots = FactData(theEnv)->CurrentPatternFact->whichDeftemplate->slotList;
       for (i = 0; i < (int) patternPtr->whichSlot; i++) theSlots = theSlots->next;
-      gensprintf(buffer,"   Problem resides in slot %s\n",ValueToString(theSlots->slotName));
+      gensprintf(buffer,(char*)"   Problem resides in slot %s\n",ValueToString(theSlots->slotName));
      }
 
    EnvPrintRouter(theEnv,WERROR,buffer);
@@ -729,7 +729,7 @@ static void PatternNetErrorMessage(
    /*==========================================================*/
 
    TraceErrorToJoin(theEnv,patternPtr,FALSE);
-   EnvPrintRouter(theEnv,WERROR,"\n");
+   EnvPrintRouter(theEnv,WERROR,(char*)"\n");
   }
 
 /***************************************************************************/
@@ -753,7 +753,7 @@ static void TraceErrorToJoin(
          for (joinPtr = patternPtr->header.entryJoin;
               joinPtr != NULL;
               joinPtr = joinPtr->rightMatchNode)
-           { TraceErrorToRule(theEnv,joinPtr,"      "); }
+           { TraceErrorToRule(theEnv,joinPtr,(char*)"      "); }
         }
       else
         { TraceErrorToJoin(theEnv,patternPtr->nextLevel,TRUE); }

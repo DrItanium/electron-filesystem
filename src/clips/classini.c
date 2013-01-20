@@ -93,9 +93,9 @@
                    CONSTANTS
    =========================================
    ***************************************** */
-#define SUPERCLASS_RLN       "is-a"
-#define NAME_RLN             "name"
-#define INITIAL_OBJECT_NAME  "initial-object"
+#define SUPERCLASS_RLN       (char*)"is-a"
+#define NAME_RLN             (char*)"name"
+#define INITIAL_OBJECT_NAME  (char*)"initial-object"
 
 /* =========================================
    *****************************************
@@ -137,14 +137,14 @@ static void UpdateDefclassesScope(void *);
 globle void SetupObjectSystem(
   void *theEnv)
   {   
-   ENTITY_RECORD defclassEntityRecord = { "DEFCLASS_PTR", DEFCLASS_PTR,1,0,0,
+   ENTITY_RECORD defclassEntityRecord = { (char*)"DEFCLASS_PTR", DEFCLASS_PTR,1,0,0,
                                               NULL,NULL,NULL,NULL,NULL,
                                               DecrementDefclassBusyCount,
                                               IncrementDefclassBusyCount,
                                               NULL,NULL,NULL,NULL,NULL };
 
    AllocateEnvironmentData(theEnv,DEFCLASS_DATA,sizeof(struct defclassData),NULL);
-   AddEnvironmentCleanupFunction(theEnv,"defclasses",DeallocateDefclassData,-500);
+   AddEnvironmentCleanupFunction(theEnv,(char*)"defclasses",DeallocateDefclassData,-500);
 
    memcpy(&DefclassData(theEnv)->DefclassEntityRecord,&defclassEntityRecord,sizeof(struct entityRecord));   
 
@@ -561,7 +561,7 @@ static void SetupDefclasses(
    InstallPrimitive(theEnv,&DefclassData(theEnv)->DefclassEntityRecord,DEFCLASS_PTR);
 
    DefclassData(theEnv)->DefclassModuleIndex =
-                RegisterModuleItem(theEnv,"defclass",
+                RegisterModuleItem(theEnv,(char*)"defclass",
 #if (! RUN_TIME)
                                     AllocateModule,ReturnModule,
 #else
@@ -579,7 +579,7 @@ static void SetupDefclasses(
 #endif
                                     EnvFindDefclass);
 
-   DefclassData(theEnv)->DefclassConstruct =  AddConstruct(theEnv,"defclass","defclasses",
+   DefclassData(theEnv)->DefclassConstruct =  AddConstruct(theEnv,(char*)"defclass",(char*)"defclasses",
 #if (! BLOAD_ONLY) && (! RUN_TIME)
                                      ParseDefclass,
 #else
@@ -597,71 +597,71 @@ static void SetupDefclasses(
 #endif
                                      );
 
-   AddClearReadyFunction(theEnv,"defclass",InstancesPurge,0);
+   AddClearReadyFunction(theEnv,(char*)"defclass",InstancesPurge,0);
 
 #if ! RUN_TIME
-   EnvAddClearFunction(theEnv,"defclass",CreateSystemClasses,0);
+   EnvAddClearFunction(theEnv,(char*)"defclass",CreateSystemClasses,0);
    InitializeClasses(theEnv);
 
 #if ! BLOAD_ONLY
 #if DEFMODULE_CONSTRUCT
-   AddPortConstructItem(theEnv,"defclass",SYMBOL);
-   AddAfterModuleDefinedFunction(theEnv,"defclass",UpdateDefclassesScope,0);
+   AddPortConstructItem(theEnv,(char*)"defclass",SYMBOL);
+   AddAfterModuleDefinedFunction(theEnv,(char*)"defclass",UpdateDefclassesScope,0);
 #endif
-   EnvDefineFunction2(theEnv,"undefclass",'v',PTIEF UndefclassCommand,"UndefclassCommand","11w");
+   EnvDefineFunction2(theEnv,(char*)"undefclass",'v',PTIEF UndefclassCommand,(char*)"UndefclassCommand",(char*)"11w");
 
-   AddSaveFunction(theEnv,"defclass",SaveDefclasses,10);
+   AddSaveFunction(theEnv,(char*)"defclass",SaveDefclasses,10);
 #endif
 
 #if DEBUGGING_FUNCTIONS
-   EnvDefineFunction2(theEnv,"list-defclasses",'v',PTIEF ListDefclassesCommand,"ListDefclassesCommand","01");
-   EnvDefineFunction2(theEnv,"ppdefclass",'v',PTIEF PPDefclassCommand,"PPDefclassCommand","11w");
-   EnvDefineFunction2(theEnv,"describe-class",'v',PTIEF DescribeClassCommand,"DescribeClassCommand","11w");
-   EnvDefineFunction2(theEnv,"browse-classes",'v',PTIEF BrowseClassesCommand,"BrowseClassesCommand","01w");
+   EnvDefineFunction2(theEnv,(char*)"list-defclasses",'v',PTIEF ListDefclassesCommand,(char*)"ListDefclassesCommand",(char*)"01");
+   EnvDefineFunction2(theEnv,(char*)"ppdefclass",'v',PTIEF PPDefclassCommand,(char*)"PPDefclassCommand",(char*)"11w");
+   EnvDefineFunction2(theEnv,(char*)"describe-class",'v',PTIEF DescribeClassCommand,(char*)"DescribeClassCommand",(char*)"11w");
+   EnvDefineFunction2(theEnv,(char*)"browse-classes",'v',PTIEF BrowseClassesCommand,(char*)"BrowseClassesCommand",(char*)"01w");
 #endif
 
-   EnvDefineFunction2(theEnv,"get-defclass-list",'m',PTIEF GetDefclassListFunction,
-                   "GetDefclassListFunction","01");
-   EnvDefineFunction2(theEnv,"superclassp",'b',PTIEF SuperclassPCommand,"SuperclassPCommand","22w");
-   EnvDefineFunction2(theEnv,"subclassp",'b',PTIEF SubclassPCommand,"SubclassPCommand","22w");
-   EnvDefineFunction2(theEnv,"class-existp",'b',PTIEF ClassExistPCommand,"ClassExistPCommand","11w");
-   EnvDefineFunction2(theEnv,"message-handler-existp",'b',
-                   PTIEF MessageHandlerExistPCommand,"MessageHandlerExistPCommand","23w");
-   EnvDefineFunction2(theEnv,"class-abstractp",'b',PTIEF ClassAbstractPCommand,"ClassAbstractPCommand","11w");
+   EnvDefineFunction2(theEnv,(char*)"get-defclass-list",'m',PTIEF GetDefclassListFunction,
+                   (char*)"GetDefclassListFunction",(char*)"01");
+   EnvDefineFunction2(theEnv,(char*)"superclassp",'b',PTIEF SuperclassPCommand,(char*)"SuperclassPCommand",(char*)"22w");
+   EnvDefineFunction2(theEnv,(char*)"subclassp",'b',PTIEF SubclassPCommand,(char*)"SubclassPCommand",(char*)"22w");
+   EnvDefineFunction2(theEnv,(char*)"class-existp",'b',PTIEF ClassExistPCommand,(char*)"ClassExistPCommand",(char*)"11w");
+   EnvDefineFunction2(theEnv,(char*)"message-handler-existp",'b',
+                   PTIEF MessageHandlerExistPCommand,(char*)"MessageHandlerExistPCommand",(char*)"23w");
+   EnvDefineFunction2(theEnv,(char*)"class-abstractp",'b',PTIEF ClassAbstractPCommand,(char*)"ClassAbstractPCommand",(char*)"11w");
 #if DEFRULE_CONSTRUCT
-   EnvDefineFunction2(theEnv,"class-reactivep",'b',PTIEF ClassReactivePCommand,"ClassReactivePCommand","11w");
+   EnvDefineFunction2(theEnv,(char*)"class-reactivep",'b',PTIEF ClassReactivePCommand,(char*)"ClassReactivePCommand",(char*)"11w");
 #endif
-   EnvDefineFunction2(theEnv,"class-slots",'m',PTIEF ClassSlotsCommand,"ClassSlotsCommand","12w");
-   EnvDefineFunction2(theEnv,"class-superclasses",'m',
-                   PTIEF ClassSuperclassesCommand,"ClassSuperclassesCommand","12w");
-   EnvDefineFunction2(theEnv,"class-subclasses",'m',
-                   PTIEF ClassSubclassesCommand,"ClassSubclassesCommand","12w");
-   EnvDefineFunction2(theEnv,"get-defmessage-handler-list",'m',
-                   PTIEF GetDefmessageHandlersListCmd,"GetDefmessageHandlersListCmd","02w");
-   EnvDefineFunction2(theEnv,"slot-existp",'b',PTIEF SlotExistPCommand,"SlotExistPCommand","23w");
-   EnvDefineFunction2(theEnv,"slot-facets",'m',PTIEF SlotFacetsCommand,"SlotFacetsCommand","22w");
-   EnvDefineFunction2(theEnv,"slot-sources",'m',PTIEF SlotSourcesCommand,"SlotSourcesCommand","22w");
-   EnvDefineFunction2(theEnv,"slot-types",'m',PTIEF SlotTypesCommand,"SlotTypesCommand","22w");
-   EnvDefineFunction2(theEnv,"slot-allowed-values",'m',PTIEF SlotAllowedValuesCommand,"SlotAllowedValuesCommand","22w");
-   EnvDefineFunction2(theEnv,"slot-allowed-classes",'m',PTIEF SlotAllowedClassesCommand,"SlotAllowedClassesCommand","22w");
-   EnvDefineFunction2(theEnv,"slot-range",'m',PTIEF SlotRangeCommand,"SlotRangeCommand","22w");
-   EnvDefineFunction2(theEnv,"slot-cardinality",'m',PTIEF SlotCardinalityCommand,"SlotCardinalityCommand","22w");
-   EnvDefineFunction2(theEnv,"slot-writablep",'b',PTIEF SlotWritablePCommand,"SlotWritablePCommand","22w");
-   EnvDefineFunction2(theEnv,"slot-initablep",'b',PTIEF SlotInitablePCommand,"SlotInitablePCommand","22w");
-   EnvDefineFunction2(theEnv,"slot-publicp",'b',PTIEF SlotPublicPCommand,"SlotPublicPCommand","22w");
-   EnvDefineFunction2(theEnv,"slot-direct-accessp",'b',PTIEF SlotDirectAccessPCommand,
-                   "SlotDirectAccessPCommand","22w");
-   EnvDefineFunction2(theEnv,"slot-default-value",'u',PTIEF SlotDefaultValueCommand,
-                   "SlotDefaultValueCommand","22w");
-   EnvDefineFunction2(theEnv,"defclass-module",'w',PTIEF GetDefclassModuleCommand,
-                   "GetDefclassModuleCommand","11w");
-   EnvDefineFunction2(theEnv,"get-class-defaults-mode", 'w', PTIEF GetClassDefaultsModeCommand,  "GetClassDefaultsModeCommand", "00");
-   EnvDefineFunction2(theEnv,"set-class-defaults-mode", 'w', PTIEF SetClassDefaultsModeCommand,  "SetClassDefaultsModeCommand", "11w");
+   EnvDefineFunction2(theEnv,(char*)"class-slots",'m',PTIEF ClassSlotsCommand,(char*)"ClassSlotsCommand",(char*)"12w");
+   EnvDefineFunction2(theEnv,(char*)"class-superclasses",'m',
+                   PTIEF ClassSuperclassesCommand,(char*)"ClassSuperclassesCommand",(char*)"12w");
+   EnvDefineFunction2(theEnv,(char*)"class-subclasses",'m',
+                   PTIEF ClassSubclassesCommand,(char*)"ClassSubclassesCommand",(char*)"12w");
+   EnvDefineFunction2(theEnv,(char*)"get-defmessage-handler-list",'m',
+                   PTIEF GetDefmessageHandlersListCmd,(char*)"GetDefmessageHandlersListCmd",(char*)"02w");
+   EnvDefineFunction2(theEnv,(char*)"slot-existp",'b',PTIEF SlotExistPCommand,(char*)"SlotExistPCommand",(char*)"23w");
+   EnvDefineFunction2(theEnv,(char*)"slot-facets",'m',PTIEF SlotFacetsCommand,(char*)"SlotFacetsCommand",(char*)"22w");
+   EnvDefineFunction2(theEnv,(char*)"slot-sources",'m',PTIEF SlotSourcesCommand,(char*)"SlotSourcesCommand",(char*)"22w");
+   EnvDefineFunction2(theEnv,(char*)"slot-types",'m',PTIEF SlotTypesCommand,(char*)"SlotTypesCommand",(char*)"22w");
+   EnvDefineFunction2(theEnv,(char*)"slot-allowed-values",'m',PTIEF SlotAllowedValuesCommand,(char*)"SlotAllowedValuesCommand",(char*)"22w");
+   EnvDefineFunction2(theEnv,(char*)"slot-allowed-classes",'m',PTIEF SlotAllowedClassesCommand,(char*)"SlotAllowedClassesCommand",(char*)"22w");
+   EnvDefineFunction2(theEnv,(char*)"slot-range",'m',PTIEF SlotRangeCommand,(char*)"SlotRangeCommand",(char*)"22w");
+   EnvDefineFunction2(theEnv,(char*)"slot-cardinality",'m',PTIEF SlotCardinalityCommand,(char*)"SlotCardinalityCommand",(char*)"22w");
+   EnvDefineFunction2(theEnv,(char*)"slot-writablep",'b',PTIEF SlotWritablePCommand,(char*)"SlotWritablePCommand",(char*)"22w");
+   EnvDefineFunction2(theEnv,(char*)"slot-initablep",'b',PTIEF SlotInitablePCommand,(char*)"SlotInitablePCommand",(char*)"22w");
+   EnvDefineFunction2(theEnv,(char*)"slot-publicp",'b',PTIEF SlotPublicPCommand,(char*)"SlotPublicPCommand",(char*)"22w");
+   EnvDefineFunction2(theEnv,(char*)"slot-direct-accessp",'b',PTIEF SlotDirectAccessPCommand,
+                   (char*)"SlotDirectAccessPCommand",(char*)"22w");
+   EnvDefineFunction2(theEnv,(char*)"slot-default-value",'u',PTIEF SlotDefaultValueCommand,
+                   (char*)"SlotDefaultValueCommand",(char*)"22w");
+   EnvDefineFunction2(theEnv,(char*)"defclass-module",'w',PTIEF GetDefclassModuleCommand,
+                   (char*)"GetDefclassModuleCommand",(char*)"11w");
+   EnvDefineFunction2(theEnv,(char*)"get-class-defaults-mode", 'w', PTIEF GetClassDefaultsModeCommand,  (char*)"GetClassDefaultsModeCommand", (char*)"00");
+   EnvDefineFunction2(theEnv,(char*)"set-class-defaults-mode", 'w', PTIEF SetClassDefaultsModeCommand,  (char*)"SetClassDefaultsModeCommand", (char*)"11w");
 #endif
 
 #if DEBUGGING_FUNCTIONS
-   AddWatchItem(theEnv,"instances",0,&DefclassData(theEnv)->WatchInstances,75,DefclassWatchAccess,DefclassWatchPrint);
-   AddWatchItem(theEnv,"slots",1,&DefclassData(theEnv)->WatchSlots,74,DefclassWatchAccess,DefclassWatchPrint);
+   AddWatchItem(theEnv,(char*)"instances",0,&DefclassData(theEnv)->WatchInstances,75,DefclassWatchAccess,DefclassWatchPrint);
+   AddWatchItem(theEnv,(char*)"slots",1,&DefclassData(theEnv)->WatchSlots,74,DefclassWatchAccess,DefclassWatchPrint);
 #endif
   }
 
@@ -804,7 +804,7 @@ static void UpdateDefclassesScope(
         DecrementBitMapCount(theEnv,theDefclass->scopeMap);
         if (theDefclass->system)
           SetBitMap(newScopeMap,newModuleID);
-        else if (FindImportedConstruct(theEnv,"defclass",matchModule,
+        else if (FindImportedConstruct(theEnv,(char*)"defclass",matchModule,
                                        className,&count,TRUE,NULL) != NULL)
           SetBitMap(newScopeMap,newModuleID);
         theDefclass->scopeMap = (BITMAP_HN *) EnvAddBitMap(theEnv,(void *) newScopeMap,newScopeMapSize);

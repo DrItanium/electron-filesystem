@@ -115,9 +115,9 @@ struct lists
 /*==================================================*/
 /*Delimeter strings for marking entries in the file */
 /*==================================================*/
-#define BDELIM "BEGIN-ENTRY-"
+#define BDELIM (char*)"BEGIN-ENTRY-"
 #define BDLEN 12
-#define EDELIM "END-ENTRY"
+#define EDELIM (char*)"END-ENTRY"
 #define EDLEN 9
 #define BFORMAT "%d%1s%12s%s"   /*Format string for sscanf*/
 #define LIT_DELIM ('$')
@@ -129,7 +129,7 @@ struct lists
 #define OPEN_READ "r"
 #endif
 */
-#define OPEN_READ "r"
+#define OPEN_READ (char*)"r"
 
 #define TEXTPRO_DATA 8
 
@@ -203,10 +203,10 @@ globle int TextLookupFetch(
 
    if (fp == NULL)
      {
-      PrintErrorID(theEnv,"TEXTPRO",1,FALSE);
-      EnvPrintRouter(theEnv,WERROR,"Could not open file \"");
+      PrintErrorID(theEnv,(char*)"TEXTPRO",1,FALSE);
+      EnvPrintRouter(theEnv,WERROR,(char*)"Could not open file \"");
       EnvPrintRouter(theEnv,WERROR,file);
-      EnvPrintRouter(theEnv,WERROR,"\".\n");
+      EnvPrintRouter(theEnv,WERROR,(char*)"\".\n");
       return(-1);
      }
      
@@ -214,10 +214,10 @@ globle int TextLookupFetch(
      {
       GenClose(theEnv,fp);
 
-      PrintErrorID(theEnv,"TEXTPRO",2,FALSE);
-      EnvPrintRouter(theEnv,WERROR,"File \"");
+      PrintErrorID(theEnv,(char*)"TEXTPRO",2,FALSE);
+      EnvPrintRouter(theEnv,WERROR,(char*)"File \"");
       EnvPrintRouter(theEnv,WERROR,file);
-      EnvPrintRouter(theEnv,WERROR,"\" already loaded.\n");
+      EnvPrintRouter(theEnv,WERROR,(char*)"\" already loaded.\n");
       return(-1);
      }
 
@@ -251,10 +251,10 @@ globle int TextLookupFetch(
              {
               GenClose(theEnv,fp);
               TextLookupToss(theEnv,file);
-              PrintErrorID(theEnv,"TEXTPRO",8,FALSE);
-              EnvPrintRouter(theEnv,WERROR,"Line ");
+              PrintErrorID(theEnv,(char*)"TEXTPRO",8,FALSE);
+              EnvPrintRouter(theEnv,WERROR,(char*)"Line ");
               PrintLongInteger(theEnv,WERROR,line_ct);
-              EnvPrintRouter(theEnv,WERROR," : Unmatched end marker.\n");
+              EnvPrintRouter(theEnv,WERROR,(char*)" : Unmatched end marker.\n");
               return(-1);
              }
           }
@@ -270,10 +270,10 @@ globle int TextLookupFetch(
                GenClose(theEnv,fp);
                TextLookupToss(theEnv,file);
 
-               PrintErrorID(theEnv,"TEXTPRO",4,FALSE);
-               EnvPrintRouter(theEnv,WERROR,"Line ");
+               PrintErrorID(theEnv,(char*)"TEXTPRO",4,FALSE);
+               EnvPrintRouter(theEnv,WERROR,(char*)"Line ");
                PrintLongInteger(theEnv,WERROR,line_ct);
-               EnvPrintRouter(theEnv,WERROR," : Previous entry not closed.\n");
+               EnvPrintRouter(theEnv,WERROR,(char*)" : Previous entry not closed.\n");
 
                return(-1);
               }
@@ -294,10 +294,10 @@ globle int TextLookupFetch(
      {
       TextLookupToss(theEnv,file);
       
-      PrintErrorID(theEnv,"TEXTPRO",4,FALSE);
-      EnvPrintRouter(theEnv,WERROR,"Line ");
+      PrintErrorID(theEnv,(char*)"TEXTPRO",4,FALSE);
+      EnvPrintRouter(theEnv,WERROR,(char*)"Line ");
       PrintLongInteger(theEnv,WERROR,line_ct);
-      EnvPrintRouter(theEnv,WERROR," : Previous entry not closed.\n");
+      EnvPrintRouter(theEnv,WERROR,(char*)" : Previous entry not closed.\n");
       
       return(-1);
      }
@@ -619,10 +619,10 @@ static struct entries *AllocateEntryNode(
       GenClose(theEnv,fp);
       TextLookupToss(theEnv,file);
 
-      PrintErrorID(theEnv,"TEXTPRO",5,FALSE);
-      EnvPrintRouter(theEnv,WERROR,"Line ");
+      PrintErrorID(theEnv,(char*)"TEXTPRO",5,FALSE);
+      EnvPrintRouter(theEnv,WERROR,(char*)"Line ");
       PrintLongInteger(theEnv,WERROR,line_ct);
-      EnvPrintRouter(theEnv,WERROR," : Invalid delimeter string.\n");
+      EnvPrintRouter(theEnv,WERROR,(char*)" : Invalid delimeter string.\n");
 
       return(NULL);
      }
@@ -636,10 +636,10 @@ static struct entries *AllocateEntryNode(
       GenClose(theEnv,fp);
       TextLookupToss(theEnv,file);
 
-      PrintErrorID(theEnv,"TEXTPRO",6,FALSE);
-      EnvPrintRouter(theEnv,WERROR,"Line ");
+      PrintErrorID(theEnv,(char*)"TEXTPRO",6,FALSE);
+      EnvPrintRouter(theEnv,WERROR,(char*)"Line ");
       PrintLongInteger(theEnv,WERROR,line_ct);
-      EnvPrintRouter(theEnv,WERROR," : Invalid entry type.\n");
+      EnvPrintRouter(theEnv,WERROR,(char*)" : Invalid entry type.\n");
 
       return(NULL);
      }
@@ -649,10 +649,10 @@ static struct entries *AllocateEntryNode(
       GenClose(theEnv,fp);
       TextLookupToss(theEnv,file);
 
-      PrintErrorID(theEnv,"TEXTPRO",5,FALSE);
-      EnvPrintRouter(theEnv,WERROR,"Line ");
+      PrintErrorID(theEnv,(char*)"TEXTPRO",5,FALSE);
+      EnvPrintRouter(theEnv,WERROR,(char*)"Line ");
       PrintLongInteger(theEnv,WERROR,line_ct);
-      EnvPrintRouter(theEnv,WERROR," : Invalid delimeter string.\n");
+      EnvPrintRouter(theEnv,WERROR,(char*)" : Invalid delimeter string.\n");
 
       return(NULL);
      }
@@ -721,10 +721,10 @@ static int AttachLeaf(
         GenClose(theEnv,fp);
         TextLookupToss(theEnv,file);
 
-        PrintErrorID(theEnv,"TEXTPRO",7,FALSE);
-        EnvPrintRouter(theEnv,WERROR,"Line ");
+        PrintErrorID(theEnv,(char*)"TEXTPRO",7,FALSE);
+        EnvPrintRouter(theEnv,WERROR,(char*)"Line ");
         PrintLongInteger(theEnv,WERROR,line_ct);
-        EnvPrintRouter(theEnv,WERROR," : Non-menu entries cannot have subtopics.\n");
+        EnvPrintRouter(theEnv,WERROR,(char*)" : Non-menu entries cannot have subtopics.\n");
 
         return(FALSE);
        }
@@ -1049,9 +1049,9 @@ globle void HelpFunction(
          TextProcessingData(theEnv)->help_file = (char *) gm2(theEnv,strlen(HELP_DEFAULT) + 1);
          genstrcpy(TextProcessingData(theEnv)->help_file,HELP_DEFAULT);
         }
-      EnvPrintRouter(theEnv,WDIALOG,"Loading help file entries from ");
+      EnvPrintRouter(theEnv,WDIALOG,(char*)"Loading help file entries from ");
       EnvPrintRouter(theEnv,WDIALOG,TextProcessingData(theEnv)->help_file);
-      EnvPrintRouter(theEnv,WDIALOG,".\nPlease wait...\n");
+      EnvPrintRouter(theEnv,WDIALOG,(char*)".\nPlease wait...\n");
       status = TextLookupFetch(theEnv,TextProcessingData(theEnv)->help_file);
       if (status <= 0)
         {
@@ -1062,13 +1062,13 @@ globle void HelpFunction(
          /* ================================================================
             Enables logical name "whelp" as the destination for all help I/O
             ================================================================ */
-         EnvAddRouter(theEnv,"whelp",10,RecognizeHelpRouters,HelpPrint,
+         EnvAddRouter(theEnv,(char*)"whelp",10,RecognizeHelpRouters,HelpPrint,
                     HelpGetc,HelpUngetc,NULL);
          TextProcessingData(theEnv)->HELP_INIT = TRUE;
         }
      }
 
-   EnvActivateRouter(theEnv,"whelp");
+   EnvActivateRouter(theEnv,(char*)"whelp");
 
    /* ====================================================================
       The root node of the help-tree is MAIN (see external documentation.)
@@ -1076,11 +1076,11 @@ globle void HelpFunction(
       by the user on the top level command line.
       ==================================================================== */
    main_topic = (struct topics *) gm2(theEnv,(int) sizeof(struct topics));
-   genstrcpy(main_topic->name,"MAIN");
+   genstrcpy(main_topic->name,(char*)"MAIN");
    main_topic->next = GetCommandLineTopics(theEnv);
    main_topic->end_list = NULL;
 
-   EnvPrintRouter(theEnv,"whelp","\n");
+   EnvPrintRouter(theEnv,(char*)"whelp",(char*)"\n");
 
    /*============================*/
    /*Process user topic requests */
@@ -1090,8 +1090,8 @@ globle void HelpFunction(
       fp = FindTopicInEntries(theEnv,TextProcessingData(theEnv)->help_file,main_topic,menu,&status);
       if (status == NO_FILE)
         {
-         PrintErrorID(theEnv,"TEXTPRO",1,FALSE);
-         EnvPrintRouter(theEnv,WERROR,"Unable to access help file.\n");
+         PrintErrorID(theEnv,(char*)"TEXTPRO",1,FALSE);
+         EnvPrintRouter(theEnv,WERROR,(char*)"Unable to access help file.\n");
          break;
         }
       if (status == EXIT)
@@ -1109,12 +1109,12 @@ globle void HelpFunction(
             /*there is no current menu, the help-file has been   */
             /*tampered with and should be corrected.             */
             /*===================================================*/
-            EnvPrintRouter(theEnv,"whelp","Root entry \"MAIN\" not found in ");
-            EnvPrintRouter(theEnv,"whelp",TextProcessingData(theEnv)->help_file);
-            EnvPrintRouter(theEnv,"whelp",".\nSee external documentation.\n");
+            EnvPrintRouter(theEnv,(char*)"whelp",(char*)"Root entry \"MAIN\" not found in ");
+            EnvPrintRouter(theEnv,(char*)"whelp",TextProcessingData(theEnv)->help_file);
+            EnvPrintRouter(theEnv,(char*)"whelp",(char*)".\nSee external documentation.\n");
             break;
            }
-         EnvPrintRouter(theEnv,"whelp","\nSorry, no information available.\n\n");
+         EnvPrintRouter(theEnv,(char*)"whelp",(char*)"\nSorry, no information available.\n\n");
         }
       if (status != BRANCH_UP)
         {
@@ -1133,13 +1133,13 @@ globle void HelpFunction(
 #if ! WINDOW_INTERFACE
             if (line_cnt >= (SCREEN_LN + 1))
               {
-               EnvPrintRouter(theEnv,"whelp","PRESS <RETURN> FOR MORE. ");
-               EnvPrintRouter(theEnv,"whelp","PRESS <A>,<RETURN> TO ABORT.");
+               EnvPrintRouter(theEnv,(char*)"whelp",(char*)"PRESS <RETURN> FOR MORE. ");
+               EnvPrintRouter(theEnv,(char*)"whelp",(char*)"PRESS <A>,<RETURN> TO ABORT.");
                RouterData(theEnv)->CommandBufferInputCount = 0;
                RouterData(theEnv)->AwaitingInput = TRUE;
                do
                  {
-                  termbuf[0] = (char) EnvGetcRouter(theEnv,"whelp");
+                  termbuf[0] = (char) EnvGetcRouter(theEnv,(char*)"whelp");
                   if (termbuf[0] != LNFEED)
                     {
                      if (termbuf[0] == 'a')
@@ -1148,7 +1148,7 @@ globle void HelpFunction(
                        RouterData(theEnv)->CommandBufferInputCount++;
                      else if (RouterData(theEnv)->CommandBufferInputCount != 0)
                        RouterData(theEnv)->CommandBufferInputCount--;
-                     termbuf[1] = (char) EnvGetcRouter(theEnv,"whelp");
+                     termbuf[1] = (char) EnvGetcRouter(theEnv,(char*)"whelp");
                     }
                  }
                while ((termbuf[0] != LNFEED) &&
@@ -1164,7 +1164,7 @@ globle void HelpFunction(
               }
             line_cnt++;
 #endif
-            EnvPrintRouter(theEnv,"whelp",buf);
+            EnvPrintRouter(theEnv,(char*)"whelp",buf);
            }
         }
       else if (fp != NULL)
@@ -1182,7 +1182,7 @@ globle void HelpFunction(
              GenClose(theEnv,fp);
         }
      } while (status != EXIT);
-   EnvDeactivateRouter(theEnv,"whelp");
+   EnvDeactivateRouter(theEnv,(char*)"whelp");
 
    /*========================================================*/
    /*Release any space used by the user's topic request list */
@@ -1210,12 +1210,12 @@ globle void HelpPathFunction(
 
    if (EnvRtnArgCount(theEnv) == 0)
      {
-      EnvPrintRouter(theEnv,WDIALOG,"The current help entries file is ");
+      EnvPrintRouter(theEnv,WDIALOG,(char*)"The current help entries file is ");
       if (TextProcessingData(theEnv)->help_file != NULL)
         EnvPrintRouter(theEnv,WDIALOG,TextProcessingData(theEnv)->help_file);
       else
         EnvPrintRouter(theEnv,WDIALOG,HELP_DEFAULT);
-      EnvPrintRouter(theEnv,WDIALOG,"\n");
+      EnvPrintRouter(theEnv,WDIALOG,(char*)"\n");
      }
    else
      {
@@ -1223,22 +1223,22 @@ globle void HelpPathFunction(
         {
          if (TextProcessingData(theEnv)->HELP_INIT == TRUE)
            {
-            EnvPrintRouter(theEnv,WDIALOG,"Releasing help entries from file ");
+            EnvPrintRouter(theEnv,WDIALOG,(char*)"Releasing help entries from file ");
             EnvPrintRouter(theEnv,WDIALOG,TextProcessingData(theEnv)->help_file);
-            EnvPrintRouter(theEnv,WDIALOG,"...\n");
+            EnvPrintRouter(theEnv,WDIALOG,(char*)"...\n");
             TextLookupToss(theEnv,TextProcessingData(theEnv)->help_file);
-            EnvDeleteRouter(theEnv,"whelp");
+            EnvDeleteRouter(theEnv,(char*)"whelp");
             TextProcessingData(theEnv)->HELP_INIT = FALSE;
            }
          rm(theEnv,(void *) TextProcessingData(theEnv)->help_file,strlen(TextProcessingData(theEnv)->help_file) + 1);
         }
-      if (EnvArgTypeCheck(theEnv,"help-path",1,SYMBOL_OR_STRING,&arg_ptr) == FALSE) return;
+      if (EnvArgTypeCheck(theEnv,(char*)"help-path",1,SYMBOL_OR_STRING,&arg_ptr) == FALSE) return;
       help_name = DOToString(arg_ptr);
       TextProcessingData(theEnv)->help_file = (char *) gm2(theEnv,strlen(help_name) + 1);
       genstrcpy(TextProcessingData(theEnv)->help_file,help_name);
-      EnvPrintRouter(theEnv,WDIALOG,"Help entries file reset to ");
+      EnvPrintRouter(theEnv,WDIALOG,(char*)"Help entries file reset to ");
       EnvPrintRouter(theEnv,WDIALOG,help_name);
-      EnvPrintRouter(theEnv,WDIALOG,"\n");
+      EnvPrintRouter(theEnv,WDIALOG,(char*)"\n");
      }
   }
 
@@ -1262,15 +1262,15 @@ globle void FetchCommand(
 
    result->type = SYMBOL;
    result->value = EnvFalseSymbol(theEnv);
-   if (EnvArgTypeCheck(theEnv,"fetch",1,SYMBOL_OR_STRING,&arg_ptr) == FALSE)
+   if (EnvArgTypeCheck(theEnv,(char*)"fetch",1,SYMBOL_OR_STRING,&arg_ptr) == FALSE)
       return;
    load_ct = TextLookupFetch(theEnv,DOToString(arg_ptr));
    if (load_ct <= 0)
      {
       if (load_ct == 0)
         {
-         PrintErrorID(theEnv,"TEXTPRO",3,FALSE);
-         EnvPrintRouter(theEnv,WERROR,"No entries found.\n");
+         PrintErrorID(theEnv,(char*)"TEXTPRO",3,FALSE);
+         EnvPrintRouter(theEnv,WERROR,(char*)"No entries found.\n");
         }
 
       return;
@@ -1313,7 +1313,7 @@ globle int PrintRegionCommand(
      {
       if (strcmp(params->name,"t") == 0)
         genstrcpy(params->name,"stdout");
-      EnvPrintRouter(theEnv,params->name,"\n");
+      EnvPrintRouter(theEnv,params->name,(char*)"\n");
       while (grab_string(theEnv,fp,buf,256) != NULL)
         EnvPrintRouter(theEnv,params->name,buf);
       com_code = TRUE;
@@ -1391,7 +1391,7 @@ globle void *GetRegionCommand(
      }
 
    if (theString == NULL)
-     { theResult = EnvAddSymbol(theEnv,""); }
+     { theResult = EnvAddSymbol(theEnv,(char*)""); }
    else
      {
       sLength = strlen(theString);
@@ -1422,7 +1422,7 @@ globle int TossCommand(
    char *file;   /*Name of the file */
    DATA_OBJECT arg_ptr;
 
-   if (EnvArgTypeCheck(theEnv,"toss",1,SYMBOL_OR_STRING,&arg_ptr) == FALSE)
+   if (EnvArgTypeCheck(theEnv,(char*)"toss",1,SYMBOL_OR_STRING,&arg_ptr) == FALSE)
      return (FALSE);
    file = DOToString(arg_ptr);
 
@@ -1434,7 +1434,7 @@ globle int TossCommand(
          rm(theEnv,(void *) TextProcessingData(theEnv)->help_file,strlen(TextProcessingData(theEnv)->help_file) + 1);
          TextProcessingData(theEnv)->help_file = NULL;
          TextProcessingData(theEnv)->HELP_INIT = FALSE;
-         EnvDeleteRouter(theEnv,"whelp");
+         EnvDeleteRouter(theEnv,(char*)"whelp");
         }
 
 #endif
@@ -1479,7 +1479,7 @@ static int HelpPrint(
 #pragma unused(log_name)
 #endif
 
-   EnvPrintRouter(theEnv,"stdout",str);
+   EnvPrintRouter(theEnv,(char*)"stdout",str);
    return(1);
   }
 
@@ -1494,7 +1494,7 @@ static int HelpGetc(
 #pragma unused(log_name)
 #endif
 
-   return(EnvGetcRouter(theEnv,"stdin"));
+   return(EnvGetcRouter(theEnv,(char*)"stdin"));
   }
 
 #if WIN_BTC
@@ -1509,7 +1509,7 @@ static int HelpUngetc(
 #pragma unused(log_name)
 #endif
 
-   return(EnvUngetcRouter(theEnv,ch,"stdin"));
+   return(EnvUngetcRouter(theEnv,ch,(char*)"stdin"));
   }
 
 #endif
@@ -1551,7 +1551,7 @@ static struct topics *GetCommandLineTopics(
       else if (GetType(val) == INTEGER)
         genstrncpy(tnode->name,LongIntegerToString(theEnv,DOToLong(val)),NAMESIZE-1);
       else
-        genstrncpy(tnode->name,"***ERROR***",NAMESIZE-1);
+        genstrncpy(tnode->name,(char*)"***ERROR***",NAMESIZE-1);
       tnode->next = NULL;
       tnode->end_list = NULL;
       if (head == NULL)
@@ -1595,12 +1595,12 @@ static struct topics *AskForNewHelpTopic(
    /*==================================================================*/
    /*Read a line of input from the user (substituting blanks for tabs) */
    /*==================================================================*/
-   EnvPrintRouter(theEnv,"whelp",*menu);
-   EnvPrintRouter(theEnv,"whelp"," Topic? ");
+   EnvPrintRouter(theEnv,(char*)"whelp",*menu);
+   EnvPrintRouter(theEnv,(char*)"whelp",(char*)" Topic? ");
    RouterData(theEnv)->CommandBufferInputCount = 0;
    RouterData(theEnv)->AwaitingInput = TRUE;
    for ( theIndex = 0;
-         ((list[theIndex] = (char) EnvGetcRouter(theEnv,"whelp")) != LNFEED) && (theIndex < 254);
+         ((list[theIndex] = (char) EnvGetcRouter(theEnv,(char*)"whelp")) != LNFEED) && (theIndex < 254);
          theIndex++ , RouterData(theEnv)->CommandBufferInputCount++)
        {
         if (EvaluationData(theEnv)->HaltExecution)
@@ -1614,14 +1614,14 @@ static struct topics *AskForNewHelpTopic(
           }
        }
 #if VAX_VMS
-   EnvPrintRouter(theEnv,"whelp","\n");
+   EnvPrintRouter(theEnv,(char*)"whelp",(char*)"\n");
 #endif
 
    RouterData(theEnv)->CommandBufferInputCount = 0;
    RouterData(theEnv)->AwaitingInput = FALSE;
    if (EvaluationData(theEnv)->HaltExecution)
      {
-      EnvPrintRouter(theEnv,"whelp","\n");
+      EnvPrintRouter(theEnv,(char*)"whelp",(char*)"\n");
       old_list->end_list = old_list;
       return(old_list);
      }
@@ -1759,15 +1759,15 @@ globle void HelpFunctionDefinitions(
    AllocateEnvironmentData(theEnv,TEXTPRO_DATA,sizeof(struct textProcessingData),DeallocateTextProcessingData);
 #if ! RUN_TIME
 #if HELP_FUNCTIONS
-   EnvDefineFunction2(theEnv,"help",'v',PTIEF HelpFunction,"HelpFunction",NULL);
-   EnvDefineFunction2(theEnv,"help-path",'v',PTIEF HelpPathFunction,"HelpPathFunction","*1k");
+   EnvDefineFunction2(theEnv,(char*)"help",'v',PTIEF HelpFunction,(char*)"HelpFunction",NULL);
+   EnvDefineFunction2(theEnv,(char*)"help-path",'v',PTIEF HelpPathFunction,(char*)"HelpPathFunction",(char*)"*1k");
 #endif
 
 #if TEXTPRO_FUNCTIONS
-   EnvDefineFunction2(theEnv,"fetch",'u', PTIEF FetchCommand,"FetchCommand","11k");
-   EnvDefineFunction2(theEnv,"toss",'b', PTIEF TossCommand,"TossCommand","11k");
-   EnvDefineFunction2(theEnv,"print-region",'b', PTIEF PrintRegionCommand,"PrintRegionCommand","2**wk");
-   EnvDefineFunction2(theEnv,"get-region",'s', PTIEF GetRegionCommand,"GetRegionCommand","1**k");
+   EnvDefineFunction2(theEnv,(char*)"fetch",'u', PTIEF FetchCommand,(char*)"FetchCommand",(char*)"11k");
+   EnvDefineFunction2(theEnv,(char*)"toss",'b', PTIEF TossCommand,(char*)"TossCommand",(char*)"11k");
+   EnvDefineFunction2(theEnv,(char*)"print-region",'b', PTIEF PrintRegionCommand,(char*)"PrintRegionCommand",(char*)"2**wk");
+   EnvDefineFunction2(theEnv,(char*)"get-region",'s', PTIEF GetRegionCommand,(char*)"GetRegionCommand",(char*)"1**k");
 #endif
 #endif
   }

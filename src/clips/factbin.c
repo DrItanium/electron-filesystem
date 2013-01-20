@@ -90,13 +90,13 @@ globle void FactBinarySetup(
    AllocateEnvironmentData(theEnv,FACTBIN_DATA,sizeof(struct factBinaryData),DeallocateFactBloadData);
    
 #if BLOAD_AND_BSAVE
-   AddBinaryItem(theEnv,"facts",0,BsaveFind,NULL,
+   AddBinaryItem(theEnv,(char*)"facts",0,BsaveFind,NULL,
                             BsaveStorage,BsaveFactPatterns,
                             BloadStorage,BloadBinaryItem,
                             ClearBload);
 #endif
 #if BLOAD || BLOAD_ONLY
-   AddBinaryItem(theEnv,"facts",0,NULL,NULL,NULL,NULL,
+   AddBinaryItem(theEnv,(char*)"facts",0,NULL,NULL,NULL,NULL,
                             BloadStorage,BloadBinaryItem,
                             ClearBload);
 #endif

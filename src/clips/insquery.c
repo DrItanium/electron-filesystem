@@ -87,35 +87,35 @@ globle void SetupQuery(
    InstanceQueryData(theEnv)->QUERY_DELIMETER_SYMBOL = (SYMBOL_HN *) EnvAddSymbol(theEnv,QUERY_DELIMETER_STRING);
    IncrementSymbolCount(InstanceQueryData(theEnv)->QUERY_DELIMETER_SYMBOL);
 
-   EnvDefineFunction2(theEnv,"(query-instance)",'o',
-                  PTIEF GetQueryInstance,"GetQueryInstance",NULL);
+   EnvDefineFunction2(theEnv,(char*)"(query-instance)",'o',
+                  PTIEF GetQueryInstance,(char*)"GetQueryInstance",NULL);
 
-   EnvDefineFunction2(theEnv,"(query-instance-slot)",'u',
-                  PTIEF GetQueryInstanceSlot,"GetQueryInstanceSlot",NULL);
+   EnvDefineFunction2(theEnv,(char*)"(query-instance-slot)",'u',
+                  PTIEF GetQueryInstanceSlot,(char*)"GetQueryInstanceSlot",NULL);
 
-   EnvDefineFunction2(theEnv,"any-instancep",'b',PTIEF AnyInstances,"AnyInstances",NULL);
-   AddFunctionParser(theEnv,"any-instancep",ParseQueryNoAction);
+   EnvDefineFunction2(theEnv,(char*)"any-instancep",'b',PTIEF AnyInstances,(char*)"AnyInstances",NULL);
+   AddFunctionParser(theEnv,(char*)"any-instancep",ParseQueryNoAction);
 
-   EnvDefineFunction2(theEnv,"find-instance",'m',
-                  PTIEF QueryFindInstance,"QueryFindInstance",NULL);
-   AddFunctionParser(theEnv,"find-instance",ParseQueryNoAction);
+   EnvDefineFunction2(theEnv,(char*)"find-instance",'m',
+                  PTIEF QueryFindInstance,(char*)"QueryFindInstance",NULL);
+   AddFunctionParser(theEnv,(char*)"find-instance",ParseQueryNoAction);
 
-   EnvDefineFunction2(theEnv,"find-all-instances",'m',
-                  PTIEF QueryFindAllInstances,"QueryFindAllInstances",NULL);
-   AddFunctionParser(theEnv,"find-all-instances",ParseQueryNoAction);
+   EnvDefineFunction2(theEnv,(char*)"find-all-instances",'m',
+                  PTIEF QueryFindAllInstances,(char*)"QueryFindAllInstances",NULL);
+   AddFunctionParser(theEnv,(char*)"find-all-instances",ParseQueryNoAction);
 
-   EnvDefineFunction2(theEnv,"do-for-instance",'u',
-                  PTIEF QueryDoForInstance,"QueryDoForInstance",NULL);
-   AddFunctionParser(theEnv,"do-for-instance",ParseQueryAction);
+   EnvDefineFunction2(theEnv,(char*)"do-for-instance",'u',
+                  PTIEF QueryDoForInstance,(char*)"QueryDoForInstance",NULL);
+   AddFunctionParser(theEnv,(char*)"do-for-instance",ParseQueryAction);
 
-   EnvDefineFunction2(theEnv,"do-for-all-instances",'u',
-                  PTIEF QueryDoForAllInstances,"QueryDoForAllInstances",NULL);
-   AddFunctionParser(theEnv,"do-for-all-instances",ParseQueryAction);
+   EnvDefineFunction2(theEnv,(char*)"do-for-all-instances",'u',
+                  PTIEF QueryDoForAllInstances,(char*)"QueryDoForAllInstances",NULL);
+   AddFunctionParser(theEnv,(char*)"do-for-all-instances",ParseQueryAction);
 
-   EnvDefineFunction2(theEnv,"delayed-do-for-all-instances",'u',
+   EnvDefineFunction2(theEnv,(char*)"delayed-do-for-all-instances",'u',
                   PTIEF DelayedQueryDoForAllInstances,
-                  "DelayedQueryDoForAllInstances",NULL);
-   AddFunctionParser(theEnv,"delayed-do-for-all-instances",ParseQueryAction);
+                  (char*)"DelayedQueryDoForAllInstances",NULL);
+   AddFunctionParser(theEnv,(char*)"delayed-do-for-all-instances",ParseQueryAction);
 #endif
   }
 
@@ -163,14 +163,14 @@ globle void GetQueryInstanceSlot(
    EvaluateExpression(theEnv,GetFirstArgument()->nextArg->nextArg,&temp);
    if (temp.type != SYMBOL)
      {
-      ExpectedTypeError1(theEnv,"get",1,"symbol");
+      ExpectedTypeError1(theEnv,(char*)"get",1,(char*)"symbol");
       SetEvaluationError(theEnv,TRUE);
       return;
      }
    sp = FindInstanceSlot(theEnv,ins,(SYMBOL_HN *) temp.value);
    if (sp == NULL)
      {
-      SlotExistError(theEnv,ValueToString(temp.value),"instance-set query");
+      SlotExistError(theEnv,ValueToString(temp.value),(char*)"instance-set query");
       return;
      }
    result->type = (unsigned short) sp->type;
@@ -254,7 +254,7 @@ globle intBool AnyInstances(
    int TestResult;
 
    qclasses = DetermineQueryClasses(theEnv,GetFirstArgument()->nextArg,
-                                      "any-instancep",&rcnt);
+                                      (char*)"any-instancep",&rcnt);
    if (qclasses == NULL)
      return(FALSE);
    PushQueryCore(theEnv);
@@ -293,7 +293,7 @@ globle void QueryFindInstance(
    result->begin = 0;
    result->end = -1;
    qclasses = DetermineQueryClasses(theEnv,GetFirstArgument()->nextArg,
-                                      "find-instance",&rcnt);
+                                      (char*)"find-instance",&rcnt);
    if (qclasses == NULL)
      {
       result->value = (void *) EnvCreateMultifield(theEnv,0L);
@@ -353,7 +353,7 @@ globle void QueryFindAllInstances(
    result->begin = 0;
    result->end = -1;
    qclasses = DetermineQueryClasses(theEnv,GetFirstArgument()->nextArg,
-                                      "find-all-instances",&rcnt);
+                                      (char*)"find-all-instances",&rcnt);
    if (qclasses == NULL)
      {
       result->value = (void *) EnvCreateMultifield(theEnv,0L);
@@ -410,7 +410,7 @@ globle void QueryDoForInstance(
    result->type = SYMBOL;
    result->value = EnvFalseSymbol(theEnv);
    qclasses = DetermineQueryClasses(theEnv,GetFirstArgument()->nextArg->nextArg,
-                                      "do-for-instance",&rcnt);
+                                      (char*)"do-for-instance",&rcnt);
    if (qclasses == NULL)
      return;
    PushQueryCore(theEnv);
@@ -451,7 +451,7 @@ globle void QueryDoForAllInstances(
    result->type = SYMBOL;
    result->value = EnvFalseSymbol(theEnv);
    qclasses = DetermineQueryClasses(theEnv,GetFirstArgument()->nextArg->nextArg,
-                                      "do-for-all-instances",&rcnt);
+                                      (char*)"do-for-all-instances",&rcnt);
    if (qclasses == NULL)
      return;
    PushQueryCore(theEnv);
@@ -500,7 +500,7 @@ globle void DelayedQueryDoForAllInstances(
    result->type = SYMBOL;
    result->value = EnvFalseSymbol(theEnv);
    qclasses = DetermineQueryClasses(theEnv,GetFirstArgument()->nextArg->nextArg,
-                                      "delayed-do-for-all-instances",&rcnt);
+                                      (char*)"delayed-do-for-all-instances",&rcnt);
    if (qclasses == NULL)
      return;
    PushQueryCore(theEnv);
@@ -673,7 +673,7 @@ static QUERY_CLASS *DetermineQueryClasses(
         }
       else
         {
-         SyntaxErrorMessage(theEnv,"instance-set query class restrictions");
+         SyntaxErrorMessage(theEnv,(char*)"instance-set query class restrictions");
          DeleteQueryClasses(theEnv,clist);
          SetEvaluationError(theEnv,TRUE);
          return(NULL);

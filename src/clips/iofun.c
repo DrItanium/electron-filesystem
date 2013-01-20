@@ -117,18 +117,18 @@ globle void IOFunctionDefinitions(
 
 #if ! RUN_TIME
 #if IO_FUNCTIONS
-   EnvDefineFunction2(theEnv,"printout",   'v', PTIEF PrintoutFunction, "PrintoutFunction", "1*");
-   EnvDefineFunction2(theEnv,"read",       'u', PTIEF ReadFunction,  "ReadFunction", "*1");
-   EnvDefineFunction2(theEnv,"open",       'b', OpenFunction,  "OpenFunction", "23*k");
-   EnvDefineFunction2(theEnv,"close",      'b', CloseFunction, "CloseFunction", "*1");
-   EnvDefineFunction2(theEnv,"get-char",   'i', GetCharFunction, "GetCharFunction", "*1");
-   EnvDefineFunction2(theEnv,"put-char",   'v', PTIEF PutCharFunction, "PutCharFunction", "12");
-   EnvDefineFunction2(theEnv,"remove",   'b', RemoveFunction,  "RemoveFunction", "11k");
-   EnvDefineFunction2(theEnv,"rename",   'b', RenameFunction, "RenameFunction", "22k");
-   EnvDefineFunction2(theEnv,"format",   's', PTIEF FormatFunction, "FormatFunction", "2**us");
-   EnvDefineFunction2(theEnv,"readline", 'k', PTIEF ReadlineFunction, "ReadlineFunction", "*1");
-   EnvDefineFunction2(theEnv,"set-locale", 'u', PTIEF SetLocaleFunction,  "SetLocaleFunction", "*1");
-   EnvDefineFunction2(theEnv,"read-number",       'u', PTIEF ReadNumberFunction,  "ReadNumberFunction", "*1");
+   EnvDefineFunction2(theEnv,(char*)"printout",   'v', PTIEF PrintoutFunction, (char*)"PrintoutFunction", (char*)"1*");
+   EnvDefineFunction2(theEnv,(char*)"read",       'u', PTIEF ReadFunction,  (char*)"ReadFunction", (char*)"*1");
+   EnvDefineFunction2(theEnv,(char*)"open",       'b', OpenFunction,  (char*)"OpenFunction", (char*)"23*k");
+   EnvDefineFunction2(theEnv,(char*)"close",      'b', CloseFunction, (char*)"CloseFunction", (char*)"*1");
+   EnvDefineFunction2(theEnv,(char*)"get-char",   'i', GetCharFunction, (char*)"GetCharFunction", (char*)"*1");
+   EnvDefineFunction2(theEnv,(char*)"put-char",   'v', PTIEF PutCharFunction, (char*)"PutCharFunction", (char*)"12");
+   EnvDefineFunction2(theEnv,(char*)"remove",   'b', RemoveFunction,  (char*)"RemoveFunction", (char*)"11k");
+   EnvDefineFunction2(theEnv,(char*)"rename",   'b', RenameFunction, (char*)"RenameFunction", (char*)"22k");
+   EnvDefineFunction2(theEnv,(char*)"format",   's', PTIEF FormatFunction, (char*)"FormatFunction", (char*)"2**us");
+   EnvDefineFunction2(theEnv,(char*)"readline", 'k', PTIEF ReadlineFunction, (char*)"ReadlineFunction", (char*)"*1");
+   EnvDefineFunction2(theEnv,(char*)"set-locale", 'u', PTIEF SetLocaleFunction,  (char*)"SetLocaleFunction", (char*)"*1");
+   EnvDefineFunction2(theEnv,(char*)"read-number",       'u', PTIEF ReadNumberFunction,  (char*)"ReadNumberFunction", (char*)"*1");
 #endif
 #else
 #if MAC_MCW || WIN_MCW || MAC_XCD
@@ -154,16 +154,16 @@ globle void PrintoutFunction(
    /* The printout function requires at least one argument. */
    /*=======================================================*/
 
-   if ((argCount = EnvArgCountCheck(theEnv,"printout",AT_LEAST,1)) == -1) return;
+   if ((argCount = EnvArgCountCheck(theEnv,(char*)"printout",AT_LEAST,1)) == -1) return;
 
    /*=====================================================*/
    /* Get the logical name to which output is to be sent. */
    /*=====================================================*/
 
-   dummyid = GetLogicalName(theEnv,1,"stdout");
+   dummyid = GetLogicalName(theEnv,1,(char*)"stdout");
    if (dummyid == NULL)
      {
-      IllegalLogicalNameMessage(theEnv,"printout");
+      IllegalLogicalNameMessage(theEnv,(char*)"printout");
       SetHaltExecution(theEnv,TRUE);
       SetEvaluationError(theEnv,TRUE);
       return;
@@ -196,23 +196,23 @@ globle void PrintoutFunction(
            if (strcmp(DOToString(theArgument),"crlf") == 0)
              {    
               if (IOFunctionData(theEnv)->useFullCRLF)
-                { EnvPrintRouter(theEnv,dummyid,"\r\n"); }
+                { EnvPrintRouter(theEnv,dummyid,(char*)"\r\n"); }
               else
-                { EnvPrintRouter(theEnv,dummyid,"\n"); }
+                { EnvPrintRouter(theEnv,dummyid,(char*)"\n"); }
              }
            else if (strcmp(DOToString(theArgument),"tab") == 0)
-             { EnvPrintRouter(theEnv,dummyid,"\t"); }
+             { EnvPrintRouter(theEnv,dummyid,(char*)"\t"); }
            else if (strcmp(DOToString(theArgument),"vtab") == 0)
-             { EnvPrintRouter(theEnv,dummyid,"\v"); }
+             { EnvPrintRouter(theEnv,dummyid,(char*)"\v"); }
            else if (strcmp(DOToString(theArgument),"ff") == 0)
-             { EnvPrintRouter(theEnv,dummyid,"\f"); }
+             { EnvPrintRouter(theEnv,dummyid,(char*)"\f"); }
              /*
            else if (strcmp(DOToString(theArgument),"t") == 0)
              { 
               if (IOFunctionData(theEnv)->useFullCRLF)
-                { EnvPrintRouter(theEnv,dummyid,"\r\n"); }
+                { EnvPrintRouter(theEnv,dummyid,(char*)"\r\n"); }
               else
-                { EnvPrintRouter(theEnv,dummyid,"\n"); }
+                { EnvPrintRouter(theEnv,dummyid,(char*)"\n"); }
              }
              */
            else
@@ -260,10 +260,10 @@ globle void ReadFunction(
    /* Check for an appropriate number of arguments. */
    /*===============================================*/
 
-   if ((numberOfArguments = EnvArgCountCheck(theEnv,"read",NO_MORE_THAN,1)) == -1)
+   if ((numberOfArguments = EnvArgCountCheck(theEnv,(char*)"read",NO_MORE_THAN,1)) == -1)
      {
       returnValue->type = STRING;
-      returnValue->value = (void *) EnvAddSymbol(theEnv,"*** READ ERROR ***");
+      returnValue->value = (void *) EnvAddSymbol(theEnv,(char*)"*** READ ERROR ***");
       return;
      }
 
@@ -272,17 +272,17 @@ globle void ReadFunction(
    /*======================================================*/
 
    if (numberOfArguments == 0)
-     { logicalName = "stdin"; }
+     { logicalName = (char*)"stdin"; }
    else if (numberOfArguments == 1)
      {
-      logicalName = GetLogicalName(theEnv,1,"stdin");
+      logicalName = GetLogicalName(theEnv,1,(char*)"stdin");
       if (logicalName == NULL)
         {
-         IllegalLogicalNameMessage(theEnv,"read");
+         IllegalLogicalNameMessage(theEnv,(char*)"read");
          SetHaltExecution(theEnv,TRUE);
          SetEvaluationError(theEnv,TRUE);
          returnValue->type = STRING;
-         returnValue->value = (void *) EnvAddSymbol(theEnv,"*** READ ERROR ***");
+         returnValue->value = (void *) EnvAddSymbol(theEnv,(char*)"*** READ ERROR ***");
          return;
         }
      }
@@ -297,7 +297,7 @@ globle void ReadFunction(
       SetHaltExecution(theEnv,TRUE);
       SetEvaluationError(theEnv,TRUE);
       returnValue->type = STRING;
-      returnValue->value = (void *) EnvAddSymbol(theEnv,"*** READ ERROR ***");
+      returnValue->value = (void *) EnvAddSymbol(theEnv,(char*)"*** READ ERROR ***");
       return;
      }
 
@@ -328,12 +328,12 @@ globle void ReadFunction(
    else if (theToken.type == STOP)
      {
       returnValue->type = SYMBOL;
-      returnValue->value = (void *) EnvAddSymbol(theEnv,"EOF");
+      returnValue->value = (void *) EnvAddSymbol(theEnv,(char*)"EOF");
      }
    else if (theToken.type == UNKNOWN_VALUE)
      {
       returnValue->type = STRING;
-      returnValue->value = (void *) EnvAddSymbol(theEnv,"*** READ ERROR ***");
+      returnValue->value = (void *) EnvAddSymbol(theEnv,(char*)"*** READ ERROR ***");
      }
    else
      {
@@ -372,7 +372,7 @@ static void ReadTokenFromStdin(
       RouterData(theEnv)->CommandBufferInputCount = 0;
       RouterData(theEnv)->AwaitingInput = TRUE;
       inputStringSize = 0;
-      inchar = EnvGetcRouter(theEnv,"stdin");
+      inchar = EnvGetcRouter(theEnv,(char*)"stdin");
 
       /*========================================================*/
       /* Continue reading characters until a carriage return is */
@@ -387,7 +387,7 @@ static void ReadTokenFromStdin(
         {
          inputString = ExpandStringWithChar(theEnv,inchar,inputString,&RouterData(theEnv)->CommandBufferInputCount,
                                             &inputStringSize,inputStringSize + 80);
-         inchar = EnvGetcRouter(theEnv,"stdin");
+         inchar = EnvGetcRouter(theEnv,(char*)"stdin");
         }
 
       /*==================================================*/
@@ -396,9 +396,9 @@ static void ReadTokenFromStdin(
       /* contained in the string.                         */
       /*==================================================*/
 
-      OpenStringSource(theEnv,"read",inputString,0);
-      GetToken(theEnv,"read",theToken);
-      CloseStringSource(theEnv,"read");
+      OpenStringSource(theEnv,(char*)"read",inputString,0);
+      GetToken(theEnv,(char*)"read",theToken);
+      CloseStringSource(theEnv,(char*)"read");
       if (inputStringSize > 0) rm(theEnv,inputString,inputStringSize);
 
       /*===========================================*/
@@ -409,7 +409,7 @@ static void ReadTokenFromStdin(
       if (GetHaltExecution(theEnv))
         {
          theToken->type = STRING;
-         theToken->value = (void *) EnvAddSymbol(theEnv,"*** READ ERROR ***");
+         theToken->value = (void *) EnvAddSymbol(theEnv,(char*)"*** READ ERROR ***");
         }
 
       /*====================================================*/
@@ -422,7 +422,7 @@ static void ReadTokenFromStdin(
       if ((theToken->type == STOP) && (inchar == EOF))
         {
          theToken->type = SYMBOL;
-         theToken->value = (void *) EnvAddSymbol(theEnv,"EOF");
+         theToken->value = (void *) EnvAddSymbol(theEnv,(char*)"EOF");
         }
      }
   }
@@ -441,13 +441,13 @@ globle int OpenFunction(
    /* Check for a valid number of arguments. */
    /*========================================*/
 
-   if ((numberOfArguments = EnvArgRangeCheck(theEnv,"open",2,3)) == -1) return(0);
+   if ((numberOfArguments = EnvArgRangeCheck(theEnv,(char*)"open",2,3)) == -1) return(0);
 
    /*====================*/
    /* Get the file name. */
    /*====================*/
 
-   if ((fileName = GetFileName(theEnv,"open",1)) == NULL) return(0);
+   if ((fileName = GetFileName(theEnv,(char*)"open",1)) == NULL) return(0);
 
    /*=======================================*/
    /* Get the logical name to be associated */
@@ -459,7 +459,7 @@ globle int OpenFunction(
      {
       SetHaltExecution(theEnv,TRUE);
       SetEvaluationError(theEnv,TRUE);
-      IllegalLogicalNameMessage(theEnv,"open");
+      IllegalLogicalNameMessage(theEnv,(char*)"open");
       return(0);
      }
 
@@ -472,10 +472,10 @@ globle int OpenFunction(
      {
       SetHaltExecution(theEnv,TRUE);
       SetEvaluationError(theEnv,TRUE);
-      PrintErrorID(theEnv,"IOFUN",2,FALSE);
-      EnvPrintRouter(theEnv,WERROR,"Logical name ");
+      PrintErrorID(theEnv,(char*)"IOFUN",2,FALSE);
+      EnvPrintRouter(theEnv,WERROR,(char*)"Logical name ");
       EnvPrintRouter(theEnv,WERROR,logicalName);
-      EnvPrintRouter(theEnv,WERROR," already in use.\n");
+      EnvPrintRouter(theEnv,WERROR,(char*)" already in use.\n");
       return(0);
      }
 
@@ -484,10 +484,10 @@ globle int OpenFunction(
    /*===========================*/
 
    if (numberOfArguments == 2)
-     { accessMode = "r"; }
+     { accessMode = (char*)"r"; }
    else if (numberOfArguments == 3)
      {
-      if (EnvArgTypeCheck(theEnv,"open",3,STRING,&theArgument) == FALSE) return(0);
+      if (EnvArgTypeCheck(theEnv,(char*)"open",3,STRING,&theArgument) == FALSE) return(0);
       accessMode = DOToString(theArgument);
      }
 
@@ -510,7 +510,7 @@ globle int OpenFunction(
      {
       SetHaltExecution(theEnv,TRUE);
       SetEvaluationError(theEnv,TRUE);
-      ExpectedTypeError1(theEnv,"open",3,"string with value \"r\", \"w\", \"a\", \"r+\", \"w+\", \"rb\", \"wb\", \"ab\", \"r+b\", or \"w+b\"");
+      ExpectedTypeError1(theEnv,(char*)"open",3,(char*)"string with value \"r\", \"w\", \"a\", \"r+\", \"w+\", \"rb\", \"wb\", \"ab\", \"r+b\", or \"w+b\"");
       return(0);
      }
 
@@ -536,7 +536,7 @@ globle int CloseFunction(
    /* Check for valid number of arguments. */
    /*======================================*/
 
-   if ((numberOfArguments = EnvArgCountCheck(theEnv,"close",NO_MORE_THAN,1)) == -1) return(0);
+   if ((numberOfArguments = EnvArgCountCheck(theEnv,(char*)"close",NO_MORE_THAN,1)) == -1) return(0);
 
    /*=====================================================*/
    /* If no arguments are specified, then close all files */
@@ -553,7 +553,7 @@ globle int CloseFunction(
    logicalName = GetLogicalName(theEnv,1,NULL);
    if (logicalName == NULL)
      {
-      IllegalLogicalNameMessage(theEnv,"close");
+      IllegalLogicalNameMessage(theEnv,(char*)"close");
       SetHaltExecution(theEnv,TRUE);
       SetEvaluationError(theEnv,TRUE);
       return(0);
@@ -578,17 +578,17 @@ globle int GetCharFunction(
    int numberOfArguments;
    char *logicalName;
 
-   if ((numberOfArguments = EnvArgCountCheck(theEnv,"get-char",NO_MORE_THAN,1)) == -1)
+   if ((numberOfArguments = EnvArgCountCheck(theEnv,(char*)"get-char",NO_MORE_THAN,1)) == -1)
      { return(-1); }
 
    if (numberOfArguments == 0 )
-     { logicalName = "stdin"; }
+     { logicalName = (char*)"stdin"; }
    else
      {
-      logicalName = GetLogicalName(theEnv,1,"stdin");
+      logicalName = GetLogicalName(theEnv,1,(char*)"stdin");
       if (logicalName == NULL)
         {
-         IllegalLogicalNameMessage(theEnv,"get-char");
+         IllegalLogicalNameMessage(theEnv,(char*)"get-char");
          SetHaltExecution(theEnv,TRUE);
          SetEvaluationError(theEnv,TRUE);
          return(-1);
@@ -619,7 +619,7 @@ globle void PutCharFunction(
    long long theChar;
    FILE *theFile;
 
-   if ((numberOfArguments = EnvArgRangeCheck(theEnv,"put-char",1,2)) == -1)
+   if ((numberOfArguments = EnvArgRangeCheck(theEnv,(char*)"put-char",1,2)) == -1)
      { return; }
      
    /*=======================*/
@@ -627,13 +627,13 @@ globle void PutCharFunction(
    /*=======================*/
    
    if (numberOfArguments == 1)
-     { logicalName = "stdout"; }
+     { logicalName = (char*)"stdout"; }
    else
      {
-      logicalName = GetLogicalName(theEnv,1,"stdout");
+      logicalName = GetLogicalName(theEnv,1,(char*)"stdout");
       if (logicalName == NULL)
         {
-         IllegalLogicalNameMessage(theEnv,"put-char");
+         IllegalLogicalNameMessage(theEnv,(char*)"put-char");
          SetHaltExecution(theEnv,TRUE);
          SetEvaluationError(theEnv,TRUE);
          return;
@@ -653,9 +653,9 @@ globle void PutCharFunction(
    /*===========================*/
    
    if (numberOfArguments == 1)
-     { if (EnvArgTypeCheck(theEnv,"put-char",1,INTEGER,&theValue) == FALSE) return; }
+     { if (EnvArgTypeCheck(theEnv,(char*)"put-char",1,INTEGER,&theValue) == FALSE) return; }
    else
-     { if (EnvArgTypeCheck(theEnv,"put-char",2,INTEGER,&theValue) == FALSE) return; }
+     { if (EnvArgTypeCheck(theEnv,(char*)"put-char",2,INTEGER,&theValue) == FALSE) return; }
      
    theChar = DOToLong(theValue);
    
@@ -684,13 +684,13 @@ globle int RemoveFunction(
    /* Check for valid number of arguments. */
    /*======================================*/
 
-   if (EnvArgCountCheck(theEnv,"remove",EXACTLY,1) == -1) return(FALSE);
+   if (EnvArgCountCheck(theEnv,(char*)"remove",EXACTLY,1) == -1) return(FALSE);
 
    /*====================*/
    /* Get the file name. */
    /*====================*/
 
-   if ((theFileName = GetFileName(theEnv,"remove",1)) == NULL) return(FALSE);
+   if ((theFileName = GetFileName(theEnv,(char*)"remove",1)) == NULL) return(FALSE);
 
    /*==============================================*/
    /* Remove the file. Return TRUE if the file was */
@@ -713,14 +713,14 @@ globle int RenameFunction(
    /* Check for a valid number of arguments. */
    /*========================================*/
 
-   if (EnvArgCountCheck(theEnv,"rename",EXACTLY,2) == -1) return(FALSE);
+   if (EnvArgCountCheck(theEnv,(char*)"rename",EXACTLY,2) == -1) return(FALSE);
 
    /*===========================*/
    /* Check for the file names. */
    /*===========================*/
 
-   if ((oldFileName = GetFileName(theEnv,"rename",1)) == NULL) return(FALSE);
-   if ((newFileName = GetFileName(theEnv,"rename",2)) == NULL) return(FALSE);
+   if ((oldFileName = GetFileName(theEnv,(char*)"rename",1)) == NULL) return(FALSE);
+   if ((newFileName = GetFileName(theEnv,(char*)"rename",2)) == NULL) return(FALSE);
 
    /*==============================================*/
    /* Rename the file. Return TRUE if the file was */
@@ -754,23 +754,23 @@ globle void *FormatFunction(
    /* Set default return value for errors. */
    /*======================================*/
 
-   hptr = EnvAddSymbol(theEnv,"");
+   hptr = EnvAddSymbol(theEnv,(char*)"");
 
    /*=========================================*/
    /* Format requires at least two arguments: */
    /* a logical name and a format string.     */
    /*=========================================*/
 
-   if ((argCount = EnvArgCountCheck(theEnv,"format",AT_LEAST,2)) == -1)
+   if ((argCount = EnvArgCountCheck(theEnv,(char*)"format",AT_LEAST,2)) == -1)
      { return(hptr); }
 
    /*========================================*/
    /* First argument must be a logical name. */
    /*========================================*/
 
-   if ((logicalName = GetLogicalName(theEnv,1,"stdout")) == NULL)
+   if ((logicalName = GetLogicalName(theEnv,1,(char*)"stdout")) == NULL)
      {
-      IllegalLogicalNameMessage(theEnv,"format");
+      IllegalLogicalNameMessage(theEnv,(char*)"format");
       SetHaltExecution(theEnv,TRUE);
       SetEvaluationError(theEnv,TRUE);
       return(hptr);
@@ -838,7 +838,7 @@ globle void *FormatFunction(
       rm(theEnv,fstr,fmaxm);
      }
    else
-     { hptr = EnvAddSymbol(theEnv,""); }
+     { hptr = EnvAddSymbol(theEnv,(char*)""); }
 
    return(hptr);
   }
@@ -858,7 +858,7 @@ static char *ControlStringCheck(
    int per_count;
    char formatFlag;
 
-   if (EnvArgTypeCheck(theEnv,"format",2,STRING,&t_ptr) == FALSE) return(NULL);
+   if (EnvArgTypeCheck(theEnv,(char*)"format",2,STRING,&t_ptr) == FALSE) return(NULL);
 
    per_count = 0;
    str_array = ValueToString(t_ptr.value);
@@ -870,10 +870,10 @@ static char *ControlStringCheck(
          formatFlag = FindFormatFlag(str_array,&i,print_buff,FLAG_MAX);
          if (formatFlag == '-')
            { 
-            PrintErrorID(theEnv,"IOFUN",3,FALSE);
-            EnvPrintRouter(theEnv,WERROR,"Invalid format flag \"");
+            PrintErrorID(theEnv,(char*)"IOFUN",3,FALSE);
+            EnvPrintRouter(theEnv,WERROR,(char*)"Invalid format flag \"");
             EnvPrintRouter(theEnv,WERROR,print_buff);
-            EnvPrintRouter(theEnv,WERROR,"\" specified in format function.\n");
+            EnvPrintRouter(theEnv,WERROR,(char*)"\" specified in format function.\n");
             SetEvaluationError(theEnv,TRUE);
             return (NULL);
            }
@@ -886,7 +886,7 @@ static char *ControlStringCheck(
 
    if (per_count != (argCount - 2))
      {
-      ExpectedCountError(theEnv,"format",EXACTLY,per_count+2);
+      ExpectedCountError(theEnv,(char*)"format",EXACTLY,per_count+2);
       SetEvaluationError(theEnv,TRUE);
       return (NULL);
      }
@@ -1033,7 +1033,7 @@ static char *PrintFormatFlag(
    switch (formatType)
      {
       case 's':
-        if (EnvArgTypeCheck(theEnv,"format",whichArg,SYMBOL_OR_STRING,&theResult) == FALSE) return(NULL);
+        if (EnvArgTypeCheck(theEnv,(char*)"format",whichArg,SYMBOL_OR_STRING,&theResult) == FALSE) return(NULL);
         theLength = strlen(formatString) + strlen(ValueToString(theResult.value)) + 200;
         printBuffer = (char *) gm2(theEnv,(sizeof(char) * theLength));
         gensprintf(printBuffer,formatString,ValueToString(theResult.value));
@@ -1056,7 +1056,7 @@ static char *PrintFormatFlag(
           }
         else
           {
-           ExpectedTypeError1(theEnv,"format",whichArg,"symbol, string, or integer");
+           ExpectedTypeError1(theEnv,(char*)"format",whichArg,(char*)"symbol, string, or integer");
            return(NULL);
           }
         break;
@@ -1065,7 +1065,7 @@ static char *PrintFormatFlag(
       case 'x':
       case 'o':
       case 'u':
-        if (EnvArgTypeCheck(theEnv,"format",whichArg,INTEGER_OR_FLOAT,&theResult) == FALSE) return(NULL);
+        if (EnvArgTypeCheck(theEnv,(char*)"format",whichArg,INTEGER_OR_FLOAT,&theResult) == FALSE) return(NULL);
         theLength = strlen(formatString) + 200;
         printBuffer = (char *) gm2(theEnv,(sizeof(char) * theLength));
         
@@ -1083,7 +1083,7 @@ static char *PrintFormatFlag(
       case 'f':
       case 'g':
       case 'e':
-        if (EnvArgTypeCheck(theEnv,"format",whichArg,INTEGER_OR_FLOAT,&theResult) == FALSE) return(NULL);
+        if (EnvArgTypeCheck(theEnv,(char*)"format",whichArg,INTEGER_OR_FLOAT,&theResult) == FALSE) return(NULL);
         theLength = strlen(formatString) + 200;
         printBuffer = (char *) gm2(theEnv,(sizeof(char) * theLength));
 
@@ -1101,8 +1101,8 @@ static char *PrintFormatFlag(
         break;
 
       default:
-         EnvPrintRouter(theEnv,WERROR," Error in format, the conversion character");
-         EnvPrintRouter(theEnv,WERROR," for formatted output is not valid\n");
+         EnvPrintRouter(theEnv,WERROR,(char*)" Error in format, the conversion character");
+         EnvPrintRouter(theEnv,WERROR,(char*)" for formatted output is not valid\n");
          return(FALSE);
      }
 
@@ -1126,23 +1126,23 @@ globle void ReadlineFunction(
 
    returnValue->type = STRING;
 
-   if ((numberOfArguments = EnvArgCountCheck(theEnv,"readline",NO_MORE_THAN,1)) == -1)
+   if ((numberOfArguments = EnvArgCountCheck(theEnv,(char*)"readline",NO_MORE_THAN,1)) == -1)
      {
-      returnValue->value = (void *) EnvAddSymbol(theEnv,"*** READ ERROR ***");
+      returnValue->value = (void *) EnvAddSymbol(theEnv,(char*)"*** READ ERROR ***");
       return;
      }
 
    if (numberOfArguments == 0 )
-     { logicalName = "stdin"; }
+     { logicalName = (char*)"stdin"; }
    else
      {
-      logicalName = GetLogicalName(theEnv,1,"stdin");
+      logicalName = GetLogicalName(theEnv,1,(char*)"stdin");
       if (logicalName == NULL)
         {
-         IllegalLogicalNameMessage(theEnv,"readline");
+         IllegalLogicalNameMessage(theEnv,(char*)"readline");
          SetHaltExecution(theEnv,TRUE);
          SetEvaluationError(theEnv,TRUE);
-         returnValue->value = (void *) EnvAddSymbol(theEnv,"*** READ ERROR ***");
+         returnValue->value = (void *) EnvAddSymbol(theEnv,(char*)"*** READ ERROR ***");
          return;
         }
      }
@@ -1152,7 +1152,7 @@ globle void ReadlineFunction(
       UnrecognizedRouterMessage(theEnv,logicalName);
       SetHaltExecution(theEnv,TRUE);
       SetEvaluationError(theEnv,TRUE);
-      returnValue->value = (void *) EnvAddSymbol(theEnv,"*** READ ERROR ***");
+      returnValue->value = (void *) EnvAddSymbol(theEnv,(char*)"*** READ ERROR ***");
       return;
      }
 
@@ -1164,14 +1164,14 @@ globle void ReadlineFunction(
 
    if (GetHaltExecution(theEnv))
      {
-      returnValue->value = (void *) EnvAddSymbol(theEnv,"*** READ ERROR ***");
+      returnValue->value = (void *) EnvAddSymbol(theEnv,(char*)"*** READ ERROR ***");
       if (buffer != NULL) rm(theEnv,buffer,(int) sizeof (char) * line_max);
       return;
      }
 
    if (buffer == NULL)
      {
-      returnValue->value = (void *) EnvAddSymbol(theEnv,"EOF");
+      returnValue->value = (void *) EnvAddSymbol(theEnv,(char*)"EOF");
       returnValue->type = SYMBOL;
       return;
      }
@@ -1238,7 +1238,7 @@ globle void SetLocaleFunction(
    /* Check for valid number of arguments. */
    /*======================================*/
    
-   if ((numArgs = EnvArgCountCheck(theEnv,"set-locale",NO_MORE_THAN,1)) == -1)
+   if ((numArgs = EnvArgCountCheck(theEnv,(char*)"set-locale",NO_MORE_THAN,1)) == -1)
      {
       returnValue->type = SYMBOL;
       returnValue->value = EnvFalseSymbol(theEnv);
@@ -1261,7 +1261,7 @@ globle void SetLocaleFunction(
    /* Get the locale. */
    /*=================*/
    
-   if (EnvArgTypeCheck(theEnv,"set-locale",1,STRING,&theResult) == FALSE)
+   if (EnvArgTypeCheck(theEnv,(char*)"set-locale",1,STRING,&theResult) == FALSE)
      {
       returnValue->type = SYMBOL;
       returnValue->value = EnvFalseSymbol(theEnv);
@@ -1300,10 +1300,10 @@ globle void ReadNumberFunction(
    /* Check for an appropriate number of arguments. */
    /*===============================================*/
 
-   if ((numberOfArguments = EnvArgCountCheck(theEnv,"read",NO_MORE_THAN,1)) == -1)
+   if ((numberOfArguments = EnvArgCountCheck(theEnv,(char*)"read",NO_MORE_THAN,1)) == -1)
      {
       returnValue->type = STRING;
-      returnValue->value = (void *) EnvAddSymbol(theEnv,"*** READ ERROR ***");
+      returnValue->value = (void *) EnvAddSymbol(theEnv,(char*)"*** READ ERROR ***");
       return;
      }
 
@@ -1312,17 +1312,17 @@ globle void ReadNumberFunction(
    /*======================================================*/
 
    if (numberOfArguments == 0)
-     { logicalName = "stdin"; }
+     { logicalName = (char*)"stdin"; }
    else if (numberOfArguments == 1)
      {
-      logicalName = GetLogicalName(theEnv,1,"stdin");
+      logicalName = GetLogicalName(theEnv,1,(char*)"stdin");
       if (logicalName == NULL)
         {
-         IllegalLogicalNameMessage(theEnv,"read");
+         IllegalLogicalNameMessage(theEnv,(char*)"read");
          SetHaltExecution(theEnv,TRUE);
          SetEvaluationError(theEnv,TRUE);
          returnValue->type = STRING;
-         returnValue->value = (void *) EnvAddSymbol(theEnv,"*** READ ERROR ***");
+         returnValue->value = (void *) EnvAddSymbol(theEnv,(char*)"*** READ ERROR ***");
          return;
         }
      }
@@ -1337,7 +1337,7 @@ globle void ReadNumberFunction(
       SetHaltExecution(theEnv,TRUE);
       SetEvaluationError(theEnv,TRUE);
       returnValue->type = STRING;
-      returnValue->value = (void *) EnvAddSymbol(theEnv,"*** READ ERROR ***");
+      returnValue->value = (void *) EnvAddSymbol(theEnv,(char*)"*** READ ERROR ***");
       return;
      }
 
@@ -1368,12 +1368,12 @@ globle void ReadNumberFunction(
    else if (theToken.type == STOP)
      {
       returnValue->type = SYMBOL;
-      returnValue->value = (void *) EnvAddSymbol(theEnv,"EOF");
+      returnValue->value = (void *) EnvAddSymbol(theEnv,(char*)"EOF");
      }
    else if (theToken.type == UNKNOWN_VALUE)
      {
       returnValue->type = STRING;
-      returnValue->value = (void *) EnvAddSymbol(theEnv,"*** READ ERROR ***");
+      returnValue->value = (void *) EnvAddSymbol(theEnv,(char*)"*** READ ERROR ***");
      }
    else
      {
@@ -1446,7 +1446,7 @@ static void ReadNumber(
    if (GetHaltExecution(theEnv))
      {
       theToken->type = STRING;
-      theToken->value = (void *) EnvAddSymbol(theEnv,"*** READ ERROR ***");
+      theToken->value = (void *) EnvAddSymbol(theEnv,(char*)"*** READ ERROR ***");
       if (inputStringSize > 0) rm(theEnv,inputString,inputStringSize);
       return;
      }
@@ -1461,7 +1461,7 @@ static void ReadNumber(
    if (inchar == EOF)
      {
       theToken->type = SYMBOL;
-      theToken->value = (void *) EnvAddSymbol(theEnv,"EOF");
+      theToken->value = (void *) EnvAddSymbol(theEnv,(char*)"EOF");
       if (inputStringSize > 0) rm(theEnv,inputString,inputStringSize);
       return;
      }
@@ -1532,7 +1532,7 @@ static void ReadNumber(
    /*=========================================*/
          
    theToken->type = STRING;
-   theToken->value = (void *) EnvAddSymbol(theEnv,"*** READ ERROR ***");
+   theToken->value = (void *) EnvAddSymbol(theEnv,(char*)"*** READ ERROR ***");
   }
 
 #endif

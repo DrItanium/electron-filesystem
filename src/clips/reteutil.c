@@ -90,9 +90,9 @@ globle void PrintPartialMatch(
          (*matchingItem->theInfo->base.shortPrintFunction)(theEnv,logicalName,matchingItem);
         }
       else
-        { EnvPrintRouter(theEnv,logicalName,"*"); }
+        { EnvPrintRouter(theEnv,logicalName,(char*)"*"); }
       i++;
-      if (i < list->bcount) EnvPrintRouter(theEnv,logicalName,",");
+      if (i < list->bcount) EnvPrintRouter(theEnv,logicalName,(char*)",");
      }
   }
 
@@ -547,7 +547,12 @@ globle struct partialMatch *MergePartialMatches(
   struct partialMatch *rhsBind)
   {
    struct partialMatch *linker;
-   static struct partialMatch mergeTemplate = { 1 }; /* betaMemory is TRUE, remainder are 0 or NULL */
+   
+   static struct partialMatch mergeTemplate = { 
+      1, 0, 0, 0, 0, NULL, NULL, NULL, NULL,
+      NULL, NULL, NULL, NULL, NULL, NULL, NULL,
+      NULL, NULL, NULL,  NULL, { { { NULL } } } 
+   }; /* betaMemory is TRUE, remainder are 0 or NULL */
   
    /*=================================*/
    /* Allocate the new partial match. */
@@ -884,11 +889,11 @@ static void TraceErrorToRuleDriver(
       name = EnvGetDefruleName(theEnv,joinPtr->ruleToActivate);
       EnvPrintRouter(theEnv,WERROR,indentSpaces);
 
-      EnvPrintRouter(theEnv,WERROR,"Of pattern #");
+      EnvPrintRouter(theEnv,WERROR,(char*)"Of pattern #");
       PrintLongInteger(theEnv,WERROR,priorRightJoinPatterns+priorPatternCount);
-      EnvPrintRouter(theEnv,WERROR," in rule ");
+      EnvPrintRouter(theEnv,WERROR,(char*)" in rule ");
       EnvPrintRouter(theEnv,WERROR,name);
-      EnvPrintRouter(theEnv,WERROR,"\n");
+      EnvPrintRouter(theEnv,WERROR,(char*)"\n");
      }
    else
      {

@@ -127,13 +127,13 @@ globle void SetupObjectPatternsBload(
    AllocateEnvironmentData(theEnv,OBJECTRETEBIN_DATA,sizeof(struct objectReteBinaryData),DeallocateObjectReteBinaryData);
 
 #if BLOAD_AND_BSAVE
-   AddBinaryItem(theEnv,"object patterns",0,BsaveObjectPatternsFind,NULL,
+   AddBinaryItem(theEnv,(char*)"object patterns",0,BsaveObjectPatternsFind,NULL,
                              BsaveStorageObjectPatterns,BsaveObjectPatterns,
                              BloadStorageObjectPatterns,BloadObjectPatterns,
                              ClearBloadObjectPatterns);
 #endif
 #if BLOAD || BLOAD_ONLY
-   AddBinaryItem(theEnv,"object patterns",0,NULL,NULL,NULL,NULL,
+   AddBinaryItem(theEnv,(char*)"object patterns",0,NULL,NULL,NULL,NULL,
                              BloadStorageObjectPatterns,BloadObjectPatterns,
                              ClearBloadObjectPatterns);
 #endif

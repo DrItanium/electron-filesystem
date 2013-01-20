@@ -85,7 +85,7 @@ globle struct expr *Function0Parse(
    GetToken(theEnv,logicalName,&theToken);
    if (theToken.type != LPAREN)
      {
-      SyntaxErrorMessage(theEnv,"function calls");
+      SyntaxErrorMessage(theEnv,(char*)"function calls");
       return(NULL);
      }
 
@@ -115,8 +115,8 @@ globle struct expr *Function1Parse(
    GetToken(theEnv,logicalName,&theToken);
    if (theToken.type != SYMBOL)
      {
-      PrintErrorID(theEnv,"EXPRNPSR",1,TRUE);
-      EnvPrintRouter(theEnv,WERROR,"A function name must be a symbol\n");
+      PrintErrorID(theEnv,(char*)"EXPRNPSR",1,TRUE);
+      EnvPrintRouter(theEnv,WERROR,(char*)"A function name must be a symbol\n");
       return(NULL);
      }
 
@@ -170,7 +170,7 @@ globle struct expr *Function2Parse(
 #if DEFGENERIC_CONSTRUCT
    if (moduleSpecified)
      { 
-      if (ConstructExported(theEnv,"defgeneric",moduleName,constructName) ||
+      if (ConstructExported(theEnv,(char*)"defgeneric",moduleName,constructName) ||
           EnvGetCurrentModule(theEnv) == EnvFindDefmodule(theEnv,ValueToString(moduleName)))
         { gfunc = (void *) EnvFindDefgeneric(theEnv,name); }
       else
@@ -188,7 +188,7 @@ globle struct expr *Function2Parse(
      )
      if (moduleSpecified)
        { 
-        if (ConstructExported(theEnv,"deffunction",moduleName,constructName) ||
+        if (ConstructExported(theEnv,(char*)"deffunction",moduleName,constructName) ||
             EnvGetCurrentModule(theEnv) == EnvFindDefmodule(theEnv,ValueToString(moduleName)))
           { dptr = (void *) EnvFindDeffunction(theEnv,name); }
         else
@@ -218,10 +218,10 @@ globle struct expr *Function2Parse(
      top = GenConstant(theEnv,FCALL,theFunction);
    else
      {
-      PrintErrorID(theEnv,"EXPRNPSR",3,TRUE);
-      EnvPrintRouter(theEnv,WERROR,"Missing function declaration for ");
+      PrintErrorID(theEnv,(char*)"EXPRNPSR",3,TRUE);
+      EnvPrintRouter(theEnv,WERROR,(char*)"Missing function declaration for ");
       EnvPrintRouter(theEnv,WERROR,name);
-      EnvPrintRouter(theEnv,WERROR,".\n");
+      EnvPrintRouter(theEnv,WERROR,(char*)".\n");
       return(NULL);
      }
 
@@ -242,8 +242,8 @@ globle struct expr *Function2Parse(
          top = (*theFunction->parser)(theEnv,top,logicalName);
          PopRtnBrkContexts(theEnv);
          if (top == NULL) return(NULL);
-         if (ReplaceSequenceExpansionOps(theEnv,top->argList,top,FindFunction(theEnv,"(expansion-call)"),
-                                         FindFunction(theEnv,"expand$")))
+         if (ReplaceSequenceExpansionOps(theEnv,top->argList,top,FindFunction(theEnv,(char*)"(expansion-call)"),
+                                         FindFunction(theEnv,(char*)"expand$")))
            {
             ReturnExpression(theEnv,top);
             return(NULL);
@@ -260,8 +260,8 @@ globle struct expr *Function2Parse(
    PopRtnBrkContexts(theEnv);
    if (top == NULL) return(NULL);
 
-   if (ReplaceSequenceExpansionOps(theEnv,top->argList,top,FindFunction(theEnv,"(expansion-call)"),
-                                    FindFunction(theEnv,"expand$")))
+   if (ReplaceSequenceExpansionOps(theEnv,top->argList,top,FindFunction(theEnv,(char*)"(expansion-call)"),
+                                    FindFunction(theEnv,(char*)"expand$")))
      {
       ReturnExpression(theEnv,top);
       return(NULL);
@@ -272,7 +272,7 @@ globle struct expr *Function2Parse(
    /* its arguments cannot be checked until runtime.             */
    /*============================================================*/
 
-   if (top->value == (void *) FindFunction(theEnv,"(expansion-call)"))
+   if (top->value == (void *) FindFunction(theEnv,(char*)"(expansion-call)"))
      { return(top); }
 
    /*============================*/
@@ -345,11 +345,11 @@ globle intBool ReplaceSequenceExpansionOps(
          if ((fcallexp->type != FCALL) ? FALSE :
              (((struct FunctionDefinition *) fcallexp->value)->sequenceuseok == FALSE))
            {
-            PrintErrorID(theEnv,"EXPRNPSR",4,FALSE);
-            EnvPrintRouter(theEnv,WERROR,"$ Sequence operator not a valid argument for ");
+            PrintErrorID(theEnv,(char*)"EXPRNPSR",4,FALSE);
+            EnvPrintRouter(theEnv,WERROR,(char*)"$ Sequence operator not a valid argument for ");
             EnvPrintRouter(theEnv,WERROR,ValueToString(((struct FunctionDefinition *)
                               fcallexp->value)->callFunctionName));
-            EnvPrintRouter(theEnv,WERROR,".\n");
+            EnvPrintRouter(theEnv,WERROR,(char*)".\n");
             return(TRUE);
            }
          if (fcallexp->value != expcall)
@@ -569,7 +569,7 @@ globle struct expr *CollectArguments(
 
    while (TRUE)
      {
-      SavePPBuffer(theEnv," ");
+      SavePPBuffer(theEnv,(char*)" ");
 
       errorFlag = FALSE;
       nextOne = ArgumentParse(theEnv,logicalName,&errorFlag);
@@ -584,7 +584,7 @@ globle struct expr *CollectArguments(
         {
          PPBackup(theEnv);
          PPBackup(theEnv);
-         SavePPBuffer(theEnv,")");
+         SavePPBuffer(theEnv,(char*)")");
          return(top);
         }
 
@@ -644,8 +644,8 @@ globle struct expr *ArgumentParse(
 
    if (theToken.type != LPAREN)
      {
-      PrintErrorID(theEnv,"EXPRNPSR",2,TRUE);
-      EnvPrintRouter(theEnv,WERROR,"Expected a constant, variable, or expression.\n");
+      PrintErrorID(theEnv,(char*)"EXPRNPSR",2,TRUE);
+      EnvPrintRouter(theEnv,WERROR,(char*)"Expected a constant, variable, or expression.\n");
       *errorFlag = TRUE;
       return(NULL);
      }
@@ -693,8 +693,8 @@ globle struct expr *ParseAtomOrExpression(
      }
    else
      {
-      PrintErrorID(theEnv,"EXPRNPSR",2,TRUE);
-      EnvPrintRouter(theEnv,WERROR,"Expected a constant, variable, or expression.\n");
+      PrintErrorID(theEnv,(char*)"EXPRNPSR",2,TRUE);
+      EnvPrintRouter(theEnv,WERROR,(char*)"Expected a constant, variable, or expression.\n");
       return(NULL);
      }
 
@@ -720,7 +720,7 @@ globle struct expr *GroupActions(
    /* Create the enclosing progn. */
    /*=============================*/
 
-   top = GenConstant(theEnv,FCALL,FindFunction(theEnv,"progn"));
+   top = GenConstant(theEnv,FCALL,FindFunction(theEnv,(char*)"progn"));
 
    /*========================================================*/
    /* Continue until all appropriate commands are processed. */
@@ -794,8 +794,8 @@ globle struct expr *GroupActions(
       else
         {
          if (ReplaceSequenceExpansionOps(theEnv,top,NULL,
-                                         FindFunction(theEnv,"(expansion-call)"),
-                                         FindFunction(theEnv,"expand$")))
+                                         FindFunction(theEnv,(char*)"(expansion-call)"),
+                                         FindFunction(theEnv,(char*)"expand$")))
            {
             ReturnExpression(theEnv,top);
             return(NULL);
@@ -864,7 +864,7 @@ globle EXPRESSION *ParseConstantArguments(
   int *error)
   {
    EXPRESSION *top = NULL,*bot = NULL,*tmp;
-   char *router = "***FNXARGS***";
+   char *router = (char*)"***FNXARGS***";
    struct token tkn;
 
    *error = FALSE;
@@ -877,8 +877,8 @@ globle EXPRESSION *ParseConstantArguments(
 
    if (OpenStringSource(theEnv,router,argstr,0) == 0)
      {
-      PrintErrorID(theEnv,"EXPRNPSR",6,FALSE);
-      EnvPrintRouter(theEnv,WERROR,"Cannot read arguments for external call.\n");
+      PrintErrorID(theEnv,(char*)"EXPRNPSR",6,FALSE);
+      EnvPrintRouter(theEnv,WERROR,(char*)"Cannot read arguments for external call.\n");
       *error = TRUE;
       return(NULL);
      }
@@ -894,8 +894,8 @@ globle EXPRESSION *ParseConstantArguments(
           (tkn.type != FLOAT) && (tkn.type != INTEGER) &&
           (tkn.type != INSTANCE_NAME))
         {
-         PrintErrorID(theEnv,"EXPRNPSR",7,FALSE);
-         EnvPrintRouter(theEnv,WERROR,"Only constant arguments allowed for external function call.\n");
+         PrintErrorID(theEnv,(char*)"EXPRNPSR",7,FALSE);
+         EnvPrintRouter(theEnv,WERROR,(char*)"Only constant arguments allowed for external function call.\n");
          ReturnExpression(theEnv,top);
          *error = TRUE;
          CloseStringSource(theEnv,router);

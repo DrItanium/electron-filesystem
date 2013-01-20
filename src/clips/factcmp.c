@@ -54,7 +54,7 @@
 globle void FactPatternsCompilerSetup(  
   void *theEnv)
   {
-   FactData(theEnv)->FactCodeItem = AddCodeGeneratorItem(theEnv,"facts",0,BeforePatternNetworkToCode,
+   FactData(theEnv)->FactCodeItem = AddCodeGeneratorItem(theEnv,(char*)"facts",0,BeforePatternNetworkToCode,
                                        NULL,PatternNetworkToCode,1);
   }
 
@@ -212,7 +212,7 @@ static int PatternNetworkToCode(
            {
             networkFile = OpenFileIfNeeded(theEnv,networkFile,fileName,pathName,fileNameBuffer,fileID,imageID,&fileCount,
                                          networkArrayVersion,headerFP,
-                                         "struct factPatternNode",FactPrefix(),FALSE,NULL);
+                                         (char*)"struct factPatternNode",FactPrefix(),FALSE,NULL);
             if (networkFile == NULL)
               {
                CloseNetworkFiles(theEnv,networkFile,maxIndices);

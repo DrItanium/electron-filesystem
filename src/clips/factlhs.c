@@ -82,12 +82,12 @@ globle struct lhsParseNode *SequenceRestrictionParse(
    /* with the first field of a pattern.                   */
    /*======================================================*/
 
-   SavePPBuffer(theEnv," ");
+   SavePPBuffer(theEnv,(char*)" ");
    GetToken(theEnv,readSource,theToken);
    if ((theToken->type == OR_CONSTRAINT) || (theToken->type == AND_CONSTRAINT))
      {
       ReturnLHSParseNodes(theEnv,topNode);
-      SyntaxErrorMessage(theEnv,"the first field of a pattern");
+      SyntaxErrorMessage(theEnv,(char*)"the first field of a pattern");
       return(NULL);
      }
 
@@ -111,9 +111,9 @@ globle struct lhsParseNode *SequenceRestrictionParse(
    if (theToken->type != RPAREN)
      {
       PPBackup(theEnv);
-      SavePPBuffer(theEnv," ");
+      SavePPBuffer(theEnv,(char*)" ");
       SavePPBuffer(theEnv,theToken->printForm);
-      SyntaxErrorMessage(theEnv,"fact patterns");
+      SyntaxErrorMessage(theEnv,(char*)"fact patterns");
       ReturnLHSParseNodes(theEnv,topNode);
       return(NULL);
      }
@@ -127,7 +127,7 @@ globle struct lhsParseNode *SequenceRestrictionParse(
      {
       PPBackup(theEnv);
       PPBackup(theEnv);
-      SavePPBuffer(theEnv,")");
+      SavePPBuffer(theEnv,(char*)")");
      }
 
    /*===================================*/
@@ -154,16 +154,16 @@ globle struct lhsParseNode *CreateInitialFactPattern(
    /*==================================*/
 
    theDeftemplate = (struct deftemplate *)
-                    FindImportedConstruct(theEnv,"deftemplate",NULL,"initial-fact",
+                    FindImportedConstruct(theEnv,(char*)"deftemplate",NULL,(char*)"initial-fact",
                                           &count,TRUE,NULL);
    if (theDeftemplate == NULL)
      {
-      PrintWarningID(theEnv,"FACTLHS",1,FALSE);
-      EnvPrintRouter(theEnv,WWARNING,"Creating implied initial-fact deftemplate in module ");
+      PrintWarningID(theEnv,(char*)"FACTLHS",1,FALSE);
+      EnvPrintRouter(theEnv,WWARNING,(char*)"Creating implied initial-fact deftemplate in module ");
       EnvPrintRouter(theEnv,WWARNING,EnvGetDefmoduleName(theEnv,EnvGetCurrentModule(theEnv)));
-      EnvPrintRouter(theEnv,WWARNING,".\n");
-      EnvPrintRouter(theEnv,WWARNING,"  You probably want to import this deftemplate from the MAIN module.\n");
-      CreateImpliedDeftemplate(theEnv,(SYMBOL_HN *) EnvAddSymbol(theEnv,"initial-fact"),FALSE);
+      EnvPrintRouter(theEnv,WWARNING,(char*)".\n");
+      EnvPrintRouter(theEnv,WWARNING,(char*)"  You probably want to import this deftemplate from the MAIN module.\n");
+      CreateImpliedDeftemplate(theEnv,(SYMBOL_HN *) EnvAddSymbol(theEnv,(char*)"initial-fact"),FALSE);
      }
 
    /*====================================*/
@@ -177,7 +177,7 @@ globle struct lhsParseNode *CreateInitialFactPattern(
 
    topNode->bottom = GetLHSParseNode(theEnv);
    topNode->bottom->type = SYMBOL;
-   topNode->bottom->value = (void *) EnvAddSymbol(theEnv,"initial-fact");
+   topNode->bottom->value = (void *) EnvAddSymbol(theEnv,(char*)"initial-fact");
 
    /*=====================*/
    /* Return the pattern. */
@@ -234,12 +234,12 @@ globle struct lhsParseNode *FactPatternParse(
    /*=========================================================*/
 
    theDeftemplate = (struct deftemplate *)
-                    FindImportedConstruct(theEnv,"deftemplate",NULL,ValueToString(theToken->value),
+                    FindImportedConstruct(theEnv,(char*)"deftemplate",NULL,ValueToString(theToken->value),
                                           &count,TRUE,NULL);
 
    if (count > 1)
      {
-      AmbiguousReferenceErrorMessage(theEnv,"deftemplate",ValueToString(theToken->value));
+      AmbiguousReferenceErrorMessage(theEnv,(char*)"deftemplate",ValueToString(theToken->value));
       return(NULL);
      }
 
@@ -251,9 +251,9 @@ globle struct lhsParseNode *FactPatternParse(
    if (theDeftemplate == NULL)
      {
 #if DEFMODULE_CONSTRUCT
-      if (FindImportExportConflict(theEnv,"deftemplate",((struct defmodule *) EnvGetCurrentModule(theEnv)),ValueToString(theToken->value)))
+      if (FindImportExportConflict(theEnv,(char*)"deftemplate",((struct defmodule *) EnvGetCurrentModule(theEnv)),ValueToString(theToken->value)))
         {
-         ImportExportConflictMessage(theEnv,"implied deftemplate",ValueToString(theToken->value),NULL,NULL);
+         ImportExportConflictMessage(theEnv,(char*)"implied deftemplate",ValueToString(theToken->value),NULL,NULL);
          return(NULL);
         }
 #endif /* DEFMODULE_CONSTRUCT */

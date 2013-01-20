@@ -64,7 +64,7 @@ globle void DefmoduleCompilerSetup(
   void *theEnv)
   {
    DefmoduleData(theEnv)->DefmoduleCodeItem = 
-      AddCodeGeneratorItem(theEnv,"defmodule",200,BeforeDefmodulesToCode,
+      AddCodeGeneratorItem(theEnv,(char*)"defmodule",200,BeforeDefmodulesToCode,
                            InitDefmoduleCode,ConstructToCode,3);
   }
 
@@ -180,7 +180,7 @@ static int ConstructToCode(
 
       moduleFile = OpenFileIfNeeded(theEnv,moduleFile,fileName,pathName,fileNameBuffer,fileID,imageID,
                                     &fileCount,moduleArrayVersion,headerFP,
-                                    "struct defmodule",DefmodulePrefix(),
+                                    (char*)"struct defmodule",DefmodulePrefix(),
                                     FALSE,NULL);
 
       if (moduleFile == NULL)
@@ -346,7 +346,7 @@ static int PortItemsToCode(
 
       portItemsFile = OpenFileIfNeeded(theEnv,portItemsFile,fileName,pathName,fileNameBuffer,fileID,imageID,
                                        fileCount,portItemArrayVersion,headerFP,
-                                       "struct portItem",PortPrefix(),
+                                       (char*)"struct portItem",PortPrefix(),
                                        FALSE,NULL);
 
       if (portItemsFile == NULL)

@@ -344,11 +344,11 @@ globle void AmbiguousReferenceErrorMessage(
   char *constructName,
   char *findName)
   {
-   EnvPrintRouter(theEnv,WERROR,"Ambiguous reference to ");
+   EnvPrintRouter(theEnv,WERROR,(char*)"Ambiguous reference to ");
    EnvPrintRouter(theEnv,WERROR,constructName);
-   EnvPrintRouter(theEnv,WERROR," ");
+   EnvPrintRouter(theEnv,WERROR,(char*)" ");
    EnvPrintRouter(theEnv,WERROR,findName);
-   EnvPrintRouter(theEnv,WERROR,".\nIt is imported from more than one module.\n");
+   EnvPrintRouter(theEnv,WERROR,(char*)".\nIt is imported from more than one module.\n");
   }
 
 /****************************************************/
@@ -622,7 +622,7 @@ globle void ListItemsDriver(
       if (allModules)
         {
          EnvPrintRouter(theEnv,logicalName,EnvGetDefmoduleName(theEnv,theModule));
-         EnvPrintRouter(theEnv,logicalName,":\n");
+         EnvPrintRouter(theEnv,logicalName,(char*)":\n");
         }
 
       EnvSetCurrentModule(theEnv,(void *) theModule);
@@ -640,16 +640,16 @@ globle void ListItemsDriver(
             constructName = (*nameFunction)(constructPtr);
             if (constructName != NULL)
               {
-               if (allModules) EnvPrintRouter(theEnv,logicalName,"   ");
+               if (allModules) EnvPrintRouter(theEnv,logicalName,(char*)"   ");
                EnvPrintRouter(theEnv,logicalName,constructName);
-               EnvPrintRouter(theEnv,logicalName,"\n");
+               EnvPrintRouter(theEnv,logicalName,(char*)"\n");
               }
            }
          else if (printFunction != NULL)
            {
-            if (allModules) EnvPrintRouter(theEnv,logicalName,"   ");
+            if (allModules) EnvPrintRouter(theEnv,logicalName,(char*)"   ");
             (*printFunction)(theEnv,logicalName,constructPtr);
-            EnvPrintRouter(theEnv,logicalName,"\n");
+            EnvPrintRouter(theEnv,logicalName,(char*)"\n");
            }
 
          constructPtr = (*nextFunction)(theEnv,constructPtr);

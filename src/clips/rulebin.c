@@ -92,13 +92,13 @@ globle void DefruleBinarySetup(
    AllocateEnvironmentData(theEnv,RULEBIN_DATA,sizeof(struct defruleBinaryData),DeallocateDefruleBloadData);
 
 #if BLOAD_AND_BSAVE
-   AddBinaryItem(theEnv,"defrule",20,BsaveFind,BsaveExpressions,
+   AddBinaryItem(theEnv,(char*)"defrule",20,BsaveFind,BsaveExpressions,
                              BsaveStorage,BsaveBinaryItem,
                              BloadStorage,BloadBinaryItem,
                              ClearBload);
 #endif
 #if BLOAD || BLOAD_ONLY
-   AddBinaryItem(theEnv,"defrule",20,NULL,NULL,NULL,NULL,
+   AddBinaryItem(theEnv,(char*)"defrule",20,NULL,NULL,NULL,NULL,
                              BloadStorage,BloadBinaryItem,
                              ClearBload);
 #endif
@@ -392,7 +392,7 @@ static void BsaveBinaryItem(
       EnvSetCurrentModule(theEnv,(void *) theModule);
 
       theModuleItem = (struct defruleModule *)
-                      GetModuleItem(theEnv,NULL,FindModuleItem(theEnv,"defrule")->moduleIndex);
+                      GetModuleItem(theEnv,NULL,FindModuleItem(theEnv,(char*)"defrule")->moduleIndex);
       AssignBsaveDefmdlItemHdrVals(&tempDefruleModule.header,
                                            &theModuleItem->header);
       GenWrite(&tempDefruleModule,sizeof(struct bsaveDefruleModule),fp);

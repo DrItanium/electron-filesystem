@@ -130,21 +130,21 @@ globle void FileCommandDefinitions(
 
 #if ! RUN_TIME
 #if DEBUGGING_FUNCTIONS
-   EnvDefineFunction2(theEnv,"batch",'b',PTIEF BatchCommand,"BatchCommand","11k");
-   EnvDefineFunction2(theEnv,"batch*",'b',PTIEF BatchStarCommand,"BatchStarCommand","11k");
-   EnvDefineFunction2(theEnv,"dribble-on",'b',PTIEF DribbleOnCommand,"DribbleOnCommand","11k");
-   EnvDefineFunction2(theEnv,"dribble-off",'b',PTIEF DribbleOffCommand,"DribbleOffCommand","00");
-   EnvDefineFunction2(theEnv,"save",'b',PTIEF SaveCommand,"SaveCommand","11k");
+   EnvDefineFunction2(theEnv,(char*)"batch",'b',PTIEF BatchCommand,(char*)"BatchCommand",(char*)"11k");
+   EnvDefineFunction2(theEnv,(char*)"batch*",'b',PTIEF BatchStarCommand,(char*)"BatchStarCommand",(char*)"11k");
+   EnvDefineFunction2(theEnv,(char*)"dribble-on",'b',PTIEF DribbleOnCommand,(char*)"DribbleOnCommand",(char*)"11k");
+   EnvDefineFunction2(theEnv,(char*)"dribble-off",'b',PTIEF DribbleOffCommand,(char*)"DribbleOffCommand",(char*)"00");
+   EnvDefineFunction2(theEnv,(char*)"save",'b',PTIEF SaveCommand,(char*)"SaveCommand",(char*)"11k");
 #endif
-   EnvDefineFunction2(theEnv,"load",'b',PTIEF LoadCommand,"LoadCommand","11k");
-   EnvDefineFunction2(theEnv,"load*",'b',PTIEF LoadStarCommand,"LoadStarCommand","11k");
+   EnvDefineFunction2(theEnv,(char*)"load",'b',PTIEF LoadCommand,(char*)"LoadCommand",(char*)"11k");
+   EnvDefineFunction2(theEnv,(char*)"load*",'b',PTIEF LoadStarCommand,(char*)"LoadStarCommand",(char*)"11k");
 #if BLOAD_AND_BSAVE
    InitializeBsaveData(theEnv);
-   EnvDefineFunction2(theEnv,"bsave",'b', PTIEF BsaveCommand,"BsaveCommand","11k");
+   EnvDefineFunction2(theEnv,(char*)"bsave",'b', PTIEF BsaveCommand,(char*)"BsaveCommand",(char*)"11k");
 #endif
 #if BLOAD || BLOAD_ONLY || BLOAD_AND_BSAVE
    InitializeBloadData(theEnv);
-   EnvDefineFunction2(theEnv,"bload",'b',PTIEF BloadCommand,"BloadCommand","11k");
+   EnvDefineFunction2(theEnv,(char*)"bload",'b',PTIEF BloadCommand,(char*)"BloadCommand",(char*)"11k");
 #endif
 #endif
   }
@@ -234,9 +234,9 @@ static int PrintDribble(
    /* Send the output to any routers interested in printing it. */
    /*===========================================================*/
 
-   EnvDeactivateRouter(theEnv,"dribble");
+   EnvDeactivateRouter(theEnv,(char*)"dribble");
    EnvPrintRouter(theEnv,logicalName,str);
-   EnvActivateRouter(theEnv,"dribble");
+   EnvActivateRouter(theEnv,(char*)"dribble");
 
    return(1);
   }
@@ -255,9 +255,9 @@ static int GetcDribble(
    /* character from another active router.     */
    /*===========================================*/
 
-   EnvDeactivateRouter(theEnv,"dribble");
+   EnvDeactivateRouter(theEnv,(char*)"dribble");
    rv = EnvGetcRouter(theEnv,logicalName);
-   EnvActivateRouter(theEnv,"dribble");
+   EnvActivateRouter(theEnv,(char*)"dribble");
 
    /*==========================================*/
    /* Put the character retrieved from another */
@@ -352,9 +352,9 @@ static int UngetcDribble(
    /* ungetc request to the other active routers. */
    /*=============================================*/
 
-   EnvDeactivateRouter(theEnv,"dribble");
+   EnvDeactivateRouter(theEnv,(char*)"dribble");
    rv = EnvUngetcRouter(theEnv,ch,logicalName);
-   EnvActivateRouter(theEnv,"dribble");
+   EnvActivateRouter(theEnv,(char*)"dribble");
 
    /*==========================================*/
    /* Return the result of the ungetc request. */
@@ -393,8 +393,8 @@ globle int DribbleOnCommand(
   {
    char *fileName;
 
-   if (EnvArgCountCheck(theEnv,"dribble-on",EXACTLY,1) == -1) return(FALSE);
-   if ((fileName = GetFileName(theEnv,"dribble-on",1)) == NULL) return(FALSE);
+   if (EnvArgCountCheck(theEnv,(char*)"dribble-on",EXACTLY,1) == -1) return(FALSE);
+   if ((fileName = GetFileName(theEnv,(char*)"dribble-on",1)) == NULL) return(FALSE);
 
    return (EnvDribbleOn(theEnv,fileName));
   }
@@ -419,10 +419,10 @@ globle intBool EnvDribbleOn(
    /* Open the dribble file. */
    /*========================*/
 
-   FileCommandData(theEnv)->DribbleFP = GenOpen(theEnv,fileName,"w");
+   FileCommandData(theEnv)->DribbleFP = GenOpen(theEnv,fileName,(char*)"w");
    if (FileCommandData(theEnv)->DribbleFP == NULL)
      {
-      OpenErrorMessage(theEnv,"dribble-on",fileName);
+      OpenErrorMessage(theEnv,(char*)"dribble-on",fileName);
       return(0);
      }
 
@@ -430,7 +430,7 @@ globle intBool EnvDribbleOn(
    /* Create the dribble router. */
    /*============================*/
 
-   EnvAddRouter(theEnv,"dribble", 40,
+   EnvAddRouter(theEnv,(char*)"dribble", 40,
              FindDribble, PrintDribble,
              GetcDribble, UngetcDribble,
              ExitDribble);
@@ -475,7 +475,7 @@ globle intBool EnvDribbleActive(
 globle int DribbleOffCommand(
   void *theEnv)
   {
-   if (EnvArgCountCheck(theEnv,"dribble-off",EXACTLY,0) == -1) return(FALSE);
+   if (EnvArgCountCheck(theEnv,(char*)"dribble-off",EXACTLY,0) == -1) return(FALSE);
    return(EnvDribbleOff(theEnv));
   }
 
@@ -508,7 +508,7 @@ globle intBool EnvDribbleOff(
      {
       if (FileCommandData(theEnv)->DribbleCurrentPosition > 0)
         { fprintf(FileCommandData(theEnv)->DribbleFP,"%s",FileCommandData(theEnv)->DribbleBuffer); }
-      EnvDeleteRouter(theEnv,"dribble");
+      EnvDeleteRouter(theEnv,(char*)"dribble");
       if (GenClose(theEnv,FileCommandData(theEnv)->DribbleFP) == 0) rv = 1;
      }
    else
@@ -605,7 +605,7 @@ globle int LLGetcBatch(
 
       if (rv == EOF)
         {
-         if (FileCommandData(theEnv)->BatchCurrentPosition > 0) EnvPrintRouter(theEnv,"stdout",(char *) FileCommandData(theEnv)->BatchBuffer);
+         if (FileCommandData(theEnv)->BatchCurrentPosition > 0) EnvPrintRouter(theEnv,(char*)"stdout",(char *) FileCommandData(theEnv)->BatchBuffer);
          flag = RemoveBatch(theEnv);
         }
      }
@@ -618,8 +618,8 @@ globle int LLGetcBatch(
 
    if (rv == EOF)
      {
-      if (FileCommandData(theEnv)->BatchCurrentPosition > 0) EnvPrintRouter(theEnv,"stdout",(char *) FileCommandData(theEnv)->BatchBuffer);
-      EnvDeleteRouter(theEnv,"batch");
+      if (FileCommandData(theEnv)->BatchCurrentPosition > 0) EnvPrintRouter(theEnv,(char*)"stdout",(char *) FileCommandData(theEnv)->BatchBuffer);
+      EnvDeleteRouter(theEnv,(char*)"batch");
       RemoveBatch(theEnv);
       if (returnOnEOF == TRUE)
         { return (EOF); }
@@ -641,7 +641,7 @@ globle int LLGetcBatch(
 
    if ((char) rv == '\n')
      {
-      EnvPrintRouter(theEnv,"stdout",(char *) FileCommandData(theEnv)->BatchBuffer);
+      EnvPrintRouter(theEnv,(char*)"stdout",(char *) FileCommandData(theEnv)->BatchBuffer);
       FileCommandData(theEnv)->BatchCurrentPosition = 0;
       if ((FileCommandData(theEnv)->BatchBuffer != NULL) && (FileCommandData(theEnv)->BatchMaximumPosition > BUFFER_SIZE))
         {
@@ -707,8 +707,8 @@ globle int BatchCommand(
   {
    char *fileName;
 
-   if (EnvArgCountCheck(theEnv,"batch",EXACTLY,1) == -1) return(FALSE);
-   if ((fileName = GetFileName(theEnv,"batch",1)) == NULL) return(FALSE);
+   if (EnvArgCountCheck(theEnv,(char*)"batch",EXACTLY,1) == -1) return(FALSE);
+   if ((fileName = GetFileName(theEnv,(char*)"batch",1)) == NULL) return(FALSE);
 
    return(OpenBatch(theEnv,fileName,FALSE));
   }
@@ -736,11 +736,11 @@ globle int OpenBatch(
    /* Open the batch file. */
    /*======================*/
 
-   theFile = GenOpen(theEnv,fileName,"r");
+   theFile = GenOpen(theEnv,fileName,(char*)"r");
 
    if (theFile == NULL)
      {
-      OpenErrorMessage(theEnv,"batch",fileName);
+      OpenErrorMessage(theEnv,(char*)"batch",fileName);
       return(FALSE);
      }
 
@@ -751,7 +751,7 @@ globle int OpenBatch(
 
    if (FileCommandData(theEnv)->TopOfBatchList == NULL)
      {
-      EnvAddRouter(theEnv,"batch", 20,
+      EnvAddRouter(theEnv,(char*)"batch", 20,
                  FindBatch, NULL,
                  GetcBatch, UngetcBatch,
                  ExitBatch);
@@ -790,7 +790,7 @@ globle int OpenStringBatch(
 
    if (FileCommandData(theEnv)->TopOfBatchList == NULL)
      {
-      EnvAddRouter(theEnv,"batch", 20,
+      EnvAddRouter(theEnv,(char*)"batch", 20,
                  FindBatch, NULL,
                  GetcBatch, UngetcBatch,
                  ExitBatch);
@@ -946,7 +946,7 @@ globle void CloseAllBatchSources(
 
    if (FileCommandData(theEnv)->BatchBuffer != NULL)
      {
-      if (FileCommandData(theEnv)->BatchCurrentPosition > 0) EnvPrintRouter(theEnv,"stdout",(char *) FileCommandData(theEnv)->BatchBuffer);
+      if (FileCommandData(theEnv)->BatchCurrentPosition > 0) EnvPrintRouter(theEnv,(char*)"stdout",(char *) FileCommandData(theEnv)->BatchBuffer);
       rm(theEnv,FileCommandData(theEnv)->BatchBuffer,FileCommandData(theEnv)->BatchMaximumPosition);
       FileCommandData(theEnv)->BatchBuffer = NULL;
       FileCommandData(theEnv)->BatchCurrentPosition = 0;
@@ -957,7 +957,7 @@ globle void CloseAllBatchSources(
    /* Delete the batch router. */
    /*==========================*/
 
-   EnvDeleteRouter(theEnv,"batch");
+   EnvDeleteRouter(theEnv,(char*)"batch");
 
    /*=====================================*/
    /* Close each of the open batch files. */
@@ -976,8 +976,8 @@ globle int BatchStarCommand(
   {
    char *fileName;
 
-   if (EnvArgCountCheck(theEnv,"batch*",EXACTLY,1) == -1) return(FALSE);
-   if ((fileName = GetFileName(theEnv,"batch*",1)) == NULL) return(FALSE);
+   if (EnvArgCountCheck(theEnv,(char*)"batch*",EXACTLY,1) == -1) return(FALSE);
+   if ((fileName = GetFileName(theEnv,(char*)"batch*",1)) == NULL) return(FALSE);
 
    return(EnvBatchStar(theEnv,fileName));
   }
@@ -1001,11 +1001,11 @@ globle int EnvBatchStar(
    /* Open the batch file. */
    /*======================*/
 
-   theFile = GenOpen(theEnv,fileName,"r");
+   theFile = GenOpen(theEnv,fileName,(char*)"r");
 
    if (theFile == NULL)
      {
-      OpenErrorMessage(theEnv,"batch",fileName);
+      OpenErrorMessage(theEnv,(char*)"batch",fileName);
       return(FALSE);
      }
 
@@ -1066,8 +1066,8 @@ globle int EnvBatchStar(
 #pragma unused(fileName)
 #endif
 
-   PrintErrorID(theEnv,"FILECOM",1,FALSE);
-   EnvPrintRouter(theEnv,WERROR,"Function batch* does not work in run time modules.\n");
+   PrintErrorID(theEnv,(char*)"FILECOM",1,FALSE);
+   EnvPrintRouter(theEnv,WERROR,(char*)"Function batch* does not work in run time modules.\n");
    return(FALSE);
   }
 
@@ -1083,15 +1083,15 @@ globle int LoadCommand(
    char *theFileName;
    int rv;
 
-   if (EnvArgCountCheck(theEnv,"load",EXACTLY,1) == -1) return(FALSE);
-   if ((theFileName = GetFileName(theEnv,"load",1)) == NULL) return(FALSE);
+   if (EnvArgCountCheck(theEnv,(char*)"load",EXACTLY,1) == -1) return(FALSE);
+   if ((theFileName = GetFileName(theEnv,(char*)"load",1)) == NULL) return(FALSE);
 
    SetPrintWhileLoading(theEnv,TRUE);
 
    if ((rv = EnvLoad(theEnv,theFileName)) == FALSE)
      {
       SetPrintWhileLoading(theEnv,FALSE);
-      OpenErrorMessage(theEnv,"load",theFileName);
+      OpenErrorMessage(theEnv,(char*)"load",theFileName);
       return(FALSE);
      }
 
@@ -1099,7 +1099,7 @@ globle int LoadCommand(
    if (rv == -1) return(FALSE);
    return(TRUE);
 #else
-   EnvPrintRouter(theEnv,WDIALOG,"Load is not available in this environment\n");
+   EnvPrintRouter(theEnv,WDIALOG,(char*)"Load is not available in this environment\n");
    return(FALSE);
 #endif
   }
@@ -1114,19 +1114,19 @@ globle int LoadStarCommand(
    char *theFileName;
    int rv;
 
-   if (EnvArgCountCheck(theEnv,"load*",EXACTLY,1) == -1) return(FALSE);
-   if ((theFileName = GetFileName(theEnv,"load*",1)) == NULL) return(FALSE);
+   if (EnvArgCountCheck(theEnv,(char*)"load*",EXACTLY,1) == -1) return(FALSE);
+   if ((theFileName = GetFileName(theEnv,(char*)"load*",1)) == NULL) return(FALSE);
 
    if ((rv = EnvLoad(theEnv,theFileName)) == FALSE)
      {
-      OpenErrorMessage(theEnv,"load*",theFileName);
+      OpenErrorMessage(theEnv,(char*)"load*",theFileName);
       return(FALSE);
      }
 
    if (rv == -1) return(FALSE);
    return(TRUE);
 #else
-   EnvPrintRouter(theEnv,WDIALOG,"Load* is not available in this environment\n");
+   EnvPrintRouter(theEnv,WDIALOG,(char*)"Load* is not available in this environment\n");
    return(FALSE);
 #endif
   }
@@ -1141,18 +1141,18 @@ globle int SaveCommand(
 #if (! BLOAD_ONLY) && (! RUN_TIME)
    char *theFileName;
 
-   if (EnvArgCountCheck(theEnv,"save",EXACTLY,1) == -1) return(FALSE);
-   if ((theFileName = GetFileName(theEnv,"save",1)) == NULL) return(FALSE);
+   if (EnvArgCountCheck(theEnv,(char*)"save",EXACTLY,1) == -1) return(FALSE);
+   if ((theFileName = GetFileName(theEnv,(char*)"save",1)) == NULL) return(FALSE);
 
    if (EnvSave(theEnv,theFileName) == FALSE)
      {
-      OpenErrorMessage(theEnv,"save",theFileName);
+      OpenErrorMessage(theEnv,(char*)"save",theFileName);
       return(FALSE);
      }
 
    return(TRUE);
 #else
-   EnvPrintRouter(theEnv,WDIALOG,"Save is not available in this environment\n");
+   EnvPrintRouter(theEnv,WDIALOG,(char*)"Save is not available in this environment\n");
    return(FALSE);
 #endif
   }

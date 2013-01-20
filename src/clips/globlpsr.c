@@ -89,7 +89,7 @@ globle intBool ParseDefglobal(
    SetPPBufferStatus(theEnv,ON);
    FlushPPBuffer(theEnv);
    SetIndentDepth(theEnv,3);
-   SavePPBuffer(theEnv,"(defglobal ");
+   SavePPBuffer(theEnv,(char*)"(defglobal ");
 
    /*=================================================*/
    /* Individual defglobal constructs can't be parsed */
@@ -99,7 +99,7 @@ globle intBool ParseDefglobal(
 #if BLOAD || BLOAD_ONLY || BLOAD_AND_BSAVE
    if ((Bloaded(theEnv) == TRUE) && (! ConstructData(theEnv)->CheckSyntaxMode))
      {
-      CannotLoadWithBloadMessage(theEnv,"defglobal");
+      CannotLoadWithBloadMessage(theEnv,(char*)"defglobal");
       return(TRUE);
      }
 #endif
@@ -121,7 +121,7 @@ globle intBool ParseDefglobal(
       tokenRead = FALSE;
       if (FindModuleSeparator(ValueToString(theToken.value)))
         {
-         SyntaxErrorMessage(theEnv,"defglobal");
+         SyntaxErrorMessage(theEnv,(char*)"defglobal");
          return(TRUE);
         }
 
@@ -132,7 +132,7 @@ globle intBool ParseDefglobal(
       theModule = (struct defmodule *) EnvFindDefmodule(theEnv,ValueToString(theToken.value));
       if (theModule == NULL)
         {
-         CantFindItemErrorMessage(theEnv,"defmodule",ValueToString(theToken.value));
+         CantFindItemErrorMessage(theEnv,(char*)"defmodule",ValueToString(theToken.value));
          return(TRUE);
         }
 
@@ -141,7 +141,7 @@ globle intBool ParseDefglobal(
       /* current module to the specified module. */
       /*=========================================*/
 
-      SavePPBuffer(theEnv," ");
+      SavePPBuffer(theEnv,(char*)" ");
       EnvSetCurrentModule(theEnv,(void *) theModule);
      }
 
@@ -155,7 +155,7 @@ globle intBool ParseDefglobal(
      {
       PPBackup(theEnv);
       SavePPBuffer(theEnv,EnvGetDefmoduleName(theEnv,((struct defmodule *) EnvGetCurrentModule(theEnv))));
-      SavePPBuffer(theEnv," ");
+      SavePPBuffer(theEnv,(char*)" ");
       SavePPBuffer(theEnv,theToken.printForm);
      }
 
@@ -168,9 +168,9 @@ globle intBool ParseDefglobal(
       tokenRead = FALSE;
 
       FlushPPBuffer(theEnv);
-      SavePPBuffer(theEnv,"(defglobal ");
+      SavePPBuffer(theEnv,(char*)"(defglobal ");
       SavePPBuffer(theEnv,EnvGetDefmoduleName(theEnv,((struct defmodule *) EnvGetCurrentModule(theEnv))));
-      SavePPBuffer(theEnv," ");
+      SavePPBuffer(theEnv,(char*)" ");
      }
 
 #endif
@@ -213,49 +213,49 @@ static intBool GetVariableDefinition(
 
    if (theToken->type == SF_VARIABLE)
      {
-      SyntaxErrorMessage(theEnv,"defglobal");
+      SyntaxErrorMessage(theEnv,(char*)"defglobal");
       *defglobalError = TRUE;
       return(FALSE);
      }
    else if (theToken->type != GBL_VARIABLE)
      {
-      SyntaxErrorMessage(theEnv,"defglobal");
+      SyntaxErrorMessage(theEnv,(char*)"defglobal");
       *defglobalError = TRUE;
       return(FALSE);
      }
 
    variableName = (SYMBOL_HN *) theToken->value;
 
-   SavePPBuffer(theEnv," ");
+   SavePPBuffer(theEnv,(char*)" ");
 
    /*================================*/
    /* Print out compilation message. */
    /*================================*/
 
 #if DEBUGGING_FUNCTIONS
-   if ((EnvGetWatchItem(theEnv,"compilations") == ON) && GetPrintWhileLoading(theEnv))
+   if ((EnvGetWatchItem(theEnv,(char*)"compilations") == ON) && GetPrintWhileLoading(theEnv))
      {
       if (QFindDefglobal(theEnv,variableName) != NULL) 
         {
-         PrintWarningID(theEnv,"CSTRCPSR",1,TRUE);
-         EnvPrintRouter(theEnv,WDIALOG,"Redefining defglobal: ");
+         PrintWarningID(theEnv,(char*)"CSTRCPSR",1,TRUE);
+         EnvPrintRouter(theEnv,WDIALOG,(char*)"Redefining defglobal: ");
         }
-      else EnvPrintRouter(theEnv,WDIALOG,"Defining defglobal: ");
+      else EnvPrintRouter(theEnv,WDIALOG,(char*)"Defining defglobal: ");
       EnvPrintRouter(theEnv,WDIALOG,ValueToString(variableName));
-      EnvPrintRouter(theEnv,WDIALOG,"\n");
+      EnvPrintRouter(theEnv,WDIALOG,(char*)"\n");
      }
    else
 #endif
-     { if (GetPrintWhileLoading(theEnv)) EnvPrintRouter(theEnv,WDIALOG,":"); }
+     { if (GetPrintWhileLoading(theEnv)) EnvPrintRouter(theEnv,WDIALOG,(char*)":"); }
 
    /*==================================================================*/
    /* Check for import/export conflicts from the construct definition. */
    /*==================================================================*/
 
 #if DEFMODULE_CONSTRUCT
-   if (FindImportExportConflict(theEnv,"defglobal",((struct defmodule *) EnvGetCurrentModule(theEnv)),ValueToString(variableName)))
+   if (FindImportExportConflict(theEnv,(char*)"defglobal",((struct defmodule *) EnvGetCurrentModule(theEnv)),ValueToString(variableName)))
      {
-      ImportExportConflictMessage(theEnv,"defglobal",ValueToString(variableName),NULL,NULL);
+      ImportExportConflictMessage(theEnv,(char*)"defglobal",ValueToString(variableName),NULL,NULL);
       *defglobalError = TRUE;
       return(FALSE);
      }
@@ -268,12 +268,12 @@ static intBool GetVariableDefinition(
    GetToken(theEnv,readSource,theToken);
    if (strcmp(theToken->printForm,"=") != 0)
      {
-      SyntaxErrorMessage(theEnv,"defglobal");
+      SyntaxErrorMessage(theEnv,(char*)"defglobal");
       *defglobalError = TRUE;
       return(FALSE);
      }
 
-   SavePPBuffer(theEnv," ");
+   SavePPBuffer(theEnv,(char*)" ");
 
    /*======================================================*/
    /* Parse the expression to be assigned to the variable. */
@@ -303,7 +303,7 @@ static intBool GetVariableDefinition(
    else
      { ReturnExpression(theEnv,assignPtr); }
 
-   SavePPBuffer(theEnv,")");
+   SavePPBuffer(theEnv,(char*)")");
 
    /*======================================*/
    /* Add the variable to the global list. */
@@ -398,7 +398,7 @@ static void AddDefglobal(
    defglobalPtr->header.usrData = NULL;
    IncrementSymbolCount(name);
 
-   SavePPBuffer(theEnv,"\n");
+   SavePPBuffer(theEnv,(char*)"\n");
    if (EnvGetConserveMemory(theEnv) == TRUE)
      { defglobalPtr->header.ppForm = NULL; }
    else
@@ -418,7 +418,7 @@ static void AddDefglobal(
 
    defglobalPtr->busyCount = 0;
    defglobalPtr->header.whichModule = (struct defmoduleItemHeader *)
-                               GetModuleItem(theEnv,NULL,FindModuleItem(theEnv,"defglobal")->moduleIndex);
+                               GetModuleItem(theEnv,NULL,FindModuleItem(theEnv,(char*)"defglobal")->moduleIndex);
 
    /*=============================================*/
    /* Add the defglobal to the list of defglobals */
@@ -445,7 +445,7 @@ globle intBool ReplaceGlobalVariable(
    /*=================================*/
 
    theGlobal = (struct defglobal *)
-               FindImportedConstruct(theEnv,"defglobal",NULL,ValueToString(ePtr->value),
+               FindImportedConstruct(theEnv,(char*)"defglobal",NULL,ValueToString(ePtr->value),
                                      &count,TRUE,NULL);
 
    /*=============================================*/
@@ -466,7 +466,7 @@ globle intBool ReplaceGlobalVariable(
 
    if (count > 1)
      {
-      AmbiguousReferenceErrorMessage(theEnv,"defglobal",ValueToString(ePtr->value));
+      AmbiguousReferenceErrorMessage(theEnv,(char*)"defglobal",ValueToString(ePtr->value));
       return(FALSE);
      }
 
@@ -489,10 +489,10 @@ globle void GlobalReferenceErrorMessage(
   void *theEnv,
   char *variableName)
   {
-   PrintErrorID(theEnv,"GLOBLPSR",1,TRUE);
-   EnvPrintRouter(theEnv,WERROR,"\nGlobal variable ?*");
+   PrintErrorID(theEnv,(char*)"GLOBLPSR",1,TRUE);
+   EnvPrintRouter(theEnv,WERROR,(char*)"\nGlobal variable ?*");
    EnvPrintRouter(theEnv,WERROR,variableName);
-   EnvPrintRouter(theEnv,WERROR,"* was referenced, but is not defined.\n");
+   EnvPrintRouter(theEnv,WERROR,(char*)"* was referenced, but is not defined.\n");
   }
 
 #endif /* (! RUN_TIME) && (! BLOAD_ONLY) */

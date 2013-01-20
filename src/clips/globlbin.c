@@ -65,18 +65,18 @@ globle void DefglobalBinarySetup(
   {
    AllocateEnvironmentData(theEnv,GLOBLBIN_DATA,sizeof(struct defglobalBinaryData),DeallocateDefglobalBloadData);
 #if (BLOAD_AND_BSAVE || BLOAD)
-   AddAfterBloadFunction(theEnv,"defglobal",ResetDefglobals,50);
+   AddAfterBloadFunction(theEnv,(char*)"defglobal",ResetDefglobals,50);
 #endif
 
 #if BLOAD_AND_BSAVE
-   AddBinaryItem(theEnv,"defglobal",0,BsaveFind,NULL,
+   AddBinaryItem(theEnv,(char*)"defglobal",0,BsaveFind,NULL,
                              BsaveStorage,BsaveBinaryItem,
                              BloadStorageDefglobals,BloadBinaryItem,
                              ClearBload);
 #endif
 
 #if (BLOAD || BLOAD_ONLY)
-   AddBinaryItem(theEnv,"defglobal",0,NULL,NULL,NULL,NULL,
+   AddBinaryItem(theEnv,(char*)"defglobal",0,NULL,NULL,NULL,NULL,
                              BloadStorageDefglobals,BloadBinaryItem,
                              ClearBload);
 #endif
@@ -227,7 +227,7 @@ static void BsaveBinaryItem(
       EnvSetCurrentModule(theEnv,(void *) theModule);
 
       theModuleItem = (struct defglobalModule *)
-                      GetModuleItem(theEnv,NULL,FindModuleItem(theEnv,"defglobal")->moduleIndex);
+                      GetModuleItem(theEnv,NULL,FindModuleItem(theEnv,(char*)"defglobal")->moduleIndex);
       AssignBsaveDefmdlItemHdrVals(&tempDefglobalModule.header,
                                            &theModuleItem->header);
       GenWrite(&tempDefglobalModule,sizeof(struct bsaveDefglobalModule),fp);

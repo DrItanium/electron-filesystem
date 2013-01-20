@@ -85,34 +85,34 @@ globle void SetupInstanceMultifieldCommands(
    /* ===================================
       Old version 5.1 compatibility names
       =================================== */
-   EnvDefineFunction2(theEnv,"direct-mv-replace",'b',PTIEF DirectMVReplaceCommand,
-                   "DirectMVReplaceCommand","4**wii");
-   EnvDefineFunction2(theEnv,"direct-mv-insert",'b',PTIEF DirectMVInsertCommand,
-                   "DirectMVInsertCommand","3**wi");
-   EnvDefineFunction2(theEnv,"direct-mv-delete",'b',PTIEF DirectMVDeleteCommand,
-                   "DirectMVDeleteCommand","33iw");
-   EnvDefineFunction2(theEnv,"mv-slot-replace",'u',PTIEF MVSlotReplaceCommand,
-                   "MVSlotReplaceCommand","5*uewii");
-   EnvDefineFunction2(theEnv,"mv-slot-insert",'u',PTIEF MVSlotInsertCommand,
-                   "MVSlotInsertCommand","4*uewi");
-   EnvDefineFunction2(theEnv,"mv-slot-delete",'u',PTIEF MVSlotDeleteCommand,
-                   "MVSlotDeleteCommand","44iew");
+   EnvDefineFunction2(theEnv,(char*)"direct-mv-replace",'b',PTIEF DirectMVReplaceCommand,
+                   (char*)"DirectMVReplaceCommand",(char*)"4**wii");
+   EnvDefineFunction2(theEnv,(char*)"direct-mv-insert",'b',PTIEF DirectMVInsertCommand,
+                   (char*)"DirectMVInsertCommand",(char*)"3**wi");
+   EnvDefineFunction2(theEnv,(char*)"direct-mv-delete",'b',PTIEF DirectMVDeleteCommand,
+                   (char*)"DirectMVDeleteCommand",(char*)"33iw");
+   EnvDefineFunction2(theEnv,(char*)"mv-slot-replace",'u',PTIEF MVSlotReplaceCommand,
+                   (char*)"MVSlotReplaceCommand",(char*)"5*uewii");
+   EnvDefineFunction2(theEnv,(char*)"mv-slot-insert",'u',PTIEF MVSlotInsertCommand,
+                   (char*)"MVSlotInsertCommand",(char*)"4*uewi");
+   EnvDefineFunction2(theEnv,(char*)"mv-slot-delete",'u',PTIEF MVSlotDeleteCommand,
+                   (char*)"MVSlotDeleteCommand",(char*)"44iew");
 
    /* =====================
       New version 6.0 names
       ===================== */
-   EnvDefineFunction2(theEnv,"slot-direct-replace$",'b',PTIEF DirectMVReplaceCommand,
-                   "DirectMVReplaceCommand","4**wii");
-   EnvDefineFunction2(theEnv,"slot-direct-insert$",'b',PTIEF DirectMVInsertCommand,
-                   "DirectMVInsertCommand","3**wi");
-   EnvDefineFunction2(theEnv,"slot-direct-delete$",'b',PTIEF DirectMVDeleteCommand,
-                   "DirectMVDeleteCommand","33iw");
-   EnvDefineFunction2(theEnv,"slot-replace$",'u',PTIEF MVSlotReplaceCommand,
-                   "MVSlotReplaceCommand","5*uewii");
-   EnvDefineFunction2(theEnv,"slot-insert$",'u',PTIEF MVSlotInsertCommand,
-                   "MVSlotInsertCommand","4*uewi");
-   EnvDefineFunction2(theEnv,"slot-delete$",'u',PTIEF MVSlotDeleteCommand,
-                   "MVSlotDeleteCommand","44iew");
+   EnvDefineFunction2(theEnv,(char*)"slot-direct-replace$",'b',PTIEF DirectMVReplaceCommand,
+                   (char*)"DirectMVReplaceCommand",(char*)"4**wii");
+   EnvDefineFunction2(theEnv,(char*)"slot-direct-insert$",'b',PTIEF DirectMVInsertCommand,
+                   (char*)"DirectMVInsertCommand",(char*)"3**wi");
+   EnvDefineFunction2(theEnv,(char*)"slot-direct-delete$",'b',PTIEF DirectMVDeleteCommand,
+                   (char*)"DirectMVDeleteCommand",(char*)"33iw");
+   EnvDefineFunction2(theEnv,(char*)"slot-replace$",'u',PTIEF MVSlotReplaceCommand,
+                   (char*)"MVSlotReplaceCommand",(char*)"5*uewii");
+   EnvDefineFunction2(theEnv,(char*)"slot-insert$",'u',PTIEF MVSlotInsertCommand,
+                   (char*)"MVSlotInsertCommand",(char*)"4*uewi");
+   EnvDefineFunction2(theEnv,(char*)"slot-delete$",'u',PTIEF MVSlotDeleteCommand,
+                   (char*)"MVSlotDeleteCommand",(char*)"44iew");
   }
 
 #endif
@@ -142,15 +142,15 @@ globle void MVSlotReplaceCommand(
 
    result->type = SYMBOL;
    result->value = EnvFalseSymbol(theEnv);
-   ins = CheckMultifieldSlotInstance(theEnv,"slot-replace$");
+   ins = CheckMultifieldSlotInstance(theEnv,(char*)"slot-replace$");
    if (ins == NULL)
      return;
-   sp = CheckMultifieldSlotModify(theEnv,REPLACE,"slot-replace$",ins,
+   sp = CheckMultifieldSlotModify(theEnv,REPLACE,(char*)"slot-replace$",ins,
                             GetFirstArgument()->nextArg,&rb,&re,&newval);
    if (sp == NULL)
      return;
    AssignSlotToDataObject(&oldseg,sp);
-   if (ReplaceMultiValueField(theEnv,&newseg,&oldseg,rb,re,&newval,"slot-replace$") == FALSE)
+   if (ReplaceMultiValueField(theEnv,&newseg,&oldseg,rb,re,&newval,(char*)"slot-replace$") == FALSE)
      return;
    arg.type = MULTIFIELD;
    arg.value = (void *) &newseg;
@@ -182,15 +182,15 @@ globle void MVSlotInsertCommand(
 
    result->type = SYMBOL;
    result->value = EnvFalseSymbol(theEnv);
-   ins = CheckMultifieldSlotInstance(theEnv,"slot-insert$");
+   ins = CheckMultifieldSlotInstance(theEnv,(char*)"slot-insert$");
    if (ins == NULL)
      return;
-   sp = CheckMultifieldSlotModify(theEnv,INSERT,"slot-insert$",ins,
+   sp = CheckMultifieldSlotModify(theEnv,INSERT,(char*)"slot-insert$",ins,
                             GetFirstArgument()->nextArg,&theIndex,NULL,&newval);
    if (sp == NULL)
      return;
    AssignSlotToDataObject(&oldseg,sp);
-   if (InsertMultiValueField(theEnv,&newseg,&oldseg,theIndex,&newval,"slot-insert$") == FALSE)
+   if (InsertMultiValueField(theEnv,&newseg,&oldseg,theIndex,&newval,(char*)"slot-insert$") == FALSE)
      return;
    arg.type = MULTIFIELD;
    arg.value = (void *) &newseg;
@@ -223,15 +223,15 @@ globle void MVSlotDeleteCommand(
 
    result->type = SYMBOL;
    result->value = EnvFalseSymbol(theEnv);
-   ins = CheckMultifieldSlotInstance(theEnv,"slot-delete$");
+   ins = CheckMultifieldSlotInstance(theEnv,(char*)"slot-delete$");
    if (ins == NULL)
      return;
-   sp = CheckMultifieldSlotModify(theEnv,DELETE_OP,"slot-delete$",ins,
+   sp = CheckMultifieldSlotModify(theEnv,DELETE_OP,(char*)"slot-delete$",ins,
                             GetFirstArgument()->nextArg,&rb,&re,NULL);
    if (sp == NULL)
      return;
    AssignSlotToDataObject(&oldseg,sp);
-   if (DeleteMultiValueField(theEnv,&newseg,&oldseg,rb,re,"slot-delete$") == FALSE)
+   if (DeleteMultiValueField(theEnv,&newseg,&oldseg,rb,re,(char*)"slot-delete$") == FALSE)
      return;
    arg.type = MULTIFIELD;
    arg.value = (void *) &newseg;
@@ -257,18 +257,18 @@ globle intBool DirectMVReplaceCommand(
    long rb,re;
    DATA_OBJECT newval,newseg,oldseg;
 
-   if (CheckCurrentMessage(theEnv,"direct-slot-replace$",TRUE) == FALSE)
+   if (CheckCurrentMessage(theEnv,(char*)"direct-slot-replace$",TRUE) == FALSE)
      return(FALSE);
    ins = GetActiveInstance(theEnv);
-   sp = CheckMultifieldSlotModify(theEnv,REPLACE,"direct-slot-replace$",ins,
+   sp = CheckMultifieldSlotModify(theEnv,REPLACE,(char*)"direct-slot-replace$",ins,
                             GetFirstArgument(),&rb,&re,&newval);
    if (sp == NULL)
      return(FALSE);
    AssignSlotToDataObject(&oldseg,sp);
-   if (ReplaceMultiValueField(theEnv,&newseg,&oldseg,rb,re,&newval,"direct-slot-replace$")
+   if (ReplaceMultiValueField(theEnv,&newseg,&oldseg,rb,re,&newval,(char*)"direct-slot-replace$")
            == FALSE)
      return(FALSE);
-   if (PutSlotValue(theEnv,ins,sp,&newseg,&newval,"function direct-slot-replace$"))
+   if (PutSlotValue(theEnv,ins,sp,&newseg,&newval,(char*)"function direct-slot-replace$"))
      return(TRUE);
    return(FALSE);
   }
@@ -289,18 +289,18 @@ globle intBool DirectMVInsertCommand(
    long theIndex;
    DATA_OBJECT newval,newseg,oldseg;
 
-   if (CheckCurrentMessage(theEnv,"direct-slot-insert$",TRUE) == FALSE)
+   if (CheckCurrentMessage(theEnv,(char*)"direct-slot-insert$",TRUE) == FALSE)
      return(FALSE);
    ins = GetActiveInstance(theEnv);
-   sp = CheckMultifieldSlotModify(theEnv,INSERT,"direct-slot-insert$",ins,
+   sp = CheckMultifieldSlotModify(theEnv,INSERT,(char*)"direct-slot-insert$",ins,
                             GetFirstArgument(),&theIndex,NULL,&newval);
    if (sp == NULL)
      return(FALSE);
    AssignSlotToDataObject(&oldseg,sp);
-   if (InsertMultiValueField(theEnv,&newseg,&oldseg,theIndex,&newval,"direct-slot-insert$")
+   if (InsertMultiValueField(theEnv,&newseg,&oldseg,theIndex,&newval,(char*)"direct-slot-insert$")
           == FALSE)
      return(FALSE);
-   if (PutSlotValue(theEnv,ins,sp,&newseg,&newval,"function direct-slot-insert$"))
+   if (PutSlotValue(theEnv,ins,sp,&newseg,&newval,(char*)"function direct-slot-insert$"))
      return(TRUE);
    return(FALSE);
   }
@@ -322,18 +322,18 @@ globle intBool DirectMVDeleteCommand(
    long rb,re;
    DATA_OBJECT newseg,oldseg;
 
-   if (CheckCurrentMessage(theEnv,"direct-slot-delete$",TRUE) == FALSE)
+   if (CheckCurrentMessage(theEnv,(char*)"direct-slot-delete$",TRUE) == FALSE)
      return(FALSE);
    ins = GetActiveInstance(theEnv);
-   sp = CheckMultifieldSlotModify(theEnv,DELETE_OP,"direct-slot-delete$",ins,
+   sp = CheckMultifieldSlotModify(theEnv,DELETE_OP,(char*)"direct-slot-delete$",ins,
                                   GetFirstArgument(),&rb,&re,NULL);
    if (sp == NULL)
      return(FALSE);
    AssignSlotToDataObject(&oldseg,sp);
-   if (DeleteMultiValueField(theEnv,&newseg,&oldseg,rb,re,"direct-slot-delete$")
+   if (DeleteMultiValueField(theEnv,&newseg,&oldseg,rb,re,(char*)"direct-slot-delete$")
          == FALSE)
      return(FALSE);
-   if (PutSlotValue(theEnv,ins,sp,&newseg,&oldseg,"function direct-slot-delete$"))
+   if (PutSlotValue(theEnv,ins,sp,&newseg,&oldseg,(char*)"function direct-slot-delete$"))
      return(TRUE);
    return(FALSE);
   }
@@ -431,7 +431,7 @@ static INSTANCE_SLOT *CheckMultifieldSlotModify(
    EvaluateExpression(theEnv,args,&temp);
    if (temp.type != SYMBOL)
      {
-      ExpectedTypeError1(theEnv,func,start,"symbol");
+      ExpectedTypeError1(theEnv,func,start,(char*)"symbol");
       SetEvaluationError(theEnv,TRUE);
       return(NULL);
      }
@@ -443,21 +443,21 @@ static INSTANCE_SLOT *CheckMultifieldSlotModify(
      }
    if (sp->desc->multiple == 0)
      {
-      PrintErrorID(theEnv,"INSMULT",1,FALSE);
-      EnvPrintRouter(theEnv,WERROR,"Function ");
+      PrintErrorID(theEnv,(char*)"INSMULT",1,FALSE);
+      EnvPrintRouter(theEnv,WERROR,(char*)"Function ");
       EnvPrintRouter(theEnv,WERROR,func);
-      EnvPrintRouter(theEnv,WERROR," cannot be used on single-field slot ");
+      EnvPrintRouter(theEnv,WERROR,(char*)" cannot be used on single-field slot ");
       EnvPrintRouter(theEnv,WERROR,ValueToString(sp->desc->slotName->name));
-      EnvPrintRouter(theEnv,WERROR," in instance ");
+      EnvPrintRouter(theEnv,WERROR,(char*)" in instance ");
       EnvPrintRouter(theEnv,WERROR,ValueToString(ins->name));
-      EnvPrintRouter(theEnv,WERROR,".\n");
+      EnvPrintRouter(theEnv,WERROR,(char*)".\n");
       SetEvaluationError(theEnv,TRUE);
       return(NULL);
      }
    EvaluateExpression(theEnv,args->nextArg,&temp);
    if (temp.type != INTEGER)
      {
-      ExpectedTypeError1(theEnv,func,start+1,"integer");
+      ExpectedTypeError1(theEnv,func,start+1,(char*)"integer");
       SetEvaluationError(theEnv,TRUE);
       return(NULL);
      }
@@ -468,7 +468,7 @@ static INSTANCE_SLOT *CheckMultifieldSlotModify(
       EvaluateExpression(theEnv,args,&temp);
       if (temp.type != INTEGER)
         {
-         ExpectedTypeError1(theEnv,func,start+2,"integer");
+         ExpectedTypeError1(theEnv,func,start+2,(char*)"integer");
          SetEvaluationError(theEnv,TRUE);
          return(NULL);
         }

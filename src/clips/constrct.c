@@ -180,7 +180,7 @@ globle int EnvSave(
    /* Open the save file. */
    /*=====================*/
 
-   if ((filePtr = GenOpen(theEnv,fileName,"w")) == NULL)
+   if ((filePtr = GenOpen(theEnv,fileName,(char*)"w")) == NULL)
      { return(FALSE); }
 
    /*===========================*/
@@ -295,11 +295,11 @@ globle void InitializeConstructs(
   void *theEnv)
   {
 #if (! RUN_TIME)
-   EnvDefineFunction2(theEnv,"clear",   'v', PTIEF ClearCommand,   "ClearCommand", "00");
-   EnvDefineFunction2(theEnv,"reset",   'v', PTIEF ResetCommand,   "ResetCommand", "00");
+   EnvDefineFunction2(theEnv,(char*)"clear",   'v', PTIEF ClearCommand,   (char*)"ClearCommand", (char*)"00");
+   EnvDefineFunction2(theEnv,(char*)"reset",   'v', PTIEF ResetCommand,   (char*)"ResetCommand", (char*)"00");
 
 #if DEBUGGING_FUNCTIONS && (! BLOAD_ONLY)
-   AddWatchItem(theEnv,"compilations",0,&ConstructData(theEnv)->WatchCompilations,30,NULL,NULL);
+   AddWatchItem(theEnv,(char*)"compilations",0,&ConstructData(theEnv)->WatchCompilations,30,NULL,NULL);
 #endif
 #else
 #if MAC_MCW || WIN_MCW || MAC_XCD
@@ -315,7 +315,7 @@ globle void InitializeConstructs(
 globle void ClearCommand(
   void *theEnv)
   {
-   if (EnvArgCountCheck(theEnv,"clear",EXACTLY,0) == -1) return;
+   if (EnvArgCountCheck(theEnv,(char*)"clear",EXACTLY,0) == -1) return;
    EnvClear(theEnv);
    return;
   }
@@ -327,7 +327,7 @@ globle void ClearCommand(
 globle void ResetCommand(
   void *theEnv)
   {
-   if (EnvArgCountCheck(theEnv,"reset",EXACTLY,0) == -1) return;
+   if (EnvArgCountCheck(theEnv,(char*)"reset",EXACTLY,0) == -1) return;
    EnvReset(theEnv);
    return;
   }
@@ -404,7 +404,7 @@ globle void EnvReset(
    /* Set the current module to the MAIN module. */
    /*============================================*/
 
-   EnvSetCurrentModule(theEnv,(void *) EnvFindDefmodule(theEnv,"MAIN"));
+   EnvSetCurrentModule(theEnv,(void *) EnvFindDefmodule(theEnv,(char*)"MAIN"));
 
    /*===========================================*/
    /* Perform periodic cleanup if the reset was */
@@ -527,8 +527,8 @@ globle void EnvClear(
    ConstructData(theEnv)->ClearReadyInProgress = TRUE;
    if (ClearReady(theEnv) == FALSE)
      {
-      PrintErrorID(theEnv,"CONSTRCT",1,FALSE);
-      EnvPrintRouter(theEnv,WERROR,"Some constructs are still in use. Clear cannot continue.\n");
+      PrintErrorID(theEnv,(char*)"CONSTRCT",1,FALSE);
+      EnvPrintRouter(theEnv,WERROR,(char*)"Some constructs are still in use. Clear cannot continue.\n");
 #if DEBUGGING_FUNCTIONS
       EnvDeactivateRouter(theEnv,WTRACE);
 #endif
@@ -579,7 +579,7 @@ globle void EnvClear(
    
    if ((DefruleData(theEnv)->RightPrimeJoins != NULL) ||
        (DefruleData(theEnv)->LeftPrimeJoins != NULL))
-     { SystemError(theEnv,"CONSTRCT",1); }
+     { SystemError(theEnv,(char*)"CONSTRCT",1); }
        
    /*============================*/
    /* Perform reset after clear. */

@@ -5,7 +5,7 @@
 # CFLAGS - additional cflags to pass to the compiler
 ####################################################
 COMPILER = clang
-OUTPUT = isa-clips
+OUTPUT = adventure-engine 
 OBJS = agenda.o analysis.o argacces.o bload.o bmathfun.o bsave.o \
  	classcom.o classexm.o classfun.o classinf.o classini.o \
  	classpsr.o clsltpsr.o commline.o conscomp.o constrct.o \

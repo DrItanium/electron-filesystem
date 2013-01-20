@@ -86,7 +86,7 @@
 globle void InitializeEvaluationData(
   void *theEnv)
   {
-   struct externalAddressType cPointer = { "C", PrintCAddress, PrintCAddress, NULL, NewCAddress, NULL };
+   struct externalAddressType cPointer = { (char*)"C", PrintCAddress, PrintCAddress, NULL, NewCAddress, NULL };
    
    AllocateEnvironmentData(theEnv,EVALUATION_DATA,sizeof(struct evaluationData),DeallocateEvaluationData);
 
@@ -355,7 +355,7 @@ globle int EvaluateExpression(
               break;
 
             default :
-               SystemError(theEnv,"EVALUATN",2);
+               SystemError(theEnv,(char*)"EVALUATN",2);
                EnvExitRouter(theEnv,EXIT_FAILURE);
                break;
             }
@@ -380,10 +380,10 @@ globle int EvaluateExpression(
      case SF_VARIABLE:
         if (GetBoundVariable(theEnv,returnValue,(SYMBOL_HN *) problem->value) == FALSE)
           {
-           PrintErrorID(theEnv,"EVALUATN",1,FALSE);
-           EnvPrintRouter(theEnv,WERROR,"Variable ");
+           PrintErrorID(theEnv,(char*)"EVALUATN",1,FALSE);
+           EnvPrintRouter(theEnv,WERROR,(char*)"Variable ");
            EnvPrintRouter(theEnv,WERROR,ValueToString(problem->value));
-           EnvPrintRouter(theEnv,WERROR," is unbound\n");
+           EnvPrintRouter(theEnv,WERROR,(char*)" is unbound\n");
            returnValue->type = SYMBOL;
            returnValue->value = EnvFalseSymbol(theEnv);
            SetEvaluationError(theEnv,TRUE);
@@ -393,7 +393,7 @@ globle int EvaluateExpression(
       default:
         if (EvaluationData(theEnv)->PrimitivesArray[problem->type] == NULL)
           {
-           SystemError(theEnv,"EVALUATN",3);
+           SystemError(theEnv,(char*)"EVALUATN",3);
            EnvExitRouter(theEnv,EXIT_FAILURE);
           }
 
@@ -406,7 +406,7 @@ globle int EvaluateExpression(
 
         if (EvaluationData(theEnv)->PrimitivesArray[problem->type]->evaluateFunction == NULL)
           {
-           SystemError(theEnv,"EVALUATN",4);
+           SystemError(theEnv,(char*)"EVALUATN",4);
            EnvExitRouter(theEnv,EXIT_FAILURE);
           }
 
@@ -444,7 +444,7 @@ globle void InstallPrimitive(
   {
    if (EvaluationData(theEnv)->PrimitivesArray[whichPosition] != NULL)
      {
-      SystemError(theEnv,"EVALUATN",5);
+      SystemError(theEnv,(char*)"EVALUATN",5);
       EnvExitRouter(theEnv,EXIT_FAILURE);
      }
 
@@ -465,7 +465,7 @@ globle int InstallExternalAddressType(
    
    if (EvaluationData(theEnv)->numberOfAddressTypes == MAXIMUM_EXTERNAL_ADDRESS_TYPES)
      {
-      SystemError(theEnv,"EVALUATN",6);
+      SystemError(theEnv,(char*)"EVALUATN",6);
       EnvExitRouter(theEnv,EXIT_FAILURE);
      }
 
@@ -583,9 +583,9 @@ globle void PrintDataObject(
              }
           }
 
-        EnvPrintRouter(theEnv,fileid,"<UnknownPrintType");
+        EnvPrintRouter(theEnv,fileid,(char*)"<UnknownPrintType");
         PrintLongInteger(theEnv,fileid,(long int) argPtr->type);
-        EnvPrintRouter(theEnv,fileid,">");
+        EnvPrintRouter(theEnv,fileid,(char*)">");
         SetHaltExecution(theEnv,TRUE);
         SetEvaluationError(theEnv,TRUE);
         break;
@@ -826,10 +826,10 @@ globle int EnvFunctionCall(
    /* the specified function name.                            */
    /*=========================================================*/
 
-   PrintErrorID(theEnv,"EVALUATN",2,FALSE);
-   EnvPrintRouter(theEnv,WERROR,"No function, generic function or deffunction of name ");
+   PrintErrorID(theEnv,(char*)"EVALUATN",2,FALSE);
+   EnvPrintRouter(theEnv,WERROR,(char*)"No function, generic function or deffunction of name ");
    EnvPrintRouter(theEnv,WERROR,name);
-   EnvPrintRouter(theEnv,WERROR," exists for external call.\n");
+   EnvPrintRouter(theEnv,WERROR,(char*)" exists for external call.\n");
    return(TRUE);
   }
 
@@ -966,7 +966,7 @@ globle struct expr *ConvertValueToExpression(
      }
 
    if (head == NULL)
-     return(GenConstant(theEnv,FCALL,(void *) FindFunction(theEnv,"create$")));
+     return(GenConstant(theEnv,FCALL,(void *) FindFunction(theEnv,(char*)"create$")));
 
    return(head);
   }
@@ -1226,12 +1226,18 @@ static void PrintCAddress(
   void *theValue)
   {
    char buffer[20];
-
-   EnvPrintRouter(theEnv,logicalName,"<Pointer-C-");
-        
-   gensprintf(buffer,"%p",ValueToExternalAddress(theValue));
+	void* ptr;
+   EnvPrintRouter(theEnv,logicalName,(char*)"<Pointer-C-");
+	ptr = ValueToExternalAddress(theValue);
+  	if(ptr) {
+		/* theValue is a clips structure */
+		gensprintf(buffer,"%p",ptr);
+	} else {
+		/* theValue is not a clips structure but a direct data pointer. */
+		gensprintf(buffer,"%p",theValue);
+	}
    EnvPrintRouter(theEnv,logicalName,buffer);
-   EnvPrintRouter(theEnv,logicalName,">");
+   EnvPrintRouter(theEnv,logicalName,(char*)">");
   }
 
 /*******************************************************/
@@ -1247,8 +1253,8 @@ static void NewCAddress(
       
    if (numberOfArguments != 1)
      {
-      PrintErrorID(theEnv,"NEW",1,FALSE);
-      EnvPrintRouter(theEnv,WERROR,"Function new expected no additional arguments for the C external language type.\n");
+      PrintErrorID(theEnv,(char*)"NEW",1,FALSE);
+      EnvPrintRouter(theEnv,WERROR,(char*)"Function new expected no additional arguments for the C external language type.\n");
       SetEvaluationError(theEnv,TRUE);
       return;
      }

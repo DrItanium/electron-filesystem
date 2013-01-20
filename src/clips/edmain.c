@@ -205,11 +205,11 @@ static void PerformEditCommand(
    /* Get the file name. */
    /*====================*/
 
-   if ((num_a = EnvArgCountCheck(theEnv,"edit",NO_MORE_THAN,1)) == -1) return;
+   if ((num_a = EnvArgCountCheck(theEnv,(char*)"edit",NO_MORE_THAN,1)) == -1) return;
 
    if (num_a == 1)
      {
-      if (EnvArgTypeCheck(theEnv,"edit",1,SYMBOL_OR_STRING,&arg_ptr) == FALSE) return;
+      if (EnvArgTypeCheck(theEnv,(char*)"edit",1,SYMBOL_OR_STRING,&arg_ptr) == FALSE) return;
       fileName = DOToString(arg_ptr);
      }
 
@@ -230,7 +230,7 @@ static void PerformEditCommand(
                 }
 
 	init_cmp_router(theEnv);			/* Prepare the compile  */
-        EnvDeactivateRouter(theEnv,"cmp_router");		/* router.              */
+        EnvDeactivateRouter(theEnv,(char*)"cmp_router");		/* router.              */
         }
    else {
 
@@ -756,7 +756,7 @@ globle void EditCommand(
 globle void EditorFunctionDefinition(
   void *theEnv)
   {
-   EnvDefineFunction2(theEnv,"edit",'v', PTIEF EditCommand,"EditCommand", "*1k");
+   EnvDefineFunction2(theEnv,(char*)"edit",'v', PTIEF EditCommand,(char*)"EditCommand", (char*)"*1k");
   }
 
 #else

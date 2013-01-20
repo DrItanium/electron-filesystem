@@ -91,25 +91,28 @@ globle void InitializeAgenda(
 
    AgendaData(theEnv)->Strategy = DEFAULT_STRATEGY;
    
-   EnvAddClearFunction(theEnv,"agenda",AgendaClearFunction,0);
+   EnvAddClearFunction(theEnv,(char*)"agenda",AgendaClearFunction,0);
 #if DEBUGGING_FUNCTIONS
-   AddWatchItem(theEnv,"activations",1,&AgendaData(theEnv)->WatchActivations,40,DefruleWatchAccess,DefruleWatchPrint);
+   AddWatchItem(theEnv,(char*)"activations",1,&AgendaData(theEnv)->WatchActivations,40,DefruleWatchAccess,DefruleWatchPrint);
 #endif
 #if ! RUN_TIME
-   EnvDefineFunction2(theEnv,"refresh", 'v', PTIEF RefreshCommand, "RefreshCommand", "11w");
+   EnvDefineFunction2(theEnv,(char*)"refresh", 'v', PTIEF RefreshCommand, (char*)"RefreshCommand", (char*)"11w");
 
-   EnvDefineFunction2(theEnv,"refresh-agenda",'v',
-                   PTIEF RefreshAgendaCommand,"RefreshAgendaCommand", "01w");
-   EnvDefineFunction2(theEnv,"get-salience-evaluation",'w',
+   EnvDefineFunction2(theEnv,(char*)"refresh-agenda",'v',
+                   PTIEF RefreshAgendaCommand,
+                   (char*)"RefreshAgendaCommand", 
+                   (char*)"01w");
+   EnvDefineFunction2(theEnv,(char*)"get-salience-evaluation",'w',
                    PTIEF GetSalienceEvaluationCommand,
-                   "GetSalienceEvaluationCommand", "00");
-   EnvDefineFunction2(theEnv,"set-salience-evaluation",'w',
+                   (char*)"GetSalienceEvaluationCommand", 
+                   (char*)"00");
+   EnvDefineFunction2(theEnv,(char*)"set-salience-evaluation",'w',
                    PTIEF SetSalienceEvaluationCommand,
-                   "SetSalienceEvaluationCommand",
-                   "11w");
+                   (char*)"SetSalienceEvaluationCommand",
+                   (char*)"11w");
 
 #if DEBUGGING_FUNCTIONS
-   EnvDefineFunction2(theEnv,"agenda", 'v', PTIEF AgendaCommand, "AgendaCommand", "01w");
+   EnvDefineFunction2(theEnv,(char*)"agenda", 'v', PTIEF AgendaCommand, (char*)"AgendaCommand", (char*)"01w");
 #endif
 #endif
   }
@@ -174,9 +177,9 @@ globle void AddActivation(
 #if DEBUGGING_FUNCTIONS
    if (newActivation->theRule->watchActivation)
      {
-      EnvPrintRouter(theEnv,WTRACE,"==> Activation ");
+      EnvPrintRouter(theEnv,WTRACE,(char*)"==> Activation ");
       PrintActivation(theEnv,WTRACE,(void *) newActivation);
-      EnvPrintRouter(theEnv,WTRACE,"\n");
+      EnvPrintRouter(theEnv,WTRACE,(char*)"\n");
      }
 #endif
 
@@ -373,9 +376,9 @@ globle void EnvGetActivationPPForm(
   unsigned bufferLength,
   void *theActivation)
   {
-   OpenStringDestination(theEnv,"ActPPForm",buffer,bufferLength);
-   PrintActivation(theEnv,"ActPPForm",(void *) theActivation);
-   CloseStringDestination(theEnv,"ActPPForm");
+   OpenStringDestination(theEnv,(char*)"ActPPForm",buffer,bufferLength);
+   PrintActivation(theEnv,(char*)"ActPPForm",(void *) theActivation);
+   CloseStringDestination(theEnv,(char*)"ActPPForm");
   }
 
 /****************************************************/
@@ -390,9 +393,9 @@ globle void EnvGetActivationBasisPPForm(
   {
    struct activation *theActivation = (struct activation *) vTheActivation;
 
-   OpenStringDestination(theEnv,"ActPPForm",buffer,bufferLength);
-   PrintPartialMatch(theEnv,"ActPPForm",theActivation->basis);
-   CloseStringDestination(theEnv,"ActPPForm");
+   OpenStringDestination(theEnv,(char*)"ActPPForm",buffer,bufferLength);
+   PrintPartialMatch(theEnv,(char*)"ActPPForm",theActivation->basis);
+   CloseStringDestination(theEnv,(char*)"ActPPForm");
   }
 
 /********************************************/
@@ -479,7 +482,7 @@ globle intBool DetachActivation(
    /* A NULL pointer is invalid. */
    /*============================*/
 
-   if (theActivation == NULL) SystemError(theEnv,"AGENDA",1);
+   if (theActivation == NULL) SystemError(theEnv,(char*)"AGENDA",1);
 
    /*====================================*/
    /* Determine the module of the agenda */
@@ -543,7 +546,7 @@ static void PrintActivation(
    gensprintf(printSpace,"%-6d ",theActivation->salience);
    EnvPrintRouter(theEnv,logicalName,printSpace);
    EnvPrintRouter(theEnv,logicalName,ValueToString(theActivation->theRule->header.name));
-   EnvPrintRouter(theEnv,logicalName,": ");
+   EnvPrintRouter(theEnv,logicalName,(char*)": ");
    PrintPartialMatch(theEnv,logicalName,theActivation->basis);
   }
 
@@ -558,7 +561,7 @@ globle void EnvAgenda(
   {
    struct defmodule *theModule = (struct defmodule *) vTheModule;
 
-   ListItemsDriver(theEnv,logicalName,theModule,"activation","activations",
+   ListItemsDriver(theEnv,logicalName,theModule,(char*)"activation",(char*)"activations",
                    EnvGetNextActivation,NULL,PrintActivation,NULL);
   }
 
@@ -615,9 +618,9 @@ globle void RemoveActivation(
 #if DEBUGGING_FUNCTIONS
       if (theActivation->theRule->watchActivation)
         {
-         EnvPrintRouter(theEnv,WTRACE,"<== Activation ");
+         EnvPrintRouter(theEnv,WTRACE,(char*)"<== Activation ");
          PrintActivation(theEnv,WTRACE,(void *) theActivation);
-         EnvPrintRouter(theEnv,WTRACE,"\n");
+         EnvPrintRouter(theEnv,WTRACE,(char*)"\n");
         }
 #endif
 
@@ -863,7 +866,7 @@ globle void RefreshCommand(
    /* Get the name of the rule. */
    /*===========================*/
 
-   ruleName = GetConstructName(theEnv,"refresh","rule name");
+   ruleName = GetConstructName(theEnv,(char*)"refresh",(char*)"rule name");
    if (ruleName == NULL) return;
 
    /*===============================*/
@@ -873,7 +876,7 @@ globle void RefreshCommand(
    rulePtr = EnvFindDefrule(theEnv,ruleName);
    if (rulePtr == NULL)
      {
-      CantFindItemErrorMessage(theEnv,"defrule",ruleName);
+      CantFindItemErrorMessage(theEnv,(char*)"defrule",ruleName);
       return;
      }
 
@@ -948,7 +951,7 @@ globle void RefreshAgendaCommand(
    /* This function can have at most one argument. */
    /*==============================================*/
 
-   if ((numArgs = EnvArgCountCheck(theEnv,"refresh-agenda",NO_MORE_THAN,1)) == -1) return;
+   if ((numArgs = EnvArgCountCheck(theEnv,(char*)"refresh-agenda",NO_MORE_THAN,1)) == -1) return;
 
    /*===============================================================*/
    /* If a module name is specified, then the agenda of that module */
@@ -958,7 +961,7 @@ globle void RefreshAgendaCommand(
 
    if (numArgs == 1)
      {
-      theModule = GetModuleName(theEnv,"refresh-agenda",1,&error);
+      theModule = GetModuleName(theEnv,(char*)"refresh-agenda",1,&error);
       if (error) return;
      }
    else
@@ -1087,10 +1090,10 @@ globle void *SetSalienceEvaluationCommand(
    /* which must be a symbol.                 */
    /*=========================================*/
 
-   if (EnvArgCountCheck(theEnv,"set-salience-evaluation",EXACTLY,1) == -1)
+   if (EnvArgCountCheck(theEnv,(char*)"set-salience-evaluation",EXACTLY,1) == -1)
      { return((SYMBOL_HN *) EnvAddSymbol(theEnv,oldValue)); }
 
-   if (EnvArgTypeCheck(theEnv,"set-salience-evaluation",1,SYMBOL,&argPtr) == FALSE)
+   if (EnvArgTypeCheck(theEnv,(char*)"set-salience-evaluation",1,SYMBOL,&argPtr) == FALSE)
      { return((SYMBOL_HN *) EnvAddSymbol(theEnv,oldValue)); }
 
    /*=============================================================*/
@@ -1100,16 +1103,16 @@ globle void *SetSalienceEvaluationCommand(
 
    argument = DOToString(argPtr);
 
-   if (strcmp(argument,"when-defined") == 0)
+   if (strcmp(argument,(char*)"when-defined") == 0)
      { EnvSetSalienceEvaluation(theEnv,WHEN_DEFINED); }
-   else if (strcmp(argument,"when-activated") == 0)
+   else if (strcmp(argument,(char*)"when-activated") == 0)
      { EnvSetSalienceEvaluation(theEnv,WHEN_ACTIVATED); }
-   else if (strcmp(argument,"every-cycle") == 0)
+   else if (strcmp(argument,(char*)"every-cycle") == 0)
      { EnvSetSalienceEvaluation(theEnv,EVERY_CYCLE); }
    else
      {
-      ExpectedTypeError1(theEnv,"set-salience-evaluation",1,
-      "symbol with value when-defined, when-activated, or every-cycle");
+      ExpectedTypeError1(theEnv,(char*)"set-salience-evaluation",1,
+      (char*)"symbol with value when-defined, when-activated, or every-cycle");
       return((SYMBOL_HN *) EnvAddSymbol(theEnv,oldValue));
      }
 
@@ -1128,7 +1131,7 @@ globle void *SetSalienceEvaluationCommand(
 globle void *GetSalienceEvaluationCommand(
   void *theEnv)
   {
-   EnvArgCountCheck(theEnv,"get-salience-evaluation",EXACTLY,0);
+   EnvArgCountCheck(theEnv,(char*)"get-salience-evaluation",EXACTLY,0);
 
    return((SYMBOL_HN *) EnvAddSymbol(theEnv,SalienceEvaluationName(EnvGetSalienceEvaluation(theEnv))));
   }
@@ -1146,16 +1149,16 @@ static char *SalienceEvaluationName(
    switch (strategy)
      {
       case WHEN_DEFINED:
-        sname = "when-defined";
+        sname = (char*)"when-defined";
         break;
       case WHEN_ACTIVATED:
-        sname = "when-activated";
+        sname = (char*)"when-activated";
         break;
       case EVERY_CYCLE:
-        sname = "every-cycle";
+        sname = (char*)"every-cycle";
         break;
       default:
-        sname = "unknown";
+        sname = (char*)"unknown";
         break;
      }
 
@@ -1230,7 +1233,7 @@ static int EvaluateSalience(
   SetEvaluationError(theEnv,FALSE);
   if (EvaluateExpression(theEnv,rPtr->dynamicSalience,&salienceValue))
     {
-     SalienceInformationError(theEnv,"defrule",ValueToString(rPtr->header.name));
+     SalienceInformationError(theEnv,(char*)"defrule",ValueToString(rPtr->header.name));
      return(rPtr->salience);
     }
 
@@ -1241,7 +1244,7 @@ static int EvaluateSalience(
   if (salienceValue.type != INTEGER)
     {
      SalienceNonIntegerError(theEnv);
-     SalienceInformationError(theEnv,"defrule",ValueToString(rPtr->header.name));
+     SalienceInformationError(theEnv,(char*)"defrule",ValueToString(rPtr->header.name));
      SetEvaluationError(theEnv,TRUE);
      return(rPtr->salience);
     }
@@ -1257,7 +1260,7 @@ static int EvaluateSalience(
     {
      SalienceRangeError(theEnv,MIN_DEFRULE_SALIENCE,MAX_DEFRULE_SALIENCE);
      SetEvaluationError(theEnv,TRUE);
-     SalienceInformationError(theEnv,"defrule",ValueToString(((struct defrule *) rPtr)->header.name));
+     SalienceInformationError(theEnv,(char*)"defrule",ValueToString(((struct defrule *) rPtr)->header.name));
      return(rPtr->salience);
     }
 
@@ -1287,7 +1290,7 @@ globle void AgendaCommand(
    /* This function can have at most one argument. */
    /*==============================================*/
 
-   if ((numArgs = EnvArgCountCheck(theEnv,"agenda",NO_MORE_THAN,1)) == -1) return;
+   if ((numArgs = EnvArgCountCheck(theEnv,(char*)"agenda",NO_MORE_THAN,1)) == -1) return;
 
    /*===============================================================*/
    /* If a module name is specified, then the agenda of that module */
@@ -1297,7 +1300,7 @@ globle void AgendaCommand(
 
    if (numArgs == 1)
      {
-      theModule = GetModuleName(theEnv,"agenda",1,&error);
+      theModule = GetModuleName(theEnv,(char*)"agenda",1,&error);
       if (error) return;
      }
    else

@@ -58,6 +58,11 @@
 
 #include "tmpltutl.h"
 
+#define __convert(x) (char*)x
+#define sym_TMPLTDEF __convert("TMPLTDEF")
+#define sym_TMPLTFUN __convert("TMPLTFUN")
+
+
 /********************************************************/
 /* InvalidDeftemplateSlotMessage: Generic error message */
 /*   for use when a specified slot name isn't defined   */
@@ -69,12 +74,13 @@ globle void InvalidDeftemplateSlotMessage(
   char *deftemplateName,
   int printCR)
   {
-   PrintErrorID(theEnv,"TMPLTDEF",1,printCR);
-   EnvPrintRouter(theEnv,WERROR,"Invalid slot ");
+   PrintErrorID(theEnv,sym_TMPLTDEF,1,printCR);
+   EnvPrintRouter(theEnv,WERROR,__convert("Invalid slot "));
    EnvPrintRouter(theEnv,WERROR,slotName);
-   EnvPrintRouter(theEnv,WERROR," not defined in corresponding deftemplate ");
+   EnvPrintRouter(theEnv,WERROR,
+         __convert(" not defined in corresponding deftemplate "));
    EnvPrintRouter(theEnv,WERROR,deftemplateName);
-   EnvPrintRouter(theEnv,WERROR,".\n");
+   EnvPrintRouter(theEnv,WERROR,__convert(".\n"));
   }
 
 /**********************************************************/
@@ -86,11 +92,13 @@ globle void SingleFieldSlotCardinalityError(
   void *theEnv,
   char *slotName)
   {
-   PrintErrorID(theEnv,"TMPLTDEF",2,TRUE);
-   EnvPrintRouter(theEnv,WERROR,"The single field slot ");
+   PrintErrorID(theEnv,sym_TMPLTDEF,2,TRUE);
+   EnvPrintRouter(theEnv,WERROR,__convert("The single field slot "));
    EnvPrintRouter(theEnv,WERROR,slotName);
-   EnvPrintRouter(theEnv,WERROR," can only contain a single field value.\n");
+   EnvPrintRouter(theEnv,WERROR,
+         __convert(" can only contain a single field value.\n"));
   }
+
 
 /**********************************************************************/
 /* MultiIntoSingleFieldSlotError: Determines if a multifield value is */
@@ -101,15 +109,21 @@ globle void MultiIntoSingleFieldSlotError(
   struct templateSlot *theSlot,
   struct deftemplate *theDeftemplate)
   {
-   PrintErrorID(theEnv,"TMPLTFUN",2,TRUE);
-   EnvPrintRouter(theEnv,WERROR,"Attempted to assert a multifield value \n");
-   EnvPrintRouter(theEnv,WERROR,"into the single field slot ");
-   if (theSlot != NULL) EnvPrintRouter(theEnv,WERROR,theSlot->slotName->contents);
-   else EnvPrintRouter(theEnv,WERROR,"<<unknown>>");
-   EnvPrintRouter(theEnv,WERROR," of deftemplate ");
-   if (theDeftemplate != NULL) EnvPrintRouter(theEnv,WERROR,theDeftemplate->header.name->contents);
-   else EnvPrintRouter(theEnv,WERROR,"<<unknown>>");
-   EnvPrintRouter(theEnv,WERROR,".\n");
+   PrintErrorID(theEnv,sym_TMPLTFUN,2,TRUE);
+   EnvPrintRouter(theEnv,WERROR,__convert("Attempted to assert a multifield value \n"));
+   EnvPrintRouter(theEnv,WERROR,__convert("into the single field slot "));
+   if (theSlot != NULL) {
+      EnvPrintRouter(theEnv,WERROR,theSlot->slotName->contents);
+   } else { 
+      EnvPrintRouter(theEnv,WERROR,__convert("<<unknown>>"));
+   }
+   EnvPrintRouter(theEnv,WERROR,__convert(" of deftemplate "));
+   if (theDeftemplate != NULL) {
+      EnvPrintRouter(theEnv,WERROR,theDeftemplate->header.name->contents);
+   } else {
+      EnvPrintRouter(theEnv,WERROR,__convert("<<unknown>>"));
+   }
+   EnvPrintRouter(theEnv,WERROR,__convert(".\n"));
 
    SetEvaluationError(theEnv,TRUE);
   }
@@ -183,10 +197,10 @@ globle void CheckTemplateFact(
         {
          gensprintf(thePlace,"fact f-%-5lld ",theFact->factIndex);
 
-         PrintErrorID(theEnv,"CSTRNCHK",1,TRUE);
-         EnvPrintRouter(theEnv,WERROR,"Slot value ");
+         PrintErrorID(theEnv,__convert("CSTRNCHK"),1,TRUE);
+         EnvPrintRouter(theEnv,WERROR,__convert("Slot value "));
          PrintDataObject(theEnv,WERROR,&theData);
-         EnvPrintRouter(theEnv,WERROR," ");
+         EnvPrintRouter(theEnv,WERROR,__convert(" "));
          ConstraintViolationErrorMessage(theEnv,NULL,thePlace,FALSE,0,slotPtr->slotName,
                                          0,rv,slotPtr->constraints,TRUE);
          SetHaltExecution(theEnv,TRUE);
@@ -215,8 +229,11 @@ globle intBool CheckRHSSlotTypes(
       rv = ConstraintCheckExpressionChain(theEnv,rhsSlots,slotPtr->constraints);
       if (rv != NO_VIOLATION)
         {
-         if (rv != CARDINALITY_VIOLATION) theName = "A literal slot value";
-         else theName = "Literal slot values";
+         if (rv != CARDINALITY_VIOLATION) {
+            theName = __convert("A literal slot value");
+         } else {
+            theName = __convert("Literal slot values");
+         }
          ConstraintViolationErrorMessage(theEnv,theName,thePlace,TRUE,0,
                                          slotPtr->slotName,0,rv,slotPtr->constraints,TRUE);
          return(0);
@@ -299,7 +316,7 @@ globle void PrintTemplateFact(
    /* Print the relation name of the deftemplate. */
    /*=============================================*/
 
-   EnvPrintRouter(theEnv,logicalName,"(");
+   EnvPrintRouter(theEnv,logicalName,__convert("("));
    EnvPrintRouter(theEnv,logicalName,theDeftemplate->header.name->contents);
 
    /*===================================================*/
@@ -348,13 +365,13 @@ globle void PrintTemplateFact(
       if (! slotPrinted) 
         { 
          slotPrinted = TRUE;
-         EnvPrintRouter(theEnv,logicalName," "); 
+         EnvPrintRouter(theEnv,logicalName,__convert(" ")); 
         }
 
       if (seperateLines)
-        { EnvPrintRouter(theEnv,logicalName,"\n   "); }
+        { EnvPrintRouter(theEnv,logicalName,__convert("\n   ")); }
 
-      EnvPrintRouter(theEnv,logicalName,"(");
+      EnvPrintRouter(theEnv,logicalName,__convert("("));
       EnvPrintRouter(theEnv,logicalName,slotPtr->slotName->contents);
 
       /*======================================================*/
@@ -363,7 +380,7 @@ globle void PrintTemplateFact(
 
       if (slotPtr->multislot == FALSE)
         {
-         EnvPrintRouter(theEnv,logicalName," ");
+         EnvPrintRouter(theEnv,logicalName,__convert(" "));
          PrintAtom(theEnv,logicalName,sublist[i].type,sublist[i].value);
         }
 
@@ -378,7 +395,7 @@ globle void PrintTemplateFact(
          theSegment = (struct multifield *) sublist[i].value;
          if (theSegment->multifieldLength > 0)
            {
-            EnvPrintRouter(theEnv,logicalName," ");
+            EnvPrintRouter(theEnv,logicalName,__convert(" "));
             PrintMultifield(theEnv,logicalName,(struct multifield *) sublist[i].value,
                             0,(long) theSegment->multifieldLength-1,FALSE);
            }
@@ -389,12 +406,12 @@ globle void PrintTemplateFact(
       /*============================================*/
 
       i++;
-      EnvPrintRouter(theEnv,logicalName,")");
+      EnvPrintRouter(theEnv,logicalName,__convert(")"));
       slotPtr = slotPtr->next;
-      if (slotPtr != NULL) EnvPrintRouter(theEnv,logicalName," ");
+      if (slotPtr != NULL) EnvPrintRouter(theEnv,logicalName,__convert(" "));
      }
 
-   EnvPrintRouter(theEnv,logicalName,")");
+   EnvPrintRouter(theEnv,logicalName,__convert(")"));
   }
 
 /***************************************************************************/
@@ -432,7 +449,7 @@ globle void UpdateDeftemplateScope(
          /* current module, then it is in scope.  */
          /*=======================================*/
 
-         if (FindImportedConstruct(theEnv,"deftemplate",theModule,
+         if (FindImportedConstruct(theEnv,__convert("deftemplate"),theModule,
                                    ValueToString(theDeftemplate->header.name),
                                    &moduleCount,TRUE,NULL) != NULL)
            { theDeftemplate->inScope = TRUE; }
@@ -495,7 +512,7 @@ globle struct deftemplate *CreateImpliedDeftemplate(
    newDeftemplate->header.next = NULL;
 
 #if DEBUGGING_FUNCTIONS
-   if (EnvGetWatchItem(theEnv,"facts"))
+   if (EnvGetWatchItem(theEnv,__convert("facts")))
      { EnvSetDeftemplateWatch(theEnv,ON,(void *) newDeftemplate); }
 #endif
 
@@ -512,3 +529,6 @@ globle struct deftemplate *CreateImpliedDeftemplate(
 
 #endif /* DEFTEMPLATE_CONSTRUCT */
 
+#undef __convert
+#undef sym_TMPLTDEF 
+#undef sym_TMPLTFUN 

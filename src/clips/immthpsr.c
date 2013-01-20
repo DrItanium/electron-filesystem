@@ -249,8 +249,8 @@ static void FormMethodsFromRestrictions(
       rptr = ParseRestrictionType(theEnv,(int) defaultc);
       if (max != -1)
         {
-         rptr->query = GenConstant(theEnv,FCALL,(void *) FindFunction(theEnv,"<="));
-         rptr->query->argList = GenConstant(theEnv,FCALL,(void *) FindFunction(theEnv,"length$"));
+         rptr->query = GenConstant(theEnv,FCALL,(void *) FindFunction(theEnv,(char*)"<="));
+         rptr->query->argList = GenConstant(theEnv,FCALL,(void *) FindFunction(theEnv,(char*)"length$"));
          rptr->query->argList->argList = GenProcWildcardReference(theEnv,min + i + 1);
          rptr->query->argList->nextArg =
                GenConstant(theEnv,INTEGER,(void *) EnvAddLong(theEnv,(long long) (max - min - i)));

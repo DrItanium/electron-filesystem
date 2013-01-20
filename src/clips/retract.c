@@ -169,7 +169,7 @@ static void NegEntryRetractAlpha(
           (! joinPtr->patternIsExists) &&
           (! joinPtr->joinFromTheRight))
         {               
-         SystemError(theEnv,"RETRACT",117);
+         SystemError(theEnv,(char*)"RETRACT",117);
          betaMatch = betaMatch->nextBlocked;
          continue;
         }

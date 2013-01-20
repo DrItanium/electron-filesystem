@@ -70,23 +70,23 @@ globle void DeveloperCommands(
   void *theEnv)
   {
 #if ! RUN_TIME
-   EnvDefineFunction2(theEnv,"primitives-info",'v', PTIEF PrimitiveTablesInfo,"PrimitiveTablesInfo","00");
-   EnvDefineFunction2(theEnv,"primitives-usage",'v', PTIEF PrimitiveTablesUsage,"PrimitiveTablesUsage","00");
-   EnvDefineFunction2(theEnv,"enable-gc-heuristics",'v', PTIEF EnableGCHeuristics,"EnableGCHeuristics","00");
-   EnvDefineFunction2(theEnv,"disable-gc-heuristics",'v', PTIEF DisableGCHeuristics,"DisableGCHeuristics","00");
+   EnvDefineFunction2(theEnv,(char*)"primitives-info",'v', PTIEF PrimitiveTablesInfo,(char*)"PrimitiveTablesInfo",(char*)"00");
+   EnvDefineFunction2(theEnv,(char*)"primitives-usage",'v', PTIEF PrimitiveTablesUsage,(char*)"PrimitiveTablesUsage",(char*)"00");
+   EnvDefineFunction2(theEnv,(char*)"enable-gc-heuristics",'v', PTIEF EnableGCHeuristics,(char*)"EnableGCHeuristics",(char*)"00");
+   EnvDefineFunction2(theEnv,(char*)"disable-gc-heuristics",'v', PTIEF DisableGCHeuristics,(char*)"DisableGCHeuristics",(char*)"00");
 
 #if DEFRULE_CONSTRUCT && DEFTEMPLATE_CONSTRUCT
-   EnvDefineFunction2(theEnv,"show-fpn",'v', PTIEF ShowFactPatternNetwork,"ShowFactPatternNetwork","11w");
-   EnvDefineFunction2(theEnv,"show-fht",'v', PTIEF ShowFactHashTable,"ShowFactHashTable","00");
+   EnvDefineFunction2(theEnv,(char*)"show-fpn",'v', PTIEF ShowFactPatternNetwork,(char*)"ShowFactPatternNetwork",(char*)"11w");
+   EnvDefineFunction2(theEnv,(char*)"show-fht",'v', PTIEF ShowFactHashTable,(char*)"ShowFactHashTable",(char*)"00");
 #endif
 
 #if DEFRULE_CONSTRUCT && OBJECT_SYSTEM
-   EnvDefineFunction2(theEnv,"show-opn",'v',PTIEF PrintObjectPatternNetwork,
-                   "PrintObjectPatternNetwork","00");
+   EnvDefineFunction2(theEnv,(char*)"show-opn",'v',PTIEF PrintObjectPatternNetwork,
+                   (char*)"PrintObjectPatternNetwork",(char*)"00");
 #endif
 
 #if OBJECT_SYSTEM
-   EnvDefineFunction2(theEnv,"instance-table-usage",'v', PTIEF InstanceTableUsage,"InstanceTableUsage","00");
+   EnvDefineFunction2(theEnv,(char*)"instance-table-usage",'v', PTIEF InstanceTableUsage,(char*)"InstanceTableUsage",(char*)"00");
 #endif
 
 #endif
@@ -98,7 +98,7 @@ globle void DeveloperCommands(
 globle void EnableGCHeuristics(
   void *theEnv)
   {
-   EnvArgCountCheck(theEnv,"enable-gc-heuristics",EXACTLY,0);
+   EnvArgCountCheck(theEnv,(char*)"enable-gc-heuristics",EXACTLY,0);
    SetGarbageCollectionHeuristics(theEnv,TRUE);
   }
   
@@ -108,7 +108,7 @@ globle void EnableGCHeuristics(
 globle void DisableGCHeuristics(
   void *theEnv)
   {
-   EnvArgCountCheck(theEnv,"disable-gc-heuristics",EXACTLY,0);
+   EnvArgCountCheck(theEnv,(char*)"disable-gc-heuristics",EXACTLY,0);
    SetGarbageCollectionHeuristics(theEnv,FALSE);
   }
 
@@ -127,7 +127,7 @@ globle void PrimitiveTablesInfo(
    unsigned long int symbolCount = 0, integerCount = 0;
    unsigned long int floatCount = 0, bitMapCount = 0;
 
-   EnvArgCountCheck(theEnv,"primitives-info",EXACTLY,0);
+   EnvArgCountCheck(theEnv,(char*)"primitives-info",EXACTLY,0);
 
    /*====================================*/
    /* Count entries in the symbol table. */
@@ -177,22 +177,22 @@ globle void PrimitiveTablesInfo(
    /* Print the information. */
    /*========================*/
 
-   EnvPrintRouter(theEnv,WDISPLAY,"Symbols: ");
+   EnvPrintRouter(theEnv,WDISPLAY,(char*)"Symbols: ");
    PrintLongInteger(theEnv,WDISPLAY,(long long) symbolCount);
-   EnvPrintRouter(theEnv,WDISPLAY,"\n");
-   EnvPrintRouter(theEnv,WDISPLAY,"Integers: ");
+   EnvPrintRouter(theEnv,WDISPLAY,(char*)"\n");
+   EnvPrintRouter(theEnv,WDISPLAY,(char*)"Integers: ");
    PrintLongInteger(theEnv,WDISPLAY,(long long) integerCount);
-   EnvPrintRouter(theEnv,WDISPLAY,"\n");
-   EnvPrintRouter(theEnv,WDISPLAY,"Floats: ");
+   EnvPrintRouter(theEnv,WDISPLAY,(char*)"\n");
+   EnvPrintRouter(theEnv,WDISPLAY,(char*)"Floats: ");
    PrintLongInteger(theEnv,WDISPLAY,(long long) floatCount);
-   EnvPrintRouter(theEnv,WDISPLAY,"\n");
-   EnvPrintRouter(theEnv,WDISPLAY,"BitMaps: ");
+   EnvPrintRouter(theEnv,WDISPLAY,(char*)"\n");
+   EnvPrintRouter(theEnv,WDISPLAY,(char*)"BitMaps: ");
    PrintLongInteger(theEnv,WDISPLAY,(long long) bitMapCount);
-   EnvPrintRouter(theEnv,WDISPLAY,"\n");
+   EnvPrintRouter(theEnv,WDISPLAY,(char*)"\n");
    /*
-   EnvPrintRouter(theEnv,WDISPLAY,"Ephemerals: ");
+   EnvPrintRouter(theEnv,WDISPLAY,(char*)"Ephemerals: ");
    PrintLongInteger(theEnv,WDISPLAY,(long long) EphemeralSymbolCount());
-   EnvPrintRouter(theEnv,WDISPLAY,"\n");
+   EnvPrintRouter(theEnv,WDISPLAY,(char*)"\n");
    */
   }
   
@@ -212,7 +212,7 @@ globle void PrimitiveTablesUsage(
    unsigned long int symbolCount, totalSymbolCount = 0;
    unsigned long int floatCount, totalFloatCount = 0;
 
-   EnvArgCountCheck(theEnv,"primitives-usage",EXACTLY,0);
+   EnvArgCountCheck(theEnv,(char*)"primitives-usage",EXACTLY,0);
 
    for (i = 0; i < 21; i++)
      {
@@ -265,26 +265,26 @@ globle void PrimitiveTablesUsage(
    /* Print the information. */
    /*========================*/
 
-   EnvPrintRouter(theEnv,WDISPLAY,"Total Symbols: ");
+   EnvPrintRouter(theEnv,WDISPLAY,(char*)"Total Symbols: ");
    PrintLongInteger(theEnv,WDISPLAY,(long long) totalSymbolCount);
-   EnvPrintRouter(theEnv,WDISPLAY,"\n");
+   EnvPrintRouter(theEnv,WDISPLAY,(char*)"\n");
    for (i = 0; i < COUNT_SIZE; i++)
      {
       PrintLongInteger(theEnv,WDISPLAY,(long long) i);
-      EnvPrintRouter(theEnv,WDISPLAY," ");
+      EnvPrintRouter(theEnv,WDISPLAY,(char*)" ");
       PrintLongInteger(theEnv,WDISPLAY,(long long) symbolCounts[i]);
-      EnvPrintRouter(theEnv,WDISPLAY,"\n");
+      EnvPrintRouter(theEnv,WDISPLAY,(char*)"\n");
      }
 
-   EnvPrintRouter(theEnv,WDISPLAY,"\nTotal Floats: ");
+   EnvPrintRouter(theEnv,WDISPLAY,(char*)"\nTotal Floats: ");
    PrintLongInteger(theEnv,WDISPLAY,(long long) totalFloatCount);
-   EnvPrintRouter(theEnv,WDISPLAY,"\n");
+   EnvPrintRouter(theEnv,WDISPLAY,(char*)"\n");
    for (i = 0; i < COUNT_SIZE; i++)
      {
       PrintLongInteger(theEnv,WDISPLAY,(long long) i);
-      EnvPrintRouter(theEnv,WDISPLAY," ");
+      EnvPrintRouter(theEnv,WDISPLAY,(char*)" ");
       PrintLongInteger(theEnv,WDISPLAY,(long long) floatCounts[i]);
-      EnvPrintRouter(theEnv,WDISPLAY,"\n");
+      EnvPrintRouter(theEnv,WDISPLAY,(char*)"\n");
      }
 
   }
@@ -303,7 +303,7 @@ globle void ShowFactPatternNetwork(
    char *theName;
    int depth = 0, i;
 
-   theName = GetConstructName(theEnv,"show-fpn","template name");
+   theName = GetConstructName(theEnv,(char*)"show-fpn",(char*)"template name");
    if (theName == NULL) return;
 
    theDeftemplate = (struct deftemplate *) EnvFindDeftemplate(theEnv,theName);
@@ -312,29 +312,29 @@ globle void ShowFactPatternNetwork(
    patternPtr = theDeftemplate->patternNetwork;
    while (patternPtr != NULL)
      {
-      for (i = 0; i < depth; i++) EnvPrintRouter(theEnv,WDISPLAY," ");
-      if (patternPtr->header.singlefieldNode) EnvPrintRouter(theEnv,WDISPLAY,"SF   ");
+      for (i = 0; i < depth; i++) EnvPrintRouter(theEnv,WDISPLAY,(char*)" ");
+      if (patternPtr->header.singlefieldNode) EnvPrintRouter(theEnv,WDISPLAY,(char*)"SF   ");
       else if (patternPtr->header.multifieldNode)
         {
-         EnvPrintRouter(theEnv,WDISPLAY,"MF");
-         if (patternPtr->header.endSlot) EnvPrintRouter(theEnv,WDISPLAY,")");
-         else EnvPrintRouter(theEnv,WDISPLAY,"*");
+         EnvPrintRouter(theEnv,WDISPLAY,(char*)"MF");
+         if (patternPtr->header.endSlot) EnvPrintRouter(theEnv,WDISPLAY,(char*)")");
+         else EnvPrintRouter(theEnv,WDISPLAY,(char*)"*");
          PrintLongInteger(theEnv,WDISPLAY,(long long) patternPtr->leaveFields);
-         EnvPrintRouter(theEnv,WDISPLAY," ");
+         EnvPrintRouter(theEnv,WDISPLAY,(char*)" ");
         }
 
-      EnvPrintRouter(theEnv,WDISPLAY,"Slot: ");
+      EnvPrintRouter(theEnv,WDISPLAY,(char*)"Slot: ");
 
       PrintLongInteger(theEnv,WDISPLAY,(long long) patternPtr->whichSlot);
-      EnvPrintRouter(theEnv,WDISPLAY," Field: ");
+      EnvPrintRouter(theEnv,WDISPLAY,(char*)" Field: ");
       PrintLongInteger(theEnv,WDISPLAY,(long long) patternPtr->whichField);
-      EnvPrintRouter(theEnv,WDISPLAY," Expression: ");
-      if (patternPtr->networkTest == NULL) EnvPrintRouter(theEnv,WDISPLAY,"None");
+      EnvPrintRouter(theEnv,WDISPLAY,(char*)" Expression: ");
+      if (patternPtr->networkTest == NULL) EnvPrintRouter(theEnv,WDISPLAY,(char*)"None");
       else PrintExpression(theEnv,WDISPLAY,patternPtr->networkTest);
-      EnvPrintRouter(theEnv,WDISPLAY," RightHash: ");
-      if (patternPtr->header.rightHash == NULL) EnvPrintRouter(theEnv,WDISPLAY,"None");
+      EnvPrintRouter(theEnv,WDISPLAY,(char*)" RightHash: ");
+      if (patternPtr->header.rightHash == NULL) EnvPrintRouter(theEnv,WDISPLAY,(char*)"None");
       else PrintExpression(theEnv,WDISPLAY,patternPtr->header.rightHash);
-      EnvPrintRouter(theEnv,WDISPLAY,"\n");
+      EnvPrintRouter(theEnv,WDISPLAY,(char*)"\n");
 
       if (patternPtr->nextLevel == NULL)
         {
@@ -403,54 +403,54 @@ static void PrintOPNLevel(
      {
       EnvPrintRouter(theEnv,WDISPLAY,indentbuf);
       if (pptr->alphaNode != NULL)
-        EnvPrintRouter(theEnv,WDISPLAY,"+");
+        EnvPrintRouter(theEnv,WDISPLAY,(char*)"+");
       EnvPrintRouter(theEnv,WDISPLAY,ValueToString(FindIDSlotName(theEnv,pptr->slotNameID)));
-      EnvPrintRouter(theEnv,WDISPLAY," (");
+      EnvPrintRouter(theEnv,WDISPLAY,(char*)" (");
       PrintLongInteger(theEnv,WDISPLAY,(long long) pptr->slotNameID);
-      EnvPrintRouter(theEnv,WDISPLAY,") ");
-      EnvPrintRouter(theEnv,WDISPLAY,pptr->endSlot ? "EPF#" : "PF#");
+      EnvPrintRouter(theEnv,WDISPLAY,(char*)") ");
+      EnvPrintRouter(theEnv,WDISPLAY,pptr->endSlot ? (char*)"EPF#" : (char*)"PF#");
       PrintLongInteger(theEnv,WDISPLAY,(long long) pptr->whichField);
-      EnvPrintRouter(theEnv,WDISPLAY," ");
-      EnvPrintRouter(theEnv,WDISPLAY,pptr->multifieldNode ? "$? " : "? ");
+      EnvPrintRouter(theEnv,WDISPLAY,(char*)" ");
+      EnvPrintRouter(theEnv,WDISPLAY,pptr->multifieldNode ? (char*)"$? " : (char*) "? ");
       if (pptr->networkTest != NULL)
         PrintExpression(theEnv,WDISPLAY,pptr->networkTest);
-      EnvPrintRouter(theEnv,WDISPLAY,"\n");
+      EnvPrintRouter(theEnv,WDISPLAY,(char*)"\n");
       alphaPtr = pptr->alphaNode;
       while (alphaPtr != NULL)
         {
          EnvPrintRouter(theEnv,WDISPLAY,indentbuf);
-         EnvPrintRouter(theEnv,WDISPLAY,"     Classes:");
+         EnvPrintRouter(theEnv,WDISPLAY,(char*)"     Classes:");
          cbmp = (CLASS_BITMAP *) ValueToBitMap(alphaPtr->classbmp);
          for (i = 0 ; i <= cbmp->maxid ; i++)
            if (TestBitMap(cbmp->map,i))
              {
-              EnvPrintRouter(theEnv,WDISPLAY," ");
+              EnvPrintRouter(theEnv,WDISPLAY,(char*)" ");
               EnvPrintRouter(theEnv,WDISPLAY,EnvGetDefclassName(theEnv,(void *) DefclassData(theEnv)->ClassIDMap[i]));
              }
          if (alphaPtr->slotbmp != NULL)
            {
             sbmp = (SLOT_BITMAP *) ValueToBitMap(pptr->alphaNode->slotbmp);
-            EnvPrintRouter(theEnv,WDISPLAY," *** Slots:");
+            EnvPrintRouter(theEnv,WDISPLAY,(char*)" *** Slots:");
             for (i = NAME_ID ; i <= sbmp->maxid ; i++)
               if (TestBitMap(sbmp->map,i))
                 {
                  for (uptr = pptr ; uptr != NULL ; uptr  = uptr->lastLevel)
-                   if (uptr->slotNameID == i)
+                   if ((unsigned)(uptr->slotNameID) == i)
                      break;
                  if (uptr == NULL)
                    {
-                    EnvPrintRouter(theEnv,WDISPLAY," ");
+                    EnvPrintRouter(theEnv,WDISPLAY,(char*)" ");
                     EnvPrintRouter(theEnv,WDISPLAY,ValueToString(FindIDSlotName(theEnv,i)));
                    }
                 }
            }
          if (alphaPtr->header.rightHash != NULL)
            {
-            EnvPrintRouter(theEnv,WDISPLAY," RH: ");
+            EnvPrintRouter(theEnv,WDISPLAY,(char*)" RH: ");
             PrintExpression(theEnv,WDISPLAY,alphaPtr->header.rightHash);
            }
 
-         EnvPrintRouter(theEnv,WDISPLAY,"\n");
+         EnvPrintRouter(theEnv,WDISPLAY,(char*)"\n");
          alphaPtr = alphaPtr->nxtInGroup;
         }
       indentbuf[ilen++] = (char) ((pptr->rightNode != NULL) ? '|' : ' ');
@@ -480,7 +480,7 @@ globle void InstanceTableUsage(
    INSTANCE_TYPE *ins;
    unsigned long int instanceCount, totalInstanceCount = 0;
 
-   EnvArgCountCheck(theEnv,"instance-table-usage",EXACTLY,0);
+   EnvArgCountCheck(theEnv,(char*)"instance-table-usage",EXACTLY,0);
 
    for (i = 0; i < COUNT_SIZE; i++)
      { instanceCounts[i] = 0; }
@@ -508,15 +508,15 @@ globle void InstanceTableUsage(
    /* Print the information. */
    /*========================*/
 
-   EnvPrintRouter(theEnv,WDISPLAY,"Total Instances: ");
+   EnvPrintRouter(theEnv,WDISPLAY,(char*)"Total Instances: ");
    PrintLongInteger(theEnv,WDISPLAY,(long long) totalInstanceCount);
-   EnvPrintRouter(theEnv,WDISPLAY,"\n");
+   EnvPrintRouter(theEnv,WDISPLAY,(char*)"\n");
    for (i = 0; i < COUNT_SIZE; i++)
      {
       PrintLongInteger(theEnv,WDISPLAY,(long long) i);
-      EnvPrintRouter(theEnv,WDISPLAY," ");
+      EnvPrintRouter(theEnv,WDISPLAY,(char*)" ");
       PrintLongInteger(theEnv,WDISPLAY,(long long) instanceCounts[i]);
-      EnvPrintRouter(theEnv,WDISPLAY,"\n");
+      EnvPrintRouter(theEnv,WDISPLAY,(char*)"\n");
      }
   }
   

@@ -65,7 +65,7 @@
 globle void DefruleCompilerSetup(
   void *theEnv)
   {
-   DefruleData(theEnv)->DefruleCodeItem = AddCodeGeneratorItem(theEnv,"defrules",0,BeforeDefrulesCode,
+   DefruleData(theEnv)->DefruleCodeItem = AddCodeGeneratorItem(theEnv,(char*)"defrules",0,BeforeDefrulesCode,
                                           InitDefruleCode,ConstructToCode,4);
   }
 
@@ -151,7 +151,7 @@ static int ConstructToCode(
 
       moduleFile = OpenFileIfNeeded(theEnv,moduleFile,fileName,pathName,fileNameBuffer,fileID,imageID,&fileCount,
                                     moduleArrayVersion,headerFP,
-                                    "struct defruleModule",ModulePrefix(DefruleData(theEnv)->DefruleCodeItem),
+                                    (char*)"struct defruleModule",ModulePrefix(DefruleData(theEnv)->DefruleCodeItem),
                                     FALSE,NULL);
 
       if (moduleFile == NULL)
@@ -179,7 +179,7 @@ static int ConstructToCode(
 
          defruleFile = OpenFileIfNeeded(theEnv,defruleFile,fileName,pathName,fileNameBuffer,fileID,imageID,&fileCount,
                                         defruleArrayVersion,headerFP,
-                                        "struct defrule",ConstructPrefix(DefruleData(theEnv)->DefruleCodeItem),
+                                        (char*)"struct defrule",ConstructPrefix(DefruleData(theEnv)->DefruleCodeItem),
                                         FALSE,NULL);
          if (defruleFile == NULL)
            {
@@ -251,7 +251,7 @@ static int RuleCompilerTraverseJoins(
         {
          *joinFile = OpenFileIfNeeded(theEnv,*joinFile,fileName,pathName,fileNameBuffer,fileID,imageID,fileCount,
                                       *joinArrayVersion,headerFP,
-                                      "struct joinNode",JoinPrefix(),FALSE,NULL);
+                                      (char*)"struct joinNode",JoinPrefix(),FALSE,NULL);
          if (*joinFile == NULL)
            { return(FALSE); }
 
@@ -303,7 +303,7 @@ static int TraverseJoinLinks(
      {
       *linkFile = OpenFileIfNeeded(theEnv,*linkFile,fileName,pathName,fileNameBuffer,fileID,imageID,fileCount,
                                    *linkArrayVersion,headerFP,
-                                   "struct joinLink",LinkPrefix(),FALSE,NULL);
+                                   (char*)"struct joinLink",LinkPrefix(),FALSE,NULL);
            
       if (*linkFile == NULL)
         { return(FALSE); }

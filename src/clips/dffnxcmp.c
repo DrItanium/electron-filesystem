@@ -63,7 +63,7 @@ static void SingleDeffunctionToCode(void *,FILE *,DEFFUNCTION *,int,int,int);
 globle void SetupDeffunctionCompiler(
   void *theEnv)
   {
-   DeffunctionData(theEnv)->DeffunctionCodeItem = AddCodeGeneratorItem(theEnv,"deffunctions",0,ReadyDeffunctionsForCode,
+   DeffunctionData(theEnv)->DeffunctionCodeItem = AddCodeGeneratorItem(theEnv,(char*)"deffunctions",0,ReadyDeffunctionsForCode,
                                               NULL,DeffunctionsToCode,2);
   }
 
@@ -194,7 +194,7 @@ static int DeffunctionsToCode(
 
       moduleFile = OpenFileIfNeeded(theEnv,moduleFile,fileName,pathName,fileNameBuffer,fileID,imageID,&fileCount,
                                     moduleArrayVersion,headerFP,
-                                    "DEFFUNCTION_MODULE",ModulePrefix(DeffunctionData(theEnv)->DeffunctionCodeItem),
+                                    (char*)"DEFFUNCTION_MODULE",ModulePrefix(DeffunctionData(theEnv)->DeffunctionCodeItem),
                                     FALSE,NULL);
 
       if (moduleFile == NULL)
@@ -213,7 +213,7 @@ static int DeffunctionsToCode(
         {
          deffunctionFile = OpenFileIfNeeded(theEnv,deffunctionFile,fileName,pathName,fileNameBuffer,fileID,imageID,&fileCount,
                                             deffunctionArrayVersion,headerFP,
-                                            "DEFFUNCTION",ConstructPrefix(DeffunctionData(theEnv)->DeffunctionCodeItem),
+                                            (char*)"DEFFUNCTION",ConstructPrefix(DeffunctionData(theEnv)->DeffunctionCodeItem),
                                             FALSE,NULL);
          if (deffunctionFile == NULL)
            {

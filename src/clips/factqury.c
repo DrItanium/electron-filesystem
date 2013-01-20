@@ -91,35 +91,35 @@ globle void SetupFactQuery(
    FactQueryData(theEnv)->QUERY_DELIMETER_SYMBOL = (SYMBOL_HN *) EnvAddSymbol(theEnv,QUERY_DELIMETER_STRING);
    IncrementSymbolCount(FactQueryData(theEnv)->QUERY_DELIMETER_SYMBOL);
 
-   EnvDefineFunction2(theEnv,"(query-fact)",'u',
-                  PTIEF GetQueryFact,"GetQueryFact",NULL);
+   EnvDefineFunction2(theEnv,(char*)"(query-fact)",'u',
+                  PTIEF GetQueryFact,(char*)"GetQueryFact",NULL);
 
-   EnvDefineFunction2(theEnv,"(query-fact-slot)",'u',
-                  PTIEF GetQueryFactSlot,"GetQueryFactSlot",NULL);
+   EnvDefineFunction2(theEnv,(char*)"(query-fact-slot)",'u',
+                  PTIEF GetQueryFactSlot,(char*)"GetQueryFactSlot",NULL);
 
-   EnvDefineFunction2(theEnv,"any-factp",'b',PTIEF AnyFacts,"AnyFacts",NULL);
-   AddFunctionParser(theEnv,"any-factp",FactParseQueryNoAction);
+   EnvDefineFunction2(theEnv,(char*)"any-factp",'b',PTIEF AnyFacts,(char*)"AnyFacts",NULL);
+   AddFunctionParser(theEnv,(char*)"any-factp",FactParseQueryNoAction);
 
-   EnvDefineFunction2(theEnv,"find-fact",'m',
-                  PTIEF QueryFindFact,"QueryFindFact",NULL);
-   AddFunctionParser(theEnv,"find-fact",FactParseQueryNoAction);
+   EnvDefineFunction2(theEnv,(char*)"find-fact",'m',
+                  PTIEF QueryFindFact,(char*)"QueryFindFact",NULL);
+   AddFunctionParser(theEnv,(char*)"find-fact",FactParseQueryNoAction);
 
-   EnvDefineFunction2(theEnv,"find-all-facts",'m',
-                  PTIEF QueryFindAllFacts,"QueryFindAllFacts",NULL);
-   AddFunctionParser(theEnv,"find-all-facts",FactParseQueryNoAction);
+   EnvDefineFunction2(theEnv,(char*)"find-all-facts",'m',
+                  PTIEF QueryFindAllFacts,(char*)"QueryFindAllFacts",NULL);
+   AddFunctionParser(theEnv,(char*)"find-all-facts",FactParseQueryNoAction);
 
-   EnvDefineFunction2(theEnv,"do-for-fact",'u',
-                  PTIEF QueryDoForFact,"QueryDoForFact",NULL);
-   AddFunctionParser(theEnv,"do-for-fact",FactParseQueryAction);
+   EnvDefineFunction2(theEnv,(char*)"do-for-fact",'u',
+                  PTIEF QueryDoForFact,(char*)"QueryDoForFact",NULL);
+   AddFunctionParser(theEnv,(char*)"do-for-fact",FactParseQueryAction);
 
-   EnvDefineFunction2(theEnv,"do-for-all-facts",'u',
-                  PTIEF QueryDoForAllFacts,"QueryDoForAllFacts",NULL);
-   AddFunctionParser(theEnv,"do-for-all-facts",FactParseQueryAction);
+   EnvDefineFunction2(theEnv,(char*)"do-for-all-facts",'u',
+                  PTIEF QueryDoForAllFacts,(char*)"QueryDoForAllFacts",NULL);
+   AddFunctionParser(theEnv,(char*)"do-for-all-facts",FactParseQueryAction);
 
-   EnvDefineFunction2(theEnv,"delayed-do-for-all-facts",'u',
+   EnvDefineFunction2(theEnv,(char*)"delayed-do-for-all-facts",'u',
                   PTIEF DelayedQueryDoForAllFacts,
                   "DelayedQueryDoForAllFacts",NULL);
-   AddFunctionParser(theEnv,"delayed-do-for-all-facts",FactParseQueryAction);
+   AddFunctionParser(theEnv,(char*)"delayed-do-for-all-facts",FactParseQueryAction);
 #endif
   }
 
@@ -170,7 +170,7 @@ globle void GetQueryFactSlot(
    EvaluateExpression(theEnv,GetFirstArgument()->nextArg->nextArg,&temp);
    if (temp.type != SYMBOL)
      {
-      ExpectedTypeError1(theEnv,"get",1,"symbol");
+      ExpectedTypeError1(theEnv,(char*)"get",1,(char*)"symbol");
       SetEvaluationError(theEnv,TRUE);
       return;
      }
@@ -182,9 +182,9 @@ globle void GetQueryFactSlot(
 
    if (theFact->whichDeftemplate->implied)
      {
-      if (strcmp(ValueToString(temp.value),"implied") != 0)
+      if (strcmp(ValueToString(temp.value),(char*)"implied") != 0)
         {
-         SlotExistError(theEnv,ValueToString(temp.value),"fact-set query");
+         SlotExistError(theEnv,ValueToString(temp.value),(char*)"fact-set query");
          return;
         }
       position = 1;
@@ -193,7 +193,7 @@ globle void GetQueryFactSlot(
    else if (FindSlot((struct deftemplate *) theFact->whichDeftemplate,
                      (struct symbolHashNode *) temp.value,&position) == NULL)
      {
-      SlotExistError(theEnv,ValueToString(temp.value),"fact-set query");
+      SlotExistError(theEnv,ValueToString(temp.value),(char*)"fact-set query");
       return;
      }
      
@@ -692,7 +692,7 @@ static QUERY_TEMPLATE *DetermineQueryTemplates(
         }
       else
         {
-         SyntaxErrorMessage(theEnv,"fact-set query class restrictions");
+         SyntaxErrorMessage(theEnv,(char*)"fact-set query class restrictions");
          DeleteQueryTemplates(theEnv,clist);
          SetEvaluationError(theEnv,TRUE);
          return(NULL);
@@ -746,11 +746,11 @@ static QUERY_TEMPLATE *FormChain(
          =============================================== */
          
       templatePtr = (struct deftemplate *)
-                       FindImportedConstruct(theEnv,"deftemplate",NULL,DOPToString(val),
+                       FindImportedConstruct(theEnv,(char*)"deftemplate",NULL,DOPToString(val),
                                              &count,TRUE,NULL);
       if (templatePtr == NULL)
         {
-         CantFindItemInFunctionErrorMessage(theEnv,"deftemplate",DOPToString(val),func);
+         CantFindItemInFunctionErrorMessage(theEnv,(char*)"deftemplate",DOPToString(val),func);
          return(NULL);
         }
       IncrementDeftemplateBusyCount(theEnv,(void *) templatePtr);
@@ -772,12 +772,12 @@ static QUERY_TEMPLATE *FormChain(
             templateName = ValueToString(GetMFValue(val->value,i));
             
             templatePtr = (struct deftemplate *)
-                       FindImportedConstruct(theEnv,"deftemplate",NULL,templateName,
+                       FindImportedConstruct(theEnv,(char*)"deftemplate",NULL,templateName,
                                              &count,TRUE,NULL);
 
             if (templatePtr == NULL)
               {
-               CantFindItemInFunctionErrorMessage(theEnv,"deftemplate",templateName,func);
+               CantFindItemInFunctionErrorMessage(theEnv,(char*)"deftemplate",templateName,func);
                DeleteQueryTemplates(theEnv,head);
                return(NULL);
               }

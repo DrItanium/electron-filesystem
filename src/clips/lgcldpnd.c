@@ -502,7 +502,7 @@ globle void Dependencies(
 
    if (theEntity->dependents == NULL)
      {
-      EnvPrintRouter(theEnv,WDISPLAY,"None\n");
+      EnvPrintRouter(theEnv,WDISPLAY,(char*)"None\n");
       return;
      }
 
@@ -517,7 +517,7 @@ globle void Dependencies(
      {
       if (GetHaltExecution(theEnv) == TRUE) return;
       PrintPartialMatch(theEnv,WDISPLAY,(struct partialMatch *) fdPtr->dPtr);
-      EnvPrintRouter(theEnv,WDISPLAY,"\n");
+      EnvPrintRouter(theEnv,WDISPLAY,(char*)"\n");
      }
   }
 
@@ -567,7 +567,7 @@ globle void Dependents(
          theBinds = (struct partialMatch *) fdPtr->dPtr;
          if (FindEntityInPartialMatch(theEntity,theBinds) == TRUE)
            {
-            if (found) EnvPrintRouter(theEnv,WDISPLAY,",");
+            if (found) EnvPrintRouter(theEnv,WDISPLAY,(char*)",");
             (*entityPtr->theInfo->base.shortPrintFunction)(theEnv,WDISPLAY,entityPtr);
             found = TRUE;
             break;
@@ -581,8 +581,8 @@ globle void Dependents(
    /* list of dependents.                             */
    /*=================================================*/
 
-   if (! found) EnvPrintRouter(theEnv,WDISPLAY,"None\n");
-   else EnvPrintRouter(theEnv,WDISPLAY,"\n");
+   if (! found) EnvPrintRouter(theEnv,WDISPLAY,(char*)"None\n");
+   else EnvPrintRouter(theEnv,WDISPLAY,(char*)"\n");
   }
 
 #if DEBUGGING_FUNCTIONS
@@ -597,16 +597,16 @@ globle void DependenciesCommand(
    DATA_OBJECT item;
    void *ptr;
 
-   if (EnvArgCountCheck(theEnv,"dependencies",EXACTLY,1) == -1) return;
+   if (EnvArgCountCheck(theEnv,(char*)"dependencies",EXACTLY,1) == -1) return;
 
-   ptr = GetFactOrInstanceArgument(theEnv,1,&item,"dependencies");
+   ptr = GetFactOrInstanceArgument(theEnv,1,&item,(char*)"dependencies");
 
    if (ptr == NULL) return;
 
 #if DEFRULE_CONSTRUCT
    Dependencies(theEnv,(struct patternEntity *) ptr);
 #else
-   EnvPrintRouter(theEnv,WDISPLAY,"None\n");
+   EnvPrintRouter(theEnv,WDISPLAY,(char*)"None\n");
 #endif
   }
 
@@ -620,16 +620,16 @@ globle void DependentsCommand(
    DATA_OBJECT item;
    void *ptr;
 
-   if (EnvArgCountCheck(theEnv,"dependents",EXACTLY,1) == -1) return;
+   if (EnvArgCountCheck(theEnv,(char*)"dependents",EXACTLY,1) == -1) return;
 
-   ptr = GetFactOrInstanceArgument(theEnv,1,&item,"dependents");
+   ptr = GetFactOrInstanceArgument(theEnv,1,&item,(char*)"dependents");
 
    if (ptr == NULL) return;
 
 #if DEFRULE_CONSTRUCT
    Dependents(theEnv,(struct patternEntity *) ptr);
 #else
-   EnvPrintRouter(theEnv,WDISPLAY,"None\n");
+   EnvPrintRouter(theEnv,WDISPLAY,(char*)"None\n");
 #endif
   }
 

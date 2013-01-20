@@ -138,13 +138,13 @@ globle void SetupGenericsBload(
   {
    AllocateEnvironmentData(theEnv,GENRCBIN_DATA,sizeof(struct defgenericBinaryData),DeallocateDefgenericBinaryData);
 #if BLOAD_AND_BSAVE
-   AddBinaryItem(theEnv,"generic functions",0,BsaveGenericsFind,BsaveGenericsExpressions,
+   AddBinaryItem(theEnv,(char*)"generic functions",0,BsaveGenericsFind,BsaveGenericsExpressions,
                              BsaveStorageGenerics,BsaveGenerics,
                              BloadStorageGenerics,BloadGenerics,
                              ClearBloadGenerics);
 #endif
 #if BLOAD || BLOAD_ONLY
-   AddBinaryItem(theEnv,"generic functions",0,NULL,NULL,NULL,NULL,
+   AddBinaryItem(theEnv,(char*)"generic functions",0,NULL,NULL,NULL,NULL,
                              BloadStorageGenerics,BloadGenerics,
                              ClearBloadGenerics);
 #endif
@@ -427,7 +427,7 @@ static void BsaveGenerics(
    while (theModule != NULL)
      {
       theModuleItem = (DEFGENERIC_MODULE *)
-                      GetModuleItem(theEnv,theModule,FindModuleItem(theEnv,"defgeneric")->moduleIndex);
+                      GetModuleItem(theEnv,theModule,FindModuleItem(theEnv,(char*)"defgeneric")->moduleIndex);
       AssignBsaveDefmdlItemHdrVals(&dummy_generic_module.header,
                                            &theModuleItem->header);
       GenWrite((void *) &dummy_generic_module,
@@ -813,9 +813,9 @@ static void UpdateType(
 #else
    if ((* (long *) buf) > (long) INSTANCE_TYPE_CODE)
      {
-      PrintWarningID(theEnv,"GENRCBIN",1,FALSE);
-      EnvPrintRouter(theEnv,WWARNING,"COOL not installed!  User-defined class\n");
-      EnvPrintRouter(theEnv,WWARNING,"  in method restriction substituted with OBJECT.\n");
+      PrintWarningID(theEnv,(char*)"GENRCBIN",1,FALSE);
+      EnvPrintRouter(theEnv,WWARNING,(char*)"COOL not installed!  User-defined class\n");
+      EnvPrintRouter(theEnv,WWARNING,(char*)"  in method restriction substituted with OBJECT.\n");
       DefgenericBinaryData(theEnv)->TypeArray[obji] = (void *) EnvAddLong(theEnv,(long long) OBJECT_TYPE_CODE);
      }
    else

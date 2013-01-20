@@ -81,7 +81,7 @@ globle void InitializeFactPatterns(
 
    newPtr = get_struct(theEnv,patternParser);
 
-   newPtr->name = "facts";
+   newPtr->name = (char*)"facts";
    newPtr->priority = 0;
    newPtr->entityType = &FactData(theEnv)->FactInfo;
    
@@ -224,7 +224,7 @@ static struct patternNodeHeader *PlaceFactPattern(
    /*============================================================*/
 
    FactData(theEnv)->CurrentDeftemplate = (struct deftemplate *)
-                        FindImportedConstruct(theEnv,"deftemplate",NULL,
+                        FindImportedConstruct(theEnv,(char*)"deftemplate",NULL,
                                               deftemplateName,&count,
                                               TRUE,NULL);
 

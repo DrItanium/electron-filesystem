@@ -171,12 +171,12 @@ globle void SetupObjectPatternStuff(
 #if (! BLOAD_ONLY) && (! RUN_TIME)
    struct patternParser *newPtr;
 
-   if (ReservedPatternSymbol(theEnv,"object",NULL) == TRUE)
+   if (ReservedPatternSymbol(theEnv,(char*)"object",NULL) == TRUE)
      {
-      SystemError(theEnv,"OBJRTBLD",1);
+      SystemError(theEnv,(char*)"OBJRTBLD",1);
       EnvExitRouter(theEnv,EXIT_FAILURE);
      }
-   AddReservedPatternSymbol(theEnv,"object",NULL);
+   AddReservedPatternSymbol(theEnv,(char*)"object",NULL);
 
    /* ===========================================================================
       The object pattern parser needs to have a higher priority than deftemplates
@@ -185,7 +185,7 @@ globle void SetupObjectPatternStuff(
 
    newPtr = get_struct(theEnv,patternParser);
    
-   newPtr->name = "objects";
+   newPtr->name = (char*)"objects";
    newPtr->priority = 20;
    newPtr->entityType = &InstanceData(theEnv)->InstanceInfo;
 
@@ -218,11 +218,11 @@ globle void SetupObjectPatternStuff(
 
    AddPatternParser(theEnv,newPtr);
    
-   EnvDefineFunction2(theEnv,"object-pattern-match-delay",'u',
-                   PTIEF ObjectMatchDelay,"ObjectMatchDelay",NULL);
+   EnvDefineFunction2(theEnv,(char*)"object-pattern-match-delay",'u',
+                   PTIEF ObjectMatchDelay,(char*)"ObjectMatchDelay",NULL);
 
-   AddFunctionParser(theEnv,"object-pattern-match-delay",ObjectMatchDelayParse);
-   FuncSeqOvlFlags(theEnv,"object-pattern-match-delay",FALSE,FALSE);
+   AddFunctionParser(theEnv,(char*)"object-pattern-match-delay",ObjectMatchDelayParse);
+   FuncSeqOvlFlags(theEnv,(char*)"object-pattern-match-delay",FALSE,FALSE);
 
 #endif
 
@@ -233,7 +233,7 @@ globle void SetupObjectPatternStuff(
 #endif
 
 #if ! DEFINSTANCES_CONSTRUCT
-   EnvAddResetFunction(theEnv,"reset-initial-object",ResetInitialObject,0);
+   EnvAddResetFunction(theEnv,(char*)"reset-initial-object",ResetInitialObject,0);
 #endif
 
 
@@ -256,7 +256,7 @@ static void ResetInitialObject(
    EXPRESSION *tmp;
    DATA_OBJECT rtn;
 
-   tmp = GenConstant(theEnv,FCALL,(void *) FindFunction(theEnv,"make-instance"));
+   tmp = GenConstant(theEnv,FCALL,(void *) FindFunction(theEnv,(char*)"make-instance"));
    tmp->argList = GenConstant(theEnv,INSTANCE_NAME,(void *) DefclassData(theEnv)->INITIAL_OBJECT_SYMBOL);
    tmp->argList->nextArg =
        GenConstant(theEnv,DEFCLASS_PTR,(void *) LookupDefclassInScope(theEnv,INITIAL_OBJECT_CLASS_NAME));
@@ -329,8 +329,8 @@ static struct lhsParseNode *ObjectLHSParse(
    clsset = NewClassBitMap(theEnv,((int) DefclassData(theEnv)->MaxClassID) - 1,1);
    if (EmptyClassBitMap(clsset))
      {
-      PrintErrorID(theEnv,"OBJRTBLD",1,FALSE);
-      EnvPrintRouter(theEnv,WERROR,"No objects of existing classes can satisfy pattern.\n");
+      PrintErrorID(theEnv,(char*)"OBJRTBLD",1,FALSE);
+      EnvPrintRouter(theEnv,WERROR,(char*)"No objects of existing classes can satisfy pattern.\n");
       DeleteIntermediateClassBitMap(theEnv,clsset);
       return(NULL);
      }
@@ -346,17 +346,17 @@ static struct lhsParseNode *ObjectLHSParse(
      {
       ppbackupReqd = TRUE;
       PPBackup(theEnv);
-      SavePPBuffer(theEnv," ");
+      SavePPBuffer(theEnv,(char*)" ");
       SavePPBuffer(theEnv,theToken.printForm);
       if (theToken.type != LPAREN)
         {
-         SyntaxErrorMessage(theEnv,"object pattern");
+         SyntaxErrorMessage(theEnv,(char*)"object pattern");
          goto ObjectLHSParseERROR;
         }
       GetToken(theEnv,readSource,&theToken);
       if (theToken.type != SYMBOL)
         {
-         SyntaxErrorMessage(theEnv,"object pattern");
+         SyntaxErrorMessage(theEnv,(char*)"object pattern");
          goto ObjectLHSParseERROR;
         }
       if (CheckDuplicateSlots(theEnv,firstNode,(SYMBOL_HN *) theToken.value))
@@ -400,17 +400,17 @@ static struct lhsParseNode *ObjectLHSParse(
         }
       if (EmptyClassBitMap(tmpset))
         {
-         PrintErrorID(theEnv,"OBJRTBLD",2,FALSE);
-         EnvPrintRouter(theEnv,WERROR,"No objects of existing classes can satisfy ");
+         PrintErrorID(theEnv,(char*)"OBJRTBLD",2,FALSE);
+         EnvPrintRouter(theEnv,WERROR,(char*)"No objects of existing classes can satisfy ");
          EnvPrintRouter(theEnv,WERROR,ValueToString(tmpNode->slot));
-         EnvPrintRouter(theEnv,WERROR," restriction in object pattern.\n");
+         EnvPrintRouter(theEnv,WERROR,(char*)" restriction in object pattern.\n");
          ReturnLHSParseNodes(theEnv,tmpNode);
          goto ObjectLHSParseERROR;
         }
       if (EmptyClassBitMap(clsset))
         {
-         PrintErrorID(theEnv,"OBJRTBLD",1,FALSE);
-         EnvPrintRouter(theEnv,WERROR,"No objects of existing classes can satisfy pattern.\n");
+         PrintErrorID(theEnv,(char*)"OBJRTBLD",1,FALSE);
+         EnvPrintRouter(theEnv,WERROR,(char*)"No objects of existing classes can satisfy pattern.\n");
          ReturnLHSParseNodes(theEnv,tmpNode);
          goto ObjectLHSParseERROR;
         }
@@ -429,8 +429,8 @@ static struct lhsParseNode *ObjectLHSParse(
      {
       if (EmptyClassBitMap(clsset))
         {
-         PrintErrorID(theEnv,"OBJRTBLD",1,FALSE);
-         EnvPrintRouter(theEnv,WERROR,"No objects of existing classes can satisfy pattern.\n");
+         PrintErrorID(theEnv,(char*)"OBJRTBLD",1,FALSE);
+         EnvPrintRouter(theEnv,WERROR,(char*)"No objects of existing classes can satisfy pattern.\n");
          goto ObjectLHSParseERROR;
         }
       firstNode = GetLHSParseNode(theEnv);
@@ -619,11 +619,11 @@ static intBool ReorderAndAnalyzeObjectPattern(
          ======================================================= */
       if (EmptyClassBitMap(tmpset))
         {
-         PrintErrorID(theEnv,"OBJRTBLD",3,TRUE);
+         PrintErrorID(theEnv,(char*)"OBJRTBLD",3,TRUE);
          DeleteIntermediateClassBitMap(theEnv,tmpset);
-         EnvPrintRouter(theEnv,WERROR,"No objects of existing classes can satisfy pattern #");
+         EnvPrintRouter(theEnv,WERROR,(char*)"No objects of existing classes can satisfy pattern #");
          PrintLongInteger(theEnv,WERROR,(long long) topNode->pattern);
-         EnvPrintRouter(theEnv,WERROR,".\n");
+         EnvPrintRouter(theEnv,WERROR,(char*)".\n");
          return(TRUE);
         }
       clsset = PackClassBitMap(theEnv,tmpset);
@@ -1302,10 +1302,10 @@ static intBool CheckDuplicateSlots(
      {
       if (nodeList->slot == slotName)
         {
-         PrintErrorID(theEnv,"OBJRTBLD",4,TRUE);
-         EnvPrintRouter(theEnv,WERROR,"Multiple restrictions on attribute ");
+         PrintErrorID(theEnv,(char*)"OBJRTBLD",4,TRUE);
+         EnvPrintRouter(theEnv,WERROR,(char*)"Multiple restrictions on attribute ");
          EnvPrintRouter(theEnv,WERROR,ValueToString(slotName));
-         EnvPrintRouter(theEnv,WERROR," not allowed.\n");
+         EnvPrintRouter(theEnv,WERROR,(char*)" not allowed.\n");
          return(TRUE);
         }
       nodeList = nodeList->right;
@@ -1338,7 +1338,7 @@ static struct lhsParseNode *ParseClassRestriction(
    rv->anyAllowed = 0;
    rv->symbolsAllowed = 1;
    rln = (SYMBOL_HN *) theToken->value;
-   SavePPBuffer(theEnv," ");
+   SavePPBuffer(theEnv,(char*)" ");
    GetToken(theEnv,readSource,theToken);
    tmpNode = RestrictionParse(theEnv,readSource,theToken,FALSE,rln,ISA_ID,rv,0);
    if (tmpNode == NULL)
@@ -1353,10 +1353,10 @@ static struct lhsParseNode *ParseClassRestriction(
       PPBackup(theEnv);
       if (theToken->type != RPAREN)
         {
-         SavePPBuffer(theEnv," ");
+         SavePPBuffer(theEnv,(char*)" ");
          SavePPBuffer(theEnv,theToken->printForm);
         }
-      SyntaxErrorMessage(theEnv,"class restriction in object pattern");
+      SyntaxErrorMessage(theEnv,(char*)"class restriction in object pattern");
       ReturnLHSParseNodes(theEnv,tmpNode);
       RemoveConstraint(theEnv,rv);
       return(NULL);
@@ -1390,7 +1390,7 @@ static struct lhsParseNode *ParseNameRestriction(
    rv->anyAllowed = 0;
    rv->instanceNamesAllowed = 1;
    rln = (SYMBOL_HN *) theToken->value;
-   SavePPBuffer(theEnv," ");
+   SavePPBuffer(theEnv,(char*)" ");
    GetToken(theEnv,readSource,theToken);
    tmpNode = RestrictionParse(theEnv,readSource,theToken,FALSE,rln,NAME_ID,rv,0);
    if (tmpNode == NULL)
@@ -1405,10 +1405,10 @@ static struct lhsParseNode *ParseNameRestriction(
       PPBackup(theEnv);
       if (theToken->type != RPAREN)
         {
-         SavePPBuffer(theEnv," ");
+         SavePPBuffer(theEnv,(char*)" ");
          SavePPBuffer(theEnv,theToken->printForm);
         }
-      SyntaxErrorMessage(theEnv,"name restriction in object pattern");
+      SyntaxErrorMessage(theEnv,(char*)"name restriction in object pattern");
       ReturnLHSParseNodes(theEnv,tmpNode);
       RemoveConstraint(theEnv,rv);
       return(NULL);
@@ -1448,7 +1448,7 @@ static struct lhsParseNode *ParseSlotRestriction(
    SYMBOL_HN *slotName;
 
    slotName = (SYMBOL_HN *) theToken->value;
-   SavePPBuffer(theEnv," ");
+   SavePPBuffer(theEnv,(char*)" ");
    GetToken(theEnv,readSource,theToken);
    tmpNode = RestrictionParse(theEnv,readSource,theToken,multip,slotName,FindSlotNameID(theEnv,slotName),
                               slotConstraints,1);
@@ -1460,9 +1460,9 @@ static struct lhsParseNode *ParseSlotRestriction(
    if (theToken->type != RPAREN)
      {
       PPBackup(theEnv);
-      SavePPBuffer(theEnv," ");
+      SavePPBuffer(theEnv,(char*)" ");
       SavePPBuffer(theEnv,theToken->printForm);
-      SyntaxErrorMessage(theEnv,"object slot pattern");
+      SyntaxErrorMessage(theEnv,(char*)"object slot pattern");
       ReturnLHSParseNodes(theEnv,tmpNode);
       RemoveConstraint(theEnv,slotConstraints);
       return(NULL);
@@ -1471,7 +1471,7 @@ static struct lhsParseNode *ParseSlotRestriction(
      {
       PPBackup(theEnv);
       PPBackup(theEnv);
-      SavePPBuffer(theEnv,")");
+      SavePPBuffer(theEnv,(char*)")");
      }
    tmpNode->derivedConstraints = 1;
    return(tmpNode);
@@ -1743,8 +1743,8 @@ static intBool ProcessClassRestriction(
          chk->value = (void *) LookupDefclassInScope(theEnv,ValueToString(chk->value));
          if (chk->value == NULL)
            {
-            PrintErrorID(theEnv,"OBJRTBLD",5,FALSE);
-            EnvPrintRouter(theEnv,WERROR,"Undefined class in object pattern.\n");
+            PrintErrorID(theEnv,(char*)"OBJRTBLD",5,FALSE);
+            EnvPrintRouter(theEnv,WERROR,(char*)"Undefined class in object pattern.\n");
             DeleteIntermediateClassBitMap(theEnv,tmpset1);
             DeleteIntermediateClassBitMap(theEnv,tmpset2);
             return(FALSE);
@@ -1766,9 +1766,9 @@ static intBool ProcessClassRestriction(
      }
    if (EmptyClassBitMap(tmpset1))
      {
-      PrintErrorID(theEnv,"OBJRTBLD",2,FALSE);
-      EnvPrintRouter(theEnv,WERROR,"No objects of existing classes can satisfy ");
-      EnvPrintRouter(theEnv,WERROR,"is-a restriction in object pattern.\n");
+      PrintErrorID(theEnv,(char*)"OBJRTBLD",2,FALSE);
+      EnvPrintRouter(theEnv,WERROR,(char*)"No objects of existing classes can satisfy ");
+      EnvPrintRouter(theEnv,WERROR,(char*)"is-a restriction in object pattern.\n");
       DeleteIntermediateClassBitMap(theEnv,tmpset1);
       DeleteIntermediateClassBitMap(theEnv,tmpset2);
       return(FALSE);

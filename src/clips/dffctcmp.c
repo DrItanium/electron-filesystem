@@ -54,7 +54,7 @@ globle void DeffactsCompilerSetup(
   void *theEnv)
   {
    DeffactsData(theEnv)->DeffactsCodeItem = 
-      AddCodeGeneratorItem(theEnv,"deffacts",0,BeforeDeffactsToCode,
+      AddCodeGeneratorItem(theEnv,(char*)"deffacts",0,BeforeDeffactsToCode,
                            NULL,ConstructToCode,2);
   }
 
@@ -107,9 +107,11 @@ static int ConstructToCode(
      {
       EnvSetCurrentModule(theEnv,(void *) theModule);
 
-      moduleFile = OpenFileIfNeeded(theEnv,moduleFile,fileName,pathName,fileNameBuffer,fileID,imageID,&fileCount,
+      moduleFile = OpenFileIfNeeded(theEnv,moduleFile,fileName,pathName,
+                                    fileNameBuffer,fileID,imageID,&fileCount,
                                     moduleArrayVersion,headerFP,
-                                    "struct deffactsModule",ModulePrefix(DeffactsData(theEnv)->DeffactsCodeItem),
+                                    (char*)"struct deffactsModule",
+                                    ModulePrefix(DeffactsData(theEnv)->DeffactsCodeItem),
                                     FALSE,NULL);
 
       if (moduleFile == NULL)
@@ -130,9 +132,11 @@ static int ConstructToCode(
            theDeffacts != NULL;
            theDeffacts = (struct deffacts *) EnvGetNextDeffacts(theEnv,theDeffacts))
         {
-         deffactsFile = OpenFileIfNeeded(theEnv,deffactsFile,fileName,pathName,fileNameBuffer,fileID,imageID,&fileCount,
-                                         deffactsArrayVersion,headerFP,
-                                         "struct deffacts",ConstructPrefix(DeffactsData(theEnv)->DeffactsCodeItem),
+         deffactsFile = OpenFileIfNeeded(theEnv,deffactsFile,fileName,pathName,
+                                         fileNameBuffer,fileID,imageID,
+                                         &fileCount, deffactsArrayVersion,headerFP,
+                                         (char*)"struct deffacts",
+                                         ConstructPrefix(DeffactsData(theEnv)->DeffactsCodeItem),
                                          FALSE,NULL);
          if (deffactsFile == NULL)
            {

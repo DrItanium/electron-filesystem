@@ -61,15 +61,15 @@
                    CONSTANTS
    =========================================
    ***************************************** */
-#define ROLE_RLN             "role"
-#define ABSTRACT_RLN         "abstract"
-#define CONCRETE_RLN         "concrete"
+#define ROLE_RLN             (char*)"role"
+#define ABSTRACT_RLN         (char*)"abstract"
+#define CONCRETE_RLN         (char*)"concrete"
 
-#define HANDLER_DECL         "message-handler"
+#define HANDLER_DECL         (char*)"message-handler"
 
-#define SLOT_RLN             "slot"
-#define SGL_SLOT_RLN         "single-slot"
-#define MLT_SLOT_RLN         "multislot"
+#define SLOT_RLN             (char*)"slot"
+#define SGL_SLOT_RLN         (char*)"single-slot"
+#define MLT_SLOT_RLN         (char*)"multislot"
 
 #define DIRECT               0
 #define INHERIT              1
@@ -162,18 +162,18 @@ globle int ParseDefclass(
    SetPPBufferStatus(theEnv,ON);
    FlushPPBuffer(theEnv);
    SetIndentDepth(theEnv,3);
-   SavePPBuffer(theEnv,"(defclass ");
+   SavePPBuffer(theEnv,(char*)"(defclass ");
 
 #if BLOAD || BLOAD_ONLY || BLOAD_AND_BSAVE
    if ((Bloaded(theEnv)) && (! ConstructData(theEnv)->CheckSyntaxMode))
      {
-      CannotLoadWithBloadMessage(theEnv,"defclass");
+      CannotLoadWithBloadMessage(theEnv,(char*)"defclass");
       return(TRUE);
      }
 #endif
 
-   cname = GetConstructNameAndComment(theEnv,readSource,&DefclassData(theEnv)->ObjectParseToken,"defclass",
-                                      EnvFindDefclass,NULL,"#",TRUE,
+   cname = GetConstructNameAndComment(theEnv,readSource,&DefclassData(theEnv)->ObjectParseToken,(char*)"defclass",
+                                      EnvFindDefclass,NULL,(char*)"#",TRUE,
                                       TRUE,TRUE);
    if (cname == NULL)
      return(TRUE);
@@ -196,17 +196,17 @@ globle int ParseDefclass(
      {
       if (GetType(DefclassData(theEnv)->ObjectParseToken) != LPAREN)
         {
-         SyntaxErrorMessage(theEnv,"defclass");
+         SyntaxErrorMessage(theEnv,(char*)"defclass");
          parseError = TRUE;
          break;
         }
       PPBackup(theEnv);
       PPCRAndIndent(theEnv);
-      SavePPBuffer(theEnv,"(");
+      SavePPBuffer(theEnv,(char*)"(");
       GetToken(theEnv,readSource,&DefclassData(theEnv)->ObjectParseToken);
       if (GetType(DefclassData(theEnv)->ObjectParseToken) != SYMBOL)
         {
-         SyntaxErrorMessage(theEnv,"defclass");
+         SyntaxErrorMessage(theEnv,(char*)"defclass");
          parseError = TRUE;
          break;
         }
@@ -267,7 +267,7 @@ globle int ParseDefclass(
         }
       else
         {
-         SyntaxErrorMessage(theEnv,"defclass");
+         SyntaxErrorMessage(theEnv,(char*)"defclass");
          parseError = TRUE;
          break;
         }
@@ -281,7 +281,7 @@ globle int ParseDefclass(
       DeleteSlots(theEnv,slots);
       return(TRUE);
      }
-   SavePPBuffer(theEnv,"\n");
+   SavePPBuffer(theEnv,(char*)"\n");
 
    /* =========================================================================
       The abstract/reactive qualities of a class are inherited if not specified
@@ -312,8 +312,8 @@ globle int ParseDefclass(
       ================================================================ */
    if (abstract && reactive)
      {
-      PrintErrorID(theEnv,"CLASSPSR",1,FALSE);
-      EnvPrintRouter(theEnv,WERROR,"An abstract class cannot be reactive.\n");
+      PrintErrorID(theEnv,(char*)"CLASSPSR",1,FALSE);
+      EnvPrintRouter(theEnv,WERROR,(char*)"An abstract class cannot be reactive.\n");
       DeletePackedClassLinks(theEnv,sclasses,TRUE);
       DeletePackedClassLinks(theEnv,preclist,TRUE);
       DeleteSlots(theEnv,slots);
@@ -398,8 +398,8 @@ static intBool ValidClassName(
          =================================== */
       if ((*theDefclass)->system)
         {
-         PrintErrorID(theEnv,"CLASSPSR",2,FALSE);
-         EnvPrintRouter(theEnv,WERROR,"Cannot redefine a predefined system class.\n");
+         PrintErrorID(theEnv,(char*)"CLASSPSR",2,FALSE);
+         EnvPrintRouter(theEnv,WERROR,(char*)"Cannot redefine a predefined system class.\n");
          return(FALSE);
         }
 
@@ -411,10 +411,10 @@ static intBool ValidClassName(
       if ((EnvIsDefclassDeletable(theEnv,(void *) *theDefclass) == FALSE) &&
           (! ConstructData(theEnv)->CheckSyntaxMode))
         {
-         PrintErrorID(theEnv,"CLASSPSR",3,FALSE);
+         PrintErrorID(theEnv,(char*)"CLASSPSR",3,FALSE);
          EnvPrintRouter(theEnv,WERROR,EnvGetDefclassName(theEnv,(void *) *theDefclass));
-         EnvPrintRouter(theEnv,WERROR," class cannot be redefined while\n");
-         EnvPrintRouter(theEnv,WERROR,"    outstanding references to it still exist.\n");
+         EnvPrintRouter(theEnv,WERROR,(char*)" class cannot be redefined while\n");
+         EnvPrintRouter(theEnv,WERROR,(char*)"    outstanding references to it still exist.\n");
          return(FALSE);
         }
      }
@@ -450,13 +450,13 @@ static intBool ParseSimpleQualifier(
   {
    if (*alreadyTestedFlag)
      {
-      PrintErrorID(theEnv,"CLASSPSR",4,FALSE);
-      EnvPrintRouter(theEnv,WERROR,"Class ");
+      PrintErrorID(theEnv,(char*)"CLASSPSR",4,FALSE);
+      EnvPrintRouter(theEnv,WERROR,(char*)"Class ");
       EnvPrintRouter(theEnv,WERROR,classQualifier);
-      EnvPrintRouter(theEnv,WERROR," already declared.\n");
+      EnvPrintRouter(theEnv,WERROR,(char*)" already declared.\n");
       return(FALSE);
      }
-   SavePPBuffer(theEnv," ");
+   SavePPBuffer(theEnv,(char*)" ");
    GetToken(theEnv,readSource,&DefclassData(theEnv)->ObjectParseToken);
    if (GetType(DefclassData(theEnv)->ObjectParseToken) != SYMBOL)
      goto ParseSimpleQualifierError;
@@ -473,7 +473,7 @@ static intBool ParseSimpleQualifier(
    return(TRUE);
 
 ParseSimpleQualifierError:
-   SyntaxErrorMessage(theEnv,"defclass");
+   SyntaxErrorMessage(theEnv,(char*)"defclass");
    return(FALSE);
   }
 
@@ -499,11 +499,11 @@ static intBool ReadUntilClosingParen(
    do
      {
       if (lparen_read == FALSE)
-        SavePPBuffer(theEnv," ");
+        SavePPBuffer(theEnv,(char*)" ");
       GetToken(theEnv,readSource,inputToken);
       if (inputToken->type == STOP)
         {
-         SyntaxErrorMessage(theEnv,"message-handler declaration");
+         SyntaxErrorMessage(theEnv,(char*)"message-handler declaration");
          return(FALSE);
         }
       else if (inputToken->type == LPAREN)
@@ -518,7 +518,7 @@ static intBool ReadUntilClosingParen(
            {
             PPBackup(theEnv);
             PPBackup(theEnv);
-            SavePPBuffer(theEnv,")");
+            SavePPBuffer(theEnv,(char*)")");
            }
          lparen_read = FALSE;
         }
@@ -870,7 +870,7 @@ globle void *CreateClassScopeMap(
      {
       EnvSetCurrentModule(theEnv,(void *) theModule);
       moduleID = (int) theModule->bsaveID;
-      if (FindImportedConstruct(theEnv,"defclass",matchModule,
+      if (FindImportedConstruct(theEnv,(char*)"defclass",matchModule,
                                 className,&count,TRUE,NULL) != NULL)
         SetBitMap(scopeMap,moduleID);
      }

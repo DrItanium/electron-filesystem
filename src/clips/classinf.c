@@ -87,12 +87,12 @@ globle int ClassAbstractPCommand(
    DATA_OBJECT tmp;
    DEFCLASS *cls;
    
-   if (EnvArgTypeCheck(theEnv,"class-abstractp",1,SYMBOL,&tmp) == FALSE)
+   if (EnvArgTypeCheck(theEnv,(char*)"class-abstractp",1,SYMBOL,&tmp) == FALSE)
      return(FALSE);
    cls = LookupDefclassByMdlOrScope(theEnv,DOToString(tmp));
    if (cls == NULL)
      {
-      ClassExistError(theEnv,"class-abstractp",ValueToString(tmp.value));
+      ClassExistError(theEnv,(char*)"class-abstractp",ValueToString(tmp.value));
       return(FALSE);
      }
    return(EnvClassAbstractP(theEnv,(void *) cls));
@@ -116,12 +116,12 @@ globle int ClassReactivePCommand(
    DATA_OBJECT tmp;
    DEFCLASS *cls;
    
-   if (EnvArgTypeCheck(theEnv,"class-reactivep",1,SYMBOL,&tmp) == FALSE)
+   if (EnvArgTypeCheck(theEnv,(char*)"class-reactivep",1,SYMBOL,&tmp) == FALSE)
      return(FALSE);
    cls = LookupDefclassByMdlOrScope(theEnv,DOToString(tmp));
    if (cls == NULL)
      {
-      ClassExistError(theEnv,"class-reactivep",ValueToString(tmp.value));
+      ClassExistError(theEnv,(char*)"class-reactivep",ValueToString(tmp.value));
       return(FALSE);
      }
    return(EnvClassReactiveP(theEnv,(void *) cls));
@@ -199,7 +199,7 @@ globle void ClassSlotsCommand(
    int inhp;
    void *clsptr;
    
-   clsptr = ClassInfoFnxArgs(theEnv,"class-slots",&inhp);
+   clsptr = ClassInfoFnxArgs(theEnv,(char*)"class-slots",&inhp);
    if (clsptr == NULL)
      {
       EnvSetMultifieldErrorValue(theEnv,result);
@@ -225,7 +225,7 @@ globle void ClassSuperclassesCommand(
    int inhp;
    void *clsptr;
    
-   clsptr = ClassInfoFnxArgs(theEnv,"class-superclasses",&inhp);
+   clsptr = ClassInfoFnxArgs(theEnv,(char*)"class-superclasses",&inhp);
    if (clsptr == NULL)
      {
       EnvSetMultifieldErrorValue(theEnv,result);
@@ -251,7 +251,7 @@ globle void ClassSubclassesCommand(
    int inhp;
    void *clsptr;
      
-   clsptr = ClassInfoFnxArgs(theEnv,"class-subclasses",&inhp);
+   clsptr = ClassInfoFnxArgs(theEnv,(char*)"class-subclasses",&inhp);
    if (clsptr == NULL)
      {
       EnvSetMultifieldErrorValue(theEnv,result);
@@ -281,7 +281,7 @@ globle void GetDefmessageHandlersListCmd(
       EnvGetDefmessageHandlerList(theEnv,NULL,result,0);
    else
      {
-      clsptr = ClassInfoFnxArgs(theEnv,"get-defmessage-handler-list",&inhp);
+      clsptr = ClassInfoFnxArgs(theEnv,(char*)"get-defmessage-handler-list",&inhp);
       if (clsptr == NULL)
         {
          EnvSetMultifieldErrorValue(theEnv,result);
@@ -298,49 +298,49 @@ globle void SlotFacetsCommand(
   void *theEnv,
   DATA_OBJECT *result)
   {
-   SlotInfoSupportFunction(theEnv,result,"slot-facets",EnvSlotFacets);
+   SlotInfoSupportFunction(theEnv,result,(char*)"slot-facets",EnvSlotFacets);
   }
 
 globle void SlotSourcesCommand(
   void *theEnv,
   DATA_OBJECT *result)
   {   
-   SlotInfoSupportFunction(theEnv,result,"slot-sources",EnvSlotSources);
+   SlotInfoSupportFunction(theEnv,result,(char*)"slot-sources",EnvSlotSources);
   }
 
 globle void SlotTypesCommand(
   void *theEnv,
   DATA_OBJECT *result)
   {
-   SlotInfoSupportFunction(theEnv,result,"slot-types",EnvSlotTypes);
+   SlotInfoSupportFunction(theEnv,result,(char*)"slot-types",EnvSlotTypes);
   }
 
 globle void SlotAllowedValuesCommand(
   void *theEnv,
   DATA_OBJECT *result)
   {
-   SlotInfoSupportFunction(theEnv,result,"slot-allowed-values",EnvSlotAllowedValues);
+   SlotInfoSupportFunction(theEnv,result,(char*)"slot-allowed-values",EnvSlotAllowedValues);
   }
 
 globle void SlotAllowedClassesCommand(
   void *theEnv,
   DATA_OBJECT *result)
   {
-   SlotInfoSupportFunction(theEnv,result,"slot-allowed-classes",EnvSlotAllowedClasses);
+   SlotInfoSupportFunction(theEnv,result,(char*)"slot-allowed-classes",EnvSlotAllowedClasses);
   }
 
 globle void SlotRangeCommand(
   void *theEnv,
   DATA_OBJECT *result)
   {
-   SlotInfoSupportFunction(theEnv,result,"slot-range",EnvSlotRange);
+   SlotInfoSupportFunction(theEnv,result,(char*)"slot-range",EnvSlotRange);
   }
 
 globle void SlotCardinalityCommand(
   void *theEnv,
   DATA_OBJECT *result)
   {
-   SlotInfoSupportFunction(theEnv,result,"slot-cardinality",EnvSlotCardinality);
+   SlotInfoSupportFunction(theEnv,result,(char*)"slot-cardinality",EnvSlotCardinality);
   }
 
 /********************************************************************
@@ -657,7 +657,7 @@ globle void EnvSlotFacets(
    register int i;
    register SLOT_DESC *sp;
 
-   if ((sp = SlotInfoSlot(theEnv,result,(DEFCLASS *) clsptr,sname,"slot-facets")) == NULL)
+   if ((sp = SlotInfoSlot(theEnv,result,(DEFCLASS *) clsptr,sname,(char*)"slot-facets")) == NULL)
      return;
 #if DEFRULE_CONSTRUCT
    result->end = 9;
@@ -671,68 +671,68 @@ globle void EnvSlotFacets(
      SetMFType(result->value,i,SYMBOL);
 #endif
    if (sp->multiple)
-     SetMFValue(result->value,1,EnvAddSymbol(theEnv,"MLT"));
+     SetMFValue(result->value,1,EnvAddSymbol(theEnv,(char*)"MLT"));
    else
-     SetMFValue(result->value,1,EnvAddSymbol(theEnv,"SGL"));
+     SetMFValue(result->value,1,EnvAddSymbol(theEnv,(char*)"SGL"));
 
    if (sp->noDefault)
-     SetMFValue(result->value,2,EnvAddSymbol(theEnv,"NIL"));
+     SetMFValue(result->value,2,EnvAddSymbol(theEnv,(char*)"NIL"));
    else
      {
       if (sp->dynamicDefault)
-        SetMFValue(result->value,2,EnvAddSymbol(theEnv,"DYN"));
+        SetMFValue(result->value,2,EnvAddSymbol(theEnv,(char*)"DYN"));
       else
-        SetMFValue(result->value,2,EnvAddSymbol(theEnv,"STC"));
+        SetMFValue(result->value,2,EnvAddSymbol(theEnv,(char*)"STC"));
      }
    
    if (sp->noInherit)    
-     SetMFValue(result->value,3,EnvAddSymbol(theEnv,"NIL"));
+     SetMFValue(result->value,3,EnvAddSymbol(theEnv,(char*)"NIL"));
    else
-     SetMFValue(result->value,3,EnvAddSymbol(theEnv,"INH"));
+     SetMFValue(result->value,3,EnvAddSymbol(theEnv,(char*)"INH"));
    
    if (sp->initializeOnly)
-     SetMFValue(result->value,4,EnvAddSymbol(theEnv,"INT"));
+     SetMFValue(result->value,4,EnvAddSymbol(theEnv,(char*)"INT"));
    else if (sp->noWrite)
-     SetMFValue(result->value,4,EnvAddSymbol(theEnv,"R"));
+     SetMFValue(result->value,4,EnvAddSymbol(theEnv,(char*)"R"));
    else
-     SetMFValue(result->value,4,EnvAddSymbol(theEnv,"RW"));
+     SetMFValue(result->value,4,EnvAddSymbol(theEnv,(char*)"RW"));
 
    if (sp->shared)     
-     SetMFValue(result->value,5,EnvAddSymbol(theEnv,"SHR"));
+     SetMFValue(result->value,5,EnvAddSymbol(theEnv,(char*)"SHR"));
    else
-     SetMFValue(result->value,5,EnvAddSymbol(theEnv,"LCL"));
+     SetMFValue(result->value,5,EnvAddSymbol(theEnv,(char*)"LCL"));
 
 #if DEFRULE_CONSTRUCT
    if (sp->reactive)   
-     SetMFValue(result->value,6,EnvAddSymbol(theEnv,"RCT"));
+     SetMFValue(result->value,6,EnvAddSymbol(theEnv,(char*)"RCT"));
    else
-     SetMFValue(result->value,6,EnvAddSymbol(theEnv,"NIL"));
+     SetMFValue(result->value,6,EnvAddSymbol(theEnv,(char*)"NIL"));
    
    if (sp->composite)
-     SetMFValue(result->value,7,EnvAddSymbol(theEnv,"CMP"));
+     SetMFValue(result->value,7,EnvAddSymbol(theEnv,(char*)"CMP"));
    else
-     SetMFValue(result->value,7,EnvAddSymbol(theEnv,"EXC"));
+     SetMFValue(result->value,7,EnvAddSymbol(theEnv,(char*)"EXC"));
 
    if (sp->publicVisibility)   
-     SetMFValue(result->value,8,EnvAddSymbol(theEnv,"PUB"));
+     SetMFValue(result->value,8,EnvAddSymbol(theEnv,(char*)"PUB"));
    else
-     SetMFValue(result->value,8,EnvAddSymbol(theEnv,"PRV"));
+     SetMFValue(result->value,8,EnvAddSymbol(theEnv,(char*)"PRV"));
    
    SetMFValue(result->value,9,EnvAddSymbol(theEnv,GetCreateAccessorString((void *) sp)));
-   SetMFValue(result->value,10,sp->noWrite ? EnvAddSymbol(theEnv,"NIL") : (void *) sp->overrideMessage);
+   SetMFValue(result->value,10,sp->noWrite ? EnvAddSymbol(theEnv,(char*)"NIL") : (void *) sp->overrideMessage);
 #else
    if (sp->composite)
-     SetMFValue(result->value,6,EnvAddSymbol(theEnv,"CMP"));
+     SetMFValue(result->value,6,EnvAddSymbol(theEnv,(char*)"CMP"));
    else
-     SetMFValue(result->value,6,EnvAddSymbol(theEnv,"EXC"));
+     SetMFValue(result->value,6,EnvAddSymbol(theEnv,(char*)"EXC"));
 
    if (sp->publicVisibility)
-     SetMFValue(result->value,7,EnvAddSymbol(theEnv,"PUB"));
+     SetMFValue(result->value,7,EnvAddSymbol(theEnv,(char*)"PUB"));
    else
-     SetMFValue(result->value,7,EnvAddSymbol(theEnv,"PRV"));
+     SetMFValue(result->value,7,EnvAddSymbol(theEnv,(char*)"PRV"));
 
    SetMFValue(result->value,8,EnvAddSymbol(theEnv,GetCreateAccessorString((void *) sp)));
-   SetMFValue(result->value,9,sp->noWrite ? EnvAddSymbol(theEnv,"NIL") : (void *) sp->overrideMessage);
+   SetMFValue(result->value,9,sp->noWrite ? EnvAddSymbol(theEnv,(char*)"NIL") : (void *) sp->overrideMessage);
 #endif
   }
 
@@ -748,7 +748,7 @@ globle void EnvSlotSources(
    CLASS_LINK *ctop,*ctmp;
    DEFCLASS *cls;
 
-   if ((sp = SlotInfoSlot(theEnv,result,(DEFCLASS *) clsptr,sname,"slot-sources")) == NULL)
+   if ((sp = SlotInfoSlot(theEnv,result,(DEFCLASS *) clsptr,sname,(char*)"slot-sources")) == NULL)
      return;
    i = 1;
    ctop = get_struct(theEnv,classLink);
@@ -793,7 +793,7 @@ globle void EnvSlotTypes(
    char typemap[2];
    unsigned msize;
 
-   if ((sp = SlotInfoSlot(theEnv,result,(DEFCLASS *) clsptr,sname,"slot-types")) == NULL)
+   if ((sp = SlotInfoSlot(theEnv,result,(DEFCLASS *) clsptr,sname,(char*)"slot-types")) == NULL)
      return;
    if ((sp->constraint != NULL) ? sp->constraint->anyAllowed : TRUE)
      {
@@ -874,7 +874,7 @@ globle void EnvSlotAllowedValues(
    register SLOT_DESC *sp;
    register EXPRESSION *theExp;
 
-   if ((sp = SlotInfoSlot(theEnv,result,(DEFCLASS *) clsptr,sname,"slot-allowed-values")) == NULL)
+   if ((sp = SlotInfoSlot(theEnv,result,(DEFCLASS *) clsptr,sname,(char*)"slot-allowed-values")) == NULL)
      return;
    if ((sp->constraint != NULL) ? (sp->constraint->restrictionList == NULL) : TRUE)
      {
@@ -905,7 +905,7 @@ globle void EnvSlotAllowedClasses(
    register SLOT_DESC *sp;
    register EXPRESSION *theExp;
 
-   if ((sp = SlotInfoSlot(theEnv,result,(DEFCLASS *) clsptr,sname,"slot-allowed-classes")) == NULL)
+   if ((sp = SlotInfoSlot(theEnv,result,(DEFCLASS *) clsptr,sname,(char*)"slot-allowed-classes")) == NULL)
      return;
    if ((sp->constraint != NULL) ? (sp->constraint->classList == NULL) : TRUE)
      {
@@ -934,7 +934,7 @@ globle void EnvSlotRange(
   {
    register SLOT_DESC *sp;
 
-   if ((sp = SlotInfoSlot(theEnv,result,(DEFCLASS *) clsptr,sname,"slot-range")) == NULL)
+   if ((sp = SlotInfoSlot(theEnv,result,(DEFCLASS *) clsptr,sname,(char*)"slot-range")) == NULL)
      return;
    if ((sp->constraint == NULL) ? FALSE :
        (sp->constraint->anyAllowed || sp->constraint->floatsAllowed ||
@@ -963,7 +963,7 @@ globle void EnvSlotCardinality(
   {
    register SLOT_DESC *sp;
 
-   if ((sp = SlotInfoSlot(theEnv,result,(DEFCLASS *) clsptr,sname,"slot-cardinality")) == NULL)
+   if ((sp = SlotInfoSlot(theEnv,result,(DEFCLASS *) clsptr,sname,(char*)"slot-cardinality")) == NULL)
      return;
    if (sp->multiple == 0)
      {

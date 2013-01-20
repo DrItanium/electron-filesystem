@@ -108,12 +108,12 @@ globle intBool ParseDeffunction(
 
    FlushPPBuffer(theEnv);
    SetIndentDepth(theEnv,3);
-   SavePPBuffer(theEnv,"(deffunction ");
+   SavePPBuffer(theEnv,(char*)"(deffunction ");
 
 #if BLOAD || BLOAD_AND_BSAVE
    if ((Bloaded(theEnv) == TRUE) && (! ConstructData(theEnv)->CheckSyntaxMode))
      {
-      CannotLoadWithBloadMessage(theEnv,"deffunctions");
+      CannotLoadWithBloadMessage(theEnv,(char*)"deffunctions");
       return(TRUE);
      }
 #endif
@@ -121,9 +121,9 @@ globle intBool ParseDeffunction(
    /* =====================================================
       Parse the name and comment fields of the deffunction.
       ===================================================== */
-   deffunctionName = GetConstructNameAndComment(theEnv,readSource,&DeffunctionData(theEnv)->DFInputToken,"deffunction",
+   deffunctionName = GetConstructNameAndComment(theEnv,readSource,&DeffunctionData(theEnv)->DFInputToken,(char*)"deffunction",
                                                 EnvFindDeffunction,NULL,
-                                                "!",TRUE,TRUE,TRUE);
+                                                (char*)"!",TRUE,TRUE,TRUE);
    if (deffunctionName == NULL)
      return(TRUE);
 
@@ -172,7 +172,7 @@ globle intBool ParseDeffunction(
    PPCRAndIndent(theEnv);
 
    ExpressionData(theEnv)->ReturnContext = TRUE;
-   actions = ParseProcActions(theEnv,"deffunction",readSource,
+   actions = ParseProcActions(theEnv,(char*)"deffunction",readSource,
                               &DeffunctionData(theEnv)->DFInputToken,parameterList,wildcard,
                               NULL,NULL,&lvars,NULL);
 
@@ -183,7 +183,7 @@ globle intBool ParseDeffunction(
    if ((DeffunctionData(theEnv)->DFInputToken.type != RPAREN) && /* DR0872 */
        (actions != NULL))
      {
-      SyntaxErrorMessage(theEnv,"deffunction");
+      SyntaxErrorMessage(theEnv,(char*)"deffunction");
       
       ReturnExpression(theEnv,parameterList);
       ReturnPackedExpression(theEnv,actions);
@@ -249,7 +249,7 @@ globle intBool ParseDeffunction(
    PPBackup(theEnv);
    PPBackup(theEnv);
    SavePPBuffer(theEnv,DeffunctionData(theEnv)->DFInputToken.printForm);
-   SavePPBuffer(theEnv,"\n");
+   SavePPBuffer(theEnv,(char*)"\n");
 
    /*======================*/
    /* Add the deffunction. */
@@ -296,8 +296,8 @@ static intBool ValidDeffunctionName(
       ============================================ */
    if (FindConstruct(theEnv,theDeffunctionName) != NULL)
      {
-      PrintErrorID(theEnv,"DFFNXPSR",1,FALSE);
-      EnvPrintRouter(theEnv,WERROR,"Deffunctions are not allowed to replace constructs.\n");
+      PrintErrorID(theEnv,(char*)"DFFNXPSR",1,FALSE);
+      EnvPrintRouter(theEnv,WERROR,(char*)"Deffunctions are not allowed to replace constructs.\n");
       return(FALSE);
      }
 
@@ -308,8 +308,8 @@ static intBool ValidDeffunctionName(
       ============================================ */
    if (FindFunction(theEnv,theDeffunctionName) != NULL)
      {
-      PrintErrorID(theEnv,"DFFNXPSR",2,FALSE);
-      EnvPrintRouter(theEnv,WERROR,"Deffunctions are not allowed to replace external functions.\n");
+      PrintErrorID(theEnv,(char*)"DFFNXPSR",2,FALSE);
+      EnvPrintRouter(theEnv,WERROR,(char*)"Deffunctions are not allowed to replace external functions.\n");
       return(FALSE);
      }
 
@@ -326,18 +326,18 @@ static intBool ValidDeffunctionName(
       theModule = GetConstructModuleItem(theDefgeneric)->theModule;
       if (theModule != ((struct defmodule *) EnvGetCurrentModule(theEnv)))
         {
-         PrintErrorID(theEnv,"DFFNXPSR",5,FALSE);
-         EnvPrintRouter(theEnv,WERROR,"Defgeneric ");
+         PrintErrorID(theEnv,(char*)"DFFNXPSR",5,FALSE);
+         EnvPrintRouter(theEnv,WERROR,(char*)"Defgeneric ");
          EnvPrintRouter(theEnv,WERROR,EnvGetDefgenericName(theEnv,(void *) theDefgeneric));
-         EnvPrintRouter(theEnv,WERROR," imported from module ");
+         EnvPrintRouter(theEnv,WERROR,(char*)" imported from module ");
          EnvPrintRouter(theEnv,WERROR,EnvGetDefmoduleName(theEnv,(void *) theModule));
-         EnvPrintRouter(theEnv,WERROR," conflicts with this deffunction.\n");
+         EnvPrintRouter(theEnv,WERROR,(char*)" conflicts with this deffunction.\n");
          return(FALSE);
         }
       else
         {
-         PrintErrorID(theEnv,"DFFNXPSR",3,FALSE);
-         EnvPrintRouter(theEnv,WERROR,"Deffunctions are not allowed to replace generic functions.\n");
+         PrintErrorID(theEnv,(char*)"DFFNXPSR",3,FALSE);
+         EnvPrintRouter(theEnv,WERROR,(char*)"Deffunctions are not allowed to replace generic functions.\n");
         }
       return(FALSE);
      }
@@ -352,10 +352,10 @@ static intBool ValidDeffunctionName(
          =========================================== */
       if (((DEFFUNCTION *) theDeffunction)->executing)
         {
-         PrintErrorID(theEnv,"DFNXPSR",4,FALSE);
-         EnvPrintRouter(theEnv,WERROR,"Deffunction ");
+         PrintErrorID(theEnv,(char*)"DFNXPSR",4,FALSE);
+         EnvPrintRouter(theEnv,WERROR,(char*)"Deffunction ");
          EnvPrintRouter(theEnv,WERROR,EnvGetDeffunctionName(theEnv,(void *) theDeffunction));
-         EnvPrintRouter(theEnv,WERROR," may not be redefined while it is executing.\n");
+         EnvPrintRouter(theEnv,WERROR,(char*)" may not be redefined while it is executing.\n");
          return(FALSE);
         }
      }
@@ -413,7 +413,7 @@ static DEFFUNCTION *AddDeffunction(
    if (dfuncPtr == NULL)
      {
       dfuncPtr = get_struct(theEnv,deffunctionStruct);
-      InitializeConstructHeader(theEnv,"deffunction",(struct constructHeader *) dfuncPtr,name);
+      InitializeConstructHeader(theEnv,(char*)"deffunction",(struct constructHeader *) dfuncPtr,name);
       IncrementSymbolCount(name);
       dfuncPtr->code = NULL;
       dfuncPtr->minNumberOfParameters = min;

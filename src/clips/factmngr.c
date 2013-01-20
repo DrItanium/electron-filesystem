@@ -101,7 +101,7 @@
 globle void InitializeFacts(
   void *theEnv)
   {
-   struct patternEntityRecord factInfo = { { "FACT_ADDRESS", FACT_ADDRESS,1,0,0,
+   struct patternEntityRecord factInfo = { { (char*)"FACT_ADDRESS", FACT_ADDRESS,1,0,0,
                                                      PrintFactIdentifier,
                                                      PrintFactIdentifierInLongForm,
                                                      EnvRetract,
@@ -138,15 +138,15 @@ globle void InitializeFacts(
    /* use with the reset and clear commands.     */
    /*============================================*/
 
-   EnvAddResetFunction(theEnv,"facts",ResetFacts,60);
-   AddClearReadyFunction(theEnv,"facts",ClearFactsReady,0);
+   EnvAddResetFunction(theEnv,(char*)"facts",ResetFacts,60);
+   AddClearReadyFunction(theEnv,(char*)"facts",ClearFactsReady,0);
 
    /*=============================*/
    /* Initialize periodic garbage */
    /* collection for facts.       */
    /*=============================*/
 
-   AddCleanupFunction(theEnv,"facts",RemoveGarbageFacts,0);
+   AddCleanupFunction(theEnv,(char*)"facts",RemoveGarbageFacts,0);
 
    /*===================================*/
    /* Initialize fact pattern matching. */
@@ -160,7 +160,7 @@ globle void InitializeFacts(
    /*==================================*/
 
 #if DEBUGGING_FUNCTIONS
-   AddWatchItem(theEnv,"facts",0,&FactData(theEnv)->WatchFacts,80,DeftemplateWatchAccess,DeftemplateWatchPrint);
+   AddWatchItem(theEnv,(char*)"facts",0,&FactData(theEnv)->WatchFacts,80,DeftemplateWatchAccess,DeftemplateWatchPrint);
 #endif
 
    /*=========================================*/
@@ -292,17 +292,17 @@ globle void PrintFactIdentifierInLongForm(
   char *logicalName,
   void *factPtr)
   {
-   if (PrintUtilityData(theEnv)->AddressesToStrings) EnvPrintRouter(theEnv,logicalName,"\"");
+   if (PrintUtilityData(theEnv)->AddressesToStrings) EnvPrintRouter(theEnv,logicalName,(char*)"\"");
    if (factPtr != (void *) &FactData(theEnv)->DummyFact)
      {
-      EnvPrintRouter(theEnv,logicalName,"<Fact-");
+      EnvPrintRouter(theEnv,logicalName,(char*)"<Fact-");
       PrintLongInteger(theEnv,logicalName,((struct fact *) factPtr)->factIndex);
-      EnvPrintRouter(theEnv,logicalName,">");
+      EnvPrintRouter(theEnv,logicalName,(char*)">");
      }
    else
-     { EnvPrintRouter(theEnv,logicalName,"<Dummy Fact>"); }
+     { EnvPrintRouter(theEnv,logicalName,(char*)"<Dummy Fact>"); }
 
-   if (PrintUtilityData(theEnv)->AddressesToStrings) EnvPrintRouter(theEnv,logicalName,"\"");
+   if (PrintUtilityData(theEnv)->AddressesToStrings) EnvPrintRouter(theEnv,logicalName,(char*)"\"");
   }
 
 /*******************************************/
@@ -378,20 +378,20 @@ globle void PrintFact(
    /* has an implied deftemplate). */
    /*==============================*/
 
-   EnvPrintRouter(theEnv,logicalName,"(");
+   EnvPrintRouter(theEnv,logicalName,(char*)"(");
 
    EnvPrintRouter(theEnv,logicalName,factPtr->whichDeftemplate->header.name->contents);
 
    theMultifield = (struct multifield *) factPtr->theProposition.theFields[0].value;
    if (theMultifield->multifieldLength != 0)
      {
-      EnvPrintRouter(theEnv,logicalName," ");
+      EnvPrintRouter(theEnv,logicalName,(char*)" ");
       PrintMultifield(theEnv,logicalName,theMultifield,0,
                       (long) (theMultifield->multifieldLength - 1),
                       FALSE);
      }
 
-   EnvPrintRouter(theEnv,logicalName,")");
+   EnvPrintRouter(theEnv,logicalName,(char*)")");
   }
 
 /*********************************************/
@@ -424,8 +424,8 @@ globle intBool EnvRetract(
 
    if (EngineData(theEnv)->JoinOperationInProgress)
      {
-      PrintErrorID(theEnv,"FACTMNGR",1,TRUE);
-      EnvPrintRouter(theEnv,WERROR,"Facts may not be retracted during pattern-matching\n");
+      PrintErrorID(theEnv,(char*)"FACTMNGR",1,TRUE);
+      EnvPrintRouter(theEnv,WERROR,(char*)"Facts may not be retracted during pattern-matching\n");
       return(FALSE);
      }
 
@@ -454,9 +454,9 @@ globle intBool EnvRetract(
 #if DEBUGGING_FUNCTIONS
    if (theFact->whichDeftemplate->watch)
      {
-      EnvPrintRouter(theEnv,WTRACE,"<== ");
+      EnvPrintRouter(theEnv,WTRACE,(char*)"<== ");
       PrintFactWithIdentifier(theEnv,WTRACE,theFact);
-      EnvPrintRouter(theEnv,WTRACE,"\n");
+      EnvPrintRouter(theEnv,WTRACE,(char*)"\n");
      }
 #endif
 
@@ -641,8 +641,8 @@ globle void *EnvAssert(
    if (EngineData(theEnv)->JoinOperationInProgress)
      {
       ReturnFact(theEnv,theFact);
-      PrintErrorID(theEnv,"FACTMNGR",2,TRUE);
-      EnvPrintRouter(theEnv,WERROR,"Facts may not be asserted during pattern-matching\n");
+      PrintErrorID(theEnv,(char*)"FACTMNGR",2,TRUE);
+      EnvPrintRouter(theEnv,WERROR,(char*)"Facts may not be asserted during pattern-matching\n");
       return(NULL);
      }
 
@@ -658,7 +658,7 @@ globle void *EnvAssert(
       if (theField[i].type == RVOID)
         {
          theField[i].type = SYMBOL;
-         theField[i].value = (void *) EnvAddSymbol(theEnv,"nil");
+         theField[i].value = (void *) EnvAddSymbol(theEnv,(char*)"nil");
         }
      }
 
@@ -735,9 +735,9 @@ globle void *EnvAssert(
 #if DEBUGGING_FUNCTIONS
    if (theFact->whichDeftemplate->watch)
      {
-      EnvPrintRouter(theEnv,WTRACE,"==> ");
+      EnvPrintRouter(theEnv,WTRACE,(char*)"==> ");
       PrintFactWithIdentifier(theEnv,WTRACE,theFact);
-      EnvPrintRouter(theEnv,WTRACE,"\n");
+      EnvPrintRouter(theEnv,WTRACE,(char*)"\n");
      }
 #endif
 
@@ -1451,9 +1451,9 @@ globle void EnvGetFactPPForm(
   unsigned bufferLength,
   void *theFact)
   {
-   OpenStringDestination(theEnv,"FactPPForm",buffer,bufferLength);
-   PrintFactWithIdentifier(theEnv,"FactPPForm",(struct fact *) theFact);
-   CloseStringDestination(theEnv,"FactPPForm");
+   OpenStringDestination(theEnv,(char*)"FactPPForm",buffer,bufferLength);
+   PrintFactWithIdentifier(theEnv,(char*)"FactPPForm",(struct fact *) theFact);
+   CloseStringDestination(theEnv,(char*)"FactPPForm");
   }
 
 /**********************************/

@@ -504,7 +504,7 @@ globle void CommandLoop(
 
       if (BatchActive(theEnv) == TRUE)
         {
-         inchar = LLGetcBatch(theEnv,"stdin",TRUE);
+         inchar = LLGetcBatch(theEnv,(char*)"stdin",TRUE);
          if (inchar == EOF)
            { (*CommandLineData(theEnv)->EventFunction)(theEnv); }
          else
@@ -526,7 +526,7 @@ globle void CommandLoop(
 #if ! WINDOW_INTERFACE
          fflush(stdin);
 #endif
-         EnvPrintRouter(theEnv,WPROMPT,"\n");
+         EnvPrintRouter(theEnv,WPROMPT,(char*)"\n");
          PrintPrompt(theEnv);
         }
 
@@ -596,7 +596,7 @@ globle void CommandLoopBatchDriver(
 
       if (BatchActive(theEnv) == TRUE)
         {
-         inchar = LLGetcBatch(theEnv,"stdin",TRUE);
+         inchar = LLGetcBatch(theEnv,(char*)"stdin",TRUE);
          if (inchar == EOF)
            { return; }
          else
@@ -618,7 +618,7 @@ globle void CommandLoopBatchDriver(
 #if ! WINDOW_INTERFACE
          fflush(stdin);
 #endif
-         EnvPrintRouter(theEnv,WPROMPT,"\n");
+         EnvPrintRouter(theEnv,WPROMPT,(char*)"\n");
          PrintPrompt(theEnv);
         }
 
@@ -742,9 +742,9 @@ globle intBool RouteCommand(
    /* first token from that source.          */
    /*========================================*/
 
-   OpenStringSource(theEnv,"command",command,0);
+   OpenStringSource(theEnv,(char*)"command",command,0);
 
-   GetToken(theEnv,"command",&theToken);
+   GetToken(theEnv,(char*)"command",&theToken);
 
    /*=====================*/
    /* Evaluate constants. */
@@ -754,11 +754,11 @@ globle intBool RouteCommand(
        (theToken.type == FLOAT) || (theToken.type == INTEGER) ||
        (theToken.type == INSTANCE_NAME))
      {
-      CloseStringSource(theEnv,"command");
+      CloseStringSource(theEnv,(char*)"command");
       if (printResult)
         {
-         PrintAtom(theEnv,"stdout",theToken.type,theToken.value);
-         EnvPrintRouter(theEnv,"stdout","\n");
+         PrintAtom(theEnv,(char*)"stdout",theToken.type,theToken.value);
+         EnvPrintRouter(theEnv,(char*)"stdout",(char*)"\n");
         }
       return(1);
      }
@@ -771,14 +771,14 @@ globle intBool RouteCommand(
        (theToken.type == SF_VARIABLE) ||
        (theToken.type == MF_VARIABLE))
      {
-      CloseStringSource(theEnv,"command");
+      CloseStringSource(theEnv,(char*)"command");
       top = GenConstant(theEnv,theToken.type,theToken.value);
       EvaluateExpression(theEnv,top,&result);
       rtn_struct(theEnv,expr,top);
       if (printResult)
         {
-         PrintDataObject(theEnv,"stdout",&result);
-         EnvPrintRouter(theEnv,"stdout","\n");
+         PrintDataObject(theEnv,(char*)"stdout",&result);
+         EnvPrintRouter(theEnv,(char*)"stdout",(char*)"\n");
         }
       return(1);
      }
@@ -791,9 +791,9 @@ globle intBool RouteCommand(
 
    if (theToken.type != LPAREN)
      {
-      PrintErrorID(theEnv,"COMMLINE",1,FALSE);
-      EnvPrintRouter(theEnv,WERROR,"Expected a '(', constant, or variable\n");
-      CloseStringSource(theEnv,"command");
+      PrintErrorID(theEnv,(char*)"COMMLINE",1,FALSE);
+      EnvPrintRouter(theEnv,WERROR,(char*)"Expected a '(', constant, or variable\n");
+      CloseStringSource(theEnv,(char*)"command");
       return(0);
      }
 
@@ -801,12 +801,12 @@ globle intBool RouteCommand(
    /* The next token must be a function name or construct type. */
    /*===========================================================*/
 
-   GetToken(theEnv,"command",&theToken);
+   GetToken(theEnv,(char*)"command",&theToken);
    if (theToken.type != SYMBOL)
      {
-      PrintErrorID(theEnv,"COMMLINE",2,FALSE);
-      EnvPrintRouter(theEnv,WERROR,"Expected a command.\n");
-      CloseStringSource(theEnv,"command");
+      PrintErrorID(theEnv,(char*)"COMMLINE",2,FALSE);
+      EnvPrintRouter(theEnv,WERROR,(char*)"Expected a command.\n");
+      CloseStringSource(theEnv,(char*)"command");
       return(0);
      }
 
@@ -820,15 +820,15 @@ globle intBool RouteCommand(
    {
     int errorFlag;
 
-    errorFlag = ParseConstruct(theEnv,commandName,"command");
+    errorFlag = ParseConstruct(theEnv,commandName,(char*)"command");
     if (errorFlag != -1)
       {
-       CloseStringSource(theEnv,"command");
+       CloseStringSource(theEnv,(char*)"command");
        if (errorFlag == 1)
          {
-          EnvPrintRouter(theEnv,WERROR,"\nERROR:\n");
+          EnvPrintRouter(theEnv,WERROR,(char*)"\nERROR:\n");
           PrintInChunks(theEnv,WERROR,GetPPBuffer(theEnv));
-          EnvPrintRouter(theEnv,WERROR,"\n");
+          EnvPrintRouter(theEnv,WERROR,(char*)"\n");
          }
        DestroyPPBuffer(theEnv);
        return(errorFlag);
@@ -841,7 +841,7 @@ globle intBool RouteCommand(
    /*========================*/
 
    CommandLineData(theEnv)->ParsingTopLevelCommand = TRUE;
-   top = Function2Parse(theEnv,"command",commandName);
+   top = Function2Parse(theEnv,(char*)"command",commandName);
    CommandLineData(theEnv)->ParsingTopLevelCommand = FALSE;
    ClearParsedBindNames(theEnv);
 
@@ -849,7 +849,7 @@ globle intBool RouteCommand(
    /* Close the string input source. */
    /*================================*/
 
-   CloseStringSource(theEnv,"command");
+   CloseStringSource(theEnv,(char*)"command");
 
    /*=========================*/
    /* Evaluate function call. */
@@ -870,8 +870,8 @@ globle intBool RouteCommand(
    
    if ((result.type != RVOID) && printResult)
      {
-      PrintDataObject(theEnv,"stdout",&result);
-      EnvPrintRouter(theEnv,"stdout","\n");
+      PrintDataObject(theEnv,(char*)"stdout",&result);
+      EnvPrintRouter(theEnv,(char*)"stdout",(char*)"\n");
      }
 
    return(1);
@@ -888,7 +888,7 @@ static int DefaultGetNextEvent(
   {
    int inchar;
 
-   inchar = EnvGetcRouter(theEnv,"stdin");
+   inchar = EnvGetcRouter(theEnv,(char*)"stdin");
 
    if (inchar == EOF) inchar = '\n';
 
@@ -939,7 +939,7 @@ globle char *GetCommandCompletionString(
    /* Get the command string. */
    /*=========================*/
 
-   if (theString == NULL) return("");
+   if (theString == NULL) return((char*)"");
 
    /*=========================================================================*/
    /* If the last character in the command string is a space, character       */
@@ -950,22 +950,22 @@ globle char *GetCommandCompletionString(
    if ((lastChar == ' ') || (lastChar == '"') ||
        (lastChar == '\t') || (lastChar == '\f') ||
        (lastChar == '\n') || (lastChar == '\r'))
-     { return(""); }
+     { return((char*)""); }
 
    /*============================================*/
    /* Find the last token in the command string. */
    /*============================================*/
 
-   OpenTextSource(theEnv,"CommandCompletion",theString,0,maxPosition);
+   OpenTextSource(theEnv,(char*)"CommandCompletion",theString,0,maxPosition);
    ScannerData(theEnv)->IgnoreCompletionErrors = TRUE;
-   GetToken(theEnv,"CommandCompletion",&theToken);
+   GetToken(theEnv,(char*)"CommandCompletion",&theToken);
    CopyToken(&lastToken,&theToken);
    while (theToken.type != STOP)
      {
       CopyToken(&lastToken,&theToken);
-      GetToken(theEnv,"CommandCompletion",&theToken);
+      GetToken(theEnv,(char*)"CommandCompletion",&theToken);
      }
-   CloseStringSource(theEnv,"CommandCompletion");
+   CloseStringSource(theEnv,(char*)"CommandCompletion");
    ScannerData(theEnv)->IgnoreCompletionErrors = FALSE;
 
    /*===============================================*/
@@ -993,7 +993,7 @@ globle char *GetCommandCompletionString(
    else if ((lastToken.type == FLOAT) || (lastToken.type == INTEGER))
      { return(NULL); }
 
-   return("");
+   return((char*)"");
   }
 
 /****************************************************************/

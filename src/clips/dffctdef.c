@@ -77,7 +77,7 @@ globle void InitializeDeffacts(
    DeffactsBasicCommands(theEnv);
 
    DeffactsData(theEnv)->DeffactsConstruct =
-      AddConstruct(theEnv,"deffacts","deffacts",ParseDeffacts,EnvFindDeffacts,
+      AddConstruct(theEnv,(char*)"deffacts",(char*)"deffacts",ParseDeffacts,EnvFindDeffacts,
                    GetConstructNamePointer,GetConstructPPForm,
                    GetConstructModuleItem,EnvGetNextDeffacts,SetNextConstruct,
                    EnvIsDeffactsDeletable,EnvUndeffacts,ReturnDeffacts);
@@ -158,7 +158,7 @@ static void InitializeDeffactsModules(
   void *theEnv)
   {
    DeffactsData(theEnv)->DeffactsModuleIndex = 
-      RegisterModuleItem(theEnv,"deffacts",
+      RegisterModuleItem(theEnv,(char*)"deffacts",
                          AllocateModule,
                          ReturnModule,
 #if BLOAD_AND_BSAVE || BLOAD || BLOAD_ONLY

@@ -129,7 +129,7 @@ globle EXPRESSION *ParseQueryNoAction(
    GetToken(theEnv,readSource,&queryInputToken);
    if (GetType(queryInputToken) != RPAREN)
      {
-      SyntaxErrorMessage(theEnv,"instance-set query function");
+      SyntaxErrorMessage(theEnv,(char*)"instance-set query function");
       ReturnExpression(theEnv,top);
       ReturnExpression(theEnv,insQuerySetVars);
       return(NULL);
@@ -198,7 +198,7 @@ globle EXPRESSION *ParseQueryAction(
    
    if (GetType(queryInputToken) != RPAREN)
      {
-      SyntaxErrorMessage(theEnv,"instance-set query function");
+      SyntaxErrorMessage(theEnv,(char*)"instance-set query function");
       ReturnExpression(theEnv,top);
       ReturnExpression(theEnv,insQuerySetVars);
       return(NULL);
@@ -240,7 +240,7 @@ static EXPRESSION *ParseQueryRestrictions(
               *tmp,*lastOne = NULL;
    int error = FALSE;
 
-   SavePPBuffer(theEnv," ");
+   SavePPBuffer(theEnv,(char*)" ");
    GetToken(theEnv,readSource,queryInputToken);
    if (queryInputToken->type != LPAREN)
      goto ParseQueryRestrictionsError1;
@@ -257,10 +257,10 @@ static EXPRESSION *ParseQueryRestrictions(
         {
          if (tmp->value == queryInputToken->value)
            {
-            PrintErrorID(theEnv,"INSQYPSR",1,FALSE);
-            EnvPrintRouter(theEnv,WERROR,"Duplicate instance member variable name in function ");
+            PrintErrorID(theEnv,(char*)"INSQYPSR",1,FALSE);
+            EnvPrintRouter(theEnv,WERROR,(char*)"Duplicate instance member variable name in function ");
             EnvPrintRouter(theEnv,WERROR,ValueToString(ExpressionFunctionCallName(top)));
-            EnvPrintRouter(theEnv,WERROR,".\n");
+            EnvPrintRouter(theEnv,WERROR,(char*)".\n");
             goto ParseQueryRestrictionsError2;
            }
          tmp = tmp->nextArg;
@@ -271,7 +271,7 @@ static EXPRESSION *ParseQueryRestrictions(
       else
         lastInsQuerySetVars->nextArg = tmp;
       lastInsQuerySetVars = tmp;
-      SavePPBuffer(theEnv," ");
+      SavePPBuffer(theEnv,(char*)" ");
       classExp = ArgumentParse(theEnv,readSource,&error);
       if (error)
         goto ParseQueryRestrictionsError2;
@@ -280,20 +280,20 @@ static EXPRESSION *ParseQueryRestrictions(
       if (ReplaceClassNameWithReference(theEnv,classExp) == FALSE)
         goto ParseQueryRestrictionsError2;
       lastClassExp = classExp;
-      SavePPBuffer(theEnv," ");
+      SavePPBuffer(theEnv,(char*)" ");
       while ((tmp = ArgumentParse(theEnv,readSource,&error)) != NULL)
         {
          if (ReplaceClassNameWithReference(theEnv,tmp) == FALSE)
            goto ParseQueryRestrictionsError2;
          lastClassExp->nextArg = tmp;
          lastClassExp = tmp;
-         SavePPBuffer(theEnv," ");
+         SavePPBuffer(theEnv,(char*)" ");
         }
       if (error)
         goto ParseQueryRestrictionsError2;
       PPBackup(theEnv);
       PPBackup(theEnv);
-      SavePPBuffer(theEnv,")");
+      SavePPBuffer(theEnv,(char*)")");
       tmp = GenConstant(theEnv,SYMBOL,(void *) InstanceQueryData(theEnv)->QUERY_DELIMETER_SYMBOL);
       lastClassExp->nextArg = tmp;
       lastClassExp = tmp;
@@ -303,18 +303,18 @@ static EXPRESSION *ParseQueryRestrictions(
         lastOne->nextArg = classExp;
       lastOne = lastClassExp;
       classExp = NULL;
-      SavePPBuffer(theEnv," ");
+      SavePPBuffer(theEnv,(char*)" ");
       GetToken(theEnv,readSource,queryInputToken);
      }
    if (queryInputToken->type != RPAREN)
      goto ParseQueryRestrictionsError1;
    PPBackup(theEnv);
    PPBackup(theEnv);
-   SavePPBuffer(theEnv,")");
+   SavePPBuffer(theEnv,(char*)")");
    return(insQuerySetVars);
 
 ParseQueryRestrictionsError1:
-   SyntaxErrorMessage(theEnv,"instance-set query function");
+   SyntaxErrorMessage(theEnv,(char*)"instance-set query function");
 
 ParseQueryRestrictionsError2:
    ReturnExpression(theEnv,classExp);
@@ -350,7 +350,7 @@ static intBool ReplaceClassNameWithReference(
       theDefclass = (void *) LookupDefclassByMdlOrScope(theEnv,theClassName);
       if (theDefclass == NULL)
         {
-         CantFindItemErrorMessage(theEnv,"class",theClassName);
+         CantFindItemErrorMessage(theEnv,(char*)"class",theClassName);
          return(FALSE);
         }
       theExp->type = DEFCLASS_PTR;
@@ -393,7 +393,7 @@ static int ParseQueryTestExpression(
    if (qtest == NULL)
      {
       SetParsedBindNames(theEnv,oldBindList);
-      SyntaxErrorMessage(theEnv,"instance-set query function");
+      SyntaxErrorMessage(theEnv,(char*)"instance-set query function");
       ReturnExpression(theEnv,top);
       return(FALSE);
      }
@@ -403,10 +403,10 @@ static int ParseQueryTestExpression(
      {
       ClearParsedBindNames(theEnv);
       SetParsedBindNames(theEnv,oldBindList);
-      PrintErrorID(theEnv,"INSQYPSR",2,FALSE);
-      EnvPrintRouter(theEnv,WERROR,"Binds are not allowed in instance-set query in function ");
+      PrintErrorID(theEnv,(char*)"INSQYPSR",2,FALSE);
+      EnvPrintRouter(theEnv,WERROR,(char*)"Binds are not allowed in instance-set query in function ");
       EnvPrintRouter(theEnv,WERROR,ValueToString(ExpressionFunctionCallName(top)));
-      EnvPrintRouter(theEnv,WERROR,".\n");
+      EnvPrintRouter(theEnv,WERROR,(char*)".\n");
       ReturnExpression(theEnv,top);
       return(FALSE);
      }
@@ -460,7 +460,7 @@ static int ParseQueryActionExpression(
    if (qaction == NULL)
      {
       SetParsedBindNames(theEnv,oldBindList);
-      SyntaxErrorMessage(theEnv,"instance-set query function");
+      SyntaxErrorMessage(theEnv,(char*)"instance-set query function");
       ReturnExpression(theEnv,top);
       return(FALSE);
      }
@@ -477,12 +477,12 @@ static int ParseQueryActionExpression(
            {
             ClearParsedBindNames(theEnv);
             SetParsedBindNames(theEnv,oldBindList);
-            PrintErrorID(theEnv,"INSQYPSR",3,FALSE);
-            EnvPrintRouter(theEnv,WERROR,"Cannot rebind instance-set member variable ");
+            PrintErrorID(theEnv,(char*)"INSQYPSR",3,FALSE);
+            EnvPrintRouter(theEnv,WERROR,(char*)"Cannot rebind instance-set member variable ");
             EnvPrintRouter(theEnv,WERROR,ValueToString(tmpInsSetVars->value));
-            EnvPrintRouter(theEnv,WERROR," in function ");
+            EnvPrintRouter(theEnv,WERROR,(char*)" in function ");
             EnvPrintRouter(theEnv,WERROR,ValueToString(ExpressionFunctionCallName(top)));
-            EnvPrintRouter(theEnv,WERROR,".\n");
+            EnvPrintRouter(theEnv,WERROR,(char*)".\n");
             ReturnExpression(theEnv,top);
             return(FALSE);
            }
@@ -528,8 +528,8 @@ static void ReplaceInstanceVariables(
    struct FunctionDefinition *rindx_func,*rslot_func;
    int posn;
 
-   rindx_func = FindFunction(theEnv,"(query-instance)");
-   rslot_func = FindFunction(theEnv,"(query-instance-slot)");
+   rindx_func = FindFunction(theEnv,(char*)"(query-instance)");
+   rslot_func = FindFunction(theEnv,(char*)"(query-instance-slot)");
    while (bexp != NULL)
      {
       if (bexp->type == SF_VARIABLE)
@@ -611,12 +611,12 @@ static void ReplaceSlotReference(
            }
          if (eptr != NULL)
            {
-            OpenStringSource(theEnv,"query-var",str+i+1,0);
+            OpenStringSource(theEnv,(char*)"query-var",str+i+1,0);
             oldpp = GetPPBufferStatus(theEnv);
             SetPPBufferStatus(theEnv,OFF);
-            GetToken(theEnv,"query-var",&itkn);
+            GetToken(theEnv,(char*)"query-var",&itkn);
             SetPPBufferStatus(theEnv,oldpp);
-            CloseStringSource(theEnv,"query-var");
+            CloseStringSource(theEnv,(char*)"query-var");
             theExp->type = FCALL;
             theExp->value = (void *) func;
             theExp->argList = GenConstant(theEnv,INTEGER,(void *) EnvAddLong(theEnv,(long long) ndepth));
