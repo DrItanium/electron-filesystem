@@ -4,10 +4,10 @@
 
 (defmodule engine (export ?ALL))
 
-(load* "src/engine/Object.clp")
-(load* "src/engine/Screen.clp")
-(load* "src/engine/Entity.clp")
-(load* "src/engine/Resource.clp")
-(load* "src/engine/ResourceEntry.clp")
-(load* "src/engine/MusicResource.clp")
-(load* "src/engine/SoundResource.clp")
+(load* "src/clips/modules/engine/Object.clp")
+(load* "src/clips/modules/engine/Screen.clp")
+(load* "src/clips/modules/engine/Entity.clp")
+(load* "src/clips/modules/engine/Resource.clp")
+(load* "src/clips/modules/engine/ResourceEntry.clp")
+(load* "src/clips/modules/engine/MusicResource.clp")
+(load* "src/clips/modules/engine/SoundResource.clp")
