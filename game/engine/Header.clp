@@ -6,6 +6,7 @@
 
 (load* "src/engine/Object.clp")
 (load* "src/engine/Screen.clp")
+(load* "src/engine/Entity.clp")
 (load* "src/engine/Resource.clp")
 (load* "src/engine/ResourceEntry.clp")
 (load* "src/engine/MusicResource.clp")
