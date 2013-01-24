@@ -8,3 +8,4 @@
 (load* "src/clips/modules/engine/Entity.clp")
 (load* "src/clips/modules/engine/Resource.clp")
 (load* "src/clips/modules/engine/TextResource.clp")
+(load* "src/clips/modules/engine/Message.clp")
