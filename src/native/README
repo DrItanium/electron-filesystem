@@ -1,8 +1,0 @@
-The Instruction Set Architecture CLIPS is a modified version of CLIPS that
-contains new functions meant to make it possible to simulate instruction set
-architectures. The version forked is 6.30 (CLIPSJNI 0.3).
-
-These new functions are bitwise operators right now but may include more at a
-later time.
-
-This fork of CLIPS is licensed under the same LICENSE agreement as the original
