@@ -12,18 +12,4 @@ input handling, sound playing, and drawing to the screen.
 The src folder contains the C source code that clips interacts with. The game
 folder contains all of the types and game logic that are written within CLIPS
 
-=====
 
-My first objective is to implement a text-adventure game engine because it's
-easy to do. One of the features of an expert system is that it's a way to write
-"conversational" software. This means, that it is really easy to write an
-expert system that "converses" with the end user and operates on that input to
-do things. 
-
-A text adventure game is really a conversation between the player and the
-computer using a text parser. This makes an expert system tool like CLIPS the
-perfect environment for such games. In fact, the text parser can be simplified
-by using rules to parse the input from the player. 
-
-Once I get the text adventure part working then I'll switch over to the
-graphical one.
