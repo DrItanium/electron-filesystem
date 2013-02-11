@@ -39,6 +39,10 @@
 (defmodule build-groups 
            (import types ?ALL))
 ;------------------------------------------------------------------------------
+(defmodule MAIN 
+           (import types ?ALL)
+           (export ?ALL))
+;------------------------------------------------------------------------------
 (defclass types::opened-file 
   (is-a USER)
   (slot id)
@@ -85,7 +89,7 @@
   (slot index)
   (slot parent)
   (slot type)
-  (multifield contents))
+  (multislot contents))
 ;------------------------------------------------------------------------------
 (defmessage-handler types::line-entry init after ()
                     (bind ?self:id (instance-name-to-symbol (instance-name ?self))))
