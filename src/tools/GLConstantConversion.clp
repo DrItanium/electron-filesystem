@@ -49,6 +49,7 @@
 (deftemplate file-line 
  (slot index)
  (slot parent)
+ (slot type)
  (multifield contents))
 ;------------------------------------------------------------------------------
 ; INPUT FACT FORM: (parse constant file ?path)
@@ -80,6 +81,7 @@
  (if (neq ?result EOF) then
   (assert (read file ?fid)
           (file-line (index (send ?obj next-index))
+           (type UNKNOWN)
            (parent ?fid)
            (contents (explode$ ?result))))
   else
@@ -90,4 +92,10 @@
  ?f <- (file-line (contents))
  =>
  (retract ?f))
+;------------------------------------------------------------------------------
+(defrule mark-heading-groups
+ "Tags lines that consist of /* $? */ as group headings"
+ ?f <- (file-line (contents /* $? */) (type UNKNOWN))
+ =>
+ (modify ?f (type heading)))
 ;------------------------------------------------------------------------------
