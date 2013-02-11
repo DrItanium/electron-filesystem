@@ -88,8 +88,9 @@
   (send ?obj close-file)
   (unmake-instance ?obj)))
 ;------------------------------------------------------------------------------
-(defrule retract-blank-lines
- ?f <- (file-line (contents))
+(defrule retract-unknowns 
+ (declare (salience -10))
+ ?f <- (file-line (type UNKNOWN))
  =>
  (retract ?f))
 ;------------------------------------------------------------------------------
@@ -98,4 +99,10 @@
  ?f <- (file-line (contents /* $? */) (type UNKNOWN))
  =>
  (modify ?f (type heading)))
+;------------------------------------------------------------------------------
+(defrule mark-entry-line
+ "Tags lines that are defines and modifies the associated contents"
+ ?f <- (file-line (contents #define ?name ?) (type UNKNOWN))
+ =>
+ (modify ?f (type #define) (contents ?name)))
 ;------------------------------------------------------------------------------
