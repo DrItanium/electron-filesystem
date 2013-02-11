@@ -28,81 +28,98 @@
 ; conversion code for it. 
 ;------------------------------------------------------------------------------
 (defclass opened-file 
- (is-a USER)
- (slot id)
- (slot index (type INTEGER) (range 0 ?VARIABLE))
- (message-handler next-index)
- (message-handler read-line)
- (message-handler close-file))
+  (is-a USER)
+  (slot id)
+  (slot index (type INTEGER) (range 0 ?VARIABLE))
+  (message-handler next-index)
+  (message-handler read-line)
+  (message-handler close-file))
 ;------------------------------------------------------------------------------
 (defmessage-handler opened-file next-index ()
- (bind ?old ?self:index)
- (bind ?self:index (+ ?old 1))
- (return ?old))
+                    (bind ?old ?self:index)
+                    (bind ?self:index (+ ?old 1))
+                    (return ?old))
 ;------------------------------------------------------------------------------
 (defmessage-handler opened-file read-line ()
- (readline ?self:id))
+                    (readline ?self:id))
 ;------------------------------------------------------------------------------
 (defmessage-handler opened-file close-file ()
- (close ?self:id))
+                    (close ?self:id))
 ;------------------------------------------------------------------------------
 (deftemplate file-line 
- (slot index)
- (slot parent)
- (slot type)
- (multifield contents))
+             (slot index)
+             (slot parent)
+             (slot type)
+             (multifield contents))
 ;------------------------------------------------------------------------------
 ; INPUT FACT FORM: (parse constant file ?path)
 ;------------------------------------------------------------------------------
 (deffunction get-input-form-factor () 
- (printout t "(parse constant file ?path)" crlf))
+             (printout t "(parse constant file ?path)" crlf))
 ;------------------------------------------------------------------------------
 (defrule open-target-file
- "This rule takes a fact of the above INPUT FORM and attempts to open the file"
- ?fct <- (parse constant file ?path)
- =>
- (bind ?name (gensym*))
- (retract ?fct)
- (if (open ?path ?name "r") then 
-  (make-instance of opened-file (id ?name) (index 0))
-  (assert (read file ?name))
- else
- (printout t "ERROR: target file at " ?path " does not exist!" crlf 
-  "Halting!" crlf)
- (halt)))
+         "This rule takes a fact of the above INPUT FORM and attempts to open the file"
+         ?fct <- (parse constant file ?path)
+         =>
+         (bind ?name (gensym*))
+         (retract ?fct)
+         (if (open ?path ?name "r") then 
+           (make-instance of opened-file (id ?name) (index 0))
+           (assert (read file ?name))
+           else
+           (printout t "ERROR: target file at " ?path " does not exist!" crlf 
+                     "Halting!" crlf)
+           (halt)))
 ;------------------------------------------------------------------------------
 (defrule build-file-line
- ?fct <- (read file ?fid)
- ?obj <- (object (is-a opened-file) 
-                 (id ?fid))
- =>
- (retract ?fct)
- (bind ?result (send ?obj read-line))
- (if (neq ?result EOF) then
-  (assert (read file ?fid)
-          (file-line (index (send ?obj next-index))
-           (type UNKNOWN)
-           (parent ?fid)
-           (contents (explode$ ?result))))
-  else
-  (send ?obj close-file)
-  (unmake-instance ?obj)))
+         ?fct <- (read file ?fid)
+         ?obj <- (object (is-a opened-file) 
+                         (id ?fid))
+         =>
+         (retract ?fct)
+         (bind ?result (send ?obj read-line))
+         (if (neq ?result EOF) then
+           (assert (read file ?fid)
+                   (file-line (index (send ?obj next-index))
+                              (type UNKNOWN)
+                              (parent ?fid)
+                              (contents (explode$ ?result))))
+           else
+           (send ?obj close-file)
+           (unmake-instance ?obj)))
 ;------------------------------------------------------------------------------
-(defrule retract-unknowns 
- (declare (salience -10))
- ?f <- (file-line (type UNKNOWN))
- =>
- (retract ?f))
+;(defrule retract-unknowns 
+; (declare (salience -10))
+; ?f <- (file-line (type UNKNOWN))
+; =>
+; (retract ?f))
 ;------------------------------------------------------------------------------
 (defrule mark-heading-groups
- "Tags lines that consist of /* $? */ as group headings"
- ?f <- (file-line (contents /* $? */) (type UNKNOWN))
- =>
- (modify ?f (type heading)))
+         "Tags lines that consist of /* $? */ as group headings"
+         ?f <- (file-line (type UNKNOWN)
+                          (contents /* $? */))
+         =>
+         (modify ?f (type heading)))
 ;------------------------------------------------------------------------------
 (defrule mark-entry-line
- "Tags lines that are defines and modifies the associated contents"
- ?f <- (file-line (contents #define ?name ?) (type UNKNOWN))
- =>
- (modify ?f (type #define) (contents ?name)))
+         "Tags lines that are defines and modifies the associated contents"
+         ?f <- (file-line (type UNKNOWN) 
+                          (contents #define ?name ?))
+         =>
+         (modify ?f (type #define) (contents ?name)))
+;------------------------------------------------------------------------------
+(defrule merge-three-line-headers
+         "Merges simple three line headings into one rule"
+         ?f0 <- (file-line (index ?i)
+                           (type UNKNOWN) 
+                           (contents /*))
+         ?f1 <- (file-line (index ?i2&:(= ?i2 (+ ?i 1)))
+                           (type UNKNOWN) 
+                           (contents $?c))
+         ?f2 <- (file-line (index ?i3&:(= ?i3 (+ ?i 2)))
+                           (type UNKNOWN)
+                           (contents */))
+         =>
+         (retract ?f1 ?f2)
+         (modify ?f0 (contents /* $?contents */)))
 ;------------------------------------------------------------------------------
