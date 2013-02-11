@@ -107,7 +107,9 @@
          (retract ?fct)
          (if (open ?path ?name "r") then 
            (make-instance of opened-file (id ?name) (index 0))
-           (assert (read file ?name))
+           (assert (message (to identify-lines)
+                            (action read-file)
+                            (arguments ?name)))
            (focus identify-lines convert-templates build-groups)
            else
            (printout t "ERROR: target file at " ?path " does not exist!" crlf 
@@ -115,56 +117,62 @@
            (halt)))
 ;------------------------------------------------------------------------------
 (defrule identify-lines::build-file-line
-         ?fct <- (read file ?fid)
+         ?fct <- (message (to identify-lines)
+                          (action read-file)
+                          (arguments ?name))
          ?obj <- (object (is-a opened-file) 
                          (id ?fid))
          =>
          (retract ?fct)
          (bind ?result (send ?obj read-line))
          (if (neq ?result EOF) then
-           (assert (read file ?fid)
-                   (file-line (index (send ?obj next-index))
-                              (type UNKNOWN)
-                              (parent ?fid)
-                              (contents (explode$ ?result))))
+           (duplicate ?fct)
+           (make-instance of file-line (index (send ?obj next-index))
+                          (type UNKNOWN)
+                          (parent ?fid)
+                          (contents (explode$ ?result)))
            else
            (send ?obj close-file)
            (unmake-instance ?obj)))
 ;------------------------------------------------------------------------------
-(defrule identify-lines::retract-unknowns 
-         (declare (salience -10))
-         ?f <- (file-line (type UNKNOWN))
+(defrule convert-templates::retract-unknowns 
+         ?f <- (object (is-a file-line) (type UNKNOWN))
          =>
-         (retract ?f))
+         (unmake-instance ?f))
 ;------------------------------------------------------------------------------
 (defrule identify-lines::mark-heading-groups
          "Tags lines that consist of /* $? */ as group headings"
-         ?f <- (file-line (type UNKNOWN)
-                          (contents /* $? */))
+         ?f <- (object (is-a file-line) 
+                       (type UNKNOWN)
+                       (contents /* $? */))
          =>
-         (modify ?f (type heading)))
+         (modify-instance ?f (type heading)))
 ;------------------------------------------------------------------------------
 (defrule identify-lines::mark-entry-line
          "Tags lines that are defines and modifies the associated contents"
-         ?f <- (file-line (type UNKNOWN) 
-                          (contents #define ?name ?))
+         ?f <- (object (is-a file-line)
+                       (type UNKNOWN) 
+                       (contents #define ?name ?))
          =>
-         (modify ?f (type #define) (contents ?name)))
+         (modify-instance ?f (type #define) (contents ?name)))
 ;------------------------------------------------------------------------------
 (defrule identify-lines::merge-three-line-headers
          "Merges simple three line headings into one rule"
-         ?f0 <- (file-line (index ?i)
-                           (type UNKNOWN) 
-                           (contents /*))
-         ?f1 <- (file-line (index ?i2&:(= ?i2 (+ ?i 1)))
-                           (type UNKNOWN) 
-                           (contents * $?c))
-         ?f2 <- (file-line (index ?i3&:(= ?i3 (+ ?i 2)))
-                           (type UNKNOWN)
-                           (contents */))
+         ?f0 <- (object (is-a file-line) 
+                        (index ?i)
+                        (type UNKNOWN) 
+                        (contents /*))
+         ?f1 <- (object (is-a file-line)
+                        (index ?i2&:(= ?i2 (+ ?i 1)))
+                        (type UNKNOWN) 
+                        (contents * $?c))
+         ?f2 <- (object (is-a file-line) 
+                        (index ?i3&:(= ?i3 (+ ?i 2)))
+                        (type UNKNOWN)
+                        (contents */))
          =>
-         (retract ?f1 ?f2)
-         (modify ?f0 (contents /* $?c */)))
+         (unmake-instance ?f1 ?f2)
+         (modify-instance ?f0 (contents /* $?c */)))
 ;------------------------------------------------------------------------------
 (defrule identify-lines::mark-glapi-calls
          "marks glapi calls"
@@ -221,7 +229,9 @@
                  (distance (- ?i2 ?i))))
 ;------------------------------------------------------------------------------
 (defrule convert-templates::convert-line-objects
-         ?f <- (file-line (type ?t) (parent ?p) (index ?i)
+         ?f <- (file-line (type ?t) 
+                          (parent ?p) 
+                          (index ?i)
                           (contents $?c))
          =>
          (retract ?f)
