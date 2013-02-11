@@ -52,6 +52,13 @@
              (slot type)
              (multifield contents))
 ;------------------------------------------------------------------------------
+(deftemplate heading-span
+             "Defines a span between two different headings"
+             (slot from)
+             (slot to)
+             (slot parent)
+             (slot distance))
+;------------------------------------------------------------------------------
 ; INPUT FACT FORM: (parse constant file ?path)
 ;------------------------------------------------------------------------------
 (deffunction get-input-form-factor () 
@@ -143,4 +150,20 @@
          =>
          (retract ?f)
          (modify ?f0 (contents GLAPI $?vals "(" $?c $?contents)))
+;------------------------------------------------------------------------------
+(defrule define-header-spans
+         "Defines spans between headers"
+         (file-line (type header)
+                    (parent ?parent)
+                    (index ?i))
+         (file-line (type header)
+                    (parent ?parent)
+                    (index ?i2&:(< ?i2 ?i)))
+         =>
+         (bind ?difference (- ?i ?i2))
+         (if (> ?difference 0) then
+         (assert (heading-span (from ?i) 
+                  (to ?i2) 
+                  (parent ?parent) 
+                  (difference ?difference)))))
 ;------------------------------------------------------------------------------
