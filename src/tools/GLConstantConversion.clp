@@ -165,5 +165,5 @@
          (assert (heading-span (from ?i) 
                   (to ?i2) 
                   (parent ?parent) 
-                  (difference ?difference)))))
+                  (distance ?difference)))))
 ;------------------------------------------------------------------------------
