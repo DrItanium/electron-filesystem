@@ -115,7 +115,7 @@
                            (contents /*))
          ?f1 <- (file-line (index ?i2&:(= ?i2 (+ ?i 1)))
                            (type UNKNOWN) 
-                           (contents $?c))
+                           (contents * $?c))
          ?f2 <- (file-line (index ?i3&:(= ?i3 (+ ?i 2)))
                            (type UNKNOWN)
                            (contents */))
