@@ -153,10 +153,10 @@
 ;------------------------------------------------------------------------------
 (defrule define-header-spans
          "Defines spans between headers"
-         (file-line (type header)
+         (file-line (type heading)
                     (parent ?parent)
                     (index ?i))
-         (file-line (type header)
+         (file-line (type heading)
                     (parent ?parent)
                     (index ?i2&:(< ?i2 ?i)))
          =>
