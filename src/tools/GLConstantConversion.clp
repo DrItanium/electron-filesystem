@@ -62,7 +62,7 @@
              (slot index)
              (slot parent)
              (slot type)
-             (multifield contents))
+             (multislot contents))
 ;------------------------------------------------------------------------------
 (deftemplate types::heading-span
              "Defines a span between two different headings"
