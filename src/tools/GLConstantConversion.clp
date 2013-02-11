@@ -151,19 +151,34 @@
          (retract ?f)
          (modify ?f0 (contents GLAPI $?vals "(" $?c $?contents)))
 ;------------------------------------------------------------------------------
-(defrule define-header-spans
+(defrule define-header-spans-initial
          "Defines spans between headers"
+         (declare (salience -3))
          (file-line (type heading)
                     (parent ?parent)
                     (index ?i))
+         (not (exists (heading-span (from ?i) 
+                                    (parent ?parent))))
          (file-line (type heading)
                     (parent ?parent)
-                    (index ?i2&:(< ?i2 ?i)))
+                    (index ?i2&:(> ?i2 ?i)))
          =>
-         (bind ?difference (- ?i ?i2))
+         (bind ?difference (- ?i2 ?i))
          (if (> ?difference 0) then
-         (assert (heading-span (from ?i) 
-                  (to ?i2) 
-                  (parent ?parent) 
-                  (distance ?difference)))))
+           (assert (heading-span (from ?i) 
+                                 (to ?i2) 
+                                 (parent ?parent) 
+                                 (distance ?difference)))))
+;------------------------------------------------------------------------------
+(defrule modify-header-spans-for-smaller-size
+         "Retracts the heading-span in response to finding an earlier heading"
+         ?f <- (heading-span (from ?i)
+                             (to ?j)
+                             (parent ?parent))
+         (file-line (type heading)
+                    (parent ?parent)
+                    (index ?i2&:(> ?j ?i2 ?i)))
+         =>
+         (modify ?f (to ?i2) 
+                 (distance (- ?i2 ?i))))
 ;------------------------------------------------------------------------------
