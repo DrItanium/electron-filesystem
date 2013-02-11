@@ -123,3 +123,24 @@
          (retract ?f1 ?f2)
          (modify ?f0 (contents /* $?c */)))
 ;------------------------------------------------------------------------------
+(defrule mark-glapi-calls
+         "marks glapi calls"
+         ?f <- (file-line (type UNKNOWN)
+                          (contents GLAPI $? "(" $? ")"))
+         =>
+         (modify ?f (type GLAPI-DEF)))
+;------------------------------------------------------------------------------
+(defrule merge-potential-glapi-calls
+         "Merges the next line of a GLAPI call if the line doesn't end with )"
+         (declare (salience -1))
+         ?f <- (file-line (type UNKNOWN)
+                          (contents GLAPI $?vals "(" $?c)
+                          (index ?i))
+         (test (not (member$ ")" $?c)))
+         ?f0 <- (file-line (index ?i0&:(= ?i0 (+ ?i 1)))
+                           (type UNKNOWN)
+                           (contents $?contents))
+         =>
+         (retract ?f)
+         (modify ?f0 (contents GLAPI $?vals "(" $?c $?contents)))
+;------------------------------------------------------------------------------
