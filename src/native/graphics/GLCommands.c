@@ -28,4 +28,13 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "../clips.h"
 #include <GL/gl.h>
 
+extern GLboolean ToBoolean(char* symbol)
+{
+   if(strcmp(symbol, "TRUE")) {
+      return GL_TRUE;
+   } else {
+      return GL_FALSE;
+   }
+}
+
 
