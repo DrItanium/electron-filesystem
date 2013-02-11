@@ -88,11 +88,11 @@
            (send ?obj close-file)
            (unmake-instance ?obj)))
 ;------------------------------------------------------------------------------
-;(defrule retract-unknowns 
-; (declare (salience -10))
-; ?f <- (file-line (type UNKNOWN))
-; =>
-; (retract ?f))
+(defrule retract-unknowns 
+         (declare (salience -10))
+         ?f <- (file-line (type UNKNOWN))
+         =>
+         (retract ?f))
 ;------------------------------------------------------------------------------
 (defrule mark-heading-groups
          "Tags lines that consist of /* $? */ as group headings"
