@@ -27,7 +27,19 @@
 ; GLConstantConversion.clp - an expert system that reads a define and generates
 ; conversion code for it. 
 ;------------------------------------------------------------------------------
-(defclass opened-file 
+(defmodule types 
+           (export ?ALL))
+;------------------------------------------------------------------------------
+(defmodule identify-lines 
+           (import types ?ALL))
+;------------------------------------------------------------------------------
+(defmodule convert-templates
+           (import types ?ALL))
+;------------------------------------------------------------------------------
+(defmodule build-groups 
+           (import types ?ALL))
+;------------------------------------------------------------------------------
+(defclass types::opened-file 
   (is-a USER)
   (slot id)
   (slot index (type INTEGER) (range 0 ?VARIABLE))
@@ -35,36 +47,55 @@
   (message-handler read-line)
   (message-handler close-file))
 ;------------------------------------------------------------------------------
-(defmessage-handler opened-file next-index ()
+(defmessage-handler types::opened-file next-index ()
                     (bind ?old ?self:index)
                     (bind ?self:index (+ ?old 1))
                     (return ?old))
 ;------------------------------------------------------------------------------
-(defmessage-handler opened-file read-line ()
+(defmessage-handler types::opened-file read-line ()
                     (readline ?self:id))
 ;------------------------------------------------------------------------------
-(defmessage-handler opened-file close-file ()
+(defmessage-handler types::opened-file close-file ()
                     (close ?self:id))
 ;------------------------------------------------------------------------------
-(deftemplate file-line 
+(deftemplate types::file-line 
              (slot index)
              (slot parent)
              (slot type)
              (multifield contents))
 ;------------------------------------------------------------------------------
-(deftemplate heading-span
+(deftemplate types::heading-span
              "Defines a span between two different headings"
+             (slot header-name)
+             (multislot contents)
              (slot from)
              (slot to)
              (slot parent)
              (slot distance))
 ;------------------------------------------------------------------------------
+(deftemplate types::message 
+             (slot from)
+             (slot to)
+             (slot action)
+             (multislot arguments))
+;------------------------------------------------------------------------------
+(defclass types::line-entry
+  (is-a USER)
+  (slot id)
+  (slot index)
+  (slot parent)
+  (slot type)
+  (multifield contents))
+;------------------------------------------------------------------------------
+(defmessage-handler types::line-entry init after ()
+                    (bind ?self:id (instance-name-to-symbol (instance-name ?self))))
+;------------------------------------------------------------------------------
 ; INPUT FACT FORM: (parse constant file ?path)
 ;------------------------------------------------------------------------------
-(deffunction get-input-form-factor () 
+(deffunction types::get-input-form-factor () 
              (printout t "(parse constant file ?path)" crlf))
 ;------------------------------------------------------------------------------
-(defrule open-target-file
+(defrule MAIN::open-target-file
          "This rule takes a fact of the above INPUT FORM and attempts to open the file"
          ?fct <- (parse constant file ?path)
          =>
@@ -73,12 +104,13 @@
          (if (open ?path ?name "r") then 
            (make-instance of opened-file (id ?name) (index 0))
            (assert (read file ?name))
+           (focus identify-lines convert-templates build-groups)
            else
            (printout t "ERROR: target file at " ?path " does not exist!" crlf 
                      "Halting!" crlf)
            (halt)))
 ;------------------------------------------------------------------------------
-(defrule build-file-line
+(defrule identify-lines::build-file-line
          ?fct <- (read file ?fid)
          ?obj <- (object (is-a opened-file) 
                          (id ?fid))
@@ -95,27 +127,27 @@
            (send ?obj close-file)
            (unmake-instance ?obj)))
 ;------------------------------------------------------------------------------
-(defrule retract-unknowns 
+(defrule identify-lines::retract-unknowns 
          (declare (salience -10))
          ?f <- (file-line (type UNKNOWN))
          =>
          (retract ?f))
 ;------------------------------------------------------------------------------
-(defrule mark-heading-groups
+(defrule identify-lines::mark-heading-groups
          "Tags lines that consist of /* $? */ as group headings"
          ?f <- (file-line (type UNKNOWN)
                           (contents /* $? */))
          =>
          (modify ?f (type heading)))
 ;------------------------------------------------------------------------------
-(defrule mark-entry-line
+(defrule identify-lines::mark-entry-line
          "Tags lines that are defines and modifies the associated contents"
          ?f <- (file-line (type UNKNOWN) 
                           (contents #define ?name ?))
          =>
          (modify ?f (type #define) (contents ?name)))
 ;------------------------------------------------------------------------------
-(defrule merge-three-line-headers
+(defrule identify-lines::merge-three-line-headers
          "Merges simple three line headings into one rule"
          ?f0 <- (file-line (index ?i)
                            (type UNKNOWN) 
@@ -130,14 +162,14 @@
          (retract ?f1 ?f2)
          (modify ?f0 (contents /* $?c */)))
 ;------------------------------------------------------------------------------
-(defrule mark-glapi-calls
+(defrule identify-lines::mark-glapi-calls
          "marks glapi calls"
          ?f <- (file-line (type UNKNOWN)
                           (contents GLAPI $? "(" $? ")"))
          =>
          (modify ?f (type GLAPI-DEF)))
 ;------------------------------------------------------------------------------
-(defrule merge-potential-glapi-calls
+(defrule identify-lines::merge-potential-glapi-calls
          "Merges the next line of a GLAPI call if the line doesn't end with )"
          (declare (salience -1))
          ?f <- (file-line (type UNKNOWN)
@@ -151,12 +183,13 @@
          (retract ?f)
          (modify ?f0 (contents GLAPI $?vals "(" $?c $?contents)))
 ;------------------------------------------------------------------------------
-(defrule define-header-spans-initial
+(defrule identify-lines::define-header-spans-initial
          "Defines spans between headers"
          (declare (salience -3))
          (file-line (type heading)
                     (parent ?parent)
-                    (index ?i))
+                    (index ?i)
+                    (contents /* $?name */))
          (not (exists (heading-span (from ?i) 
                                     (parent ?parent))))
          (file-line (type heading)
@@ -165,12 +198,13 @@
          =>
          (bind ?difference (- ?i2 ?i))
          (if (> ?difference 0) then
-           (assert (heading-span (from ?i) 
+           (assert (heading-span (header-name (implode$ $?name))
+                                 (from ?i) 
                                  (to ?i2) 
                                  (parent ?parent) 
                                  (distance ?difference)))))
 ;------------------------------------------------------------------------------
-(defrule modify-header-spans-for-smaller-size
+(defrule identify-lines::modify-header-spans-for-smaller-size
          "Retracts the heading-span in response to finding an earlier heading"
          ?f <- (heading-span (from ?i)
                              (to ?j)
@@ -181,4 +215,35 @@
          =>
          (modify ?f (to ?i2) 
                  (distance (- ?i2 ?i))))
+;------------------------------------------------------------------------------
+(defrule convert-templates::convert-line-objects
+         ?f <- (file-line (type ?t) (parent ?p) (index ?i)
+                          (contents $?c))
+         =>
+         (retract ?f)
+         (bind ?name (gensym*))
+         (assert (message (to build-groups) 
+                          (action add-to-span)
+                          (arguments ?name)))
+         (make-instance ?name of line-entry 
+                        (type ?t) 
+                        (parent ?p) 
+                        (index ?i)
+                        (contents $?c)))
+;------------------------------------------------------------------------------
+(defrule build-groups::build-grouping
+         ?f <- (heading-span (from ?i) 
+                             (to ?i2) 
+                             (parent ?parent)
+                             (contents $?c))
+         (object (is-a line-entry) 
+                 (parent ?parent) 
+                 (index ?loc&:(> ?i2 ?loc ?i))
+                 (id ?id))
+         ?msg <- (message (to build-groups)
+                          (action add-to-span)
+                          (arguments ?id))
+         =>
+         (retract ?msg)
+         (modify ?f (contents $?c ?id)))
 ;------------------------------------------------------------------------------
