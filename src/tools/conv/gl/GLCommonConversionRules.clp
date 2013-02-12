@@ -94,28 +94,39 @@
              (and (neq 0 (str-compare ?str ?sp))
                   (str-index ?sp ?str)))
 ;------------------------------------------------------------------------------
-(defrule modify-input::identify-symbols-with-commas
-         ?fct <- (object (is-a file-line)
-                         (contents $?before ?symbol $?after))
-         (test (input-is-not-split-symbol "," ?symbol))
-         =>
-         (modify-instance ?fct (contents $?before (break-apart "," ?symbol) 
-                                         $?after)))
+(deffunction types::target-symbol-is-special (?symbol ?name ?docString)
+             (build (format nil "(defrule modify-input::%s \"%s\"
+?fct <- (object (is-a file-line) (contents $?b ?s $?a))
+(test (input-is-not-split-symbol \"%s\" ?s))
+=>
+(modify-instance ?fct (contents $?b (break-apart \"%s\" ?s) $?a)))" 
+                     ?name ?docString ?symbol ?symbol)))
 ;------------------------------------------------------------------------------
-(defrule modify-input::identify-symbols-with-open-parens
-         ?fct <- (object (is-a file-line)
-                         (contents $?b ?s $?a))
-         (test (input-is-not-split-symbol "(" ?s))
-         =>
-         (modify-instance ?fct (contents $?b (break-apart "(" ?s) $?a)))
+;(defrule modify-input::identify-symbols-with-commas
+;         ?fct <- (object (is-a file-line)
+;                         (contents $?before ?symbol $?after))
+;         (test (input-is-not-split-symbol "," ?symbol))
+;         =>
+;         (modify-instance ?fct (contents $?before (break-apart "," ?symbol) 
+;                                         $?after)))
+(target-symbol-is-special "," identify-symbols-with-commas "")
 ;------------------------------------------------------------------------------
-(defrule modify-input::identify-symbols-with-close-parens
-         ?fct <- (object (is-a file-line)
-                         (contents $?before ?symbol $?after))
-         (test (input-is-not-split-symbol ")" ?symbol))
-         =>
-         (modify-instance ?fct (contents $?before (break-apart ")" ?symbol)
-                                         $?after)))
+;(defrule modify-input::identify-symbols-with-open-parens
+;         ?fct <- (object (is-a file-line)
+;                         (contents $?b ?s $?a))
+;         (test (input-is-not-split-symbol "(" ?s))
+;         =>
+;         (modify-instance ?fct (contents $?b (break-apart "(" ?s) $?a)))
+(target-symbol-is-special "(" identify-symbols-with-open-parens "")
+;------------------------------------------------------------------------------
+;(defrule modify-input::identify-symbols-with-close-parens
+;         ?fct <- (object (is-a file-line)
+;                         (contents $?before ?symbol $?after))
+;         (test (input-is-not-split-symbol ")" ?symbol))
+;         =>
+;         (modify-instance ?fct (contents $?before (break-apart ")" ?symbol)
+;                                         $?after)))
+(target-symbol-is-special ")" identify-symbols-with-close-parens "")
 ;------------------------------------------------------------------------------
 (defrule identify-lines::mark-heading-groups
          "Tags lines that consist of /* $? */ as group headings"
