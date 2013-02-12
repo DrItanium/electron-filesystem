@@ -28,30 +28,5 @@
 ;                               expert system 
 ; Written by Joshua Scoggins
 ;------------------------------------------------------------------------------
-(defmodule types 
-           (export ?ALL))
-;------------------------------------------------------------------------------
-(defmodule read-input 
-           (import types ?ALL))
-;------------------------------------------------------------------------------
-(defmodule modify-input
-           (import types ?ALL))
-;------------------------------------------------------------------------------
-(defmodule identify-lines 
-           (import types ?ALL))
-;------------------------------------------------------------------------------
-(defmodule convert-templates
-           (import types ?ALL))
-;------------------------------------------------------------------------------
-(defmodule build-groups 
-           (import types ?ALL))
-;------------------------------------------------------------------------------
-(defmodule grouping-update
-           (import types ?ALL))
-;------------------------------------------------------------------------------
-(defmodule MAIN 
-           (import types ?ALL)
-           (export ?ALL))
-;------------------------------------------------------------------------------
-(batch* "Types/Loader.clp")
+(batch* CommonConversionEntry.clp)
 (batch* GLConstantConversion.clp)
