@@ -38,56 +38,46 @@
 ; Unlike GLConstantConversion, I don't need to use the heading span objects.
 ; This is because each file-line has already been correctly merged.
 ;------------------------------------------------------------------------------
+; We need to define a transformation function/rule f which is responsible for
+; taking in a knowledge representation of the original code from the input
+; language and translates it to a knowledge representation of the code in the
+; output language. In this case it is C => C with the added "benefit" of
+; needing to add CLIPS api calls to interact with the overall environment. 
+;
+; This isn't really that hard as what we need to do is just parse the arguments
+; and generate the corresponding C code. 
+;------------------------------------------------------------------------------
+(defclass types::GLAPIFunction
+          "Defines a given GLAPI function"
+          (is-a Object)
+			 (slot return-type (type SYMBOL STRING))
+			 (slot function-name)
+			 (slot clips-function-name)
+			 (multislot arguments))
+;------------------------------------------------------------------------------
+(defclass types::GLAPIArgument
+          "Defines a given GLAPI function argument"
+			 (is-a Object)
+			 (slot argument-type)
+			 (slot argument-name)
+			 (slot is-pointer (type SYMBOL) (allowed-values FALSE TRUE)))
+;------------------------------------------------------------------------------
 (defrule build-groups::build-grouping
          ?msg <- (message (to build-groups)
                           (action add-to-span)
                           (arguments ?id))
-         (object (is-a file-line) 
+         ?obj <- (object (is-a file-line) 
                  (id ?id)
-                 (type GLAPI-DEF))
+                 (type GLAPI-DEF)
+					  (contents $?contents))
          =>
          ;we need to set this up to do conversion of the different arguments
-         (retract ?msg))
+			(retract ?msg)
+			)
 ;------------------------------------------------------------------------------
-; Alright, we now need to build a corresponding procedure from each heading
-; There are several ways to do this. The easiest would be to just do it
-; procedurally in a single rule fire. 
-;------------------------------------------------------------------------------
-(deffunction grouping-update::retrieve-element (?s)
-             (nth 1 (send (instance-address * (symbol-to-instance-name ?s))
-                          get-contents)))
-;------------------------------------------------------------------------------
-(deffunction grouping-update::to-conditional-field (?symbol ?if)
-             (bind ?str (str-cat (retrieve-element ?symbol)))
-             (create$ (format nil "%s(strcmp(input, \"%s\") == 0) {" 
-                              (if ?if then "if" else "} else if")
-                              (sub-string (+ (str-index "_" ?str) 1) 
-                                          (str-length ?str) ?str))
-                      (format nil "return %s" ?str)))
-;------------------------------------------------------------------------------
-(defrule grouping-update::build-constant-conversion-procedure
-         ?obj <- (object (is-a heading-span)
-                         (header-name ?group)
-                         (contents $?entries))
-         (test (> (length$ $?entries) 0))
-         =>
-         (unmake-instance ?obj)
-         (bind ?target (format nil "//%s" ?group))
-         (bind ?header (format nil "extern GLenum To%s(char* input) {" ?group))
-         (bind ?first (to-conditional-field (nth$ 1 (first$ ?entries)) TRUE))
-         (bind ?result (create$ ?target ?header ?first))
-         (progn$ (?e (rest$ ?entries))
-                 (bind ?result 
-                       (create$ ?result (to-conditional-field ?e FALSE))))
-         (bind ?result (create$ ?result "} else {" "return 0;" "}" "}"))
-         (progn$ (?r ?result) (printout t ?r crlf))
-         (printout t crlf crlf))
-;------------------------------------------------------------------------------
-(defrule grouping-update::skip-constant-conversion
-         ?obj <- (object (is-a heading-span)
-                         (header-name ?group)
-                         (contents $?entries))
-         (test (= (length$ $?entries) 0))
-         =>
-         (unmake-instance ?obj))
+(defrule build-groups::delete-heading-span
+        "We don't need heading spans in this expert system. So delete them"
+         ?obj <- (object (is-a heading-span))
+			=>
+			(unmake-instance ?obj))
 ;------------------------------------------------------------------------------
