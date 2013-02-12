@@ -39,7 +39,9 @@
          (bind ?name (gensym*))
          (retract ?fct)
          (if (open ?path ?name "r") then 
-           (make-instance of opened-file (id ?name) (index 0))
+           (make-instance of opened-file 
+                          (file-id ?name) 
+                          (index 0))
            (assert (message (to identify-lines)
                             (action read-file)
                             (arguments ?name)))
@@ -59,7 +61,7 @@
                           (action read-file)
                           (arguments ?name))
          ?obj <- (object (is-a opened-file) 
-                         (id ?fid))
+                         (file-id ?fid))
          =>
          (retract ?fct)
          (bind ?result (send ?obj read-line))
@@ -176,33 +178,33 @@
                  (parent ?parent)
                  (index ?i)
                  (contents /* $?name */))
-         (not (exists (heading-span (from ?i) 
-                                    (parent ?parent))))
+         (not (exists (object (is-a heading-span) 
+                              (from ?i) 
+                              (parent ?parent))))
          (object (is-a file-line)
                  (type heading)
                  (parent ?parent)
                  (index ?i2&:(> ?i2 ?i)))
          =>
-         (bind ?difference (- ?i2 ?i))
-         (if (> ?difference 0) then
-           (assert (heading-span (header-name (implode$ $?name))
-                                 (from ?i) 
-                                 (to ?i2) 
-                                 (parent ?parent) 
-                                 (distance ?difference)))))
+         (if (> (- ?i2 ?i) 0) then
+           (make-instance of heading-span
+                          (header-name (implode$ $?name))
+                          (from ?i)
+                          (to ?i2)
+                          (parent ?parent))))
 ;------------------------------------------------------------------------------
 (defrule identify-lines::modify-header-spans-for-smaller-size
          "Retracts the heading-span in response to finding an earlier heading"
-         ?f <- (heading-span (from ?i)
-                             (to ?j)
-                             (parent ?parent))
+         ?f <- (object (is-a heading-span)
+                       (from ?i)
+                       (to ?j)
+                       (parent ?parent))
          (object (is-a file-line)
                  (type heading)
                  (parent ?parent)
                  (index ?i2&:(> ?j ?i2 ?i)))
          =>
-         (modify ?f (to ?i2) 
-                 (distance (- ?i2 ?i))))
+         (modify-instance ?f (to ?i2)))
 ;------------------------------------------------------------------------------
 (defrule convert-templates::retract-unknowns 
          ?f <- (object (is-a file-line) 
@@ -220,10 +222,11 @@
                           (arguments ?id))))
 ;------------------------------------------------------------------------------
 (defrule build-groups::build-grouping
-         ?f <- (heading-span (from ?i) 
-                             (to ?i2) 
-                             (parent ?parent)
-                             (contents $?c))
+         ?f <- (object (is-a heading-span)
+                       (from ?i) 
+                       (to ?i2) 
+                       (parent ?parent)
+                       (contents $?c))
          (object (is-a file-line) 
                  (parent ?parent) 
                  (index ?loc&:(> ?i2 ?loc ?i))
@@ -233,7 +236,7 @@
                           (arguments ?id))
          =>
          (retract ?msg)
-         (modify ?f (contents $?c ?id)))
+         (modify-instance ?f (contents $?c ?id)))
 ;------------------------------------------------------------------------------
 (defrule build-groups::delete-still-existing-elements
          (declare (salience -100))
@@ -247,8 +250,9 @@
          (retract ?msg))
 ;------------------------------------------------------------------------------
 (defrule grouping-update::generate-constant-if-statement
-         (heading-span (header-name ?group)
-                       (contents $? ?name $?))
+         (object (is-a heading-span)
+                 (header-name ?group)
+                 (contents $? ?name $?))
          ?obj <- (object (is-a file-line) 
                          (id ?name)
                          (type #define)

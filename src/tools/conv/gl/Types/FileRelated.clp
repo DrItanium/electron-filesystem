@@ -29,6 +29,7 @@
 ;------------------------------------------------------------------------------
 (defclass types::opened-file 
   (is-a Object)
+  (slot file-id)
   (slot index (type INTEGER) (range 0 ?VARIABLE))
   (message-handler next-index)
   (message-handler read-line)
@@ -40,10 +41,10 @@
                     (return ?old))
 ;------------------------------------------------------------------------------
 (defmessage-handler types::opened-file read-line ()
-                    (readline ?self:id))
+                    (readline ?self:file-id))
 ;------------------------------------------------------------------------------
 (defmessage-handler types::opened-file close-file ()
-                    (close ?self:id))
+                    (close ?self:file-id))
 ;------------------------------------------------------------------------------
 (defclass types::file-line
   (is-a Object)

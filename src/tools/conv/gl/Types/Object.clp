@@ -29,8 +29,8 @@
 ;------------------------------------------------------------------------------
 (defclass types::Object
   (is-a USER)
-  (slot id (access initialize-only) (type SYMBOL))
-  (slot parent)
+  (slot id (visibility public) (access initialize-only) (type SYMBOL))
+  (slot parent (visibility public))
   (message-handler init after))
 ;------------------------------------------------------------------------------
 (defmessage-handler types::Object init after ()
