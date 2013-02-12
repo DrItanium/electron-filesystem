@@ -32,11 +32,17 @@
 ; We need to add functionality to diverge asterisks from a symbol
 ;------------------------------------------------------------------------------
 (target-symbol-is-special "*" 
-                          identify-symbols-with-asterisks 
-                          "Splits asterisks (*) out of symbols if necessary")
+								  identify-symbols-with-asterisks 
+								  "Splits asterisks (*) out of symbols if necessary")
 ;------------------------------------------------------------------------------
 ; Unlike GLConstantConversion, I don't need to use the heading span objects.
 ; This is because each file-line has already been correctly merged.
+;------------------------------------------------------------------------------
+(defrule build-groups::delete-heading-span
+			"We don't need heading spans in this expert system. So delete them"
+			?obj <- (object (is-a heading-span))
+			=>
+			(unmake-instance ?obj))
 ;------------------------------------------------------------------------------
 ; We need to define a transformation function/rule f which is responsible for
 ; taking in a knowledge representation of the original code from the input
@@ -48,36 +54,37 @@
 ; and generate the corresponding C code. 
 ;------------------------------------------------------------------------------
 (defclass types::GLAPIFunction
-          "Defines a given GLAPI function"
-          (is-a Object)
-			 (slot return-type (type SYMBOL STRING))
-			 (slot function-name)
-			 (slot clips-function-name)
-			 (multislot arguments))
+  "Defines a given GLAPI function"
+  (is-a Object)
+  (slot return-type (type SYMBOL STRING))
+  (slot function-name)
+  (slot clips-function-name)
+  (multislot arguments))
 ;------------------------------------------------------------------------------
 (defclass types::GLAPIArgument
-          "Defines a given GLAPI function argument"
-			 (is-a Object)
-			 (slot argument-type)
-			 (slot argument-name)
-			 (slot is-pointer (type SYMBOL) (allowed-values FALSE TRUE)))
+  "Defines a given GLAPI function argument"
+  (is-a Object)
+  (slot argument-type)
+  (slot argument-name)
+  (slot is-constant (type SYMBOL) (allowed-values FALSE TRUE))
+  (slot is-pointer (type SYMBOL) (allowed-values FALSE TRUE)))
 ;------------------------------------------------------------------------------
-(defrule build-groups::build-grouping
-         ?msg <- (message (to build-groups)
-                          (action add-to-span)
-                          (arguments ?id))
-         ?obj <- (object (is-a file-line) 
-                 (id ?id)
-                 (type GLAPI-DEF)
-					  (contents $?contents))
-         =>
-         ;we need to set this up to do conversion of the different arguments
-			(retract ?msg)
-			)
-;------------------------------------------------------------------------------
-(defrule build-groups::delete-heading-span
-        "We don't need heading spans in this expert system. So delete them"
-         ?obj <- (object (is-a heading-span))
+(defrule build-groups::build-glapi-function
+			?msg <- (message (to build-groups)
+								  (action add-to-span)
+								  (arguments ?id))
+			?obj <- (object (is-a file-line) 
+								 (id ?id)
+								 (type GLAPI-DEF)
+								 (contents GLAPI ?ret GLAPIENTRY ?name "(" $?args ")"))
 			=>
-			(unmake-instance ?obj))
+			;we need to set this up to do conversion of the different arguments
+			(bind ?objName (gensym*))
+			(make-instance ?objName of GLAPIFunction 
+								(return-type ?ret)
+								(function-name ?name)
+								(clips-function-name (sym-cat CLIPS_ ?name)))
+			(modify ?msg (to grouping-update)
+					  (action parse-arguments)
+					  (arguments ?objName => $?args)))
 ;------------------------------------------------------------------------------
