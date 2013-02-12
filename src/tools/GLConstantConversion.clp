@@ -30,6 +30,12 @@
 (defmodule types 
            (export ?ALL))
 ;------------------------------------------------------------------------------
+(defmodule read-input 
+           (import types ?ALL))
+;------------------------------------------------------------------------------
+(defmodule modify-input
+           (import types ?ALL))
+;------------------------------------------------------------------------------
 (defmodule identify-lines 
            (import types ?ALL))
 ;------------------------------------------------------------------------------
@@ -37,6 +43,9 @@
            (import types ?ALL))
 ;------------------------------------------------------------------------------
 (defmodule build-groups 
+           (import types ?ALL))
+;------------------------------------------------------------------------------
+(defmodule retract-invalid-elements
            (import types ?ALL))
 ;------------------------------------------------------------------------------
 (defmodule MAIN 
@@ -62,11 +71,16 @@
 (defmessage-handler types::opened-file close-file ()
                     (close ?self:id))
 ;------------------------------------------------------------------------------
-(deftemplate types::file-line 
-             (slot index)
-             (slot parent)
-             (slot type)
-             (multislot contents))
+(defclass types::file-line
+  (is-a USER)
+  (slot id)
+  (slot index)
+  (slot parent)
+  (slot type)
+  (multislot contents))
+;------------------------------------------------------------------------------
+(defmessage-handler types::file-line init after ()
+                    (bind ?self:id (instance-name-to-symbol (instance-name ?self))))
 ;------------------------------------------------------------------------------
 (deftemplate types::heading-span
              "Defines a span between two different headings"
@@ -83,16 +97,13 @@
              (slot action)
              (multislot arguments))
 ;------------------------------------------------------------------------------
-(defclass types::line-entry
+(defclass types::grouping
   (is-a USER)
-  (slot id)
-  (slot index)
+  (slot group-name)
   (slot parent)
-  (slot type)
+  (slot from (type INTEGER) (range 0 ?VARIABLE))
+  (slot to (type INTEGER) (range 0 ?VARIABLE))
   (multislot contents))
-;------------------------------------------------------------------------------
-(defmessage-handler types::line-entry init after ()
-                    (bind ?self:id (instance-name-to-symbol (instance-name ?self))))
 ;------------------------------------------------------------------------------
 ; INPUT FACT FORM: (parse constant file ?path)
 ;------------------------------------------------------------------------------
@@ -110,13 +121,14 @@
            (assert (message (to identify-lines)
                             (action read-file)
                             (arguments ?name)))
-           (focus identify-lines convert-templates build-groups)
+           (focus read-input modify-input 
+                  identify-lines convert-templates build-groups)
            else
            (printout t "ERROR: target file at " ?path " does not exist!" crlf 
                      "Halting!" crlf)
            (halt)))
 ;------------------------------------------------------------------------------
-(defrule identify-lines::build-file-line
+(defrule read-input::build-file-line
          ?fct <- (message (to identify-lines)
                           (action read-file)
                           (arguments ?name))
@@ -127,18 +139,50 @@
          (bind ?result (send ?obj read-line))
          (if (neq ?result EOF) then
            (duplicate ?fct)
-           (make-instance of file-line (index (send ?obj next-index))
-                          (type UNKNOWN)
-                          (parent ?fid)
-                          (contents (explode$ ?result)))
+           (if (neq ?result "") then
+             (make-instance of file-line (index (send ?obj next-index))
+                            (type UNKNOWN)
+                            (parent ?fid)
+                            (contents (explode$ ?result))))
            else
            (send ?obj close-file)
            (unmake-instance ?obj)))
 ;------------------------------------------------------------------------------
-(defrule convert-templates::retract-unknowns 
-         ?f <- (object (is-a file-line) (type UNKNOWN))
+(defrule modify-input::identify-symbols-with-commas
+         ?fct <- (object (is-a file-line)
+                         (contents $?before ?symbol $?after))
+         (test (and (neq 0 (str-compare (str-cat ?symbol) ","))
+                    (str-index "," (str-cat ?symbol))))
          =>
-         (unmake-instance ?f))
+         (bind ?str (if (stringp ?symbol) then ?symbol else (str-cat ?symbol)))
+         (bind ?ind (str-index "," ?str))
+         (bind ?p0 (sub-string 1 (- ?ind 1) ?str))
+         (bind ?p1 (sub-string (+ ?ind 1) (str-length ?str) ?str))
+         (modify-instance ?fct (contents $?before ?p0 , ?p1 $?after)))
+;------------------------------------------------------------------------------
+(defrule modify-input::identify-symbols-with-open-parens
+         ?fct <- (object (is-a file-line)
+                         (contents $?before ?symbol $?after))
+         (test (and (neq 0 (str-compare (str-cat ?symbol) "("))
+                    (str-index "(" (str-cat ?symbol))))
+         =>
+         (bind ?str (if (stringp ?symbol) then ?symbol else (str-cat ?symbol)))
+         (bind ?ind (str-index "(" ?str))
+         (bind ?p0 (sub-string 1 ?ind ?str))
+         (bind ?p1 (sub-string ?ind (str-length ?str) ?str))
+         (modify-instance ?fct (contents $?before ?p0 "(" ?p1 $?after)))
+;------------------------------------------------------------------------------
+(defrule modify-input::identify-symbols-with-close-parens
+         ?fct <- (object (is-a file-line)
+                         (contents $?before ?symbol&~")" $?after))
+         (test (and (neq 0 (str-compare (str-cat ?symbol) ")"))
+                    (str-index ")" (str-cat ?symbol))))
+         =>
+         (bind ?str (if (stringp ?symbol) then ?symbol else (str-cat ?symbol)))
+         (bind ?ind (str-index ")" ?str))
+         (bind ?p0 (sub-string 1 ?ind ?str))
+         (bind ?p1 (sub-string ?ind (str-length ?str) ?str))
+         (modify-instance ?fct (contents $?before ?p0 ")" ?p1 $?after)))
 ;------------------------------------------------------------------------------
 (defrule identify-lines::mark-heading-groups
          "Tags lines that consist of /* $? */ as group headings"
@@ -176,37 +220,42 @@
 ;------------------------------------------------------------------------------
 (defrule identify-lines::mark-glapi-calls
          "marks glapi calls"
-         ?f <- (file-line (type UNKNOWN)
-                          (contents GLAPI $? "(" $? ")"))
+         ?f <- (object (is-a file-line)
+                       (type UNKNOWN)
+                       (contents GLAPI $? "(" $? ")"))
          =>
-         (modify ?f (type GLAPI-DEF)))
+         (modify-instance ?f (type GLAPI-DEF)))
 ;------------------------------------------------------------------------------
 (defrule identify-lines::merge-potential-glapi-calls
          "Merges the next line of a GLAPI call if the line doesn't end with )"
          (declare (salience -1))
-         ?f <- (file-line (type UNKNOWN)
-                          (contents GLAPI $?vals "(" $?c)
-                          (index ?i))
+         ?f <- (object (is-a file-line)
+                       (type UNKNOWN)
+                       (contents GLAPI $?vals "(" $?c)
+                       (index ?i))
          (test (not (member$ ")" $?c)))
-         ?f0 <- (file-line (index ?i0&:(= ?i0 (+ ?i 1)))
-                           (type UNKNOWN)
-                           (contents $?contents))
+         ?f0 <- (object (is-a file-line)
+                        (index ?i0&:(= ?i0 (+ ?i 1)))
+                        (type UNKNOWN)
+                        (contents $?contents))
          =>
-         (retract ?f)
-         (modify ?f0 (contents GLAPI $?vals "(" $?c $?contents)))
+         (unmake-instance ?f)
+         (modify-instance ?f0 (contents GLAPI $?vals "(" $?c $?contents)))
 ;------------------------------------------------------------------------------
 (defrule identify-lines::define-header-spans-initial
          "Defines spans between headers"
          (declare (salience -3))
-         (file-line (type heading)
-                    (parent ?parent)
-                    (index ?i)
-                    (contents /* $?name */))
+         (object (is-a file-line)
+                 (type heading)
+                 (parent ?parent)
+                 (index ?i)
+                 (contents /* $?name */))
          (not (exists (heading-span (from ?i) 
                                     (parent ?parent))))
-         (file-line (type heading)
-                    (parent ?parent)
-                    (index ?i2&:(> ?i2 ?i)))
+         (object (is-a file-line)
+                 (type heading)
+                 (parent ?parent)
+                 (index ?i2&:(> ?i2 ?i)))
          =>
          (bind ?difference (- ?i2 ?i))
          (if (> ?difference 0) then
@@ -221,36 +270,35 @@
          ?f <- (heading-span (from ?i)
                              (to ?j)
                              (parent ?parent))
-         (file-line (type heading)
-                    (parent ?parent)
-                    (index ?i2&:(> ?j ?i2 ?i)))
+         (object (is-a file-line)
+                 (type heading)
+                 (parent ?parent)
+                 (index ?i2&:(> ?j ?i2 ?i)))
          =>
          (modify ?f (to ?i2) 
                  (distance (- ?i2 ?i))))
 ;------------------------------------------------------------------------------
-(defrule convert-templates::convert-line-objects
-         ?f <- (file-line (type ?t) 
-                          (parent ?p) 
-                          (index ?i)
-                          (contents $?c))
+(defrule convert-templates::retract-unknowns 
+         ?f <- (object (is-a file-line) 
+                       (type UNKNOWN))
          =>
-         (retract ?f)
-         (bind ?name (gensym*))
-         (assert (message (to build-groups) 
+         (unmake-instance ?f))
+;------------------------------------------------------------------------------
+(defrule convert-templates::assert-build-groups
+         ?f <- (object (is-a file-line) 
+                       (type ~UNKNOWN) 
+                       (id ?id))
+         =>
+         (assert (message (to build-groups)
                           (action add-to-span)
-                          (arguments ?name)))
-         (make-instance ?name of line-entry 
-                        (type ?t) 
-                        (parent ?p) 
-                        (index ?i)
-                        (contents $?c)))
+                          (arguments ?id))))
 ;------------------------------------------------------------------------------
 (defrule build-groups::build-grouping
          ?f <- (heading-span (from ?i) 
                              (to ?i2) 
                              (parent ?parent)
                              (contents $?c))
-         (object (is-a line-entry) 
+         (object (is-a file-line) 
                  (parent ?parent) 
                  (index ?loc&:(> ?i2 ?loc ?i))
                  (id ?id))
