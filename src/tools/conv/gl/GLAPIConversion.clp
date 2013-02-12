@@ -25,7 +25,18 @@
 ;SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ;------------------------------------------------------------------------------
 ; GLAPIConversion.clp - an expert system that reads a define and generates
-; conversion code for it. 
+; corresponding CLIPS functions that convert the CLIPS values into
+; corresponding opengl types. This gets a little goofy when dealing with
+; multifields but the idea is sound. 
+;------------------------------------------------------------------------------
+; We need to add functionality to diverge asterisks from a symbol
+;------------------------------------------------------------------------------
+(target-symbol-is-special "*" 
+                          identify-symbols-with-asterisks 
+                          "Splits asterisks (*) out of symbols if necessary")
+;------------------------------------------------------------------------------
+; Unlike GLConstantConversion, I don't need to use the heading span objects.
+; This is because each file-line has already been correctly merged.
 ;------------------------------------------------------------------------------
 (defrule build-groups::build-grouping
          ?f <- (object (is-a heading-span)
