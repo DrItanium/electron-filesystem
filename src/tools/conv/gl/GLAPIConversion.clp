@@ -35,6 +35,14 @@
 								  identify-symbols-with-asterisks 
 								  "Splits asterisks (*) out of symbols if necessary")
 ;------------------------------------------------------------------------------
+(target-symbol-is-special "["
+								  identify-symbols-with-open-square-bracket
+								  "Splits an input string on [")
+;------------------------------------------------------------------------------
+(target-symbol-is-special "]"
+								  identify-symbols-with-close-square-bracket
+								  "Splits an input string on ]")
+;------------------------------------------------------------------------------
 ; Unlike GLConstantConversion, I don't need to use the heading span objects.
 ; This is because each file-line has already been correctly merged.
 ;------------------------------------------------------------------------------
@@ -76,7 +84,7 @@
 (defclass types::GLAPIArgument
   "Defines a given GLAPI function argument"
   (is-a Object)
-  (slot argument-type)
+  (slot argument-type (visibility public))
   (slot argument-name)
   (slot index)
   (slot is-constant (type SYMBOL) (allowed-values FALSE TRUE))
@@ -85,11 +93,23 @@
 ;------------------------------------------------------------------------------
 (defmessage-handler types::GLAPIArgument reconstitute
 						  ()
-						  (format t "%s %s %s %s" 
-									 (if ?self:is-constant then "const" else "")
-									 ?self:argument-type
-									 (if ?self:is-pointer then "*" else "")
-									 ?self:argument-name))
+						  (return (format nil "%s %s %s %s" 
+												(if ?self:is-constant then "const" else "")
+												?self:argument-type
+												(if ?self:is-pointer then "*" else "")
+												?self:argument-name)))
+;------------------------------------------------------------------------------
+(defclass types::GLAPIFixedArrayArgument
+  "Refers to fixed size arrays"
+  (is-a GLAPIArgument)
+  (slot array-size)
+  (message-handler reconstitute around))
+;------------------------------------------------------------------------------
+(defmessage-handler types::GLAPIFixedArrayArgument reconstitute around 
+						  ()
+						  (return (format nil "%s[%d]" 
+												(call-next-handler)
+												?self:array-size)))
 ;------------------------------------------------------------------------------
 (defrule build-groups::build-glapi-function
 			?msg <- (message (to build-groups)
@@ -128,7 +148,24 @@
 								(function-name ?name)
 								(clips-function-name (sym-cat CLIPS_ ?name))))
 ;------------------------------------------------------------------------------
-(defrule grouping-update::parse-arguments
+(defrule grouping-update::parse-fixed-size-array-argument
+			(declare (salience 2))
+			?fct <- (message (to grouping-update)
+								  (action parse-arguments)
+								  (arguments ?o => $?sentry "[" ?size "]" ,|"," $?rest))
+			?obj <- (object (is-a GLAPIFunction)
+								 (id ?o))
+			=>
+			(modify ?fct (arguments ?o => $?rest))
+			(bind ?name (gensym*))
+			(duplicate ?fct (action populate-argument)
+						  (arguments ?name => $?sentry))
+			(make-instance ?name of GLAPIFixedArrayArgument
+								(parent ?o)
+								(index (send ?obj add-argument ?name))
+								(array-size ?size)))
+;------------------------------------------------------------------------------
+(defrule grouping-update::parse-arguments-generic
 			(declare (salience 1))
 			?fct <- (message (to grouping-update)
 								  (action parse-arguments)
@@ -211,6 +248,5 @@
 			(declare (salience -10))
 			?obj <- (object (is-a GLAPIArgument))
 			=>
-			(send ?obj reconstitute)
-			(printout t crlf))
+			(printout t (send ?obj reconstitute) crlf))
 ;------------------------------------------------------------------------------
