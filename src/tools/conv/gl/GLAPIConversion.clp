@@ -59,13 +59,22 @@
   (slot return-type (type SYMBOL STRING))
   (slot function-name)
   (slot clips-function-name)
-  (multislot arguments))
+  (multislot arguments)
+  (message-handler add-argument))
+;------------------------------------------------------------------------------
+(defmessage-handler types::GLAPIFunction add-argument 
+						  "Adds the arg name and returns the index"
+						  (?name)
+						  (bind ?index (length$ ?self:arguments))
+						  (slot-direct-insert$ arguments ?index ?name)
+						  (return ?index))
 ;------------------------------------------------------------------------------
 (defclass types::GLAPIArgument
   "Defines a given GLAPI function argument"
   (is-a Object)
   (slot argument-type)
   (slot argument-name)
+  (slot index)
   (slot is-constant (type SYMBOL) (allowed-values FALSE TRUE))
   (slot is-pointer (type SYMBOL) (allowed-values FALSE TRUE)))
 ;------------------------------------------------------------------------------
@@ -87,4 +96,43 @@
 			(modify ?msg (to grouping-update)
 					  (action parse-arguments)
 					  (arguments ?objName => $?args)))
+;------------------------------------------------------------------------------
+(defrule grouping-update::parse-arguments
+			(declare (salience 1))
+			?fct <- (message (to grouping-update)
+								  (action parse-arguments)
+								  (arguments ?o => $?sentry ,|"," $?rest))
+			?obj <- (object (is-a GLAPIFunction)
+								 (id ?o))
+			=>
+			(modify ?fct (arguments ?o => $?rest))
+			(bind ?name (gensym*))
+			(duplicate ?fct (action populate-argument)
+						  (arguments ?name => $?sentry))
+			(make-instance ?name of GLAPIArgument
+								(parent ?o)
+								(index (send ?obj add-argument ?name))))
+;------------------------------------------------------------------------------
+(defrule grouping-update::create-last-argument
+			?fct <- (message (to grouping-update)
+								  (action parse-arguments)
+								  (arguments ?o => $?all))
+			(test (and (not (member$ , $?all))
+						  (not (member$ "," $?all))))
+			?obj <- (object (is-a GLAPIFunction)
+								 (id ?o))
+			=>
+			(bind ?name (gensym*))
+			(modify ?fct (action populate-argument)
+					  (arguments ?name => $?all))
+			(make-instance ?name of GLAPIArgument
+								(parent ?o)
+								(index (send ?obj add-argument ?name))))
+;------------------------------------------------------------------------------
+(defrule grouping-update::retract-empty-parse-message
+			?fct <- (message (to grouping-update)
+								  (action parse-arguments)
+								  (arguments ? =>))
+			=>
+			(retract ?fct))
 ;------------------------------------------------------------------------------
