@@ -24,33 +24,12 @@
 ;(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 ;SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ;------------------------------------------------------------------------------
-; Entry.clp - Entry point into the GLConstantConversion expert system 
+; RunConverter.clp - Runs the GLConstantConversion expert system
 ; Written by Joshua Scoggins
 ;------------------------------------------------------------------------------
-(defmodule types 
-           (export ?ALL))
-;------------------------------------------------------------------------------
-(defmodule read-input 
-           (import types ?ALL))
-;------------------------------------------------------------------------------
-(defmodule modify-input
-           (import types ?ALL))
-;------------------------------------------------------------------------------
-(defmodule identify-lines 
-           (import types ?ALL))
-;------------------------------------------------------------------------------
-(defmodule convert-templates
-           (import types ?ALL))
-;------------------------------------------------------------------------------
-(defmodule build-groups 
-           (import types ?ALL))
-;------------------------------------------------------------------------------
-(defmodule grouping-update
-           (import types ?ALL))
-;------------------------------------------------------------------------------
-(defmodule MAIN 
-           (import types ?ALL)
-           (export ?ALL))
-;------------------------------------------------------------------------------
-(batch* "Types/Loader.clp")
-(batch* GLConstantConversion.clp)
+(clear)
+(batch* ConstantConversionEntry.clp)
+(reset)
+(assert (parse constant file "/usr/include/GL/gl.h"))
+(run)
+(exit)
