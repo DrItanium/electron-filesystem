@@ -140,3 +140,58 @@
 			=>
 			(retract ?fct))
 ;------------------------------------------------------------------------------
+(defrule grouping-update::mark-argument-is-pointer
+			(declare (salience 1))
+			?fct <- (message (to grouping-update)
+								  (action populate-argument)
+								  (arguments ?o => $?before "*" $?after))
+			?obj <- (object (is-a GLAPIArgument) 
+								 (id ?o))
+			=>
+			(modify ?fct (arguments ?o => $?before $?after))
+			(modify-instance ?obj (is-pointer TRUE)))
+;------------------------------------------------------------------------------
+(defrule grouping-update::mark-argument-is-constant
+			(declare (salience 1))
+			?fct <- (message (to grouping-update)
+								  (action populate-argument)
+								  (arguments ?o => $?before const|"const" $?after))
+			?obj <- (object (is-a GLAPIArgument)
+								 (id ?o))
+			=>
+			(modify ?fct (arguments ?o => $?before $?after))
+			(modify-instance ?obj (is-constant TRUE)))
+;------------------------------------------------------------------------------
+(defrule grouping-update::set-argument-name
+         ?fct <- (message (to grouping-update)
+				(action populate-argument)
+				(arguments ?o => $?items ?name))
+			?obj <- (object (is-a GLAPIArgument)
+				(id ?o))
+			=>
+			(modify ?fct (arguments ?o => $?items))
+			(modify-instance ?obj (argument-name ?name)))
+;------------------------------------------------------------------------------
+(defrule grouping-update::set-argument-type
+         ?fct <- (message (to grouping-update)
+				(action populate-argument)
+				(arguments ?o => ?type $?rest))
+			?obj <- (object (is-a GLAPIArgument)
+				(id ?o))
+			=>
+			(modify ?fct (arguments ?o => $?rest))
+			(modify-instance ?obj (argument-type ?type)))
+;------------------------------------------------------------------------------
+(defrule grouping-update::retract-arguments
+         ?fct <- (message (to grouping-update)
+				              (action populate-argument)
+								  (arguments ? =>))
+			=>
+			(retract ?fct))
+;------------------------------------------------------------------------------
+(defrule grouping-update::printout-arguments
+         (declare (salience -10))
+			?obj <- (object (is-a GLAPIArgument))
+			=>
+			(send ?obj print))
+;------------------------------------------------------------------------------
