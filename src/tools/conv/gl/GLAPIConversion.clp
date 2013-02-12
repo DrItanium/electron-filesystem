@@ -66,8 +66,12 @@
 						  "Adds the arg name and returns the index"
 						  (?name)
 						  (bind ?index (length$ ?self:arguments))
-						  (slot-direct-insert$ arguments ?index ?name)
-						  (return ?index))
+						  (if (= 0 ?index) then
+							 (slot-direct-insert$ arguments 1 ?name)
+							 (return 1)
+							 else
+							 (slot-direct-insert$ arguments ?index ?name)
+							 (return ?index)))
 ;------------------------------------------------------------------------------
 (defclass types::GLAPIArgument
   "Defines a given GLAPI function argument"
