@@ -109,9 +109,9 @@
 ;------------------------------------------------------------------------------
 (defmessage-handler types::GLAPIFixedArrayArgument reconstitute around 
 						  ()
-						  (return (format nil "%s[%d]" 
+						  (return (format nil "%s[%s]" 
 												(call-next-handler)
-												?self:array-size)))
+												(str-cat ?self:array-size))))
 ;------------------------------------------------------------------------------
 (defrule build-groups::build-glapi-function
 			?msg <- (message (to build-groups)
@@ -124,7 +124,7 @@
 			=>
 			;we need to set this up to do conversion of the different arguments
 			(bind ?objName (gensym*))
-			(modify ?msg (to grouping-update)
+			(modify ?msg 
 					  (action parse-arguments)
 					  (arguments ?objName => $?args))
 			(make-instance ?objName of GLAPIFunction 
@@ -143,68 +143,73 @@
 								 (contents GLAPI ?ret GLAPIENTRY ?name "(" void ")"))
 			=>
 			;we need to set this up to do conversion of the different arguments
-			(bind ?objName (gensym*))
 			(retract ?msg)
-			(make-instance ?objName of GLAPIFunction 
+			(make-instance of GLAPIFunction 
 								(return-type ?ret)
 								(function-name ?name)
 								(clips-function-name (sym-cat CLIPS_ ?name))))
 ;------------------------------------------------------------------------------
-(defrule grouping-update::parse-fixed-size-array-argument
-			(declare (salience 2))
-			?fct <- (message (to grouping-update)
-								  (action parse-arguments)
-								  (arguments ?o => $?sentry "[" ?size "]" ,|"," $?rest))
-			?obj <- (object (is-a GLAPIFunction)
-								 (id ?o))
-			=>
-			(modify ?fct (arguments ?o => $?rest))
-			(bind ?name (gensym*))
-			(duplicate ?fct (action populate-argument)
-						  (arguments ?name => $?sentry))
-			(make-instance ?name of GLAPIFixedArrayArgument
-								(parent ?o)
-								(index (send ?obj add-argument ?name))
-								(array-size ?size)))
-;------------------------------------------------------------------------------
-(defrule grouping-update::parse-arguments-generic
+(defrule build-groups::parse-arguments
 			(declare (salience 1))
-			?fct <- (message (to grouping-update)
+			?fct <- (message (to build-groups)
 								  (action parse-arguments)
-								  (arguments ?o => $?sentry ,|"," $?rest))
+								  ; this is going backwards
+								  (arguments ?o => $?sentry "," $?rest))
 			?obj <- (object (is-a GLAPIFunction)
 								 (id ?o))
 			=>
-			(modify ?fct (arguments ?o => $?rest))
 			(bind ?name (gensym*))
-			(duplicate ?fct (action populate-argument)
-						  (arguments ?name => $?sentry))
-			(make-instance ?name of GLAPIArgument
-								(parent ?o)
-								(index (send ?obj add-argument ?name))))
+			(bind ?ind (send ?obj add-argument ?name))
+			(modify ?fct (arguments ?o => $?rest))
+			(duplicate ?fct (action build-argument)
+						  (arguments ?o ?name ?ind => $?sentry)))
 ;------------------------------------------------------------------------------
-(defrule grouping-update::create-last-argument
-			?fct <- (message (to grouping-update)
+(defrule build-groups::create-last-argument
+			?fct <- (message (to build-groups)
 								  (action parse-arguments)
 								  (arguments ?o => $?all))
-			(test (and (not (member$ , $?all))
-						  (not (member$ "," $?all))))
 			?obj <- (object (is-a GLAPIFunction)
 								 (id ?o))
+			(test (and (not (member$ , $?all))
+						  (not (member$ "," $?all))))
 			=>
 			(bind ?name (gensym*))
-			(modify ?fct (action populate-argument)
-					  (arguments ?name => $?all))
-			(make-instance ?name of GLAPIArgument
-								(parent ?o)
-								(index (send ?obj add-argument ?name))))
+			(bind ?ind (send ?obj add-argument ?name))
+			(modify ?fct (action build-argument)
+					  (arguments ?o ?name ?ind => $?all)))
 ;------------------------------------------------------------------------------
-(defrule grouping-update::retract-empty-parse-message
-			?fct <- (message (to grouping-update)
+(defrule build-groups::retract-empty-parse-message
+			?fct <- (message (to build-groups)
 								  (action parse-arguments)
 								  (arguments ? =>))
 			=>
 			(retract ?fct))
+;------------------------------------------------------------------------------
+(defrule build-groups::argument-is-fixed-array
+			(declare (salience 1))
+			?fct <- (message (to build-groups)
+								  (action build-argument)
+								  (arguments ?o ?name ?ind => $?field "[" ?size "]"))
+			=>
+			(modify ?fct (to grouping-update)
+					  (action populate-argument)
+					  (arguments ?name => $?field))
+			(make-instance ?name of GLAPIFixedArrayArgument
+								(parent ?o)
+								(array-size ?size)
+								(index ?ind)))
+;------------------------------------------------------------------------------
+(defrule build-groups::argument-is-generic
+			?fct <- (message (to build-groups)
+								  (action build-argument)
+								  (arguments ?o ?name ?ind => $?input))
+			=>
+			(modify ?fct (to grouping-update)
+					  (action populate-argument)
+					  (arguments ?name => $?input))
+			(make-instance ?name of GLAPIArgument
+								(parent ?o)
+								(index ?ind)))
 ;------------------------------------------------------------------------------
 (defrule grouping-update::mark-argument-is-pointer
 			(declare (salience 1))
