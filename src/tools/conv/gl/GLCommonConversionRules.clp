@@ -197,3 +197,14 @@
                           (action add-to-span)
                           (arguments ?id))))
 ;------------------------------------------------------------------------------
+(defrule build-groups::delete-still-existing-elements
+         (declare (salience -100))
+         ?msg <- (message (to build-groups)
+                          (action add-to-span)
+                          (arguments ?id))
+         ?obj <- (object (is-a file-line)
+                         (id ?id))
+         =>
+         (unmake-instance ?obj)
+         (retract ?msg))
+;------------------------------------------------------------------------------

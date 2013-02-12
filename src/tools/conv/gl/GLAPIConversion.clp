@@ -39,32 +39,14 @@
 ; This is because each file-line has already been correctly merged.
 ;------------------------------------------------------------------------------
 (defrule build-groups::build-grouping
-         ?f <- (object (is-a heading-span)
-                       (from ?i) 
-                       (to ?i2) 
-                       (parent ?parent)
-                       (contents $?c))
+         ?msg <- (message (to build-groups)
+                          (action add-to-span)
+                          (arguments ?id))
          (object (is-a file-line) 
-                 (parent ?parent) 
-                 (index ?loc&:(> ?i2 ?loc ?i))
-                 (type #define)
-                 (id ?id))
-         ?msg <- (message (to build-groups)
-                          (action add-to-span)
-                          (arguments ?id))
+                 (id ?id)
+                 (type GLAPI-DEF))
          =>
-         (retract ?msg)
-         (modify-instance ?f (contents $?c ?id)))
-;------------------------------------------------------------------------------
-(defrule build-groups::delete-still-existing-elements
-         (declare (salience -100))
-         ?msg <- (message (to build-groups)
-                          (action add-to-span)
-                          (arguments ?id))
-         ?obj <- (object (is-a file-line)
-                         (id ?id))
-         =>
-         (unmake-instance ?obj)
+         ;we need to set this up to do conversion of the different arguments
          (retract ?msg))
 ;------------------------------------------------------------------------------
 ; Alright, we now need to build a corresponding procedure from each heading

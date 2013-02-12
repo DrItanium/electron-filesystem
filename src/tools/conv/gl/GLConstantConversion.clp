@@ -45,17 +45,6 @@
          (retract ?msg)
          (modify-instance ?f (contents $?c ?id)))
 ;------------------------------------------------------------------------------
-(defrule build-groups::delete-still-existing-elements
-         (declare (salience -100))
-         ?msg <- (message (to build-groups)
-                          (action add-to-span)
-                          (arguments ?id))
-         ?obj <- (object (is-a file-line)
-                         (id ?id))
-         =>
-         (unmake-instance ?obj)
-         (retract ?msg))
-;------------------------------------------------------------------------------
 ; Alright, we now need to build a corresponding procedure from each heading
 ; There are several ways to do this. The easiest would be to just do it
 ; procedurally in a single rule fire. 
