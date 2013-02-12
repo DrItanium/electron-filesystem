@@ -45,7 +45,7 @@
 (defmodule build-groups 
            (import types ?ALL))
 ;------------------------------------------------------------------------------
-(defmodule retract-invalid-elements
+(defmodule grouping-update
            (import types ?ALL))
 ;------------------------------------------------------------------------------
 (defmodule MAIN 
@@ -126,7 +126,7 @@
                   identify-lines 
                   convert-templates 
                   build-groups
-                  retract-invalid-elements)
+                  grouping-update)
            else
            (printout t "ERROR: target file at " ?path " does not exist!" crlf 
                      "Halting!" crlf)
@@ -313,14 +313,15 @@
          (retract ?msg)
          (modify ?f (contents $?c ?id)))
 ;------------------------------------------------------------------------------
-(defrule retract-invalid-elements::delete-still-existing-elements
+(defrule build-groups::delete-still-existing-elements
+         (declare (salience -100))
          ?msg <- (message (to build-groups)
                           (action add-to-span)
                           (arguments ?id))
          ?obj <- (object (is-a file-line)
                          (id ?id))
          =>
-         (send ?obj print)
          (unmake-instance ?obj)
          (retract ?msg))
 ;------------------------------------------------------------------------------
+;(defrule grouping-update::
