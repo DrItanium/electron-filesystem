@@ -254,19 +254,46 @@
          (unmake-instance ?obj)
          (retract ?msg))
 ;------------------------------------------------------------------------------
-(defrule grouping-update::generate-constant-if-statement
-         (object (is-a heading-span)
-                 (header-name ?group)
-                 (contents $? ?name $?))
-         ?obj <- (object (is-a file-line) 
-                         (id ?name)
-                         (type #define)
-                         (contents ?element))
+; Alright, we now need to build a corresponding procedure from each heading
+; There are several ways to do this. The easiest would be to just do it
+; procedurally in a single rule fire. 
+;------------------------------------------------------------------------------
+(deffunction grouping-update::retrieve-element (?s)
+             (nth 1 (send (instance-address * (symbol-to-instance-name ?s))
+                          get-contents)))
+;------------------------------------------------------------------------------
+(deffunction grouping-update::to-conditional-field (?symbol ?if)
+             (bind ?str (str-cat (retrieve-element ?symbol)))
+             (create$ (format nil "%s(strcmp(input, \"%s\")) {" 
+                              (if ?if then "if" else "else if")
+                              (sub-string (+ (str-index "_" ?str) 1) 
+                                          (str-length ?str) ?str))
+                      (format nil "return %s" ?str)
+                      "}"))
+;------------------------------------------------------------------------------
+(defrule grouping-update::build-constant-conversion-procedure
+         ?obj <- (object (is-a heading-span)
+                         (header-name ?group)
+                         (contents $?entries))
+         (test (> (length$ $?entries) 0))
          =>
-         (bind ?str (str-cat ?element))
-         (printout t (format nil "//%s" ?group) crlf 
-                   (format nil "if(strcmp(input,\"%s\")) { return %s; }" 
-                           (sub-string (+ (str-index "_" ?str) 1) 
-                                       (str-length ?str) ?str)
-                           ?element) crlf crlf))
+         (unmake-instance ?obj)
+         (bind ?target (format nil "//%s" ?group))
+         (bind ?header "extern GLenum To????(char* input) {")
+         (bind ?first (to-conditional-field (nth$ 1 (first$ ?entries)) TRUE))
+         (bind ?result (create$ ?target ?header ?first))
+         (progn$ (?e (rest$ ?entries))
+                 (bind ?result 
+                       (create$ ?result (to-conditional-field ?e FALSE))))
+         (bind ?result (create$ ?result "else {" "return 0;" "}" "}"))
+         (progn$ (?r ?result) (printout t ?r crlf))
+         (printout t crlf crlf))
+;------------------------------------------------------------------------------
+(defrule grouping-update::skip-constant-conversion
+         ?obj <- (object (is-a heading-span)
+                         (header-name ?group)
+                         (contents $?entries))
+         (test (= (length$ $?entries) 0))
+         =>
+         (unmake-instance ?obj))
 ;------------------------------------------------------------------------------
