@@ -31,9 +31,6 @@
 ;------------------------------------------------------------------------------
 ; INPUT FACT FORM: (parse constant file ?path)
 ;------------------------------------------------------------------------------
-(deffunction types::get-input-form-factor () 
-             (printout t "(parse constant file ?path)" crlf))
-;------------------------------------------------------------------------------
 (defrule MAIN::open-target-file
          "This rule takes a fact of the above INPUT FORM and attempts to open the file"
          ?fct <- (parse constant file ?path)
@@ -77,36 +74,6 @@
            else
            (send ?obj close-file)
            (unmake-instance ?obj)))
-;------------------------------------------------------------------------------
-(deffunction modify-input::blank-on-empty-string (?str)
-             (if (> (str-length ?str) 0) then ?str else (create$)))
-;------------------------------------------------------------------------------
-(deffunction modify-input::break-apart (?sp ?i)
-             (bind ?str (if (stringp ?i) then ?i else (str-cat ?i)))
-             (bind ?ind (str-index ?sp ?str))
-             (bind ?p0 (sub-string 1 (- ?ind 1) ?str))
-             (bind ?p1 (sub-string (+ ?ind 1) (str-length ?str) ?str))
-             (create$ (blank-on-empty-string ?p0) ?sp
-                      (blank-on-empty-string ?p1)))
-;------------------------------------------------------------------------------
-(deffunction modify-input::input-is-not-split-symbol (?sp ?input)
-             (bind ?str (str-cat ?input))
-             (and (neq 0 (str-compare ?str ?sp))
-                  (str-index ?sp ?str)))
-;------------------------------------------------------------------------------
-(deffunction types::target-symbol-is-special 
-             (?symbol ?name ?docString)
-             (build (format nil "(defrule modify-input::%s 
-                                          \"%s\"
-                                          ?fct <- (object (is-a file-line) 
-                                                          (contents $?b ?s $?a))
-                                          (test (input-is-not-split-symbol \"%s\" ?s))
-                                          =>
-                                          (modify-instance ?fct 
-                                                           (contents $?b 
-                                                                     (break-apart \"%s\" ?s) 
-                                                                     $?a)))" 
-                            ?name ?docString ?symbol ?symbol)))
 ;------------------------------------------------------------------------------
 (target-symbol-is-special "," 
                           identify-symbols-with-commas 

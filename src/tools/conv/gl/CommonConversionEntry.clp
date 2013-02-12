@@ -54,4 +54,5 @@
            (export ?ALL))
 ;------------------------------------------------------------------------------
 (batch* "Types/Loader.clp")
+(batch* GLCommonConversionFunctions.clp)
 (batch* GLCommonConversionRules.clp)
