@@ -84,12 +84,12 @@
   (message-handler reconstitute))
 ;------------------------------------------------------------------------------
 (defmessage-handler types::GLAPIArgument reconstitute
- ()
- (format t "%s %s %s %s" 
-  (if ?self:is-constant then "const" else "")
-  ?self:argument-type
-  (if ?self:is-pointer then "*" else "")
-  ?self:argument-name))
+						  ()
+						  (format t "%s %s %s %s" 
+									 (if ?self:is-constant then "const" else "")
+									 ?self:argument-type
+									 (if ?self:is-pointer then "*" else "")
+									 ?self:argument-name))
 ;------------------------------------------------------------------------------
 (defrule build-groups::build-glapi-function
 			?msg <- (message (to build-groups)
@@ -102,15 +102,16 @@
 			=>
 			;we need to set this up to do conversion of the different arguments
 			(bind ?objName (gensym*))
+			(modify ?msg (to grouping-update)
+					  (action parse-arguments)
+					  (arguments ?objName => $?args))
 			(make-instance ?objName of GLAPIFunction 
 								(return-type ?ret)
 								(function-name ?name)
-								(clips-function-name (sym-cat CLIPS_ ?name)))
-			(modify ?msg (to grouping-update)
-					  (action parse-arguments)
-					  (arguments ?objName => $?args)))
+								(clips-function-name (sym-cat CLIPS_ ?name))))
 ;------------------------------------------------------------------------------
 (defrule build-groups::build-glapi-function-void
+			(declare (salience 1))
 			?msg <- (message (to build-groups)
 								  (action add-to-span)
 								  (arguments ?id))
@@ -197,7 +198,7 @@
 			=>
 			(retract ?fct)
 			(modify-instance ?obj (argument-type ?type)
-			 (argument-name ?name)))
+								  (argument-name ?name)))
 ;------------------------------------------------------------------------------
 (defrule grouping-update::retract-arguments
 			?fct <- (message (to grouping-update)
