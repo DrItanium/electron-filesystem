@@ -80,7 +80,16 @@
   (slot argument-name)
   (slot index)
   (slot is-constant (type SYMBOL) (allowed-values FALSE TRUE))
-  (slot is-pointer (type SYMBOL) (allowed-values FALSE TRUE)))
+  (slot is-pointer (type SYMBOL) (allowed-values FALSE TRUE))
+  (message-handler reconstitute))
+;------------------------------------------------------------------------------
+(defmessage-handler types::GLAPIArgument reconstitute
+ ()
+ (format t "%s %s %s %s" 
+  (if ?self:is-constant then "const" else "")
+  ?self:argument-type
+  (if ?self:is-pointer then "*" else "")
+  ?self:argument-name))
 ;------------------------------------------------------------------------------
 (defrule build-groups::build-glapi-function
 			?msg <- (message (to build-groups)
@@ -100,6 +109,23 @@
 			(modify ?msg (to grouping-update)
 					  (action parse-arguments)
 					  (arguments ?objName => $?args)))
+;------------------------------------------------------------------------------
+(defrule build-groups::build-glapi-function-void
+			?msg <- (message (to build-groups)
+								  (action add-to-span)
+								  (arguments ?id))
+			?obj <- (object (is-a file-line) 
+								 (id ?id)
+								 (type GLAPI-DEF)
+								 (contents GLAPI ?ret GLAPIENTRY ?name "(" void ")"))
+			=>
+			;we need to set this up to do conversion of the different arguments
+			(bind ?objName (gensym*))
+			(retract ?msg)
+			(make-instance ?objName of GLAPIFunction 
+								(return-type ?ret)
+								(function-name ?name)
+								(clips-function-name (sym-cat CLIPS_ ?name))))
 ;------------------------------------------------------------------------------
 (defrule grouping-update::parse-arguments
 			(declare (salience 1))
@@ -162,36 +188,28 @@
 			(modify ?fct (arguments ?o => $?before $?after))
 			(modify-instance ?obj (is-constant TRUE)))
 ;------------------------------------------------------------------------------
-(defrule grouping-update::set-argument-name
-         ?fct <- (message (to grouping-update)
-				(action populate-argument)
-				(arguments ?o => $?items ?name))
+(defrule grouping-update::set-argument-core-info
+			?fct <- (message (to grouping-update)
+								  (action populate-argument)
+								  (arguments ?o => ?type ?name))
 			?obj <- (object (is-a GLAPIArgument)
-				(id ?o))
+								 (id ?o))
 			=>
-			(modify ?fct (arguments ?o => $?items))
-			(modify-instance ?obj (argument-name ?name)))
-;------------------------------------------------------------------------------
-(defrule grouping-update::set-argument-type
-         ?fct <- (message (to grouping-update)
-				(action populate-argument)
-				(arguments ?o => ?type $?rest))
-			?obj <- (object (is-a GLAPIArgument)
-				(id ?o))
-			=>
-			(modify ?fct (arguments ?o => $?rest))
-			(modify-instance ?obj (argument-type ?type)))
+			(retract ?fct)
+			(modify-instance ?obj (argument-type ?type)
+			 (argument-name ?name)))
 ;------------------------------------------------------------------------------
 (defrule grouping-update::retract-arguments
-         ?fct <- (message (to grouping-update)
-				              (action populate-argument)
+			?fct <- (message (to grouping-update)
+								  (action populate-argument)
 								  (arguments ? =>))
 			=>
 			(retract ?fct))
 ;------------------------------------------------------------------------------
 (defrule grouping-update::printout-arguments
-         (declare (salience -10))
+			(declare (salience -10))
 			?obj <- (object (is-a GLAPIArgument))
 			=>
-			(send ?obj print))
+			(send ?obj reconstitute)
+			(printout t crlf))
 ;------------------------------------------------------------------------------
