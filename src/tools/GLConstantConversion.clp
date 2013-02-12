@@ -121,8 +121,12 @@
            (assert (message (to identify-lines)
                             (action read-file)
                             (arguments ?name)))
-           (focus read-input modify-input 
-                  identify-lines convert-templates build-groups)
+           (focus read-input 
+            modify-input 
+                  identify-lines 
+                  convert-templates 
+                  build-groups
+                  retract-invalid-elements)
            else
            (printout t "ERROR: target file at " ?path " does not exist!" crlf 
                      "Halting!" crlf)
@@ -308,4 +312,15 @@
          =>
          (retract ?msg)
          (modify ?f (contents $?c ?id)))
+;------------------------------------------------------------------------------
+(defrule retract-invalid-elements::delete-still-existing-elements
+         ?msg <- (message (to build-groups)
+                          (action add-to-span)
+                          (arguments ?id))
+         ?obj <- (object (is-a file-line)
+                         (id ?id))
+         =>
+         (send ?obj print)
+         (unmake-instance ?obj)
+         (retract ?msg))
 ;------------------------------------------------------------------------------
