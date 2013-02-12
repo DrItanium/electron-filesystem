@@ -218,7 +218,7 @@
 ;------------------------------------------------------------------------------
 (defrule convert-templates::assert-build-groups
          ?f <- (object (is-a file-line) 
-                       (type #define) 
+                       (type ~UNKNOWN) 
                        (id ?id))
          =>
          (assert (message (to build-groups)
@@ -234,6 +234,7 @@
          (object (is-a file-line) 
                  (parent ?parent) 
                  (index ?loc&:(> ?i2 ?loc ?i))
+                 (type #define)
                  (id ?id))
          ?msg <- (message (to build-groups)
                           (action add-to-span)
