@@ -27,84 +27,6 @@
 ; GLConstantConversion.clp - an expert system that reads a define and generates
 ; conversion code for it. 
 ;------------------------------------------------------------------------------
-(defmodule types 
-           (export ?ALL))
-;------------------------------------------------------------------------------
-(defmodule read-input 
-           (import types ?ALL))
-;------------------------------------------------------------------------------
-(defmodule modify-input
-           (import types ?ALL))
-;------------------------------------------------------------------------------
-(defmodule identify-lines 
-           (import types ?ALL))
-;------------------------------------------------------------------------------
-(defmodule convert-templates
-           (import types ?ALL))
-;------------------------------------------------------------------------------
-(defmodule build-groups 
-           (import types ?ALL))
-;------------------------------------------------------------------------------
-(defmodule grouping-update
-           (import types ?ALL))
-;------------------------------------------------------------------------------
-(defmodule MAIN 
-           (import types ?ALL)
-           (export ?ALL))
-;------------------------------------------------------------------------------
-(defclass types::opened-file 
-  (is-a USER)
-  (slot id)
-  (slot index (type INTEGER) (range 0 ?VARIABLE))
-  (message-handler next-index)
-  (message-handler read-line)
-  (message-handler close-file))
-;------------------------------------------------------------------------------
-(defmessage-handler types::opened-file next-index ()
-                    (bind ?old ?self:index)
-                    (bind ?self:index (+ ?old 1))
-                    (return ?old))
-;------------------------------------------------------------------------------
-(defmessage-handler types::opened-file read-line ()
-                    (readline ?self:id))
-;------------------------------------------------------------------------------
-(defmessage-handler types::opened-file close-file ()
-                    (close ?self:id))
-;------------------------------------------------------------------------------
-(defclass types::file-line
-  (is-a USER)
-  (slot id)
-  (slot index)
-  (slot parent)
-  (slot type)
-  (multislot contents))
-;------------------------------------------------------------------------------
-(defmessage-handler types::file-line init after ()
-                    (bind ?self:id (instance-name-to-symbol (instance-name ?self))))
-;------------------------------------------------------------------------------
-(deftemplate types::heading-span
-             "Defines a span between two different headings"
-             (slot header-name)
-             (multislot contents)
-             (slot from)
-             (slot to)
-             (slot parent)
-             (slot distance))
-;------------------------------------------------------------------------------
-(deftemplate types::message 
-             (slot from)
-             (slot to)
-             (slot action)
-             (multislot arguments))
-;------------------------------------------------------------------------------
-(defclass types::grouping
-  (is-a USER)
-  (slot group-name)
-  (slot parent)
-  (slot from (type INTEGER) (range 0 ?VARIABLE))
-  (slot to (type INTEGER) (range 0 ?VARIABLE))
-  (multislot contents))
-;------------------------------------------------------------------------------
 ; INPUT FACT FORM: (parse constant file ?path)
 ;------------------------------------------------------------------------------
 (deffunction types::get-input-form-factor () 
@@ -122,7 +44,7 @@
                             (action read-file)
                             (arguments ?name)))
            (focus read-input 
-            modify-input 
+                  modify-input 
                   identify-lines 
                   convert-templates 
                   build-groups
@@ -326,7 +248,7 @@
 ;------------------------------------------------------------------------------
 (defrule grouping-update::generate-constant-if-statement
          (heading-span (header-name ?group)
-          (contents $? ?name $?))
+                       (contents $? ?name $?))
          ?obj <- (object (is-a file-line) 
                          (id ?name)
                          (type #define)
@@ -334,7 +256,8 @@
          =>
          (bind ?str (str-cat ?element))
          (printout t (format nil "//%s" ?group) crlf 
-          (format nil "if(strcmp(input,\"%s\")) { return %s; }" 
-           (sub-string (+ (str-index "_" ?str) 1) (str-length ?str) ?str)
-          ?element) crlf crlf))
+                   (format nil "if(strcmp(input,\"%s\")) { return %s; }" 
+                           (sub-string (+ (str-index "_" ?str) 1) 
+                                       (str-length ?str) ?str)
+                           ?element) crlf crlf))
 ;------------------------------------------------------------------------------

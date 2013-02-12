@@ -24,12 +24,44 @@
 ;(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 ;SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ;------------------------------------------------------------------------------
-; RunConverter.clp - Runs the GLConstantConversion expert system
+; FileRelated.clp - Defines file related objects and templates
 ; Written by Joshua Scoggins
 ;------------------------------------------------------------------------------
-(clear)
-(batch* Entry.clp)
-(reset)
-(assert (parse constant file "/usr/include/GL/gl.h"))
-(run)
-(exit)
+(defclass types::opened-file 
+  (is-a Object)
+  (slot index (type INTEGER) (range 0 ?VARIABLE))
+  (message-handler next-index)
+  (message-handler read-line)
+  (message-handler close-file))
+;------------------------------------------------------------------------------
+(defmessage-handler types::opened-file next-index ()
+                    (bind ?old ?self:index)
+                    (bind ?self:index (+ ?old 1))
+                    (return ?old))
+;------------------------------------------------------------------------------
+(defmessage-handler types::opened-file read-line ()
+                    (readline ?self:id))
+;------------------------------------------------------------------------------
+(defmessage-handler types::opened-file close-file ()
+                    (close ?self:id))
+;------------------------------------------------------------------------------
+(defclass types::file-line
+  (is-a Object)
+  (slot index)
+  (slot type)
+  (multislot contents))
+;------------------------------------------------------------------------------
+(defclass types::heading-span
+  "Defines a span between two different headings"
+  (is-a Object)
+  (slot header-name)
+  (slot from)
+  (slot to)
+  (multislot contents))
+;------------------------------------------------------------------------------
+(deftemplate types::message 
+             (slot from)
+             (slot to)
+             (slot action)
+             (multislot arguments))
+;------------------------------------------------------------------------------

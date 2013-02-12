@@ -24,12 +24,16 @@
 ;(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 ;SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ;------------------------------------------------------------------------------
-; RunConverter.clp - Runs the GLConstantConversion expert system
+; Object.clp - Defines the base object class 
 ; Written by Joshua Scoggins
 ;------------------------------------------------------------------------------
-(clear)
-(batch* Entry.clp)
-(reset)
-(assert (parse constant file "/usr/include/GL/gl.h"))
-(run)
-(exit)
+(defclass types::Object
+  (is-a USER)
+  (slot id (access initialize-only) (type SYMBOL))
+  (slot parent)
+  (message-handler init after))
+;------------------------------------------------------------------------------
+(defmessage-handler types::Object init after ()
+                    (bind ?self:id (instance-name-to-symbol 
+                                     (instance-name ?self))))
+;------------------------------------------------------------------------------
