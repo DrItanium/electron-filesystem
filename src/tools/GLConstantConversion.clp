@@ -324,4 +324,17 @@
          (unmake-instance ?obj)
          (retract ?msg))
 ;------------------------------------------------------------------------------
-;(defrule grouping-update::
+(defrule grouping-update::generate-constant-if-statement
+         (heading-span (header-name ?group)
+          (contents $? ?name $?))
+         ?obj <- (object (is-a file-line) 
+                         (id ?name)
+                         (type #define)
+                         (contents ?element))
+         =>
+         (bind ?str (str-cat ?element))
+         (printout t (format nil "//%s" ?group) crlf 
+          (format nil "if(strcmp(input,\"%s\")) { return %s; }" 
+           (sub-string (+ (str-index "_" ?str) 1) (str-length ?str) ?str)
+          ?element) crlf crlf))
+;------------------------------------------------------------------------------
