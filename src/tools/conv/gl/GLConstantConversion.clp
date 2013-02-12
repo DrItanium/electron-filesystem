@@ -84,8 +84,7 @@
              (bind ?ind (str-index ?sp ?str))
              (bind ?p0 (sub-string 1 (- ?ind 1) ?str))
              (bind ?p1 (sub-string (+ ?ind 1) (str-length ?str) ?str))
-             (create$ (blank-on-empty-string ?p0) 
-                      ?sp
+             (create$ (blank-on-empty-string ?p0) ?sp
                       (blank-on-empty-string ?p1)))
 ;------------------------------------------------------------------------------
 (deffunction modify-input::input-is-not-split-symbol (?sp ?input)
@@ -103,11 +102,10 @@
 ;------------------------------------------------------------------------------
 (defrule modify-input::identify-symbols-with-open-parens
          ?fct <- (object (is-a file-line)
-                         (contents $?before ?symbol $?after))
-         (test (input-is-not-split-symbol "(" ?symbol))
+                         (contents $?b ?s $?a))
+         (test (input-is-not-split-symbol "(" ?s))
          =>
-         (modify-instance ?fct (contents $?before (break-apart "(" ?symbol)
-                                         $?after)))
+         (modify-instance ?fct (contents $?b (break-apart "(" ?s) $?a)))
 ;------------------------------------------------------------------------------
 (defrule modify-input::identify-symbols-with-close-parens
          ?fct <- (object (is-a file-line)
@@ -131,7 +129,8 @@
                        (type UNKNOWN) 
                        (contents #define ?name ?))
          =>
-         (modify-instance ?f (type #define) (contents ?name)))
+         (modify-instance ?f (type #define) 
+                          (contents ?name)))
 ;------------------------------------------------------------------------------
 (defrule identify-lines::merge-three-line-headers
          "Merges simple three line headings into one rule"
@@ -219,7 +218,7 @@
 ;------------------------------------------------------------------------------
 (defrule convert-templates::assert-build-groups
          ?f <- (object (is-a file-line) 
-                       (type ~UNKNOWN) 
+                       (type #define) 
                        (id ?id))
          =>
          (assert (message (to build-groups)
