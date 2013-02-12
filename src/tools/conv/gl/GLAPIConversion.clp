@@ -35,6 +35,8 @@
 								  identify-symbols-with-asterisks 
 								  "Splits asterisks (*) out of symbols if necessary")
 ;------------------------------------------------------------------------------
+; Can't escape with double quotes with ] and [...strange
+;------------------------------------------------------------------------------
 (target-symbol-is-special "["
 								  identify-symbols-with-open-square-bracket
 								  "Splits an input string on [")
