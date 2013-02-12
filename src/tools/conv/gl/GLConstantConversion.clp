@@ -265,11 +265,10 @@
 (deffunction grouping-update::to-conditional-field (?symbol ?if)
              (bind ?str (str-cat (retrieve-element ?symbol)))
              (create$ (format nil "%s(strcmp(input, \"%s\")) {" 
-                              (if ?if then "if" else "else if")
+                              (if ?if then "if" else "} else if")
                               (sub-string (+ (str-index "_" ?str) 1) 
                                           (str-length ?str) ?str))
-                      (format nil "return %s" ?str)
-                      "}"))
+                      (format nil "return %s" ?str)))
 ;------------------------------------------------------------------------------
 (defrule grouping-update::build-constant-conversion-procedure
          ?obj <- (object (is-a heading-span)
@@ -279,13 +278,13 @@
          =>
          (unmake-instance ?obj)
          (bind ?target (format nil "//%s" ?group))
-         (bind ?header "extern GLenum To????(char* input) {")
+         (bind ?header (format nil "extern GLenum To%s(char* input) {" ?group))
          (bind ?first (to-conditional-field (nth$ 1 (first$ ?entries)) TRUE))
          (bind ?result (create$ ?target ?header ?first))
          (progn$ (?e (rest$ ?entries))
                  (bind ?result 
                        (create$ ?result (to-conditional-field ?e FALSE))))
-         (bind ?result (create$ ?result "else {" "return 0;" "}" "}"))
+         (bind ?result (create$ ?result "} else {" "return 0;" "}" "}"))
          (progn$ (?r ?result) (printout t ?r crlf))
          (printout t crlf crlf))
 ;------------------------------------------------------------------------------
