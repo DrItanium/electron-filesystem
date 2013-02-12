@@ -76,41 +76,46 @@
            (send ?obj close-file)
            (unmake-instance ?obj)))
 ;------------------------------------------------------------------------------
+(deffunction modify-input::blank-on-empty-string (?str)
+             (if (> (str-length ?str) 0) then ?str else (create$)))
+;------------------------------------------------------------------------------
+(deffunction modify-input::break-apart (?sp ?i)
+             (bind ?str (if (stringp ?i) then ?i else (str-cat ?i)))
+             (bind ?ind (str-index ?sp ?str))
+             (bind ?p0 (sub-string 1 (- ?ind 1) ?str))
+             (bind ?p1 (sub-string (+ ?ind 1) (str-length ?str) ?str))
+             (create$ (blank-on-empty-string ?p0) 
+                      ?sp
+                      (blank-on-empty-string ?p1)))
+;------------------------------------------------------------------------------
+(deffunction modify-input::input-is-not-split-symbol (?sp ?input)
+             (bind ?str (str-cat ?input))
+             (and (neq 0 (str-compare ?str ?sp))
+                  (str-index ?sp ?str)))
+;------------------------------------------------------------------------------
 (defrule modify-input::identify-symbols-with-commas
          ?fct <- (object (is-a file-line)
                          (contents $?before ?symbol $?after))
-         (test (and (neq 0 (str-compare (str-cat ?symbol) ","))
-                    (str-index "," (str-cat ?symbol))))
+         (test (input-is-not-split-symbol "," ?symbol))
          =>
-         (bind ?str (if (stringp ?symbol) then ?symbol else (str-cat ?symbol)))
-         (bind ?ind (str-index "," ?str))
-         (bind ?p0 (sub-string 1 (- ?ind 1) ?str))
-         (bind ?p1 (sub-string (+ ?ind 1) (str-length ?str) ?str))
-         (modify-instance ?fct (contents $?before ?p0 , ?p1 $?after)))
+         (modify-instance ?fct (contents $?before (break-apart "," ?symbol) 
+                                         $?after)))
 ;------------------------------------------------------------------------------
 (defrule modify-input::identify-symbols-with-open-parens
          ?fct <- (object (is-a file-line)
                          (contents $?before ?symbol $?after))
-         (test (and (neq 0 (str-compare (str-cat ?symbol) "("))
-                    (str-index "(" (str-cat ?symbol))))
+         (test (input-is-not-split-symbol "(" ?symbol))
          =>
-         (bind ?str (if (stringp ?symbol) then ?symbol else (str-cat ?symbol)))
-         (bind ?ind (str-index "(" ?str))
-         (bind ?p0 (sub-string 1 ?ind ?str))
-         (bind ?p1 (sub-string ?ind (str-length ?str) ?str))
-         (modify-instance ?fct (contents $?before ?p0 "(" ?p1 $?after)))
+         (modify-instance ?fct (contents $?before (break-apart "(" ?symbol)
+                                         $?after)))
 ;------------------------------------------------------------------------------
 (defrule modify-input::identify-symbols-with-close-parens
          ?fct <- (object (is-a file-line)
-                         (contents $?before ?symbol&~")" $?after))
-         (test (and (neq 0 (str-compare (str-cat ?symbol) ")"))
-                    (str-index ")" (str-cat ?symbol))))
+                         (contents $?before ?symbol $?after))
+         (test (input-is-not-split-symbol ")" ?symbol))
          =>
-         (bind ?str (if (stringp ?symbol) then ?symbol else (str-cat ?symbol)))
-         (bind ?ind (str-index ")" ?str))
-         (bind ?p0 (sub-string 1 ?ind ?str))
-         (bind ?p1 (sub-string ?ind (str-length ?str) ?str))
-         (modify-instance ?fct (contents $?before ?p0 ")" ?p1 $?after)))
+         (modify-instance ?fct (contents $?before (break-apart ")" ?symbol)
+                                         $?after)))
 ;------------------------------------------------------------------------------
 (defrule identify-lines::mark-heading-groups
          "Tags lines that consist of /* $? */ as group headings"
