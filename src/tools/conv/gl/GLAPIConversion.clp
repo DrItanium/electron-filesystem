@@ -146,73 +146,67 @@
 							  (bind ?count (+ 1 ?count))))
 				 (return ?count))
 ;------------------------------------------------------------------------------
-(defrule build-groups::parse-arguments
+(defrule build-groups::concatentate-length
+			"Adds a range to the target argument set"
+			?fct <- (message (to build-groups)
+								  (action parse-arguments)
+								  (arguments ?o => $?contents))
+			=>
+			(modify ?fct (action diverge-arguments)
+					  (arguments ?o 0 (count-commas $?contents) =>
+									 $?contents)))
+;------------------------------------------------------------------------------
+(defrule build-groups::diverge-arguments
+			"Splits the set of arguments into two separate facts"
 			(declare (salience 1))
 			?fct <- (message (to build-groups)
-								  (action parse-arguments)
-								  ; this is going backwards, we defer the index field
-								  ; by setting it as an offset of the length, which we
-								  ; don't know until we actually generate these
-								  ; arguments.
-								  (arguments ?o => $?sentry "," $?rest))
-			?obj <- (object (is-a GLAPIFunction)
-								 (id ?o))
+								  (action diverge-arguments)
+								  (arguments ?o ?start ?finish => $?a "," $?b))
+			(test (neq ?start ?finish))
 			=>
-			(modify ?fct (arguments ?o => $?sentry))
-			;we use the number of commas before plus 1 to determine index
-			(bind ?index (+ (count-commas ?sentry) 1))
-			;the problem is determining the direction to spit out an argument in
-			;I don't want to assume backwards or forwards to tell the truth. So
-			;that means that we just mark $?rest with the target index and move on
-			;
-			;This method is technically out of order due to the use of the , as a
-			;fix point
-			(duplicate ?fct (action build-argument)
-			                (arguments ?o ?index => $?rest)))
+			(bind ?cca (+ ?start (count-commas $?a)))
+			(bind ?startb (+ ?cca 1))
+			(bind ?ccb (+ ?startb (count-commas $?b)))
+			(modify ?fct (arguments ?o ?start ?cca => $?a))
+			(duplicate ?fct (arguments ?o ?startb (+ ?startb ?ccb) => $?b)))
 ;------------------------------------------------------------------------------
-(defrule build-groups::create-last-argument
+(defrule build-groups::generate-build-argument-statement
 			?fct <- (message (to build-groups)
-								  (action parse-arguments)
-								  (arguments ?o => $?all))
-			(test (and (not (member$ , $?all))
-						  (not (member$ "," $?all))))
+								  (action diverge-arguments)
+								  (arguments ?o ?pos ?pos => $?conditions))
 			=>
-			;The last element doesn't contain any commas and thus must be zero 
 			(modify ?fct (action build-argument)
-			             (arguments ?o 0 => $?all)))
+					  (arguments ?o ?pos => $?conditions)))
 ;------------------------------------------------------------------------------
-(defrule build-groups::retract-empty-parse-message
+(defrule build-groups::argument-is-fixed-array
+			(declare (salience 1))
 			?fct <- (message (to build-groups)
-								  (action parse-arguments)
-								  (arguments ? =>))
+								  (action build-argument)
+								  (arguments ?o ?ind => $?field "[" ?size "]"))
 			=>
-			(retract ?fct))
+			(bind ?name (gensym*))
+			(modify ?fct (to grouping-update)
+					  (action populate-argument)
+					  (arguments ?name => $?field))
+			(make-instance ?name of GLAPIFixedArrayArgument
+								(parent ?o)
+								(array-size ?size)
+								(index ?ind)))
 ;------------------------------------------------------------------------------
-;(defrule build-groups::argument-is-fixed-array
-;			(declare (salience 1))
-;			?fct <- (message (to build-groups)
-;								  (action build-argument)
-;								  (arguments ?o ?name ?ind => $?field "[" ?size "]"))
-;			=>
-;			(modify ?fct (to grouping-update)
-;					  (action populate-argument)
-;					  (arguments ?name => $?field))
-;			(make-instance ?name of GLAPIFixedArrayArgument
-;								(parent ?o)
-;								(array-size ?size)
-;								(index ?ind)))
+(defrule build-groups::argument-is-generic
+			?fct <- (message (to build-groups)
+								  (action build-argument)
+								  (arguments ?o ?ind => $?input))
+			=>
+			(bind ?name (gensym*))
+			(modify ?fct (to grouping-update)
+					  (action populate-argument)
+					  (arguments ?name => $?input))
+			(make-instance ?name of GLAPIArgument
+								(parent ?o)
+								(index ?ind)))
 ;------------------------------------------------------------------------------
-;(defrule build-groups::argument-is-generic
-;			?fct <- (message (to build-groups)
-;								  (action build-argument)
-;								  (arguments ?o ?name ?ind => $?input))
-;			=>
-;			(modify ?fct (to grouping-update)
-;					  (action populate-argument)
-;					  (arguments ?name => $?input))
-;			(make-instance ?name of GLAPIArgument
-;								(parent ?o)
-;								(index ?ind)))
+; grouping-update module
 ;------------------------------------------------------------------------------
 (defrule grouping-update::mark-argument-is-pointer
 			(declare (salience 1))
