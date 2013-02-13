@@ -301,6 +301,13 @@
 ; The functions that take in a fixed size array are easy because I can allocate
 ; a static block ahead of time that I can read and write from. 
 ;------------------------------------------------------------------------------
+; Conversion table 
+;------------------------------------------------------------------------------
+; float => all floating point types 
+; int => all integer types
+; symbol => GLenum or GLboolean
+; multifield => pointer type or fixed array
+;------------------------------------------------------------------------------
 (defrule grouping-update::make-function-builder
 			?fct <- (message (to grouping-update)
 								  (action make-function-builder)
