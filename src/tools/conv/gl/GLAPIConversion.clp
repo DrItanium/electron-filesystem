@@ -271,6 +271,12 @@
   (multislot parsing-entries)
   (slot count))
 ;------------------------------------------------------------------------------
+; So, what do we need to do to construct a single function
+; 1) Generate the function builder (done)
+; 2) Define required arguments 
+; 3) Figure out type conversions
+; 4) Define translation code for each argument
+;------------------------------------------------------------------------------
 (defrule grouping-update::make-function-builder
 			?fct <- (message (to grouping-update)
 								  (action make-function-builder)
@@ -304,9 +310,11 @@
 								  (arguments ?p ?index))
 			?arg <- (object (is-a GLAPIArgument)
 								 (parent ?p)
-								 (index ?index))
+								 (index ?index)
+								 (id ?argID))
 			?obj <- (object (is-a CLIPSFunctionBuilder)
 								 (parent ?p)
+								 (parsing-entries $?pe)
 								 (contents $?contents))
 			=>
 			(modify ?fct (arguments ?p (+ ?index 1)))
