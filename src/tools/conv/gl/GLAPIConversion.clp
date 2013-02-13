@@ -297,6 +297,9 @@
 ;
 ; I know this for certain, this technique will go through many iterations
 ; before I arrive at a valid solution (most likely). 
+;
+; The functions that take in a fixed size array are easy because I can allocate
+; a static block ahead of time that I can read and write from. 
 ;------------------------------------------------------------------------------
 (defrule grouping-update::make-function-builder
 			?fct <- (message (to grouping-update)
