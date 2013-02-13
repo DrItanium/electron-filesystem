@@ -166,11 +166,15 @@
 								  (arguments ?o ?start ?finish => $?a "," $?b))
 			(test (neq ?start ?finish))
 			=>
-			(bind ?cca (+ ?start (count-commas $?a)))
-			(bind ?startb (+ ?cca 1))
-			(bind ?ccb (+ ?startb (count-commas $?b)))
-			(modify ?fct (arguments ?o ?start ?cca => $?a))
-			(duplicate ?fct (arguments ?o ?startb (+ ?startb ?ccb) => $?b)))
+			(bind ?cca (count-commas $?a))
+			(bind ?starta ?start)
+			(bind ?enda (+ ?starta ?cca))
+			;from start to end
+			(bind ?startb (+ 1 ?enda))
+			;we use finish since it's the upper bound on this argument set
+			(bind ?endb ?finish)
+         (modify ?fct (arguments ?o ?starta ?enda => $?a))
+			(duplicate ?fct (arguments ?o ?startb ?endb => $?b)))
 ;------------------------------------------------------------------------------
 (defrule build-groups::generate-build-argument-statement
 			?fct <- (message (to build-groups)
