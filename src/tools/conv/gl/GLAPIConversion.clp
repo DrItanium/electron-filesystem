@@ -343,16 +343,10 @@
 								 (parent ?p)
 								 (index ?index)
 								 (id ?argID))
-			?obj <- (object (is-a CLIPSFunctionBuilder)
-								 (parent ?p)
-								 (parsing-entries $?pe)
-								 (contents $?contents))
 			=>
 			(modify ?fct (arguments ?p (+ ?index 1)))
-			(modify-instance ?obj 
-								  (contents $?contents 
-												(format nil "//code to handle %s" 
-														  (send ?arg reconstitute)))))
+			(duplicate ?fct (action parse-entry)
+						  (arguments ?p ?index => ?argID)))
 ;------------------------------------------------------------------------------
 (defrule grouping-update::close-function
 			(declare (salience -1))
@@ -363,13 +357,139 @@
 										(parent ?p) 
 										(index ?index))))
 			?f <- (object (is-a CLIPSFunctionBuilder) 
-							  (parent ?p)
-							  (contents $?contents))
+							  (parent ?p))
 			=>
-			(modify ?fct (action print-function)
-					  (arguments ?p))
-			(modify-instance ?f (contents $?contents "}")
-								  (count ?index)))
+			(retract ?fct)
+			(modify ?fct (action construct-function)
+					  (arguments ?p -1))
+			(modify-instance ?f (count ?index)))
+;------------------------------------------------------------------------------
+(defrule grouping-update::construct-function-entry
+			?f <- (message (to grouping-update)
+								(action construct-function)
+								(arguments ?p -1))
+
+			=>
+			(modify ?f (argument ?p 0)))
+;------------------------------------------------------------------------------
+(defrule grouping-update::construct-function-argument-deferred
+			?f <- (message (to grouping-update)
+								(action construct-function)
+								(arguments ?p ?index))
+			?f1 <- (message (to grouping-update)
+								 (action parse-entry)
+								 (arguments ?p ?index => ?argID))
+			?b <- (object (is-a CLIPSFunctionBuilder)
+							  (parent ?p)
+							  (data-objects $?do)
+							  (variables $?vars)
+							  (parsing-entries $?pe))
+			=>
+			;generate the name of the object for the target argument entry 
+			(bind ?name (gensym*))
+			(modify ?f (arguments ?p (+ ?index 1)))
+			;put name on each of the element sets.
+			;We use that name and message passing to generate corresponding
+			;entries in a macro-expand fashion
+			(modify-instance ?b (data-objects $?do ?name)
+								  (variables $?vars ?name)
+								  (parsng-entries $?pe ?name))
+			(modify ?f1 (action construct-entry)
+					  (arguments ?argID => ?name)))
+;------------------------------------------------------------------------------
+(defclass types::CLIPSGLAPIArgumentBuilder
+          (is-a Object)
+			 (slot index (type INTEGER) (range 1 ?VARIABLE))
+			 (slot argument-name-base (type SYMBOL STRING))
+			 (slot data-object-argument-name (type SYMBOL STRING))
+			 (slot variable-argument-name (type SYMBOL STRING))
+			 (slot variable-declaration (type STRING))
+			 (slot data-object-declaration (type STRING))
+			 (slot conversion-code (type STRING)))
+;------------------------------------------------------------------------------
+(defclass types::CLIPSGLAPIMultifieldArgumentBuilder
+          (is-a CLIPSGLAPIArgumentBuilder)
+			 (slot multifield-pointer-argument-name)
+			 (slot multifield-pointer-declaration))
+;------------------------------------------------------------------------------
+(defclass types::CLIPSGLAPIFixedSizeMultifieldArgumentBuilder
+          (is-a CLIPSGLAPIMultifieldArgumentBuilder)
+			 (slot multifield-size))
+;------------------------------------------------------------------------------
+(defrule grouping-update::construct-function-argument-builder
+         ?f <- (message (to grouping-update)
+				            (action construct-entry)
+								(arguments ?arg => ?name))
+			      (object (is-a GLAPIArgument)
+					        (id ?arg)
+							  (index ?index)
+							  (is-pointer FALSE))
+			=>
+			(make-instance ?name of CLIPSGLAPIArgumentBuilder
+			 (parent ?arg)
+			 (argument-name-base (sym-cat (format nil "arg%d" ?index))))
+			(modify ?f (action make-variable-declaration))
+			(duplicate ?f (action make-data-object-declaration))
+			(duplicate ?f (action make-conversion-code)))
+;------------------------------------------------------------------------------
+(defrule grouping-update::construct-function-argument-builder-multifield
+         ?f <- (message (to grouping-update)
+				            (action construct-entry)
+								(arguments ?arg => ?name))
+			      (object (is-a GLAPIArgument)
+					        (id ?arg)
+							  (index ?index)
+							  (is-pointer TRUE))
+			=>
+			(make-instance ?name of CLIPSGLAPIMultifieldArgumentBuilder 
+			 (parent ?arg)
+			 (argument-name-base (sym-cat (format nil "arg%d" ?index))))
+			(modify ?f (action make-variable-declaration))
+			(duplicate ?f (action make-data-object-declaration))
+			(duplicate ?f (action make-multifield-conversion-code))
+			(duplicate ?f (action make-conversion-code)))
+;------------------------------------------------------------------------------
+(defrule grouping-update::construct-function-argument-builder-multifield-fixed
+         (declare (salience 1))
+         ?f <- (message (to grouping-update)
+				            (action construct-entry)
+								(arguments ?arg => ?name))
+			      (object (is-a GLAPIFixedArrayArgument)
+					        (id ?arg)
+							  (index ?index)
+							  (size ?size))
+			=>
+			(make-instance ?name of CLIPSGLAPIFixedMultifieldArgumentBuilder 
+			 (parent ?arg)
+			 (multifield-size ?size)
+			 (argument-name-base (sym-cat (format nil "arg%d" ?index))))
+			(modify ?f (action make-variable-declaration))
+			(duplicate ?f (action make-data-object-declaration))
+			(duplicate ?f (action make-multifield-conversion-code))
+			(duplicate ?f (action make-conversion-code)))
+;------------------------------------------------------------------------------
+(defrule grouping-update::construct-multifield-conversion-code
+         ?f <- (message (to grouping-update)
+				            (action make-multifield-conversion-code)
+								(arguments ?arg => ?name))
+			?o <- (object (is-a CLIPSGLAPI
+;------------------------------------------------------------------------------
+(defrule grouping-update::construct-data-object-declaration
+         ?f <- (message (to grouping-update)
+				            (action make-data-object-declaration)
+								(arguments ?arg => ?name))
+			?ab <- (object (is-a CLIPSGLAPIArgumentBuilder)
+				            (id ?name)
+								(argument-name-base ?anb))
+			=>
+			(modify ?f (action finished-data-object-declaration))
+			(bind ?doArg (sym-cat (format nil "%s_DO" ?anb)))
+			(modify-instance ?ab 
+			 (data-object-argument-name ?doArg)
+			 (data-object-declaration (format nil "DATA_OBJECT %s;" ?doArg)))
+;------------------------------------------------------------------------------
+;------------------------------------------------------------------------------
+; Printout results
 ;------------------------------------------------------------------------------
 (defrule grouping-update::print-built-function
 			?fct <- (message (to grouping-update)
