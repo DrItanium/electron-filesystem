@@ -50,38 +50,49 @@
 												?self:clips-type
 												?self:data-object-argument-name)))
 ;------------------------------------------------------------------------------
-(deffunction get-conversion-function (?symbol)
+(deffunction types::flatten-type (?symbol)
+				 (switch ?symbol
+							(case Float then FLOAT)
+							(case float then FLOAT)
+							(case FLOAT then FLOAT)
+							(case double then DOUBLE)
+							(case Double then DOUBLE)
+							(case DOUBLE then DOUBLE)
+							(case integer then INTEGER)
+							(case Integer then INTEGER)
+							(case INTEGER then INTEGER)
+							(case LONG then LONG)
+							(case long then LONG)
+							(case Long then LONG)
+							(case symbol then SYMBOL)
+							(case Symbol then SYMBOL)
+							(case SYMBOL then SYMBOL)
+							(case string then STRING)
+							(case String then STRING)
+							(case STRING then STRING)
+							(default ?symbol)))
+;------------------------------------------------------------------------------
+(deffunction types::get-conversion-function (?symbol)
 				 (bind ?fn-float "DOToFloat")
 				 (bind ?fn-double "DOToDouble")
 				 (bind ?fn-int "DOToInteger")
 				 (bind ?fn-long "DOToLong")
 				 (bind ?fn-string "DOToString")
 				 (switch ?symbol
-							(case float then ?fn-float)
 							(case FLOAT then ?fn-float)
-							(case Float then ?fn-float)
-							(case double then ?fn-double)
 							(case DOUBLE then ?fn-double)
-							(case Double then ?fn-double)
-							(case integer then ?fn-int)
 							(case INTEGER then ?fn-int)
-							(case Integer then ?fn-int)
-							(case long then ?fn-long)
 							(case LONG then ?fn-long)
-							(case Long then ?fn-long)
-							(case symbol then ?fn-string)
-							(case Symbol then ?fn-string)
 							(case SYMBOL then ?fn-string)
-							(case string then ?fn-string)
-							(case String then ?fn-string)
 							(case STRING then ?fn-string)
 							(default "ERROR_NO_CONVERSION_FOUND")))
 ;------------------------------------------------------------------------------
 (defmessage-handler types::CLIPSGLAPIArgumentBuilder get-conversion-code ()
-                    (return (format nil "%s = %s(%s);"
-									  ?self:variable-argument-name
-									  (get-conversion-function ?self:clips-type)
-									  ?self:data-object-argument-name)))
+						  (return (format nil "%s = %s(%s);"
+												?self:variable-argument-name
+												(get-conversion-function 
+												  (flatten-type ?self:clips-type))
+												?self:data-object-argument-name)))
 ;------------------------------------------------------------------------------
 (defclass types::CLIPSGLAPIMultifieldArgumentBuilder
   (is-a CLIPSGLAPIArgumentBuilder)
@@ -93,29 +104,38 @@
   (message-handler get-conversion-code))
 ;------------------------------------------------------------------------------
 (defmessage-handler types::CLIPSGLAPIMultifieldArgumentBuilder
- get-type-check-code primary ()
+						  get-type-check-code primary ()
 						  (return (format nil 
 												"if(EnvArgTypeCheck(theEnv,%s,%d,MULTIFIELD,&%s) == -1) { return; }"
 												?self:clips-function-name
 												?self:index
 												?self:data-object-argument-name)))
- (
 ;------------------------------------------------------------------------------
 (defmessage-handler types::CLIPSGLAPIMultifieldArgumentBuilder
- get-conversion-code ()
- (return (format nil "%s%n%s%n%s%n%s%n"
-			 ;GetLength
-			 (format nil "%s = GetDOLength(%s);"
-			  				?self:multifield-length-variable-name
-							?self:data-object-argument-name)
-			 ;GetValue
-			 (format nil "%s = GetValue(%s);"
-			  ?self:multifield-pointer-argument-name
-			  ?self:data-object-argument-name)
-			 ;Conversion
-			 ;(format nil "%
-			 ;get the multifield pointer out
-			)))
+						  get-conversion-code ()
+						  (return (format nil "%s%n%s%n%s%n%s%n"
+												;GetLength
+												(format nil "%s = GetDOLength(%s);"
+														  ?self:multifield-length-variable-name
+														  ?self:data-object-argument-name)
+												;GetValue
+												(format nil "%s = GetValue(%s);"
+														  ?self:multifield-pointer-argument-name
+														  ?self:data-object-argument-name)
+												;Generate malloc
+												(format nil "%s = (%s*)calloc(%s,sizeof(%s));"
+														  ?self:variable-argument-name
+														  ?self:gl-type
+														  ?self:multifield-length-variable-name
+														  ?self:gl-type)
+												;Conversion
+												(format nil "%s%n%s%n%s%n" 
+														  (format nil "int i, end;%nend = GetDOEnd(%s);"
+																	 ?self:data-object-argument-name)
+														  (format nil "for(i = GetDOBegin(%s); i<=end; i++) {", 
+																	 ?self:data-object-argument-name)
+														  ;TODO: Continue
+														  ))))
 ;------------------------------------------------------------------------------
 (defclass types::CLIPSGLAPIFixedSizeMultifieldArgumentBuilder
   (is-a CLIPSGLAPIMultifieldArgumentBuilder)
@@ -225,4 +245,3 @@
 			=>
 			)
 ;------------------------------------------------------------------------------
-
