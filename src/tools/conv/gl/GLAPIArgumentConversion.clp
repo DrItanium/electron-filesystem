@@ -30,19 +30,92 @@
 ;------------------------------------------------------------------------------
 (defclass types::CLIPSGLAPIArgumentBuilder
   (is-a Object)
+  (slot clips-type (type SYMBOL))
+  (slot gl-type (type SYMBOL))
+  (slot clips-function-name (type SYMBOL))
   (slot index (type INTEGER) (range 1 ?VARIABLE))
   (slot argument-name-base (type SYMBOL STRING))
   (slot data-object-argument-name (type SYMBOL STRING))
   (slot variable-argument-name (type SYMBOL STRING))
   (slot variable-declaration (type STRING))
   (slot data-object-declaration (type STRING))
-  (slot type-check-code (type STRING))
-  (slot conversion-code (type STRING)))
+  (message-handler get-type-check-code)
+  (message-handler get-conversion-code))
+;------------------------------------------------------------------------------
+(defmessage-handler types::CLIPSGLAPIArgumentBuilder get-type-check-code ()
+						  (return (format nil 
+												"if(EnvArgTypeCheck(theEnv,%s,%d,%s,&%s) == -1) { return; }"
+												?self:clips-function-name
+												?self:index
+												?self:clips-type
+												?self:data-object-argument-name)))
+;------------------------------------------------------------------------------
+(deffunction get-conversion-function (?symbol)
+				 (bind ?fn-float "DOToFloat")
+				 (bind ?fn-double "DOToDouble")
+				 (bind ?fn-int "DOToInteger")
+				 (bind ?fn-long "DOToLong")
+				 (bind ?fn-string "DOToString")
+				 (switch ?symbol
+							(case float then ?fn-float)
+							(case FLOAT then ?fn-float)
+							(case Float then ?fn-float)
+							(case double then ?fn-double)
+							(case DOUBLE then ?fn-double)
+							(case Double then ?fn-double)
+							(case integer then ?fn-int)
+							(case INTEGER then ?fn-int)
+							(case Integer then ?fn-int)
+							(case long then ?fn-long)
+							(case LONG then ?fn-long)
+							(case Long then ?fn-long)
+							(case symbol then ?fn-string)
+							(case Symbol then ?fn-string)
+							(case SYMBOL then ?fn-string)
+							(case string then ?fn-string)
+							(case String then ?fn-string)
+							(case STRING then ?fn-string)
+							(default "ERROR_NO_CONVERSION_FOUND")))
+;------------------------------------------------------------------------------
+(defmessage-handler types::CLIPSGLAPIArgumentBuilder get-conversion-code ()
+                    (return (format nil "%s = %s(%s);"
+									  ?self:variable-argument-name
+									  (get-conversion-function ?self:clips-type)
+									  ?self:data-object-argument-name)))
 ;------------------------------------------------------------------------------
 (defclass types::CLIPSGLAPIMultifieldArgumentBuilder
   (is-a CLIPSGLAPIArgumentBuilder)
+  (slot multifield-length-variable-declaration)
+  (slot multifield-length-variable-name)
   (slot multifield-pointer-argument-name)
-  (slot multifield-pointer-declaration))
+  (slot multifield-pointer-declaration)
+  (message-handler get-type-check-code)
+  (message-handler get-conversion-code))
+;------------------------------------------------------------------------------
+(defmessage-handler types::CLIPSGLAPIMultifieldArgumentBuilder
+ get-type-check-code primary ()
+						  (return (format nil 
+												"if(EnvArgTypeCheck(theEnv,%s,%d,MULTIFIELD,&%s) == -1) { return; }"
+												?self:clips-function-name
+												?self:index
+												?self:data-object-argument-name)))
+ (
+;------------------------------------------------------------------------------
+(defmessage-handler types::CLIPSGLAPIMultifieldArgumentBuilder
+ get-conversion-code ()
+ (return (format nil "%s%n%s%n%s%n%s%n"
+			 ;GetLength
+			 (format nil "%s = GetDOLength(%s);"
+			  				?self:multifield-length-variable-name
+							?self:data-object-argument-name)
+			 ;GetValue
+			 (format nil "%s = GetValue(%s);"
+			  ?self:multifield-pointer-argument-name
+			  ?self:data-object-argument-name)
+			 ;Conversion
+			 ;(format nil "%
+			 ;get the multifield pointer out
+			)))
 ;------------------------------------------------------------------------------
 (defclass types::CLIPSGLAPIFixedSizeMultifieldArgumentBuilder
   (is-a CLIPSGLAPIMultifieldArgumentBuilder)
@@ -135,7 +208,7 @@
 								  (data-object-declaration 
 									 (format nil "DATA_OBJECT %s;" ?doArg))))
 ;------------------------------------------------------------------------------
-(defrule grouping-update::construct-type-check-code
+(defrule grouping-update::construct-type-check-contents
 			?fct <- (message (to grouping-update)
 								  (action make-type-check-code)
 								  (arguments ?arg => ?name))
