@@ -173,7 +173,7 @@
 			(bind ?startb (+ 1 ?enda))
 			;we use finish since it's the upper bound on this argument set
 			(bind ?endb ?finish)
-         (modify ?fct (arguments ?o ?starta ?enda => $?a))
+			(modify ?fct (arguments ?o ?starta ?enda => $?a))
 			(duplicate ?fct (arguments ?o ?startb ?endb => $?b)))
 ;------------------------------------------------------------------------------
 (defrule build-groups::generate-build-argument-statement
@@ -264,6 +264,13 @@
   (is-a Object)
   (multislot contents))
 ;------------------------------------------------------------------------------
+(defclass types::CLIPSFunctionBuilder
+  (is-a FunctionBuilder)
+  (multislot data-objects)
+  (multislot variables)
+  (multislot parsing-entries)
+  (slot count))
+;------------------------------------------------------------------------------
 (defrule grouping-update::make-function-builder
 			?fct <- (message (to grouping-update)
 								  (action make-function-builder)
@@ -271,14 +278,15 @@
 			=>
 			(modify ?fct (action build-function)
 					  (arguments ?p -1))
-			(make-instance of FunctionBuilder (parent ?p)))
+			(make-instance of CLIPSFunctionBuilder 
+								(parent ?p)))
 ;------------------------------------------------------------------------------
 (defrule grouping-update::build-function-header
 			(declare (salience 1))
 			?fct <- (message (to grouping-update)
 								  (action build-function)
 								  (arguments ?p -1))
-			?obj <- (object (is-a FunctionBuilder)
+			?obj <- (object (is-a CLIPSFunctionBuilder)
 								 (parent ?p))
 			(object (is-a GLAPIFunction) 
 					  (id ?p)
@@ -297,7 +305,7 @@
 			?arg <- (object (is-a GLAPIArgument)
 								 (parent ?p)
 								 (index ?index))
-			?obj <- (object (is-a FunctionBuilder)
+			?obj <- (object (is-a CLIPSFunctionBuilder)
 								 (parent ?p)
 								 (contents $?contents))
 			=>
@@ -315,13 +323,14 @@
 			(not (exists (object (is-a GLAPIArgument) 
 										(parent ?p) 
 										(index ?index))))
-			?f <- (object (is-a FunctionBuilder) 
+			?f <- (object (is-a CLIPSFunctionBuilder) 
 							  (parent ?p)
 							  (contents $?contents))
 			=>
 			(modify ?fct (action print-function)
 					  (arguments ?p))
-			(modify-instance ?f (contents $?contents "}")))
+			(modify-instance ?f (contents $?contents "}")
+								  (count ?index)))
 ;------------------------------------------------------------------------------
 (defrule grouping-update::print-built-function
 			?fct <- (message (to grouping-update)
