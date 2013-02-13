@@ -31,6 +31,7 @@
 (batch* GLAPIConversionEntry.clp)
 (reset)
 ;Input format is the same as the constant conversion expert system
-(assert (parse constant file "/usr/include/GL/gl.h"))
+(assert (parse constant file "/usr/include/GL/gl.h")
+		  (parse constant file "/usr/include/GL/glu.h"))
 (run)
 (exit)
