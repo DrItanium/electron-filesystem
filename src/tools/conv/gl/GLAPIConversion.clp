@@ -272,10 +272,31 @@
   (slot count))
 ;------------------------------------------------------------------------------
 ; So, what do we need to do to construct a single function
+; 0) Generate the registration entry for the target builder
 ; 1) Generate the function builder (done)
 ; 2) Define required arguments 
 ; 3) Figure out type conversions
 ; 4) Define translation code for each argument
+; 5) Generate code to call the target function with the given arguments
+; 6) Assemble the function together
+;------------------------------------------------------------------------------
+; We use EnvDefineFunction in all cases of registration
+;
+; For conversion of pointers, we take in a multifield from clips and convert
+; that to a corresponding pointer. We can also use macros or a function to
+; do the conversion, that would make this whole process a lot easier. 
+;
+; While it goes against the standard practices of C, I am going to have this
+; conversion function perform the malloc and return the pointer. It is up to
+; the function that called the conversion function to clean up the pointer once
+; finished.
+;
+; However, continually calling malloc and free is costly. We can allocate a
+; pointer ahead of time and continually resize it as necessary. We could also
+; define a huge block of memory and then slice it accordingly. 
+;
+; I know this for certain, this technique will go through many iterations
+; before I arrive at a valid solution (most likely). 
 ;------------------------------------------------------------------------------
 (defrule grouping-update::make-function-builder
 			?fct <- (message (to grouping-update)
