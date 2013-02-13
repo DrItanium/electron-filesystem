@@ -255,10 +255,10 @@
 			(modify ?fct (action make-function-builder)
 					  (arguments ?p)))
 ;------------------------------------------------------------------------------
-(defrule types::FunctionBuilder
-			"Builds C functions"
-			(is-a Object)
-			(multislot contents))
+(defclass types::FunctionBuilder
+  "Builds C functions"
+  (is-a Object)
+  (multislot contents))
 ;------------------------------------------------------------------------------
 (defrule grouping-update::make-function-builder
 			?fct <- (message (to grouping-update)
@@ -282,7 +282,7 @@
 					  (clips-function-name ?cfn))
 			=>
 			(modify ?fct (arguments ?p 0))
-			(modify-contents ?obj (contents 
+			(modify-instance ?obj (contents 
 											(format nil "extern %s %s(void* theEnv) {" 
 													  ?ret ?cfn))))
 ;------------------------------------------------------------------------------
@@ -304,31 +304,31 @@
 														  (send ?arg reconstitute)))))
 ;------------------------------------------------------------------------------
 (defrule grouping-update::close-function
-         (declare (salience -1))
+			(declare (salience -1))
 			?fct <- (message (to grouping-update)
-				              (action build-function)
+								  (action build-function)
 								  (arguments ?p ?index))
 			(not (exists (object (is-a GLAPIArgument) 
-							  (parent ?p) 
-							  (index ?index))))
+										(parent ?p) 
+										(index ?index))))
 			?f <- (object (is-a FunctionBuilder) 
-				(parent ?p)
-				(contents $?contents))
+							  (parent ?p)
+							  (contents $?contents))
 			=>
 			(modify ?fct (action print-function)
-			 (arguments ?p))
+					  (arguments ?p))
 			(modify-instance ?f (contents $?contents "}")))
 ;------------------------------------------------------------------------------
 (defrule grouping-update::print-built-function
-         ?fct <- (message (to grouping-update)
-				              (action build-function)
+			?fct <- (message (to grouping-update)
+								  (action print-function)
 								  (arguments ?p))
 			?f <- (object (is-a FunctionBuilder)
-				           (parent ?p)
+							  (parent ?p)
 							  (contents $?c))
 			=>
 			(progn$ (?line ?c)
-			        (printout t ?line crlf))
+					  (printout t ?line crlf))
 			(printout t crlf crlf)
 			(retract ?fct)
 			(unmake-instance ?f))
