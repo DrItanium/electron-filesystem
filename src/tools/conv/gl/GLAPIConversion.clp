@@ -100,6 +100,8 @@
 												(call-next-handler)
 												(str-cat ?self:array-size))))
 ;------------------------------------------------------------------------------
+; build-groups module
+;------------------------------------------------------------------------------
 (defrule build-groups::build-glapi-function
 			?msg <- (message (to build-groups)
 								  (action add-to-span)
@@ -237,20 +239,97 @@
 			?obj <- (object (is-a GLAPIArgument)
 								 (id ?o))
 			=>
-			(retract ?fct)
+			(modify ?fct (arguments ?o =>))
+
 			(modify-instance ?obj (argument-type ?type)
 								  (argument-name ?name)))
 ;------------------------------------------------------------------------------
 (defrule grouping-update::retract-arguments
 			?fct <- (message (to grouping-update)
 								  (action populate-argument)
-								  (arguments ? =>))
+								  (arguments ?o =>))
+			(object (is-a GLAPIArgument)
+					  (id ?o)
+					  (parent ?p))
 			=>
-			(retract ?fct))
+			(modify ?fct (action make-function-builder)
+					  (arguments ?p)))
 ;------------------------------------------------------------------------------
-(defrule grouping-update::printout-arguments
-			(declare (salience -10))
-			?obj <- (object (is-a GLAPIArgument))
+(defrule types::FunctionBuilder
+			"Builds C functions"
+			(is-a Object)
+			(multislot contents))
+;------------------------------------------------------------------------------
+(defrule grouping-update::make-function-builder
+			?fct <- (message (to grouping-update)
+								  (action make-function-builder)
+								  (arguments ?p))
 			=>
-			(printout t (send ?obj reconstitute) crlf))
+			(modify ?fct (action build-function)
+					  (arguments ?p -1))
+			(make-instance of FunctionBuilder (parent ?p)))
+;------------------------------------------------------------------------------
+(defrule grouping-update::build-function-header
+			(declare (salience 1))
+			?fct <- (message (to grouping-update)
+								  (action build-function)
+								  (arguments ?p -1))
+			?obj <- (object (is-a FunctionBuilder)
+								 (parent ?p))
+			(object (is-a GLAPIFunction) 
+					  (id ?p)
+					  (return-type ?ret)
+					  (clips-function-name ?cfn))
+			=>
+			(modify ?fct (arguments ?p 0))
+			(modify-contents ?obj (contents 
+											(format nil "extern %s %s(void* theEnv) {" 
+													  ?ret ?cfn))))
+;------------------------------------------------------------------------------
+(defrule grouping-update::build-function-add-argument
+			?fct <- (message (to grouping-update)
+								  (action build-function)
+								  (arguments ?p ?index))
+			?arg <- (object (is-a GLAPIArgument)
+								 (parent ?p)
+								 (index ?index))
+			?obj <- (object (is-a FunctionBuilder)
+								 (parent ?p)
+								 (contents $?contents))
+			=>
+			(modify ?fct (arguments ?p (+ ?index 1)))
+			(modify-instance ?obj 
+								  (contents $?contents 
+												(format nil "//code to handle %s" 
+														  (send ?arg reconstitute)))))
+;------------------------------------------------------------------------------
+(defrule grouping-update::close-function
+         (declare (salience -1))
+			?fct <- (message (to grouping-update)
+				              (action build-function)
+								  (arguments ?p ?index))
+			(not (exists (object (is-a GLAPIArgument) 
+							  (parent ?p) 
+							  (index ?index))))
+			?f <- (object (is-a FunctionBuilder) 
+				(parent ?p)
+				(contents $?contents))
+			=>
+			(modify ?fct (action print-function)
+			 (arguments ?p))
+			(modify-instance ?f (contents $?contents "}")))
+;------------------------------------------------------------------------------
+(defrule grouping-update::print-built-function
+         ?fct <- (message (to grouping-update)
+				              (action build-function)
+								  (arguments ?p))
+			?f <- (object (is-a FunctionBuilder)
+				           (parent ?p)
+							  (contents $?c))
+			=>
+			(progn$ (?line ?c)
+			        (printout t ?line crlf))
+			(printout t crlf crlf)
+			(retract ?fct)
+			(unmake-instance ?f))
 ;------------------------------------------------------------------------------
