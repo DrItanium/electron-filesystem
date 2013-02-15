@@ -29,27 +29,35 @@
 ; Written by Joshua Scoggins
 ;------------------------------------------------------------------------------
 (defmodule types 
+           (import cortex ?ALL)
            (export ?ALL))
 ;------------------------------------------------------------------------------
 (defmodule read-input 
+           (import cortex ?ALL)
            (import types ?ALL))
 ;------------------------------------------------------------------------------
 (defmodule modify-input
+           (import cortex ?ALL)
            (import types ?ALL))
 ;------------------------------------------------------------------------------
 (defmodule identify-lines 
+           (import cortex ?ALL)
            (import types ?ALL))
 ;------------------------------------------------------------------------------
 (defmodule convert-templates
+           (import cortex ?ALL)
            (import types ?ALL))
 ;------------------------------------------------------------------------------
 (defmodule build-groups 
+           (import cortex ?ALL)
            (import types ?ALL))
 ;------------------------------------------------------------------------------
 (defmodule grouping-update
+           (import cortex ?ALL)
            (import types ?ALL))
 ;------------------------------------------------------------------------------
 (defmodule MAIN 
+           (import cortex ?ALL)
            (import types ?ALL)
            (export ?ALL))
 ;------------------------------------------------------------------------------
