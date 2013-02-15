@@ -41,18 +41,18 @@
              (and (neq 0 (str-compare ?str ?sp))
                   (str-index ?sp ?str)))
 ;------------------------------------------------------------------------------
-(deffunction cortex::defsymbol
+(deffunction cortex::defsymbol-lexer
  "Builds a rule for parsing a given input string for the given symbol"
              (?module-name ?symbol ?name ?docString)
              (build (format nil "(defrule %s::%s 
                                           \"%s\"
                                           ?fct <- (object (is-a file-line) 
                                                           (contents $?b ?s $?a))
-                                          (test (input-is-not-split-symbol \"%s\" ?s))
+                                          (test (input-is-target-symbol \"%s\" ?s))
                                           =>
                                           (modify-instance ?fct 
                                                            (contents $?b 
-                                                                     (break-apart \"%s\" ?s) 
+                                                                     (split-on-symbol \"%s\" ?s) 
                                                                      $?a)))" 
                      ?module-name ?name ?docString ?symbol ?symbol)))
 ;------------------------------------------------------------------------------
