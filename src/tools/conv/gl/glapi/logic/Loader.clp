@@ -24,12 +24,7 @@
 ;(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 ;SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ;------------------------------------------------------------------------------
-; RunConverter.clp - Runs the GLConstantConversion expert system
-; Written by Joshua Scoggins
+; Loader.clp - Loads the logic folder for glapi
 ;------------------------------------------------------------------------------
-(clear)
-(batch* "constant/ConstantConversionEntry.clp")
-(reset)
-(assert (parse constant file "/usr/include/GL/gl.h"))
-(run)
-(exit)
+(batch* "glapi/logic/GLAPIConversion.clp")
+(batch* "glapi/logic/GLAPIArgumentConversion.clp")

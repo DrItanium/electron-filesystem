@@ -49,18 +49,6 @@
 ; There are several ways to do this. The easiest would be to just do it
 ; procedurally in a single rule fire. 
 ;------------------------------------------------------------------------------
-(deffunction grouping-update::retrieve-element (?s)
-             (nth 1 (send (instance-address * (symbol-to-instance-name ?s))
-                          get-contents)))
-;------------------------------------------------------------------------------
-(deffunction grouping-update::to-conditional-field (?symbol ?if)
-             (bind ?str (str-cat (retrieve-element ?symbol)))
-             (create$ (format nil "%s(strcmp(input, \"%s\") == 0) {" 
-                              (if ?if then "if" else "} else if")
-                              (sub-string (+ (str-index "_" ?str) 1) 
-                                          (str-length ?str) ?str))
-                      (format nil "return %s" ?str)))
-;------------------------------------------------------------------------------
 (defrule grouping-update::build-constant-conversion-procedure
          ?obj <- (object (is-a heading-span)
                          (header-name ?group)

@@ -24,12 +24,8 @@
 ;(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 ;SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ;------------------------------------------------------------------------------
-; RunConverter.clp - Runs the GLConstantConversion expert system
+; Loader.clp - Loads all of the corresponding objects
 ; Written by Joshua Scoggins
 ;------------------------------------------------------------------------------
-(clear)
-(batch* "constant/ConstantConversionEntry.clp")
-(reset)
-(assert (parse constant file "/usr/include/GL/gl.h"))
-(run)
-(exit)
+(batch* "common/lib/FileRelated.clp")
+(batch* "common/lib/CommonConversionFunctions.clp")

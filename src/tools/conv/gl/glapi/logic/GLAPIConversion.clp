@@ -63,43 +63,6 @@
 ; This isn't really that hard as what we need to do is just parse the arguments
 ; and generate the corresponding C code. 
 ;------------------------------------------------------------------------------
-(defclass types::GLAPIFunction
-  "Defines a given GLAPI function"
-  (is-a Object)
-  (slot return-type (type SYMBOL STRING))
-  (slot function-name)
-  (slot clips-function-name))
-;------------------------------------------------------------------------------
-(defclass types::GLAPIArgument
-  "Defines a given GLAPI function argument"
-  (is-a Object)
-  (slot argument-type (visibility public))
-  (slot argument-name)
-  (slot index)
-  (slot is-constant (type SYMBOL) (allowed-values FALSE TRUE))
-  (slot is-pointer (type SYMBOL) (allowed-values FALSE TRUE))
-  (message-handler reconstitute))
-;------------------------------------------------------------------------------
-(defmessage-handler types::GLAPIArgument reconstitute
-						  ()
-						  (return (format nil "%s %s %s %s" 
-												(if ?self:is-constant then "const" else "")
-												?self:argument-type
-												(if ?self:is-pointer then "*" else "")
-												?self:argument-name)))
-;------------------------------------------------------------------------------
-(defclass types::GLAPIFixedArrayArgument
-  "Refers to fixed size arrays"
-  (is-a GLAPIArgument)
-  (slot array-size)
-  (message-handler reconstitute around))
-;------------------------------------------------------------------------------
-(defmessage-handler types::GLAPIFixedArrayArgument reconstitute around 
-						  ()
-						  (return (format nil "%s[%s]" 
-												(call-next-handler)
-												(str-cat ?self:array-size))))
-;------------------------------------------------------------------------------
 ; build-groups module
 ;------------------------------------------------------------------------------
 (defrule build-groups::build-glapi-function
@@ -137,16 +100,6 @@
 								(return-type ?ret)
 								(function-name ?name)
 								(clips-function-name (sym-cat CLIPS_ ?name))))
-;------------------------------------------------------------------------------
-(deffunction build-groups::count-commas
-				 "Iterates through a multifield and counts the number of commas"
-				 (?list)
-				 (bind ?count 0)
-				 (progn$ (?e ?list)
-							(if (or (eq ?e ",")
-									  (eq ?e ,)) then
-							  (bind ?count (+ 1 ?count))))
-				 (return ?count))
 ;------------------------------------------------------------------------------
 (defrule build-groups::concatentate-length
 			"Adds a range to the target argument set"
@@ -258,18 +211,6 @@
 			=>
 			(modify ?fct (action make-function-builder)
 					  (arguments ?p)))
-;------------------------------------------------------------------------------
-(defclass types::FunctionBuilder
-  "Builds C functions"
-  (is-a Object)
-  (multislot contents))
-;------------------------------------------------------------------------------
-(defclass types::CLIPSFunctionBuilder
-  (is-a FunctionBuilder)
-  (multislot data-objects)
-  (multislot variables)
-  (multislot parsing-entries)
-  (slot count))
 ;------------------------------------------------------------------------------
 ; So, what do we need to do to construct a single function
 ; 0) Generate the registration entry for the target builder

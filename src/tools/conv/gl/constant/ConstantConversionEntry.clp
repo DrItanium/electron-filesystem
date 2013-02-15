@@ -24,43 +24,11 @@
 ;(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 ;SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ;------------------------------------------------------------------------------
-; CommonConversionEntry.clp - Entry point into the generic backend for the
-;                             conversion expert systems
+; ConstantConversionEntry.clp - Entry point into the GLConstantConversion 
+;                               expert system 
 ; Written by Joshua Scoggins
 ;------------------------------------------------------------------------------
-(defmodule types 
-           (import cortex ?ALL)
-           (export ?ALL))
-;------------------------------------------------------------------------------
-(defmodule read-input 
-           (import cortex ?ALL)
-           (import types ?ALL))
-;------------------------------------------------------------------------------
-(defmodule modify-input
-           (import cortex ?ALL)
-           (import types ?ALL))
-;------------------------------------------------------------------------------
-(defmodule identify-lines 
-           (import cortex ?ALL)
-           (import types ?ALL))
-;------------------------------------------------------------------------------
-(defmodule convert-templates
-           (import cortex ?ALL)
-           (import types ?ALL))
-;------------------------------------------------------------------------------
-(defmodule build-groups 
-           (import cortex ?ALL)
-           (import types ?ALL))
-;------------------------------------------------------------------------------
-(defmodule grouping-update
-           (import cortex ?ALL)
-           (import types ?ALL))
-;------------------------------------------------------------------------------
-(defmodule MAIN 
-           (import cortex ?ALL)
-           (import types ?ALL)
-           (export ?ALL))
-;------------------------------------------------------------------------------
-(batch* "Types/Loader.clp")
-(batch* GLCommonConversionFunctions.clp)
-(batch* GLCommonConversionRules.clp)
+(batch* "common/CommonConversionEntry.clp")
+(batch* "constant/lib/ConstantConversionFunctions.clp")
+(batch* "constant/logic/GLConstantConversion.clp")
+

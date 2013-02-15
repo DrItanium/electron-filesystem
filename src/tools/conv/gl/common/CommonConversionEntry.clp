@@ -24,9 +24,42 @@
 ;(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 ;SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ;------------------------------------------------------------------------------
-; ConstantConversionEntry.clp - Entry point into the GLConstantConversion 
-;                               expert system 
+; CommonConversionEntry.clp - Entry point into the generic backend for the
+;                             conversion expert systems
 ; Written by Joshua Scoggins
 ;------------------------------------------------------------------------------
-(batch* CommonConversionEntry.clp)
-(batch* GLAPIConversion.clp)
+(defmodule types 
+           (import cortex ?ALL)
+           (export ?ALL))
+;------------------------------------------------------------------------------
+(defmodule read-input 
+           (import cortex ?ALL)
+           (import types ?ALL))
+;------------------------------------------------------------------------------
+(defmodule modify-input
+           (import cortex ?ALL)
+           (import types ?ALL))
+;------------------------------------------------------------------------------
+(defmodule identify-lines 
+           (import cortex ?ALL)
+           (import types ?ALL))
+;------------------------------------------------------------------------------
+(defmodule convert-templates
+           (import cortex ?ALL)
+           (import types ?ALL))
+;------------------------------------------------------------------------------
+(defmodule build-groups 
+           (import cortex ?ALL)
+           (import types ?ALL))
+;------------------------------------------------------------------------------
+(defmodule grouping-update
+           (import cortex ?ALL)
+           (import types ?ALL))
+;------------------------------------------------------------------------------
+(defmodule MAIN 
+           (import cortex ?ALL)
+           (import types ?ALL)
+           (export ?ALL))
+;------------------------------------------------------------------------------
+(batch* "common/lib/Loader.clp")
+(batch* "common/logic/CommonConversionRules.clp")

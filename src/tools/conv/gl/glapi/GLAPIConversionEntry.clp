@@ -24,7 +24,10 @@
 ;(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 ;SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ;------------------------------------------------------------------------------
-; Loader.clp - Loads all of the corresponding objects
+; ConstantConversionEntry.clp - Entry point into the GLConstantConversion 
+;                               expert system 
 ; Written by Joshua Scoggins
 ;------------------------------------------------------------------------------
-(batch* "Types/FileRelated.clp")
+(batch* "common/CommonConversionEntry.clp")
+(batch* "glapi/lib/Loader.clp")
+(batch* "glapi/logic/Loader.clp")
