@@ -28,7 +28,8 @@
 ; Written by Joshua Scoggins
 ;------------------------------------------------------------------------------
 (clear)
-(batch* GLAPIConversionEntry.clp)
+(batch* "lib/cortex/Library.clp")
+(batch* "tools/conv/gl/glapi/GLAPIConversionEntry.clp")
 (reset)
 ;Input format is the same as the constant conversion expert system
 (assert (parse constant file "/usr/include/GL/gl.h")

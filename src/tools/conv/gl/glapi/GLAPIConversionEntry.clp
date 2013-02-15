@@ -28,6 +28,6 @@
 ;                               expert system 
 ; Written by Joshua Scoggins
 ;------------------------------------------------------------------------------
-(batch* "common/CommonConversionEntry.clp")
-(batch* "glapi/lib/Loader.clp")
-(batch* "glapi/logic/Loader.clp")
+(batch* "tools/conv/gl/common/CommonConversionEntry.clp")
+(batch* "tools/conv/gl/glapi/lib/Loader.clp")
+(batch* "tools/conv/gl/glapi/logic/Loader.clp")

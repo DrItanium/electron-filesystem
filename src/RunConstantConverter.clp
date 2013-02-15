@@ -28,7 +28,9 @@
 ; Written by Joshua Scoggins
 ;------------------------------------------------------------------------------
 (clear)
-(batch* "constant/ConstantConversionEntry.clp")
+;relative to the root of the source directory
+(batch* "lib/cortex/Library.clp")
+(batch* "tools/conv/gl/constant/ConstantConversionEntry.clp")
 (reset)
 (assert (parse constant file "/usr/include/GL/gl.h"))
 (run)

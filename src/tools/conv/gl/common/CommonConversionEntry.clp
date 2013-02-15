@@ -28,6 +28,8 @@
 ;                             conversion expert systems
 ; Written by Joshua Scoggins
 ;------------------------------------------------------------------------------
+; Load cortex
+;------------------------------------------------------------------------------
 (defmodule types 
            (import cortex ?ALL)
            (export ?ALL))
@@ -61,5 +63,5 @@
            (import types ?ALL)
            (export ?ALL))
 ;------------------------------------------------------------------------------
-(batch* "common/lib/Loader.clp")
-(batch* "common/logic/CommonConversionRules.clp")
+(batch* "tools/conv/gl/common/lib/Loader.clp")
+(batch* "tools/conv/gl/common/logic/CommonConversionRules.clp")
