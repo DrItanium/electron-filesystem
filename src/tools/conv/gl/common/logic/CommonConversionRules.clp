@@ -75,17 +75,11 @@
            (send ?obj close-file)
            (unmake-instance ?obj)))
 ;------------------------------------------------------------------------------
-(target-symbol-is-special "," 
-                          identify-symbols-with-commas 
-                          "")
+(defsymbol-lexer modify-input "," identify-symbols-with-commas "")
 ;------------------------------------------------------------------------------
-(target-symbol-is-special "(" 
-                          identify-symbols-with-open-parens 
-                          "")
+(defsymbol-lexer modify-input "(" identify-symbols-with-open-parens "")
 ;------------------------------------------------------------------------------
-(target-symbol-is-special ")" 
-                          identify-symbols-with-close-parens 
-                          "")
+(defsymbol-lexer modify-input ")" identify-symbols-with-close-parens "")
 ;------------------------------------------------------------------------------
 (defrule identify-lines::mark-heading-groups
          "Tags lines that consist of /* $? */ as group headings"
