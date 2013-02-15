@@ -27,5 +27,4 @@
 ; Loader.clp - Loads all of the corresponding objects
 ; Written by Joshua Scoggins
 ;------------------------------------------------------------------------------
-(batch* "Types/Object.clp")
 (batch* "Types/FileRelated.clp")
