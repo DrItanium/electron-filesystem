@@ -26,5 +26,6 @@
 ;------------------------------------------------------------------------------
 ; Loader.clp - Loads all files in the core folder
 ;------------------------------------------------------------------------------
-(batch* "core/Object.clp")
-(batch* "core/ObjectConversionFunctions.clp")
+(batch* "src/lib/cortex/core/Object.clp")
+(batch* "src/lib/cortex/core/Message.clp")
+(batch* "src/lib/cortex/core/ObjectConversionFunctions.clp")
