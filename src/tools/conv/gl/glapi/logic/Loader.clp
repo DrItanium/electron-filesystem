@@ -26,5 +26,5 @@
 ;------------------------------------------------------------------------------
 ; Loader.clp - Loads the logic folder for glapi
 ;------------------------------------------------------------------------------
-(batch* "glapi/logic/GLAPIConversion.clp")
-(batch* "glapi/logic/GLAPIArgumentConversion.clp")
+(batch* "tools/conv/gl/glapi/logic/GLAPIConversion.clp")
+(batch* "tools/conv/gl/glapi/logic/GLAPIArgumentConversion.clp")
