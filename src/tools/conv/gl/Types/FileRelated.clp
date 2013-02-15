@@ -60,9 +60,3 @@
   (slot to)
   (multislot contents))
 ;------------------------------------------------------------------------------
-(deftemplate types::message 
-             (slot from)
-             (slot to)
-             (slot action)
-             (multislot arguments))
-;------------------------------------------------------------------------------
