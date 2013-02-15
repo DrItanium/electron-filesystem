@@ -1,0 +1,6 @@
+All rules go here
+
+I would recommend that you put all defclasses and such in the lib folder for
+maintentance purposes. Following this stipulation may also prevent hard to
+diagnose bugs as the lib folder is loaded first which ensures that all objects
+match to each rule correctly. 
