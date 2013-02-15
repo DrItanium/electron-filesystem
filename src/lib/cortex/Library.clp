@@ -36,7 +36,7 @@
 ;------------------------------------------------------------------------------
 ; Load the corresponding types and functions 
 ;------------------------------------------------------------------------------
-(batch* "src/lib/cortex/core/Loader.clp")
-(batch* "src/lib/cortex/io/Loader.clp")
-(batch* "src/lib/cortex/parser/Loader.clp")
+(batch* "lib/cortex/core/Loader.clp")
+(batch* "lib/cortex/io/Loader.clp")
+(batch* "lib/cortex/parsing/Loader.clp")
 ;------------------------------------------------------------------------------

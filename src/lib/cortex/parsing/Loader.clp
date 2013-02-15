@@ -26,4 +26,4 @@
 ;------------------------------------------------------------------------------
 ; Loader.clp - Loads all files in the parsing folder
 ;------------------------------------------------------------------------------
-(batch* "parsing/SymbolDeclarationFunctions.clp")
+(batch* "lib/cortex/parsing/SymbolDeclarationFunctions.clp")
