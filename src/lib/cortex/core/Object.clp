@@ -31,6 +31,7 @@
   (is-a USER)
   (slot id (type SYMBOL) (visibility public) (access initialize-only))
   (slot class (type SYMBOL) (visibility public) (access initialize-only))
+  (slot parent (type SYMBOL) (visibility public))
   (message-handler init around))
 ;------------------------------------------------------------------------------
 (defmessage-handler cortex::Object init around 
