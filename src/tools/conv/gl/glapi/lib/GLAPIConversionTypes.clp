@@ -71,22 +71,22 @@
 ;------------------------------------------------------------------------------
 (defclass types::CLIPSFunctionBuilder
   (is-a FunctionBuilder)
-  (multislot data-objects)
-  (multislot variables)
-  (multislot parsing-entries)
+  (multislot data-objects (visibility public))
+  (multislot variables (visibility public))
+  (multislot parsing-entries (visibility public))
   (slot count))
 ;------------------------------------------------------------------------------
 (defclass types::CLIPSGLAPIArgumentBuilder
   (is-a Object)
-  (slot clips-type (type SYMBOL))
-  (slot gl-type (type SYMBOL))
-  (slot clips-function-name (type SYMBOL))
-  (slot index (type INTEGER) (range 1 ?VARIABLE))
-  (slot argument-name-base (type SYMBOL STRING))
-  (slot data-object-argument-name (type SYMBOL STRING))
-  (slot variable-argument-name (type SYMBOL STRING))
-  (slot variable-declaration (type STRING))
-  (slot data-object-declaration (type STRING))
+  (slot clips-type (type SYMBOL) (visibility public))
+  (slot gl-type (type SYMBOL) (visibility public))
+  (slot clips-function-name (type SYMBOL) (visibility public))
+  (slot index (type INTEGER) (range 1 ?VARIABLE) (visibility public))
+  (slot argument-name-base (type SYMBOL STRING) (visibility public))
+  (slot data-object-argument-name (type SYMBOL STRING) (visibility public))
+  (slot variable-argument-name (type SYMBOL STRING) (visibility public))
+  (slot variable-declaration (type STRING) (visibility public))
+  (slot data-object-declaration (type STRING) (visibility public))
   (message-handler get-type-check-code)
   (message-handler get-conversion-code))
 ;------------------------------------------------------------------------------
@@ -107,10 +107,10 @@
 ;------------------------------------------------------------------------------
 (defclass types::CLIPSGLAPIMultifieldArgumentBuilder
   (is-a CLIPSGLAPIArgumentBuilder)
-  (slot multifield-length-variable-declaration)
-  (slot multifield-length-variable-name)
-  (slot multifield-pointer-argument-name)
-  (slot multifield-pointer-declaration)
+  (slot multifield-length-variable-declaration (visibility public))
+  (slot multifield-length-variable-name (visibility public))
+  (slot multifield-pointer-argument-name (visibility public))
+  (slot multifield-pointer-declaration (visibility public))
   (message-handler get-type-check-code)
   (message-handler get-conversion-code))
 ;------------------------------------------------------------------------------
@@ -150,5 +150,5 @@
 ;------------------------------------------------------------------------------
 (defclass types::CLIPSGLAPIFixedSizeMultifieldArgumentBuilder
   (is-a CLIPSGLAPIMultifieldArgumentBuilder)
-  (slot multifield-size))
+  (slot multifield-size (visibility public)))
 ;------------------------------------------------------------------------------
