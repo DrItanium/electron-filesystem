@@ -43,7 +43,7 @@
 
 #include "clips.h"
 #include "binary_operations.h"
-#include "platform/Platform.h"
+#include "Platform.h"
 
 void UserFunctions(void);
 void EnvUserFunctions(void *);
