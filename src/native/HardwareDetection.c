@@ -75,7 +75,7 @@ void* GetHardwarePlatform(void* theEnv) {
     return EnvAddSymbol(theEnv, "Generic");
 #endif
 }
-void* PlatformIsGeneric(void* theEnv) {
+void* HardwarePlatformIsGeneric(void* theEnv) {
 #if (defined(__APPLE__) && (TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR)) || defined(__PPU__) || defined(PSP) || defined(__psp__) || defined(__PSP__) || defined(_PSP) || defined(__wii__) || defined(_WII) || defined(_XBOX)
    return EnvFalseSymbol(theEnv);
 #else
@@ -83,7 +83,7 @@ void* PlatformIsGeneric(void* theEnv) {
 #endif
 }
 
-void* PlatformIsIPhone(void* theEnv) {
+void* HardwarePlatformIsIPhone(void* theEnv) {
 #if defined(__APPLE__) && ( TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR)
    return EnvTrueSymbol(theEnv);
 #else
@@ -91,14 +91,14 @@ void* PlatformIsIPhone(void* theEnv) {
 #endif
 }
 
-void* PlatformIsPS3(void* theEnv) {
+void* HardwarePlatformIsPS3(void* theEnv) {
 #if defined(__PPU__)
    return EnvTrueSymbol(theEnv);
 #else
    return EnvFalseSymbol(theEnv);
 #endif
 }
-void* PlatformIsPSP(void* theEnv) {
+void* HardwarePlatformIsPSP(void* theEnv) {
 #if defined(PSP) || defined (__psp__) || defined(__PSP__) || defined(_PSP)
    return EnvTrueSymbol(theEnv);
 #else 
@@ -106,7 +106,7 @@ void* PlatformIsPSP(void* theEnv) {
 #endif
 }
 
-void* PlatformIsWii(void* theEnv) {
+void* HardwarePlatformIsWii(void* theEnv) {
 #if defined(__wii__) || defined(_WII) 
    return EnvTrueSymbol(theEnv);
 #else
@@ -114,7 +114,7 @@ void* PlatformIsWii(void* theEnv) {
 #endif
 }
 
-void* PlatformIsXbox(void* theEnv) {
+void* HardwarePlatformIsXbox(void* theEnv) {
 #if defined(_XBOX) && (_XBOX_VER < 200) 
    return EnvTrueSymbol(theEnv);
 #else
@@ -122,7 +122,7 @@ void* PlatformIsXbox(void* theEnv) {
 #endif
 }
 
-void* PlatformIsXbox360(void* theEnv) {
+void* HardwarePlatformIsXbox360(void* theEnv) {
 #if defined(_XBOX) && (_XBOX_VER >= 200)
    return EnvTrueSymbol(theEnv);
 #else

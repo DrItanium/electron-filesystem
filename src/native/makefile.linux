@@ -36,7 +36,7 @@ OBJS = agenda.o analysis.o argacces.o bload.o bmathfun.o bsave.o \
  	tmpltbin.o tmpltbsc.o tmpltcmp.o tmpltdef.o tmpltfun.o tmpltlhs.o \
  	tmpltpsr.o tmpltrhs.o tmpltutl.o userdata.o userfunctions.o \
  	utility.o watch.o main.o binary_operations.o ArchitectureDetection.o \
-	OSDetection.o PlatformDetection.o
+	OSDetection.o HardwareDetection.o
 
 .c.o :
 	$(COMPILER) -c $(CFLAGS) -DLINUX -DALLOW_ENVIRONMENT_GLOBALS=0 -std=c99 -Wall -Wundef -Wpointer-arith -Wshadow -Wcast-qual \
@@ -1269,7 +1269,7 @@ ArchitectureDetection.o: ArchitectureDetection.c clips.h ArchitectureDetection.h
 
 OSDetection.o: OSDetection.c clips.h OSDetection.h
 
-PlatformDetection.o: PlatformDetection.c clips.h PlatformDetection.h
+HardwareDetection.o: HardwareDetection.c clips.h HardwareDetection.h
 
 clean:
 	rm -f $(OUTPUT) *.o
