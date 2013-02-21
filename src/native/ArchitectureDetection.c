@@ -35,8 +35,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 extern void* GetArchitectureVersion(void* theEnv); 
 extern void* GetArchitecture(void* theEnv);
 extern void ArchitectureDetectionFunctionDefinitions(void* theEnv) {
-   DefineArchIdentFunc("get-architecture", 's', GetArchitecture);
-   DefineArchIdentFunc("get-architecture-version", 's', GetArchitectureVersion);
+   DefineArchIdentFunc("get-architecture", 'w', GetArchitecture);
+   DefineArchIdentFunc("get-architecture-version", 'w', GetArchitectureVersion);
 }
 
 void* GetArchitectureVersion(void* theEnv) {

@@ -44,7 +44,7 @@ extern void* PlatformIsXbox360(void* theEnv);
 
 //This file contains the code describing specific hardware platforms. 
 extern void PlatformDetectionFunctionDefinitions(void* theEnv) {
-   DefinePlatformIdentFunc("get-hardware-platform", 's', GetHardwarePlatform);
+   DefinePlatformIdentFunc("get-hardware-platform", 'w', GetHardwarePlatform);
    DefinePlatformIdentFunc("platform-is-generic", 'b', PlatformIsGeneric);
    DefinePlatformIdentFunc("platform-is-iphone", 'b', PlatformIsIPhone);
    DefinePlatformIdentFunc("platform-is-ps3", 'b', PlatformIsPS3);
