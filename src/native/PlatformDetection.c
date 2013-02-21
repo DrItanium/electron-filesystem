@@ -32,8 +32,29 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #define str(x) #x
 #define DefinePlatformIdentFunc(kn, r, cn) \
-   EnvDefineFunction(theEnv, (char*)kn, r, PTIEF cn, (char*) str(cn), "00a")
-extern void* GetHardwarePlatform(void* theEnv) {
+   EnvDefineFunction2(theEnv, (char*)kn, r, PTIEF cn, (char*) str(cn), "00a")
+extern void* GetHardwarePlatform(void* theEnv);
+extern void* PlatformIsGeneric(void* theEnv); 
+extern void* PlatformIsIPhone(void* theEnv);
+extern void* PlatformIsPS3(void* theEnv); 
+extern void* PlatformIsPSP(void* theEnv); 
+extern void* PlatformIsWii(void* theEnv); 
+extern void* PlatformIsXbox(void* theEnv);
+extern void* PlatformIsXbox360(void* theEnv);
+
+//This file contains the code describing specific hardware platforms. 
+extern void PlatformDetectionFunctionDefinitions(void* theEnv) {
+   DefinePlatformIdentFunc("get-hardware-platform", 'k', GetHardwarePlatform);
+   DefinePlatformIdentFunc("platform-is-generic", 'b', PlatformIsGeneric);
+   DefinePlatformIdentFunc("platform-is-iphone", 'b', PlatformIsIPhone);
+   DefinePlatformIdentFunc("platform-is-ps3", 'b', PlatformIsPS3);
+   DefinePlatformIdentFunc("platform-is-psp", 'b', PlatformIsPSP);
+   DefinePlatformIdentFunc("platform-is-wii", 'b', PlatformIsWii);
+   DefinePlatformIdentFunc("platform-is-xbox", 'b', PlatformIsXbox);
+   DefinePlatformIdentFunc("platform-is-xbox360", 'b', PlatformIsXbox360);
+}
+
+void* GetHardwarePlatform(void* theEnv) {
 #if defined(__APPLE__) && ( TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR)
       return EnvAddSymbol(theEnv, "iPhone");
 #elif defined(__PPU__)
@@ -54,28 +75,30 @@ extern void* GetHardwarePlatform(void* theEnv) {
     return EnvAddSymbol(theEnv, "Generic");
 #endif
 }
-extern void* PlatformIsGeneric(void* theEnv) {
+void* PlatformIsGeneric(void* theEnv) {
 #if (defined(__APPLE__) && (TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR)) || defined(__PPU__) || defined(PSP) || defined(__psp__) || defined(__PSP__) || defined(_PSP) || defined(__wii__) || defined(_WII) || defined(_XBOX)
    return FalseSymbol();
 #else
    return TrueSymbol();
+#endif
 }
 
-extern void* PlatformIsIPhone(void* theEnv) {
+void* PlatformIsIPhone(void* theEnv) {
 #if defined(__APPLE__) && ( TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR)
    return TrueSymbol();
 #else
    return FalseSymbol();
+#endif
 }
 
-extern void* PlatformIsPS3(void* theEnv) {
+void* PlatformIsPS3(void* theEnv) {
 #if defined(__PPU__)
    return TrueSymbol();
 #else
    return FalseSymbol();
 #endif
 }
-extern void* PlatformIsPSP(void* theEnv) {
+void* PlatformIsPSP(void* theEnv) {
 #if defined(PSP) || defined (__psp__) || defined(__PSP__) || defined(_PSP)
    return TrueSymbol();
 #else 
@@ -83,7 +106,7 @@ extern void* PlatformIsPSP(void* theEnv) {
 #endif
 }
 
-extern void* PlatformIsWii(void* theEnv) {
+void* PlatformIsWii(void* theEnv) {
 #if defined(__wii__) || defined(_WII) 
    return TrueSymbol();
 #else
@@ -91,7 +114,7 @@ extern void* PlatformIsWii(void* theEnv) {
 #endif
 }
 
-extern void* PlatformIsXbox(void* theEnv) {
+void* PlatformIsXbox(void* theEnv) {
 #if defined(_XBOX) && (_XBOX_VER < 200) 
    return TrueSymbol();
 #else
@@ -99,24 +122,12 @@ extern void* PlatformIsXbox(void* theEnv) {
 #endif
 }
 
-extern void* PlatformIsXbox360(void* theEnv) {
+void* PlatformIsXbox360(void* theEnv) {
 #if defined(_XBOX) && (_XBOX_VER >= 200)
    return TrueSymbol();
 #else
    return FalseSymbol();
 #endif
-}
-
-//This file contains the code describing specific hardware platforms. 
-extern void PlatformDetectionFunctionDefinitions(void* theEnv) {
-   DefinePlatformIdentFunc("get-hardware-platform", 'k', GetHardwarePlatform);
-   DefinePlatformIdentFunc("platform-is-generic", 'b', PlatformIsGeneric);
-   DefinePlatformIdentFunc("platform-is-iphone", 'b', PlatformIsIPhone);
-   DefinePlatformIdentFunc("platform-is-ps3", 'b', PlatformIsPS3);
-   DefinePlatformIdentFunc("platform-is-psp", 'b', PlatformIsPSP);
-   DefinePlatformIdentFunc("platform-is-wii", 'b', PlatformIsWii);
-   DefinePlatformIdentFunc("platform-is-xbox", 'b', PlatformIsXbox);
-   DefinePlatformIdentFunc("platform-is-xbox360", 'b', PlatformIsXbox360);
 }
 
 #undef str
