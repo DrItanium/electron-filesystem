@@ -83,7 +83,7 @@
 #endif
 
 #ifndef BANNER_STRING
-#define BANNER_STRING "Instruction Set Simulator CLIPS (6.30 Extended 10/31/12)\n"
+#define BANNER_STRING "The Adventure Engine (Based off of CLIPS 6.30 2/20/2013)\n"
 #endif
 
 /*************************/
