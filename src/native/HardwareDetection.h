@@ -24,10 +24,10 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-#ifndef _PLATFORMDETECTION_H
-#define _PLATFORMDETECTION_H
+#ifndef _HARDWAREDETECTION_H
+#define _HARDWAREDETECTION_H
 //This file contains the code describing specific hardware platforms. 
 
-extern void PlatformDetectionFunctionDefinitions(void* theEnv);
+extern void HardwareDetectionFunctionDefinitions(void* theEnv);
 
 #endif

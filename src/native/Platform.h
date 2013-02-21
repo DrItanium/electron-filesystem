@@ -28,5 +28,5 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define _PLATFORM_PLATFORM_H
 #include "ArchitectureDetection.h"
 #include "OSDetection.h"
-#include "PlatformDetection.h"
+#include "HardwareDetection.h"
 #endif

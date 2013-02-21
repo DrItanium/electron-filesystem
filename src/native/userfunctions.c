@@ -82,7 +82,7 @@ void EnvUserFunctions(
 	  BinaryOperationsFunctionDefinitions(theEnv);
      ArchitectureDetectionFunctionDefinitions(theEnv);
      OSDetectionFunctionDefinitions(theEnv);
-     PlatformDetectionFunctionDefinitions(theEnv);
+     HardwareDetectionFunctionDefinitions(theEnv);
 
   }
 

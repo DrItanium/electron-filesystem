@@ -25,7 +25,7 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #include "clips.h"
-#include "PlatformDetection.h"
+#include "HardwareDetection.h"
 #if defined(__APPLE__)
 #include "TargetConditionals.h"
 #endif
@@ -34,24 +34,24 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define DefinePlatformIdentFunc(kn, r, cn) \
    EnvDefineFunction2(theEnv, (char*)kn, r, PTIEF cn, (char*) str(cn), "00a")
 extern void* GetHardwarePlatform(void* theEnv);
-extern void* PlatformIsGeneric(void* theEnv); 
-extern void* PlatformIsIPhone(void* theEnv);
-extern void* PlatformIsPS3(void* theEnv); 
-extern void* PlatformIsPSP(void* theEnv); 
-extern void* PlatformIsWii(void* theEnv); 
-extern void* PlatformIsXbox(void* theEnv);
-extern void* PlatformIsXbox360(void* theEnv);
+extern void* HardwarePlatformIsGeneric(void* theEnv); 
+extern void* HardwarePlatformIsIPhone(void* theEnv);
+extern void* HardwarePlatformIsPS3(void* theEnv); 
+extern void* HardwarePlatformIsPSP(void* theEnv); 
+extern void* HardwarePlatformIsWii(void* theEnv); 
+extern void* HardwarePlatformIsXbox(void* theEnv);
+extern void* HardwarePlatformIsXbox360(void* theEnv);
 
 //This file contains the code describing specific hardware platforms. 
-extern void PlatformDetectionFunctionDefinitions(void* theEnv) {
-   DefinePlatformIdentFunc("get-hardware-platform", 'w', GetHardwarePlatform);
-   DefinePlatformIdentFunc("platform-is-generic", 'b', PlatformIsGeneric);
-   DefinePlatformIdentFunc("platform-is-iphone", 'b', PlatformIsIPhone);
-   DefinePlatformIdentFunc("platform-is-ps3", 'b', PlatformIsPS3);
-   DefinePlatformIdentFunc("platform-is-psp", 'b', PlatformIsPSP);
-   DefinePlatformIdentFunc("platform-is-wii", 'b', PlatformIsWii);
-   DefinePlatformIdentFunc("platform-is-xbox", 'b', PlatformIsXbox);
-   DefinePlatformIdentFunc("platform-is-xbox360", 'b', PlatformIsXbox360);
+extern void HardwareDetectionFunctionDefinitions(void* theEnv) {
+   DefinePlatformIdentFunc("hardware", 'w', GetHardwarePlatform);
+   DefinePlatformIdentFunc("hardware-is-generic", 'b', HardwarePlatformIsGeneric);
+   DefinePlatformIdentFunc("hardware-is-iphone", 'b', HardwarePlatformIsIPhone);
+   DefinePlatformIdentFunc("hardware-is-ps3", 'b', HardwarePlatformIsPS3);
+   DefinePlatformIdentFunc("hardware-is-psp", 'b', HardwarePlatformIsPSP);
+   DefinePlatformIdentFunc("hardware-is-wii", 'b', HardwarePlatformIsWii);
+   DefinePlatformIdentFunc("hardware-is-xbox", 'b', HardwarePlatformIsXbox);
+   DefinePlatformIdentFunc("hardware-is-xbox360", 'b', HardwarePlatformIsXbox360);
 }
 
 void* GetHardwarePlatform(void* theEnv) {
