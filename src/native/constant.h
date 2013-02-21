@@ -67,11 +67,11 @@
 #endif
 
 #ifndef APPLICATION_NAME
-#define APPLICATION_NAME "CLIPS"
+#define APPLICATION_NAME "AdventureEngine"
 #endif
 
 #ifndef COMMAND_PROMPT
-#define COMMAND_PROMPT "CLIPS> "
+#define COMMAND_PROMPT "Adventure Engine> "
 #endif
 
 #ifndef VERSION_STRING
@@ -79,7 +79,7 @@
 #endif
 
 #ifndef CREATION_DATE_STRING
-#define CREATION_DATE_STRING "3/4/11"
+#define CREATION_DATE_STRING "2/20/2013"
 #endif
 
 #ifndef BANNER_STRING
