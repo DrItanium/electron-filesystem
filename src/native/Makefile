@@ -1,5 +1,12 @@
 ########### MAKEFILE FOR THE ADVENTURE ENGINE ###########
-CC = clang
+
+
+
+#########################################################
+# While I don't like gcc as much as clang, I realize that 
+# gcc is more prevalent these days
+#########################################################
+CC = gcc 
 OUTPUT = adventure-engine 
 SUBDIRS = platform
 OBJS = agenda.o analysis.o argacces.o bload.o bmathfun.o bsave.o \
