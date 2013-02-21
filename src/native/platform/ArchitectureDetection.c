@@ -30,7 +30,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #define str(x) #x
 #define DefineArchIdentFunc(kn, r, cn) \
-   EnvDefineFunction(theEnv, (char*)kn, r, PTIEF cn, (char*) str(cn), "00a")
+   EnvDefineFunction2(theEnv, (char*)kn, r, PTIEF cn, (char*) str(cn), "00a")
 
 extern void* GetArchitectureVersion(void* theEnv); 
 extern void* GetArchitecture(void* theEnv);
@@ -49,9 +49,10 @@ void* GetArchitectureVersion(void* theEnv) {
        return EnvAddSymbol(theEnv, "ev6");
     #else
        return EnvAddSymbol(theEnv, "Generic");
+    #endif
  //TODO: Continue to implement this...there are a lot of things to add here
 #else
-   return EnvAddSymbol("Generic");
+   return EnvAddSymbol(theEnv, "Generic");
 #endif 
 }
 
