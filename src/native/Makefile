@@ -1,9 +1,5 @@
-########### LINUX MAKEFILE FOR ISA-CLIPS ###########
-### FLAGS ###
-# COMPILER - sets the compiler to use
-# OUTPUT - sets the name of the resulting executable
-# CFLAGS - additional cflags to pass to the compiler
-####################################################
+########### MAKEFILE FOR THE ADVENTURE ENGINE ###########
+CC = clang
 OUTPUT = adventure-engine 
 SUBDIRS = platform
 OBJS = agenda.o analysis.o argacces.o bload.o bmathfun.o bsave.o \
