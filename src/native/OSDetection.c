@@ -46,12 +46,6 @@ extern void* OSIsSonyConsole(void* theEnv);
 extern void* OSIsNintendoConsole(void* theEnv);
 
 extern void OSDetectionFunctionDefinitions(void* theEnv) {
-   EnvDefineFunction2(theEnv, 
-         (char*)"get-operating-system", 
-         'w',
-         PTIEF OSGetOperatingSystem, 
-         (char*)"OSGetOperatingSystem",
-         (char*)"00a");
    //capture the standard operating system call
    EnvDefineFunction2(theEnv,
          (char*)"operating-system",
