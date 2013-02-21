@@ -48,7 +48,7 @@ extern void* OSIsNintendoConsole(void* theEnv);
 extern void OSDetectionFunctionDefinitions(void* theEnv) {
    EnvDefineFunction2(theEnv, 
          (char*)"get-operating-system", 
-         'k',
+         's',
          PTIEF OSGetOperatingSystem, 
          (char*)"OSGetOperatingSystem",
          (char*)"00a");
