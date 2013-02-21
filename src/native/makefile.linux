@@ -35,7 +35,9 @@ OBJS = agenda.o analysis.o argacces.o bload.o bmathfun.o bsave.o \
  	strngrtr.o symblbin.o symblcmp.o symbol.o sysdep.o textpro.o \
  	tmpltbin.o tmpltbsc.o tmpltcmp.o tmpltdef.o tmpltfun.o tmpltlhs.o \
  	tmpltpsr.o tmpltrhs.o tmpltutl.o userdata.o userfunctions.o \
- 	utility.o watch.o main.o binary_operations.o 
+ 	utility.o watch.o main.o binary_operations.o \
+	platform/ArchitectureDetection.o platform/OSDetection.o \
+	platform/PlatformDetection.o
 
 .c.o :
 	$(COMPILER) -c $(CFLAGS) -DLINUX -DALLOW_ENVIRONMENT_GLOBALS=0 -std=c99 -Wall -Wundef -Wpointer-arith -Wshadow -Wcast-qual \
@@ -1263,6 +1265,13 @@ watch.o: watch.c setup.h envrnmnt.h symbol.h usrsetup.h constant.h \
   scanner.h pprint.h symblcmp.h modulpsr.h utility.h argacces.h watch.h
 
 binary_operations.o: binary_operations.c clips.h binary_operations.h
+
+platform/ArchitectureDetection.o: platform/ArchitectureDetection.c clips.h \
+		platform/ArchitectureDetection.h
+
+platform/OSDetection.o: platform/OSDetection.c clips.h platform/OSDetection.h
+
+platform/PlatformDetection.o: platform/PlatformDetection.c clips.h platform/PlatformDetection.h
 
 clean:
 	rm -f $(OUTPUT) *.o
