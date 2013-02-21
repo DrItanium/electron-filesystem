@@ -26,7 +26,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #ifndef _PLATFORM_PLATFORM_H
 #define _PLATFORM_PLATFORM_H
-#include "ArchitectureDetection.h"
-#include "OSDetection.h"
-#include "HardwareDetection.h"
+
+//calls all of the other platform functions
+extern void PlatformDetectionFunctionDefinitions(void* theEnv);
 #endif

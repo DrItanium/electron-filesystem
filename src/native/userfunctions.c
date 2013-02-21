@@ -43,7 +43,7 @@
 
 #include "clips.h"
 #include "binary_operations.h"
-#include "Platform.h"
+#include "platform/Platform.h"
 
 void UserFunctions(void);
 void EnvUserFunctions(void *);
@@ -80,9 +80,6 @@ void EnvUserFunctions(
 #pragma unused(theEnv)
 #endif
 	  BinaryOperationsFunctionDefinitions(theEnv);
-     ArchitectureDetectionFunctionDefinitions(theEnv);
-     OSDetectionFunctionDefinitions(theEnv);
-     HardwareDetectionFunctionDefinitions(theEnv);
-
+     PlatformDetectionFunctionDefinitions(theEnv);
   }
 
