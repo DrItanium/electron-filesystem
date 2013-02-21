@@ -165,65 +165,66 @@ void* OSGetOperatingSystem(void* theEnv) {
 //These are function definitions to find out what OS we're on
 void* OSIsLinux(void* theEnv) {
 #if defined(__linux__)
-   return EnvTrueSymbol(theEnv);
+   return TRUE;
 #else
-   return EnvFalseSymbol(theEnv);
+   return FALSE;
 #endif
 }
 void* OSIsWindows64(void* theEnv) {
 #if defined(_WIN64)
-   return EnvTrueSymbol(theEnv);
+   return TRUE;
 #else 
-   return EnvFalseSymbol(theEnv);
+   return FALSE;
 #endif
 }
 void* OSIsWindows32(void* theEnv) {
 #if defined(_WIN32)
-   return EnvTrueSymbol(theEnv);
+#warning "WIN32 is defined"
+   return TRUE;
 #else
-   return EnvFalseSymbol(theEnv);
+   return FALSE;
 #endif
 }
 void* OSIsOSX(void* theEnv) {
 #if defined(__APPLE__) && defined(TARGET_OS_MAC)
-   return EnvTrueSymbol(theEnv);
+   return TRUE;
 #else
-   return EnvFalseSymbol(theEnv);
+   return FALSE;
 #endif
 }
 void* OSIsAndroid(void* theEnv) {
 #if defined(__ANDROID__) || defined(__android__)
-   return EnvTrueSymbol(theEnv);
+   return TRUE;
 #else
-   return EnvFalseSymbol(theEnv);
+   return FALSE;
 #endif
 }
 void* OSIsIOS(void* theEnv) {
 #if defined(__APPLE__) && defined(TARGET_OS_IPHONE)
-   return EnvTrueSymbol(theEnv);
+   return TRUE;
 #else
-   return EnvFalseSymbol(theEnv);
+   return FALSE;
 #endif
 }
 void* OSIsFreeBSD(void* theEnv) {
 #if defined(__FreeBSD__)
-   return EnvTrueSymbol(theEnv);
+   return TRUE;
 #else
-   return EnvFalseSymbol(theEnv);
+   return FALSE;
 #endif
 }
 void* OSIsOpenBSD(void* theEnv) {
 #if defined(__OpenBSD__)
-   return EnvTrueSymbol(theEnv);
+   return TRUE;
 #else
-   return EnvFalseSymbol(theEnv);
+   return FALSE;
 #endif
 }
 void* OSIsNetBSD(void* theEnv) {
 #if defined(__NetBSD__) 
-   return EnvTrueSymbol(theEnv);
+   return TRUE;
 #else
-   return EnvFalseSymbol(theEnv);
+   return FALSE;
 #endif
 }
 
@@ -236,25 +237,25 @@ void* OSIsNetBSD(void* theEnv) {
 void* OSIsMicrosoftConsole(void* theEnv) {
    //Microsoft's console is easy
 #if defined(_XBOX)
-   return EnvTrueSymbol(theEnv);
+   return TRUE;
 #else
-   return EnvFalseSymbol(theEnv);
+   return FALSE;
 #endif
 }
 void* OSIsSonyConsole(void* theEnv) {
    //Playstation 2 isn't supported
 #if defined(__PPU__) || defined(PSP) || defined(__psp__) || defined(__PSP__) || defined(_PSP)
-   return EnvTrueSymbol(theEnv);
+   return TRUE;
 #else
-   return EnvFalseSymbol(theEnv);
+   return FALSE;
 #endif
 }
 void* OSIsNintendoConsole(void* theEnv) {
    //GameCube isn't supported...not enough RAM!
 #if defined(__wii__) || defined(_WII)
-   return EnvTrueSymbol(theEnv);
+   return TRUE;
 #else
-   return EnvFalseSymbol(theEnv);
+   return FALSE;
 #endif
 }
 
