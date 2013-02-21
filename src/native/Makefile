@@ -5,6 +5,7 @@
 # CFLAGS - additional cflags to pass to the compiler
 ####################################################
 OUTPUT = adventure-engine 
+SUBDIRS = platform
 OBJS = agenda.o analysis.o argacces.o bload.o bmathfun.o bsave.o \
  	classcom.o classexm.o classfun.o classinf.o classini.o \
  	classpsr.o clsltpsr.o commline.o conscomp.o constrct.o \
@@ -42,7 +43,7 @@ OBJS = agenda.o analysis.o argacces.o bload.o bmathfun.o bsave.o \
 	    -Wcast-align -Winline -Wmissing-declarations -Wredundant-decls \
 	    -Woverloaded-virtual -Wmissing-prototypes -Wnested-externs \
 	    -Wstrict-prototypes -Waggregate-return -Wno-implicit $<
-program: platform $(OBJS)
+program: subdirs $(OBJS)
 	$(CC) $(CFLAGS) -o $(OUTPUT) $(OBJS) -lm -lncurses
 
 agenda.o: agenda.c setup.h envrnmnt.h symbol.h usrsetup.h argacces.h \
@@ -1264,14 +1265,15 @@ watch.o: watch.c setup.h envrnmnt.h symbol.h usrsetup.h constant.h \
 
 binary_operations.o: binary_operations.c clips.h binary_operations.h
 
-.PHONY: clean platform-clean platform 
+.PHONY: clean sub-clean subdirs $(SUBDIRS)
 
-platform:
-	$(MAKE) -C platform
+subdirs: $(SUBDIRS)
 
-clean:platform-clean
+$(SUBDIRS):
+	$(MAKE) -C $@
+
+clean: sub-clean
 	rm -f $(OUTPUT) *.o
 
-platform-clean:
-	$(MAKE) -C platform clean
-	
+sub-clean: 
+	for d in $(SUBDIRS); do ($(MAKE) -C $$d clean ); done
