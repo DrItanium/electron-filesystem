@@ -32,18 +32,18 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //These are function definitions to find out what OS we're on
 
 extern void* OSGetOperatingSystem(void* theEnv);
-extern void* OSIsLinux(void* theEnv);
-extern void* OSIsWindows64(void* theEnv); 
-extern void* OSIsWindows32(void* theEnv);
-extern void* OSIsOSX(void* theEnv);
-extern void* OSIsAndroid(void* theEnv);
-extern void* OSIsIOS(void* theEnv);
-extern void* OSIsFreeBSD(void* theEnv);
-extern void* OSIsOpenBSD(void* theEnv);
-extern void* OSIsNetBSD(void* theEnv);
-extern void* OSIsMicrosoftConsole(void* theEnv);
-extern void* OSIsSonyConsole(void* theEnv);
-extern void* OSIsNintendoConsole(void* theEnv);
+extern int OSIsLinux(void* theEnv);
+extern int OSIsWindows64(void* theEnv); 
+extern int OSIsWindows32(void* theEnv);
+extern int OSIsOSX(void* theEnv);
+extern int OSIsAndroid(void* theEnv);
+extern int OSIsIOS(void* theEnv);
+extern int OSIsFreeBSD(void* theEnv);
+extern int OSIsOpenBSD(void* theEnv);
+extern int OSIsNetBSD(void* theEnv);
+extern int OSIsMicrosoftConsole(void* theEnv);
+extern int OSIsSonyConsole(void* theEnv);
+extern int OSIsNintendoConsole(void* theEnv);
 
 extern void OSDetectionFunctionDefinitions(void* theEnv) {
    //capture the standard operating system call
@@ -163,21 +163,21 @@ void* OSGetOperatingSystem(void* theEnv) {
 }
 
 //These are function definitions to find out what OS we're on
-void* OSIsLinux(void* theEnv) {
+int OSIsLinux(void* theEnv) {
 #if defined(__linux__)
    return TRUE;
 #else
    return FALSE;
 #endif
 }
-void* OSIsWindows64(void* theEnv) {
+int OSIsWindows64(void* theEnv) {
 #if defined(_WIN64)
    return TRUE;
 #else 
    return FALSE;
 #endif
 }
-void* OSIsWindows32(void* theEnv) {
+int OSIsWindows32(void* theEnv) {
 #if defined(_WIN32)
 #warning "WIN32 is defined"
    return TRUE;
@@ -185,42 +185,42 @@ void* OSIsWindows32(void* theEnv) {
    return FALSE;
 #endif
 }
-void* OSIsOSX(void* theEnv) {
+int OSIsOSX(void* theEnv) {
 #if defined(__APPLE__) && defined(TARGET_OS_MAC)
    return TRUE;
 #else
    return FALSE;
 #endif
 }
-void* OSIsAndroid(void* theEnv) {
+int OSIsAndroid(void* theEnv) {
 #if defined(__ANDROID__) || defined(__android__)
    return TRUE;
 #else
    return FALSE;
 #endif
 }
-void* OSIsIOS(void* theEnv) {
+int OSIsIOS(void* theEnv) {
 #if defined(__APPLE__) && defined(TARGET_OS_IPHONE)
    return TRUE;
 #else
    return FALSE;
 #endif
 }
-void* OSIsFreeBSD(void* theEnv) {
+int OSIsFreeBSD(void* theEnv) {
 #if defined(__FreeBSD__)
    return TRUE;
 #else
    return FALSE;
 #endif
 }
-void* OSIsOpenBSD(void* theEnv) {
+int OSIsOpenBSD(void* theEnv) {
 #if defined(__OpenBSD__)
    return TRUE;
 #else
    return FALSE;
 #endif
 }
-void* OSIsNetBSD(void* theEnv) {
+int OSIsNetBSD(void* theEnv) {
 #if defined(__NetBSD__) 
    return TRUE;
 #else
@@ -234,7 +234,7 @@ void* OSIsNetBSD(void* theEnv) {
  * current) that are a part of this class of operating systems. We use the
  * platform detection functions to figure out what platform we are on
  */
-void* OSIsMicrosoftConsole(void* theEnv) {
+int OSIsMicrosoftConsole(void* theEnv) {
    //Microsoft's console is easy
 #if defined(_XBOX)
    return TRUE;
@@ -242,7 +242,7 @@ void* OSIsMicrosoftConsole(void* theEnv) {
    return FALSE;
 #endif
 }
-void* OSIsSonyConsole(void* theEnv) {
+int OSIsSonyConsole(void* theEnv) {
    //Playstation 2 isn't supported
 #if defined(__PPU__) || defined(PSP) || defined(__psp__) || defined(__PSP__) || defined(_PSP)
    return TRUE;
@@ -250,7 +250,7 @@ void* OSIsSonyConsole(void* theEnv) {
    return FALSE;
 #endif
 }
-void* OSIsNintendoConsole(void* theEnv) {
+int OSIsNintendoConsole(void* theEnv) {
    //GameCube isn't supported...not enough RAM!
 #if defined(__wii__) || defined(_WII)
    return TRUE;

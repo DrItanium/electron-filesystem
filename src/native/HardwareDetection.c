@@ -34,13 +34,13 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define DefinePlatformIdentFunc(kn, r, cn) \
    EnvDefineFunction2(theEnv, (char*)kn, r, PTIEF cn, (char*) str(cn), "00a")
 extern void* GetHardwarePlatform(void* theEnv);
-extern void* HardwarePlatformIsGeneric(void* theEnv); 
-extern void* HardwarePlatformIsIPhone(void* theEnv);
-extern void* HardwarePlatformIsPS3(void* theEnv); 
-extern void* HardwarePlatformIsPSP(void* theEnv); 
-extern void* HardwarePlatformIsWii(void* theEnv); 
-extern void* HardwarePlatformIsXbox(void* theEnv);
-extern void* HardwarePlatformIsXbox360(void* theEnv);
+extern int HardwarePlatformIsGeneric(void* theEnv); 
+extern int HardwarePlatformIsIPhone(void* theEnv);
+extern int HardwarePlatformIsPS3(void* theEnv); 
+extern int HardwarePlatformIsPSP(void* theEnv); 
+extern int HardwarePlatformIsWii(void* theEnv); 
+extern int HardwarePlatformIsXbox(void* theEnv);
+extern int HardwarePlatformIsXbox360(void* theEnv);
 
 //This file contains the code describing specific hardware platforms. 
 extern void HardwareDetectionFunctionDefinitions(void* theEnv) {
@@ -75,7 +75,7 @@ void* GetHardwarePlatform(void* theEnv) {
     return EnvAddSymbol(theEnv, "Generic");
 #endif
 }
-void* HardwarePlatformIsGeneric(void* theEnv) {
+int HardwarePlatformIsGeneric(void* theEnv) {
 #if (defined(__APPLE__) && (TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR)) || defined(__PPU__) || defined(PSP) || defined(__psp__) || defined(__PSP__) || defined(_PSP) || defined(__wii__) || defined(_WII) || defined(_XBOX)
    return FALSE;
 #else
@@ -83,7 +83,7 @@ void* HardwarePlatformIsGeneric(void* theEnv) {
 #endif
 }
 
-void* HardwarePlatformIsIPhone(void* theEnv) {
+int HardwarePlatformIsIPhone(void* theEnv) {
 #if defined(__APPLE__) && ( TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR)
    return TRUE;
 #else
@@ -91,14 +91,14 @@ void* HardwarePlatformIsIPhone(void* theEnv) {
 #endif
 }
 
-void* HardwarePlatformIsPS3(void* theEnv) {
+int HardwarePlatformIsPS3(void* theEnv) {
 #if defined(__PPU__)
    return TRUE;
 #else
    return FALSE;
 #endif
 }
-void* HardwarePlatformIsPSP(void* theEnv) {
+int HardwarePlatformIsPSP(void* theEnv) {
 #if defined(PSP) || defined (__psp__) || defined(__PSP__) || defined(_PSP)
    return TRUE;
 #else 
@@ -106,7 +106,7 @@ void* HardwarePlatformIsPSP(void* theEnv) {
 #endif
 }
 
-void* HardwarePlatformIsWii(void* theEnv) {
+int HardwarePlatformIsWii(void* theEnv) {
 #if defined(__wii__) || defined(_WII) 
    return TRUE;
 #else
@@ -114,7 +114,7 @@ void* HardwarePlatformIsWii(void* theEnv) {
 #endif
 }
 
-void* HardwarePlatformIsXbox(void* theEnv) {
+int HardwarePlatformIsXbox(void* theEnv) {
 #if defined(_XBOX) && (_XBOX_VER < 200) 
    return TRUE;
 #else
@@ -122,7 +122,7 @@ void* HardwarePlatformIsXbox(void* theEnv) {
 #endif
 }
 
-void* HardwarePlatformIsXbox360(void* theEnv) {
+int HardwarePlatformIsXbox360(void* theEnv) {
 #if defined(_XBOX) && (_XBOX_VER >= 200)
    return TRUE;
 #else
