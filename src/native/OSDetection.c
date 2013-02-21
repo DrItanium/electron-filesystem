@@ -52,6 +52,13 @@ extern void OSDetectionFunctionDefinitions(void* theEnv) {
          PTIEF OSGetOperatingSystem, 
          (char*)"OSGetOperatingSystem",
          (char*)"00a");
+   //capture the standard operating system call
+   EnvDefineFunction2(theEnv,
+         (char*)"operating-system",
+         'w',
+         PTIEF OSGetOperatingSystem,
+         (char*)"OSGetOperatingSystem",
+         (char*)"00a");
    EnvDefineFunction2(theEnv, 
          (char*)"operating-system-is-android", 
          'b',
