@@ -2,6 +2,7 @@
    /*      "C" Language Integrated Production System      */
    /*                                                     */
    /*             CLIPS Version 6.30  12/07/07            */
+   /*             AdventureEngine 2/21/2013               */
    /*                                                     */
    /*                  SETUP HEADER FILE                  */
    /*******************************************************/
@@ -48,6 +49,8 @@
 /*            Removed VOID definition because of conflict    */
 /*            with Windows.h header file.                    */
 /*                                                           */    
+/*      AdventureEngine 2/21/2013: Added automatic system    */
+/*      identification                                       */
 /*************************************************************/
 
 #ifndef _H_setup
@@ -62,20 +65,34 @@
 /* Only one of these flags should be turned on (set to 1) at a time. */
 /*********************************************************************/
 
-#ifndef UNIX_V
-#define UNIX_V  0   /* UNIX System V, 4.2bsd, or HP Unix, presumably with gcc */
-#endif
 
+//#ifndef UNIX_V
+//#define UNIX_V  0   /* UNIX System V, 4.2bsd, or HP Unix, presumably with gcc */
+//#endif
+//
 #ifndef UNIX_7
 #define UNIX_7  0   /* UNIX System III Version 7 or Sun Unix, presumably with gcc */
 #endif
 
-#ifndef LINUX
-#define LINUX   0   /* Untested, presumably with gcc */
+
+#if defined(__FreeBSD__) || defined(__OpenBSD__) || defined(__NetBSD__) || defined(__DragonFlyBSD__)
+	#define UNIX_V 1
+#else
+	#define UNIX_V 0
 #endif
 
-#ifndef DARWIN
-#define DARWIN  0   /* Darwin Mac OS 10.5, presumably with gcc or Xcode 3.0 with Console */
+//TODO: Add solaris support
+
+#if defined(__linux__)
+    #define LINUX 1
+#else
+	 #define LINUX 0
+#endif
+
+#if defined(__APPLE__)
+	#define DARWIN 1
+#else 
+   #define DARWIN 0
 #endif
 
 #ifndef MAC_XCD
@@ -86,8 +103,10 @@
 #define MAC_MCW 0   /* MacOS 10.5, with CodeWarrior 9.6 */
 #endif
 
-#ifndef WIN_MVC
-#define WIN_MVC 0   /* Windows XP, with VC++ 2008 Express */
+#if defined(_WIN32) || defined(_WIN64)
+	#define WIN_MVC 1
+#else
+   #define WIN_MVC 0
 #endif
 
 #ifndef WIN_BTC
@@ -366,7 +385,7 @@
 /****************************************************************/
 
 #ifndef EMACS_EDITOR
-#define  EMACS_EDITOR 1
+#define  EMACS_EDITOR 0
 #endif
 
 #if GENERIC || MAC_XCD || MAC_MCW || WIN_MCW || WIN_BTC || WIN_MVC
