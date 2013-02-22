@@ -37,5 +37,5 @@
                               (if ?if then "if" else "} else if")
                               (sub-string (+ (str-index "_" ?str) 1) 
                                           (str-length ?str) ?str))
-                      (format nil "return %s" ?str)))
+                      (format nil "return %s;" ?str)))
 ;------------------------------------------------------------------------------
