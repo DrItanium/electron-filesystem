@@ -25,8 +25,74 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #include "../clips.h"
+#include <stdio.h>
+#include "SDL.h"
 #include "SDLInterface.h"
 
-extern void SDLFunctionDefinitions(void* theEnv) {
 
+//takes in a max of four arguments
+int ConvertInitStatement(char* c);
+extern int SDLIntialize(void* theEnv);
+extern void SDLQuit(void* theEnv); 
+extern void SDLFunctionDefinitions(void* theEnv) {
+	EnvDefineFunction2(theEnv, 
+			(char*)"sdl-init",
+			'b',
+			PTIEF SDLIntialize,
+			(char*)"SDLInitialize",
+			(char*)"11m");
+	EnvDefineFunction2(theEnv,
+			(char*)"sdl-quit",
+			'v',
+			PTIEF SDLQuit,
+			(char*)"SDLQuit",
+			(char*)"00a");
+
+}
+
+int ConvertInitStatement(char* c) {
+	if(strcmp(c,"EVERYTHING") == 0) {
+		return SDL_INIT_EVERYTHING;
+	} else if(strcmp(c, "AUDIO") == 0) {
+		return SDL_INIT_AUDIO;
+	} else if(strcmp(c, "VIDEO") == 0) {
+		return SDL_INIT_VIDEO;
+	} else if(strcmp(c, "CDROM") == 0) {
+		return SDL_INIT_CDROM;
+	} else if(strcmp(c, "TIMER") == 0) {
+		return SDL_INIT_TIMER;
+	} else if(strcmp(c, "JOYSTICK") == 0) {
+		return SDL_INIT_JOYSTICK;
+	} else {
+		return 0;
+	}
+}
+void SDLQuit(void* theEnv) {
+	SDL_Quit();
+}
+int SDLInitialize(void* theEnv) {
+	DATA_OBJECT arg0;
+	void* mf;
+	UInt32 flags;
+	int end, i;
+	char* tmp;
+
+	if(EnvArgTypeCheck(theEnv, (char*)"sdl-init", 1, MULTIFIELD, &arg0) == FALSE) {
+		return;
+	}
+	length = (long long)GetDOLEngth(arg0);
+	mf = GetValue(arg0);
+	end = DOGetEnd(arg0);
+	for(i = GetDOBegin(arg0); i <= end; ++i) {
+		tmp = ValueToString(GetMFValue(mf, i));
+		flags |= ConvertInitStatement(tmp);
+	}
+	if(SDL_Init(flags) == 0) {
+		return TRUE;	
+	} else {
+		EnvPrintRouter(theEnv, (char*)"werror", (char*)"ERROR: Couldn't initialize SDL ");
+		EnvPrintRouter(theEnv, (char*)"werror", SDL_GetError());
+		EnvPrintRouter(theEnv, (char*)"werror", (char*)"\n");
+		return FALSE;
+	}
 }
