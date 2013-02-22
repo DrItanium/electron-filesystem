@@ -26,19 +26,19 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #include "../clips.h"
 #include <stdio.h>
-#include "SDL.h"
+#include "SDL/SDL.h"
 #include "SDLInterface.h"
 
 
 //takes in a max of four arguments
 int ConvertInitStatement(char* c);
-extern int SDLIntialize(void* theEnv);
+extern int SDLInitialize(void* theEnv);
 extern void SDLQuit(void* theEnv); 
 extern void SDLFunctionDefinitions(void* theEnv) {
 	EnvDefineFunction2(theEnv, 
 			(char*)"sdl-init",
 			'b',
-			PTIEF SDLIntialize,
+			PTIEF SDLInitialize,
 			(char*)"SDLInitialize",
 			(char*)"11m");
 	EnvDefineFunction2(theEnv,
@@ -73,16 +73,15 @@ void SDLQuit(void* theEnv) {
 int SDLInitialize(void* theEnv) {
 	DATA_OBJECT arg0;
 	void* mf;
-	UInt32 flags;
+	unsigned int flags;
 	int end, i;
 	char* tmp;
 
 	if(EnvArgTypeCheck(theEnv, (char*)"sdl-init", 1, MULTIFIELD, &arg0) == FALSE) {
-		return;
+		return FALSE;
 	}
-	length = (long long)GetDOLEngth(arg0);
 	mf = GetValue(arg0);
-	end = DOGetEnd(arg0);
+	end = GetDOEnd(arg0);
 	for(i = GetDOBegin(arg0); i <= end; ++i) {
 		tmp = ValueToString(GetMFValue(mf, i));
 		flags |= ConvertInitStatement(tmp);
