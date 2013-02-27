@@ -2,7 +2,7 @@
 ### FLAGS ###
 # CFLAGS - additional cflags to pass to the compiler
 ####################################################
-OBJS = SDLInterface.o
+OBJS = SDLInterface.o SDLAudio.o
 
 .c.o :
 	$(CC) -c $(CFLAGS) -std=c99 -Wall -Wundef -Wpointer-arith -Wshadow -Wcast-qual \
