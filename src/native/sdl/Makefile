@@ -13,7 +13,9 @@ OBJS = SDLInterface.o
 .PHONY: all
 all: $(OBJS)
 
-SDLInterface.o: SDLInterface.c SDLInterface.h
+SDLInterface.o: SDLInterface.c SDLAudio.h SDLInterface.h
+
+SDLAudio.o: SDLAudio.c SDLAudio.h
 
 .PHONY: clean
 clean:

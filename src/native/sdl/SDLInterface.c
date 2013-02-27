@@ -28,6 +28,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <stdio.h>
 #include "SDL/SDL.h"
 #include "SDLInterface.h"
+#include "SDLAudio.h"
 
 
 //takes in a max of four arguments
@@ -47,7 +48,7 @@ extern void SDLFunctionDefinitions(void* theEnv) {
 			PTIEF SDLQuit,
 			(char*)"SDLQuit",
 			(char*)"00a");
-
+   SDLAudioDefinitions(theEnv);
 }
 
 int ConvertInitStatement(char* c) {
