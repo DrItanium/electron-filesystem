@@ -24,18 +24,13 @@
 ;(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 ;SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ;------------------------------------------------------------------------------
-; Library.clp - Defines the dendrite module and loads all corresponding files.
+; Item.clp - Base class for all things that can be added to an inventory
 ; 
 ; Written by Joshua Scoggins 
 ; Started on 3/6/2013
 ;------------------------------------------------------------------------------
-; Define the module
+(defclass dendrite::Item
+ 			 "base class for all things that can be added to an inventory"
+          (is-a Interactable)
+			 (slot description (visibility public)))
 ;------------------------------------------------------------------------------
-(defmodule dendrite (export ?ALL))
-;------------------------------------------------------------------------------
-; Load the corresponding types and functions 
-;------------------------------------------------------------------------------
-(batch* "lib/dendrite/Interactable.clp")
-(batch* "lib/dendrite/Interaction.clp")
-(batch* "lib/dendrite/Event.clp")
-(batch* "lib/dendrite/Item.clp")
