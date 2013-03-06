@@ -24,15 +24,13 @@
 ;(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 ;SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ;------------------------------------------------------------------------------
-; Library.clp - Defines the dendrite module and loads all corresponding files.
+; Interactable.clp - Base class of all interactable things
 ; 
 ; Written by Joshua Scoggins 
 ; Started on 3/6/2013
 ;------------------------------------------------------------------------------
-; Define the module
+(defclass dendrite::Interactable
+          "Base class of all interactable things"
+          (is-a Object))
+;TODO: Add more slots if necessary
 ;------------------------------------------------------------------------------
-(defmodule dendrite (export ?ALL))
-;------------------------------------------------------------------------------
-; Load the corresponding types and functions 
-;------------------------------------------------------------------------------
-(batch* "lib/dendrite/Interactable.clp")
