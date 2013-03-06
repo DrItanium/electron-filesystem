@@ -30,3 +30,4 @@
 (clear)
 ;relative to the root of the source directory
 (batch* "lib/cortex/Library.clp")
+(batch* "lib/dendrite/Library.clp")
