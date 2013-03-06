@@ -30,7 +30,11 @@
 ; Started on 3/6/2013
 ;------------------------------------------------------------------------------
 (defclass dendrite::Interactable
-          "Base class of all interactable things"
-          (is-a Object))
-;TODO: Add more slots if necessary
+  "Base class of all interactable things"
+  (is-a Object)
+  (slot description (visibility public))
+  (message-handler describe primary))
+;------------------------------------------------------------------------------
+(defmessage-handler dendrite::Interactable describe primary ()
+						  (printout t ?self:description crlf))
 ;------------------------------------------------------------------------------
