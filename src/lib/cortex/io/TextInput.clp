@@ -24,6 +24,9 @@
 ;(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 ;SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ;------------------------------------------------------------------------------
-; Loader.clp - Loads all files in the io folder
+; TextInput.clp - Loads all files in the io folder
 ;------------------------------------------------------------------------------
-(batch* "lib/cortex/io/TextInput.clp")
+(deftemplate cortex::TextInput
+ "A template to represent a piece of input provided by the user"
+ (slot input (type STRING)))
+;------------------------------------------------------------------------------
