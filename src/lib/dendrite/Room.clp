@@ -24,21 +24,18 @@
 ;(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 ;SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ;------------------------------------------------------------------------------
-; Library.clp - Defines the dendrite module and loads all corresponding files.
+; Room.clp - A basic room implementation
 ; 
 ; Written by Joshua Scoggins 
 ; Started on 3/6/2013
 ;------------------------------------------------------------------------------
-; Define the module
+(defclass dendrite::Room
+  "A basic player entity"
+  (is-a Entity)
+  (multislot valid-directions)
+  (message-handler describe-directions primary))
 ;------------------------------------------------------------------------------
-(defmodule dendrite (export ?ALL))
+(defmessage-handler dendrite::Room describe-directions primary ()
+ (printout t (format nil "Valid directions are: %s" 
+				  (implode$ ?self:valid-directions) crlf)))
 ;------------------------------------------------------------------------------
-; Load the corresponding types and functions 
-;------------------------------------------------------------------------------
-(batch* "lib/dendrite/Interactable.clp")
-(batch* "lib/dendrite/Interaction.clp")
-(batch* "lib/dendrite/Event.clp")
-(batch* "lib/dendrite/Item.clp")
-(batch* "lib/dendrite/Entity.clp")
-(batch* "lib/dendrite/Player.clp")
-(batch* "lib/dendrite/Room.clp")
