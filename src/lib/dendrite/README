@@ -1,0 +1,3 @@
+The dendrite library defines objects and structures useful in a text adventure
+game. These do not have to be used but can be quite useful if you want to make
+a game more than reinvent the wheel
