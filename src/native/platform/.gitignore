@@ -1,0 +1,3 @@
+#ignore the adventure engine executable and the object files
+adventure-engine
+*.o
