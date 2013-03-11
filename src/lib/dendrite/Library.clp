@@ -32,15 +32,17 @@
 ; Define the module
 ;------------------------------------------------------------------------------
 (defmodule dendrite 
-			  (import cortex ?ALL)
-			  (export ?ALL))
+           (import init ?ALL)
+           (import cortex ?ALL)
+           (export ?ALL))
 ;------------------------------------------------------------------------------
 ; Load the corresponding types and functions 
 ;------------------------------------------------------------------------------
-(batch* "lib/dendrite/Interactable.clp")
-(batch* "lib/dendrite/Interaction.clp")
-(batch* "lib/dendrite/Event.clp")
-(batch* "lib/dendrite/Item.clp")
-(batch* "lib/dendrite/Entity.clp")
-(batch* "lib/dendrite/Player.clp")
-(batch* "lib/dendrite/Room.clp")
+(library-files "dendrite"
+               "Interactable.clp"
+               "Interaction.clp"
+               "Event.clp"
+               "Item.clp"
+               "Entity.clp"
+               "Player.clp"
+               "Room.clp")
