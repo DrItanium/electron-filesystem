@@ -36,6 +36,5 @@
  (slot position-y (type NUMBER))
  (multislot children (type SYMBOL))
  (slot width (type NUMBER))
- (slot height (type NUMBER))
- (message-handler raise-event primary))
+ (slot height (type NUMBER)))
 ;------------------------------------------------------------------------------
