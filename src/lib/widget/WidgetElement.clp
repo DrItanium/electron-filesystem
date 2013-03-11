@@ -30,11 +30,44 @@
 ; Started on 3/11/2013
 ;------------------------------------------------------------------------------
 (defclass widget::WidgetElement 
- "Base class of all widgets in the adventure engine"
- (is-a Object)
- (slot position-x (type NUMBER))
- (slot position-y (type NUMBER))
- (multislot children (type SYMBOL))
- (slot width (type NUMBER))
- (slot height (type NUMBER)))
+  "Base class of all widgets in the adventure engine"
+  (is-a Object)
+  (slot position-x (type NUMBER))
+  (slot position-y (type NUMBER))
+  (slot width (type NUMBER))
+  (slot height (type NUMBER))
+  (slot reference-count (type NUMBER) (range 0 ?VARIABLE))
+  (multislot children (type SYMBOL))
+  (multislot valid-events (type SYMBOL))
+  (message-handler declare-handler primary)
+  (message-handler raise-event primary))
+;------------------------------------------------------------------------------
+(defmessage-handler widget::WidgetElement declare-handler primary 
+                    (?name ?fn)
+                    (bind ?we-name (gensym*))
+                    (make-instance ?we-name of WidgetEvent 
+                                   (event-name ?name)
+                                   (function-to-call ?fn)
+                                   (parent ?self:id)
+                                   (reference-count 1))
+                    (bind ?result (member$ ?name ?self:valid-events))
+                    (if (not ?result) then
+                      (slot-direct-insert$ valid-events 1 ?name ?we-name )
+                      else
+                      (printout werror "ERROR: Firing of multiple events not supported yet"  crlf)
+                      (halt))
+                    (return ?we-name))
+;------------------------------------------------------------------------------
+(defmessage-handler widget::WidgetElement raise-event primary
+                    (?name $?args)
+                    (bind ?offset (member$ ?name ?self:valid-events))
+                    (if (not ?offset) then
+                      (printout werror "ERROR: given event " ?name 
+                                " does not exist. Halting" crlf)
+                      (halt)
+                      else
+                      (send (instance-address * (symbol-to-instance-name 
+                                                  (nth$ (+ 1 ?offset)
+                                                        ?self:valid-events)))
+                            raise-event $?args)))
 ;------------------------------------------------------------------------------
