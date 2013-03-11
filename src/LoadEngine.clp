@@ -33,3 +33,4 @@
 ;------------------------------------------------------------------------------
 (load-library cortex)
 (load-library dendrite)
+(load-library widget)
