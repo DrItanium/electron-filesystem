@@ -31,5 +31,7 @@
 ;------------------------------------------------------------------------------
 (defclass widget::WidgetElement 
  "Base class of all widgets in the adventure engine"
- (is-a Object))
+ (is-a Object)
+ (slot position-x (type NUMBER))
+ (slot position-y (type NUMBER)))
 ;------------------------------------------------------------------------------
