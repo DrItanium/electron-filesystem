@@ -24,12 +24,12 @@
 ;(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 ;SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ;------------------------------------------------------------------------------
-; WidgetElement.clp - Base class of all widgets 
+; LobeElement.clp - Base class of all widgets
 ; 
 ; Written by Joshua Scoggins 
 ; Started on 3/11/2013
 ;------------------------------------------------------------------------------
-(defclass widget::WidgetElement 
+(defclass lobe::LobeElement 
   "Base class of all widgets in the adventure engine"
   (is-a Object)
   (slot position-x (type NUMBER))
@@ -42,10 +42,10 @@
   (message-handler declare-handler primary)
   (message-handler raise-event primary))
 ;------------------------------------------------------------------------------
-(defmessage-handler widget::WidgetElement declare-handler primary 
+(defmessage-handler lobe::LobeElement declare-handler primary 
                     (?name ?fn)
                     (bind ?we-name (gensym*))
-                    (make-instance ?we-name of WidgetEvent 
+                    (make-instance ?we-name of LobeEvent 
                                    (event-name ?name)
                                    (function-to-call ?fn)
                                    (parent ?self:id)
@@ -58,7 +58,7 @@
                       (halt))
                     (return ?we-name))
 ;------------------------------------------------------------------------------
-(defmessage-handler widget::WidgetElement raise-event primary
+(defmessage-handler lobe::LobeElement raise-event primary
                     (?name $?args)
                     (bind ?offset (member$ ?name ?self:valid-events))
                     (if (not ?offset) then

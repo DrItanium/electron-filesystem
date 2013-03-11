@@ -31,14 +31,14 @@
 ;------------------------------------------------------------------------------
 ; Define the module
 ;------------------------------------------------------------------------------
-(defmodule widget 
+(defmodule lobe 
            (import init ?ALL)
            (import cortex ?ALL)
            (export ?ALL))
 ;------------------------------------------------------------------------------
 ; Load the corresponding types and functions 
 ;------------------------------------------------------------------------------
-(library-files "widget"
-               "WidgetEvent.clp"
-               "WidgetElement.clp")
+(library-files "lobe"
+               "LobeEvent.clp"
+               "LobeElement.clp")
 
