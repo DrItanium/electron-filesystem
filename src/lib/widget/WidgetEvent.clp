@@ -36,6 +36,8 @@
  (slot function-to-call (type SYMBOL))
  (message-handler raise-event primary))
 ;------------------------------------------------------------------------------
-(defmessage-handler widget::WidgetEvent raise-event primary ($?args)
+(defmessage-handler widget::WidgetEvent raise-event primary 
+ "Fires the given event"
+ ($?args)
  (funcall ?self:function-to-call $?args))
 ;------------------------------------------------------------------------------
