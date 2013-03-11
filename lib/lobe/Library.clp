@@ -24,7 +24,8 @@
 ;(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 ;SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ;------------------------------------------------------------------------------
-; Library.clp - Defines the widget module and loads all corresponding files.
+; Library.clp - Defines the system abstraction module and loads all 
+; corresponding files.
 ; 
 ; Written by Joshua Scoggins 
 ; Started on 3/11/2013
