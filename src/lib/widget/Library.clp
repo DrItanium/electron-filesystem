@@ -37,3 +37,5 @@
 ;------------------------------------------------------------------------------
 ; Load the corresponding types and functions 
 ;------------------------------------------------------------------------------
+(batch* "lib/widget/WidgetEvent.clp")
+(batch* "lib/widget/WidgetElement.clp")
