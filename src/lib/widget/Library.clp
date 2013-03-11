@@ -32,10 +32,13 @@
 ; Define the module
 ;------------------------------------------------------------------------------
 (defmodule widget 
-			  (import cortex ?ALL)
-			  (export ?ALL))
+           (import init ?ALL)
+           (import cortex ?ALL)
+           (export ?ALL))
 ;------------------------------------------------------------------------------
 ; Load the corresponding types and functions 
 ;------------------------------------------------------------------------------
-(batch* "lib/widget/WidgetEvent.clp")
-(batch* "lib/widget/WidgetElement.clp")
+(library-files "widget"
+               "WidgetEvent.clp"
+               "WidgetElement.clp")
+
