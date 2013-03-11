@@ -24,12 +24,14 @@
 ;(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 ;SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ;------------------------------------------------------------------------------
-; LoadEngine.clp - Runs the GLConstantConversion expert system
-; Written by Joshua Scoggins
+; DeclareLibraryFunctions.clp - Defines a series of functions used to
+; streamline the loading of libraries in the adventure engine
+; 
+; Written by Joshua Scoggins 
+; Started on 3/11/2013
 ;------------------------------------------------------------------------------
-(clear)
-;relative to the root of the source directory
-(batch* "init/Library.clp")
+(deffunction load-library 
+ "Loads an adventure engine library from the root of the src folder"
+ (?name)
+ (batch* (format nil "lib/%s/Library.clp" ?name)))
 ;------------------------------------------------------------------------------
-(load-library cortex)
-(load-library dendrite)
