@@ -1,6 +1,0 @@
-Folder layout:
-native/ - contains all of the C code (including CLIPS)
-tools/ - contains tools used by the adventure engine in one way or another
-lib/ - contains all the functions, templates, and classes used by the adventure engine
-logic/ - contains all the rules for the different modules that make up the adventure engine
-

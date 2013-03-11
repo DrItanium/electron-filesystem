@@ -3,7 +3,7 @@
 .PHONY: clean program 
 
 program: 
-	$(MAKE) -C src
+	$(MAKE) -C native
 
 clean: 
-	$(MAKE) -C src clean 
+	$(MAKE) -C native clean 
