@@ -30,8 +30,15 @@
 ; Written by Joshua Scoggins 
 ; Started on 3/11/2013
 ;------------------------------------------------------------------------------
-(deffunction load-library 
+(deffunction init::load-library 
  "Loads an adventure engine library from the root of the src folder"
  (?name)
  (batch* (format nil "lib/%s/Library.clp" ?name)))
+;------------------------------------------------------------------------------
+(deffunction init::library-files 
+ "Loads the files that make up the target library"
+ (?offset $?names)
+ (bind ?coreOffset (format nil "lib/%s/%s" ?offset "%s"))
+ (progn$ (?a $?names)
+  (batch* (format nil ?coreOffset ?a))))
 ;------------------------------------------------------------------------------
