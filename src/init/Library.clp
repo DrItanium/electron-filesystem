@@ -24,12 +24,17 @@
 ;(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 ;SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ;------------------------------------------------------------------------------
-; LoadEngine.clp - Runs the GLConstantConversion expert system
-; Written by Joshua Scoggins
+; Library.clp - Defines the init module and loads all other corresponding
+; files.
+; 
+; Written by Joshua Scoggins 
+; Started on 3/11/2013
 ;------------------------------------------------------------------------------
-(clear)
-;relative to the root of the source directory
-(batch* "init/Library.clp")
+; Define the module
 ;------------------------------------------------------------------------------
-(load-library cortex)
-(load-library dendrite)
+(defmodule init (export ?ALL))
+;------------------------------------------------------------------------------
+; Load the corresponding types and functions 
+;------------------------------------------------------------------------------
+(batch* "init/DeclareLibraryFunctions.clp")
+;------------------------------------------------------------------------------
