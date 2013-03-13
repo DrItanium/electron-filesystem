@@ -63,5 +63,5 @@
            (import types ?ALL)
            (export ?ALL))
 ;------------------------------------------------------------------------------
-(batch* "tools/conv/gl/common/lib/Loader.clp")
-(batch* "tools/conv/gl/common/logic/CommonConversionRules.clp")
+(load-library "tools/conv/gl/common")
+(load-logic "tools/conv/gl/common")
