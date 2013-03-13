@@ -35,3 +35,10 @@
              (?folder-name)
              (batch* (format nil "logic/%s/Entry.clp" ?folder-name)))
 ;------------------------------------------------------------------------------
+(deffunction init::logic-files
+ "Loads a series of files from the specified path in the logic folder"
+ (?name $?files)
+ (bind ?coreOffset (format nil "logic/%s/%s" ?offset "%s"))
+ (progn$ (?a $?files)
+  (batch* (format nil ?coreOffset ?a))))
+;------------------------------------------------------------------------------
