@@ -308,7 +308,7 @@
                         (arguments ?p -1))
 
          =>
-         (modify ?f (argument ?p 0)))
+         (modify ?f (arguments ?p 0)))
 ;------------------------------------------------------------------------------
 (defrule grouping-update::construct-function-argument-deferred
          ?f <- (message (to grouping-update)
@@ -331,7 +331,7 @@
          ;entries in a macro-expand fashion
          (modify-instance ?b (data-objects $?do ?name)
                           (variables $?vars ?name)
-                          (parsng-entries $?pe ?name))
+                          (parsing-entries $?pe ?name))
          (modify ?f1 (action construct-entry)
                  (arguments ?argID => ?name)))
 ;------------------------------------------------------------------------------

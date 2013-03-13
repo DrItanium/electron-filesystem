@@ -73,9 +73,9 @@
 			(object (is-a GLAPIFixedArrayArgument)
 					  (id ?arg)
 					  (index ?index)
-					  (size ?size))
+					  (array-size ?size))
 			=>
-			(make-instance ?name of CLIPSGLAPIFixedMultifieldArgumentBuilder 
+			(make-instance ?name of CLIPSGLAPIFixedSizeMultifieldArgumentBuilder 
 								(index (+ 1 ?index))
 								(parent ?arg)
 								(multifield-size ?size)
