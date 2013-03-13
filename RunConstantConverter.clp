@@ -29,8 +29,8 @@
 ;------------------------------------------------------------------------------
 (clear)
 ;relative to the root of the source directory
-(batch* "lib/cortex/Library.clp")
-(batch* "tools/conv/gl/constant/ConstantConversionEntry.clp")
+(batch* "LoadEngine.clp")
+(load-application "tools/conv/gl/constant")
 (reset)
 (assert (parse constant file "/usr/include/GL/gl.h"))
 (run)
