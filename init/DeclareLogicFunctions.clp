@@ -24,19 +24,14 @@
 ;(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 ;SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ;------------------------------------------------------------------------------
-; Library.clp - Defines the init module and loads all other corresponding
-; files.
+; DeclareLogicFunctions.clp - Defines functions to load code from the
+; logic folder 
 ; 
 ; Written by Joshua Scoggins 
-; Started on 3/11/2013
+; Started on 3/13/2013
 ;------------------------------------------------------------------------------
-; Define the module
-;------------------------------------------------------------------------------
-(defmodule init (export ?ALL))
-;------------------------------------------------------------------------------
-; Load the corresponding types and functions 
-;------------------------------------------------------------------------------
-(batch* "init/DeclareLibraryFunctions.clp")
-(batch* "init/DeclareApplicationFunctions.clp")
-(batch* "init/DeclareLogicFunctions.clp")
+(deffunction init::load-logic
+             "Loads logic/<folder-name>/Entry.clp." 
+             (?folder-name)
+             (batch* (format nil "logic/%s/Entry.clp" ?folder-name)))
 ;------------------------------------------------------------------------------
