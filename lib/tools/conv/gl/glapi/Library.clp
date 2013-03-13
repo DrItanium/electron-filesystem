@@ -26,5 +26,6 @@
 ;------------------------------------------------------------------------------
 ; Loader.clp - Loads the lib folder for glapi
 ;------------------------------------------------------------------------------
-(batch* "tools/conv/gl/glapi/lib/GLAPIConversionFunctions.clp")
-(batch* "tools/conv/gl/glapi/lib/GLAPIConversionTypes.clp")
+(library-files "tools/conv/gl/glapi/"
+               "GLAPIConversionFunctions.clp"
+               "GLAPIConversionTypes.clp")

@@ -24,7 +24,10 @@
 ;(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 ;SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ;------------------------------------------------------------------------------
-; Loader.clp - Loads the logic folder for glapi
+; ConstantConversionEntry.clp - Entry point into the GLConstantConversion 
+;                               expert system 
+; Written by Joshua Scoggins
 ;------------------------------------------------------------------------------
-(batch* "tools/conv/gl/glapi/logic/GLAPIConversion.clp")
-(batch* "tools/conv/gl/glapi/logic/GLAPIArgumentConversion.clp")
+(load-application "tools/conv/gl/common")
+(load-library "tools/conv/gl/glapi")
+(load-logic "tools/conv/gl/glapi")
