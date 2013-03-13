@@ -27,5 +27,6 @@
 ; Loader.clp - Loads all of the corresponding objects
 ; Written by Joshua Scoggins
 ;------------------------------------------------------------------------------
-(batch* "tools/conv/gl/common/lib/FileRelated.clp")
-(batch* "tools/conv/gl/common/lib/CommonConversionFunctions.clp")
+(library-files "tools/conv/gl/common/"
+               "FileRelated.clp"
+               "CommonConversionFunctions.clp")
