@@ -24,18 +24,14 @@
 ;(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 ;SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ;------------------------------------------------------------------------------
-; Library.clp - Defines the init module and loads all other corresponding
-; files.
+; DeclareApplicationFunctions.clp - Defines a series of functions used to
+; streamline the loading of a given game/application/sample/etc
 ; 
 ; Written by Joshua Scoggins 
-; Started on 3/11/2013
+; Started on 3/13/2013
 ;------------------------------------------------------------------------------
-; Define the module
-;------------------------------------------------------------------------------
-(defmodule init (export ?ALL))
-;------------------------------------------------------------------------------
-; Load the corresponding types and functions 
-;------------------------------------------------------------------------------
-(batch* "init/DeclareLibraryFunctions.clp")
-(batch* "init/DeclareApplicationFunctions.clp")
+(deffunction init::load-application
+ "Loads an application from the application folder with the specified name"
+ (?root-folder-name)
+ (batch* (format nil "application/%s/Application.clp" ?root-folder-name)))
 ;------------------------------------------------------------------------------
