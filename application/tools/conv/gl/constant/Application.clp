@@ -28,7 +28,7 @@
 ;                               expert system 
 ; Written by Joshua Scoggins
 ;------------------------------------------------------------------------------
-(batch* "tools/conv/gl/common/CommonConversionEntry.clp")
-(batch* "tools/conv/gl/constant/lib/ConstantConversionFunctions.clp")
-(batch* "tools/conv/gl/constant/logic/GLConstantConversion.clp")
-
+;This operates off of the common "application"
+(load-application "tools/conv/gl/common")
+(load-library "tools/conv/gl/constant")
+(load-logic "tools/conv/gl/constant")
