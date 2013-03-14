@@ -24,20 +24,50 @@
 ;(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 ;SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ;------------------------------------------------------------------------------
-; Library.clp - Defines the init module and loads all other corresponding
-; files.
+; GenericDeclareFunctions.clp - Contains generic backing methods for loading
+; code
 ; 
 ; Written by Joshua Scoggins 
-; Started on 3/11/2013
+; Started on 3/13/2013
 ;------------------------------------------------------------------------------
-; Define the module
+(defgeneric init::generic-load
+ "Loads a single file in an abstract way")
 ;------------------------------------------------------------------------------
-(defmodule init (export ?ALL))
+(defmethod init::generic-load
+ ((?path LEXEME))
+ (batch* ?path))
 ;------------------------------------------------------------------------------
-; Load the corresponding types and functions 
+(defmethod init::generic-load
+ "Loads a single file in an abstract way"
+ ((?folder-name LEXEME)
+  (?path-to-folder LEXEME)
+  (?file-name LEXEME))
+ (generic-load (format nil "%s/%s/%s" ?folder-name ?path-to-folder ?file-name)))
 ;------------------------------------------------------------------------------
-(load* "init/GenericDeclareFunctions.clp")
-(batch* "init/DeclareLibraryFunctions.clp")
-(batch* "init/DeclareApplicationFunctions.clp")
-(batch* "init/DeclareLogicFunctions.clp")
+(defmethod init::generic-load
+ ((?folder-name LEXEME)
+  (?path-to-folder LEXEME)
+  (?files MULTIFIELD LEXEME (= (length$ ?files) 1)))
+ (generic-load ?folder-name ?path-to-folder (nth$ 1 ?files)))
+;------------------------------------------------------------------------------
+(defmethod init::generic-load
+ ((?folder-name LEXEME)
+  (?path-to-folder LEXEME)
+  (?files MULTIFIELD LEXEME (> (length$ ?files) 1)))
+ (bind ?core-offset (format nil "%s/%s/%s" 
+                     ?folder-name ?path-to-folder "%s"))
+ (progn$ (?a ?files)
+  (generic-load (format nil ?core-offset ?a))))
+;------------------------------------------------------------------------------
+(defmethod init::generic-load
+ ((?folder-name LEXEME)
+  (?path-to-folder LEXEME)
+  ($?files LEXEME (> (length$ ?files) 1)))
+ (generic-load ?folder-name ?path-to-folder $?files))
+;------------------------------------------------------------------------------
+(defmethod init::generic-load
+ ((?folder-name LEXEME)
+  (?path-to-folder LEXEME)
+  ($?files LEXEME (= (length$ ?files) 1)))
+ (generic-load ?folder-name ?path-to-folder (nth$ 1 ?files)))
 ;------------------------------------------------------------------------------
