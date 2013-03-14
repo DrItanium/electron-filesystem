@@ -30,15 +30,24 @@
 ; Written by Joshua Scoggins 
 ; Started on 3/11/2013
 ;------------------------------------------------------------------------------
-(deffunction init::load-library 
- "Loads an adventure engine library from the root of the src folder"
- (?name)
- (batch* (format nil "lib/%s/Library.clp" ?name)))
+(defgeneric init::load-library "Loads a given library header")
 ;------------------------------------------------------------------------------
-(deffunction init::library-files 
- "Loads the files that make up the target library"
- (?offset $?names)
- (bind ?coreOffset (format nil "lib/%s/%s" ?offset "%s"))
- (progn$ (?a $?names)
-  (batch* (format nil ?coreOffset ?a))))
+(defgeneric init::library-files "Loads the contents of a target library")
+;------------------------------------------------------------------------------
+(defmethod init::load-library 
+  "Loads an adventure engine library from the root of the src folder"
+  (?name)
+  (generic-load lib ?name Library.clp))
+;------------------------------------------------------------------------------
+(defmethod init::library-files 
+  "Loads the files that make up the target library"
+  ((?offset LEXEME)
+   ($?names LEXEME))
+  (generic-load lib ?offset ?names))
+;------------------------------------------------------------------------------
+(defmethod init::library-files
+  "Loads the files that make up the target library"
+  ((?offset LEXEME)
+   (?names LEXEME MULTIFIELD))
+  (generic-load lib ?offset ?names))
 ;------------------------------------------------------------------------------
