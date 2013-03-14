@@ -30,15 +30,24 @@
 ; Written by Joshua Scoggins 
 ; Started on 3/13/2013
 ;------------------------------------------------------------------------------
-(deffunction init::load-logic
-             "Loads logic/<folder-name>/Entry.clp." 
-             (?folder-name)
-             (batch* (format nil "logic/%s/Entry.clp" ?folder-name)))
+(defgeneric init::load-logic)
 ;------------------------------------------------------------------------------
-(deffunction init::logic-files
+(defgeneric init::logic-files)
+;------------------------------------------------------------------------------
+(defmethod init::load-logic
+             "Loads logic/<folder-name>/Entry.clp." 
+             ((?folder-name LEXEME))
+             (generic-load logic ?folder-name Entry.clp))
+;------------------------------------------------------------------------------
+(defmethod init::logic-files
              "Loads a series of logic files from the specified path"
-             (?offset $?files)
-             (bind ?coreOffset (format nil "logic/%s/%s" ?offset "%s"))
-             (progn$ (?a $?files)
-                     (batch* (format nil ?coreOffset ?a))))
+             ((?offset LEXEME) 
+              ($?files LEXEME))
+             (generic-load logic ?offset ?files))
+;------------------------------------------------------------------------------
+(defmethod init::logic-files
+             "Loads a series of logic files from the specified path"
+             ((?offset LEXEME) 
+              (?files LEXEME MULTIFIELD))
+             (generic-load logic ?offset ?files))
 ;------------------------------------------------------------------------------
