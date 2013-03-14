@@ -45,6 +45,7 @@
 #include "binary_operations.h"
 #include "platform/Platform.h"
 #include "sdl/SDLInterface.h"
+#include "init/AdventureEngineInit.h"
 
 void UserFunctions(void);
 void EnvUserFunctions(void *);
@@ -83,5 +84,7 @@ void EnvUserFunctions(
 	  BinaryOperationsFunctionDefinitions(theEnv);
      PlatformDetectionFunctionDefinitions(theEnv);
 	  SDLFunctionDefinitions(theEnv);
+     InitializeAdventureEngineFunctions(theEnv);
+     
   }
 
