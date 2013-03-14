@@ -79,11 +79,11 @@
 #endif
 
 #ifndef CREATION_DATE_STRING
-#define CREATION_DATE_STRING "2/20/2013"
+#define CREATION_DATE_STRING "3/13/2013"
 #endif
 
 #ifndef BANNER_STRING
-#define BANNER_STRING "The Adventure Engine (Based off of CLIPS 6.30 2/20/2013)\n"
+#define BANNER_STRING "The Adventure Engine (Based off of CLIPS 6.30 3/13/2013)\n"
 #endif
 
 /*************************/
