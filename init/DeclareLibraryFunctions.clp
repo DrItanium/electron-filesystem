@@ -36,7 +36,7 @@
 ;------------------------------------------------------------------------------
 (defmethod init::load-library 
   "Loads an adventure engine library from the root of the src folder"
-  (?name)
+  ((?name LEXEME))
   (generic-load lib ?name Library.clp))
 ;------------------------------------------------------------------------------
 (defmethod init::library-files 
