@@ -30,8 +30,10 @@
 ; Written by Joshua Scoggins 
 ; Started on 3/13/2013
 ;------------------------------------------------------------------------------
-(deffunction init::load-application
+(defgeneric init::load-application "Loads an application")
+;------------------------------------------------------------------------------
+(defmethod init::load-application
  "Loads an application from the application folder with the specified name"
- (?root-folder-name)
- (batch* (format nil "application/%s/Application.clp" ?root-folder-name)))
+ ((?root-folder-name LEXEME))
+ (generic-load application ?root-folder-name Application.clp))
 ;------------------------------------------------------------------------------
