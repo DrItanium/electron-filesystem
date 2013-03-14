@@ -27,9 +27,7 @@
 ; LoadEngine.clp - Runs the GLConstantConversion expert system
 ; Written by Joshua Scoggins
 ;------------------------------------------------------------------------------
-(clear)
-;relative to the root of the source directory
-(batch* "init/Library.clp")
+(initialize-adventure-engine)
 ;------------------------------------------------------------------------------
 (load-library cortex)
 (load-library dendrite)
