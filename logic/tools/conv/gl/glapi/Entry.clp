@@ -27,5 +27,5 @@
 ; Loader.clp - Loads the logic folder for glapi
 ;------------------------------------------------------------------------------
 (logic-files "tools/conv/gl/glapi"
-             "GLAPIConversion.clp"
-             "GLAPIArgumentConversion.clp")
+             "GLAPIArgumentConversion.clp"
+             "GLAPIConversion.clp")
