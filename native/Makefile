@@ -8,7 +8,7 @@
 #########################################################
 CC = gcc 
 OUTPUT = adventure-engine 
-SUBDIRS = platform sdl init
+SUBDIRS = platform init
 OBJS = agenda.o analysis.o argacces.o bload.o bmathfun.o bsave.o \
  	classcom.o classexm.o classfun.o classinf.o classini.o \
  	classpsr.o clsltpsr.o commline.o conscomp.o constrct.o \
@@ -40,7 +40,7 @@ OBJS = agenda.o analysis.o argacces.o bload.o bmathfun.o bsave.o \
  	tmpltpsr.o tmpltrhs.o tmpltutl.o userdata.o userfunctions.o \
  	utility.o watch.o main.o binary_operations.o platform/ArchitectureDetection.o \
 	platform/OSDetection.o platform/HardwareDetection.o platform/Platform.o \
-	sdl/SDLInterface.o sdl/SDLAudio.o init/AdventureEngineInit.o
+	init/AdventureEngineInit.o
 
 .c.o :
 	$(CC) -c $(CFLAGS) -DALLOW_ENVIRONMENT_GLOBALS=0 -std=c99 -Wall -Wundef -Wpointer-arith -Wshadow -Wcast-qual \
