@@ -48,7 +48,7 @@ OBJS = agenda.o analysis.o argacces.o bload.o bmathfun.o bsave.o \
 	    -Woverloaded-virtual -Wmissing-prototypes -Wnested-externs \
 	    -Wstrict-prototypes -Waggregate-return -Wno-implicit $<
 program: subdirs $(OBJS)
-	$(CC) $(CFLAGS) -o $(OUTPUT) $(OBJS) -lm -lncurses -lSDL
+	$(CC) $(CFLAGS) -o $(OUTPUT) $(OBJS) -lm -lncurses
 
 agenda.o: agenda.c setup.h envrnmnt.h symbol.h usrsetup.h argacces.h \
   expressn.h exprnops.h exprnpsr.h extnfunc.h userdata.h scanner.h \
