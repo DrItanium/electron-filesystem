@@ -25,10 +25,10 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-#ifndef NATIVE_SYSTEM_H
-#define NATIVE_SYSTEM_H
-#include <System/Initialization/AdventureEngineInit.h>
-#include <System/Platform/Platform.h>
+#include <System/System.h>
+#include <clips.h>
 
-extern void InitializeSystem(void* theEnv);
-#endif
+void InitializeSystem(void* theEnv) {
+   InitializeAdventureEngineFunctions(theEnv); 
+   PlatformDetectionFunctionDefinitions(theEnv);
+}

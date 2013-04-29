@@ -80,8 +80,6 @@ void EnvUserFunctions(
 #pragma unused(theEnv)
 #endif
 	  BinaryOperationsFunctionDefinitions(theEnv);
-     PlatformDetectionFunctionDefinitions(theEnv);
-     InitializeAdventureEngineFunctions(theEnv);
-     
+     InitializeSystem(theEnv);
   }
 

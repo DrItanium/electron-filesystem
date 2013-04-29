@@ -38,7 +38,7 @@ OBJS = agenda.o analysis.o argacces.o bload.o bmathfun.o bsave.o \
  	tmpltpsr.o tmpltrhs.o tmpltutl.o userdata.o userfunctions.o \
  	utility.o watch.o main.o binary_operations.o System/Platform/ArchitectureDetection.o \
 	System/Platform/OSDetection.o System/Platform/HardwareDetection.o System/Platform/Platform.o \
-	System/Initialization/AdventureEngineInit.o
+	System/Initialization/AdventureEngineInit.o System/System.o
 
 .c.o :
 	$(CC) -c $(CFLAGS) -DALLOW_ENVIRONMENT_GLOBALS=0 -std=c99 -Wall -Wundef -Wpointer-arith -Wshadow -Wcast-qual \
