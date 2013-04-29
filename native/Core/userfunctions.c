@@ -41,8 +41,8 @@
 /*                                                                         */
 /***************************************************************************/
 
-#include <clips.h>
-#include <binary_operations.h>
+#include "clips.h"
+#include "binary_operations.h"
 #include <System/System.h>
 
 void UserFunctions(void);
