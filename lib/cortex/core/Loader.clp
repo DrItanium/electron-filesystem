@@ -28,4 +28,3 @@
 ;------------------------------------------------------------------------------
 (batch* "lib/cortex/core/Object.clp")
 (batch* "lib/cortex/core/Message.clp")
-(batch* "lib/cortex/core/ObjectConversionFunctions.clp")
