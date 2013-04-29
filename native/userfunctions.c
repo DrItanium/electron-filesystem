@@ -41,10 +41,10 @@
 /*                                                                         */
 /***************************************************************************/
 
-#include "clips.h"
-#include "binary_operations.h"
-#include "platform/Platform.h"
-#include "init/AdventureEngineInit.h"
+#include <clips.h>
+#include <binary_operations.h>
+#include <System/Platform/Platform.h>
+#include <System/Initialization/AdventureEngineInit.h>
 
 void UserFunctions(void);
 void EnvUserFunctions(void *);

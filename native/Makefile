@@ -1,14 +1,12 @@
 ########### MAKEFILE FOR THE ADVENTURE ENGINE ###########
 
-
-
 #########################################################
 # While I don't like gcc as much as clang, I realize that 
 # gcc is more prevalent these days
 #########################################################
 CC = gcc 
 OUTPUT = adventure-engine 
-SUBDIRS = platform init
+SUBDIRS = System
 OBJS = agenda.o analysis.o argacces.o bload.o bmathfun.o bsave.o \
  	classcom.o classexm.o classfun.o classinf.o classini.o \
  	classpsr.o clsltpsr.o commline.o conscomp.o constrct.o \
@@ -38,15 +36,16 @@ OBJS = agenda.o analysis.o argacces.o bload.o bmathfun.o bsave.o \
  	strngrtr.o symblbin.o symblcmp.o symbol.o sysdep.o textpro.o \
  	tmpltbin.o tmpltbsc.o tmpltcmp.o tmpltdef.o tmpltfun.o tmpltlhs.o \
  	tmpltpsr.o tmpltrhs.o tmpltutl.o userdata.o userfunctions.o \
- 	utility.o watch.o main.o binary_operations.o platform/ArchitectureDetection.o \
-	platform/OSDetection.o platform/HardwareDetection.o platform/Platform.o \
-	init/AdventureEngineInit.o
+ 	utility.o watch.o main.o binary_operations.o System/Platform/ArchitectureDetection.o \
+	System/Platform/OSDetection.o System/Platform/HardwareDetection.o System/Platform/Platform.o \
+	System/Initialization/AdventureEngineInit.o
 
 .c.o :
 	$(CC) -c $(CFLAGS) -DALLOW_ENVIRONMENT_GLOBALS=0 -std=c99 -Wall -Wundef -Wpointer-arith -Wshadow -Wcast-qual \
 	    -Wcast-align -Winline -Wmissing-declarations -Wredundant-decls \
 	    -Woverloaded-virtual -Wmissing-prototypes -Wnested-externs \
-	    -Wstrict-prototypes -Waggregate-return -Wno-implicit $<
+	    -Wstrict-prototypes -Waggregate-return -Wno-implicit -I$(srcroot) $<
+
 program: subdirs $(OBJS)
 	$(CC) $(CFLAGS) -o $(OUTPUT) $(OBJS) -lm -lncurses
 
