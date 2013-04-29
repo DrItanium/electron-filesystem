@@ -7,7 +7,7 @@ export srcroot ?= $(progroot)/native/
 #########################################################
 CC = gcc 
 OUTPUT = adventure-engine 
-SUBDIRS = System Core
+SUBDIRS = Core System
 OBJS = Core/agenda.o Core/analysis.o Core/argacces.o Core/bload.o Core/bmathfun.o Core/bsave.o \
  	Core/classcom.o Core/classexm.o Core/classfun.o Core/classinf.o Core/classini.o \
 	Core/classpsr.o Core/clsltpsr.o Core/commline.o Core/conscomp.o Core/constrct.o \
@@ -41,7 +41,7 @@ OBJS = Core/agenda.o Core/analysis.o Core/argacces.o Core/bload.o Core/bmathfun.
 	System/Platform/OSDetection.o System/Platform/HardwareDetection.o System/Platform/Platform.o \
 	System/Initialization/AdventureEngineInit.o System/System.o
 
-program: subdirs $(OBJS)
+program: subdirs 
 	$(CC) $(CFLAGS) -o $(OUTPUT) $(OBJS) -lm -lncurses
 
 
