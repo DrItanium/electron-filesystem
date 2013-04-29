@@ -15,7 +15,7 @@ OBJS = agenda.o analysis.o argacces.o bload.o bmathfun.o bsave.o \
  	cstrnutl.o default.o defins.o developr.o dffctbin.o dffctbsc.o \
  	dffctcmp.o dffctdef.o dffctpsr.o dffnxbin.o dffnxcmp.o \
  	dffnxexe.o dffnxfun.o dffnxpsr.o dfinsbin.o dfinscmp.o drive.o \
- 	edbasic.o edmain.o edmisc.o edstruct.o edterm.o emathfun.o \
+	emathfun.o \
  	engine.o envrnmnt.o evaluatn.o expressn.o exprnbin.o exprnops.o \
  	exprnpsr.o extnfunc.o factbin.o factbld.o factcmp.o factcom.o \
  	factfun.o factgen.o facthsh.o factlhs.o factmch.o factmngr.o \
@@ -351,16 +351,6 @@ drive.o: drive.c setup.h envrnmnt.h symbol.h usrsetup.h agenda.h \
   scanner.h pprint.h utility.h symblcmp.h constrnt.h cstrccom.h network.h \
   match.h pattern.h reorder.h engine.h lgcldpnd.h retract.h memalloc.h \
   prntutil.h reteutil.h router.h incrrset.h drive.h
-
-edbasic.o: edbasic.c setup.h envrnmnt.h symbol.h usrsetup.h
-
-edmain.o: edmain.c setup.h envrnmnt.h symbol.h usrsetup.h
-
-edmisc.o: edmisc.c setup.h envrnmnt.h symbol.h usrsetup.h
-
-edstruct.o: edstruct.c setup.h envrnmnt.h symbol.h usrsetup.h
-
-edterm.o: edterm.c setup.h envrnmnt.h symbol.h usrsetup.h
 
 emathfun.o: emathfun.c setup.h envrnmnt.h symbol.h usrsetup.h argacces.h \
   expressn.h exprnops.h exprnpsr.h extnfunc.h userdata.h scanner.h \

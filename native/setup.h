@@ -379,20 +379,6 @@
 #define BLOAD_AND_BSAVE 0
 #endif
 
-/****************************************************************/
-/* EMACS_EDITOR: If this flag is turned on, an integrated EMACS */
-/*   style editor can be utilized on supported machines.        */
-/****************************************************************/
-
-#ifndef EMACS_EDITOR
-#define  EMACS_EDITOR 0
-#endif
-
-#if GENERIC || MAC_XCD || MAC_MCW || WIN_MCW || WIN_BTC || WIN_MVC
-#undef EMACS_EDITOR
-#define  EMACS_EDITOR  0
-#endif
-
 /********************************************************************/
 /* CONSTRUCT COMPILER: If this flag is turned on, you can generate  */
 /*   C code representing the constructs in the current environment. */
@@ -484,11 +470,6 @@
 #define WINDOW_INTERFACE 0
 #endif
 
-#if WINDOW_INTERFACE
-#undef EMACS_EDITOR                         /* Editor can't be used with */
-#define  EMACS_EDITOR  0                    /* windowed interface        */
-#endif
-
 /*************************************************************/
 /* ALLOW_ENVIRONMENT_GLOBALS: If enabled, tracks the current */
 /*   environment and allows environments to be referred to   */
@@ -500,10 +481,6 @@
 #define ALLOW_ENVIRONMENT_GLOBALS 1
 #endif
 
-#if ! ALLOW_ENVIRONMENT_GLOBALS
-#undef EMACS_EDITOR                         /* Editor can't be used without */
-#define  EMACS_EDITOR  0                    /* environment globals          */
-#endif
 
 /********************************************/
 /* DEVELOPER: Enables code for debugging a  */

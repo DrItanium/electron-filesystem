@@ -721,13 +721,6 @@ EnvPrintRouter(theEnv,WDISPLAY,(char*)"Bload capability is ");
 #endif
 EnvPrintRouter(theEnv,WDISPLAY,(char*)"\n");
 
-EnvPrintRouter(theEnv,WDISPLAY,(char*)"EMACS Editor is ");
-#if EMACS_EDITOR
-  EnvPrintRouter(theEnv,WDISPLAY,(char*)"ON\n");
-#else
-  EnvPrintRouter(theEnv,WDISPLAY,(char*)"OFF\n");
-#endif
-
 EnvPrintRouter(theEnv,WDISPLAY,(char*)"Construct compiler is ");
 #if CONSTRUCT_COMPILER
   EnvPrintRouter(theEnv,WDISPLAY,(char*)"ON\n");
