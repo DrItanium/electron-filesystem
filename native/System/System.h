@@ -27,8 +27,5 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #ifndef NATIVE_SYSTEM_H
 #define NATIVE_SYSTEM_H
-#include <System/Initialization/AdventureEngineInit.h>
-#include <System/Platform/Platform.h>
-
 extern void InitializeSystem(void* theEnv);
 #endif
