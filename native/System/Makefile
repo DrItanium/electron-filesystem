@@ -1,5 +1,5 @@
 
-SUBDIRS = Initialization Platform
+SUBDIRS = Initialization Platform Input
 OBJS = System.o
 
 .PHONY: all subdirs $(SUBDIRS)

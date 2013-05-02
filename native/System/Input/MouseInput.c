@@ -32,7 +32,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 extern void GetMouseLocation(void* theEnv, DATA_OBJECT_PTR returnValue);
 extern void* GetMouseAction(void* theEnv);
 
-void InitializeAdventureEngineFunctions(void* theEnv) {
+void InitializeMouseInputFunctions(void* theEnv) {
    EnvDefineFunction2(theEnv, 
          (char*)"get-mouse-action",
          'w',
@@ -66,6 +66,6 @@ void GetMouseLocation(void* theEnv, DATA_OBJECT_PTR returnValue) {
 }
 void* GetMouseAction(void* theEnv) {
    //CHANGE THIS STUB CODE {
-   return AddSymbol("Nothing");
+   return EnvAddSymbol(theEnv, "Nothing");
    //}
 }

@@ -25,13 +25,9 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-#include <System/System.h>
-#include <System/Initialization/AdventureEngineInit.h>
-#include <System/Platform/Platform.h>
-#include <System/Input/Input.h>
+#ifndef _INPUT_H
+#define _INPUT_H
 
-void InitializeSystem(void* theEnv) {
-   InitializeAdventureEngineFunctions(theEnv); 
-   PlatformDetectionFunctionDefinitions(theEnv);
-   InputFunctionDefinitions(theEnv);
-}
+extern void InputFunctionDefinitions(void* theEnv);
+
+#endif 

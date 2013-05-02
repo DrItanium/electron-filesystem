@@ -25,13 +25,33 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-#include <System/System.h>
-#include <System/Initialization/AdventureEngineInit.h>
-#include <System/Platform/Platform.h>
-#include <System/Input/Input.h>
+#include <Core/clips.h>
+#include <System/Input/KeyboardInput.h> 
 
-void InitializeSystem(void* theEnv) {
-   InitializeAdventureEngineFunctions(theEnv); 
-   PlatformDetectionFunctionDefinitions(theEnv);
-   InputFunctionDefinitions(theEnv);
+
+extern void GetCurrentlyPressedKeys(void* theEnv, DATA_OBJECT_PTR returnValue);
+
+void InitializeKeyboardInputFunctions(void* theEnv) {
+   EnvDefineFunction2(theEnv,
+         (char*)"get-currently-pressed-keys",
+         'm',
+         PTIEF GetCurrentlyPressedKeys,
+         (char*)"GetCurrentlyPressedKeys",
+         (char*)"00a");
+}
+
+void GetCurrentlyPressedKeys(void* theEnv, DATA_OBJECT_PTR returnValue) {
+   void* multifieldPtr;
+
+   //Stub result
+   //change this for different backends
+   //{
+   multifieldPtr = CreateMultifield(1);
+   SetMFType(multifieldPtr, 1, SYMBOL);
+   SetMFValue(multifieldPtr, 1, EnvAddSymbol(theEnv, "Nothing"));
+   SetpType(returnValue, MULTIFIELD);
+   SetpValue(returnValue, multifieldPtr);
+   SetpDOBegin(returnValue, 1);
+   SetpDOEnd(returnValue, 1);
+   //}
 }
