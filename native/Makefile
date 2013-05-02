@@ -39,7 +39,8 @@ OBJS = Core/agenda.o Core/analysis.o Core/argacces.o Core/bload.o Core/bmathfun.
  	Core/tmpltpsr.o Core/tmpltrhs.o Core/tmpltutl.o Core/userdata.o Core/userfunctions.o \
  	Core/utility.o Core/watch.o Core/main.o Core/binary_operations.o System/Platform/ArchitectureDetection.o \
 	System/Platform/OSDetection.o System/Platform/HardwareDetection.o System/Platform/Platform.o \
-	System/Initialization/AdventureEngineInit.o System/System.o
+	System/Initialization/AdventureEngineInit.o System/System.o System/Input/Input.o \
+	System/Input/MouseInput.o System/Input/KeyboardInput.o
 
 program: subdirs 
 	$(CC) $(CFLAGS) -o $(OUTPUT) $(OBJS) -lm -lncurses

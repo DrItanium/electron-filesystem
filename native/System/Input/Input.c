@@ -31,7 +31,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <System/Input/MouseInput.h>
 
 
-void InitializeMouseInputFunctions(void* theEnv) {
+void InputFunctionDefinitions(void* theEnv) {
    InitializeMouseInputFunctions(theEnv);
    InitializeKeyboardInputFunctions(theEnv);
 }

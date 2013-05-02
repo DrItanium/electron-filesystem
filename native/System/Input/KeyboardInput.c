@@ -46,12 +46,12 @@ void GetCurrentlyPressedKeys(void* theEnv, DATA_OBJECT_PTR returnValue) {
    //Stub result
    //change this for different backends
    //{
-   multifieldPtr = CreateMultifield(1);
-   SetMFType(multifieldPtr, 1, SYMBOL);
-   SetMFValue(multifieldPtr, 1, EnvAddSymbol(theEnv, "Nothing"));
-   SetpType(returnValue, MULTIFIELD);
-   SetpValue(returnValue, multifieldPtr);
-   SetpDOBegin(returnValue, 1);
-   SetpDOEnd(returnValue, 1);
+   multifieldPtr = EnvCreateMultifield(theEnv, 1);
+   EnvSetMFType(theEnv, multifieldPtr, 1, SYMBOL);
+   EnvSetMFValue(theEnv, multifieldPtr, 1, EnvAddSymbol(theEnv, "Nothing"));
+   EnvSetpType(theEnv, returnValue, MULTIFIELD);
+   EnvSetpValue(theEnv, returnValue, multifieldPtr);
+   EnvSetpDOBegin(theEnv, returnValue, 1);
+   EnvSetpDOEnd(theEnv, returnValue, 1);
    //}
 }

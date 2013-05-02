@@ -27,6 +27,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #include <Core/clips.h>
 #include <System/Input/MouseInput.h> 
+#include "../../Core/clips.h"
 
 
 extern void GetMouseLocation(void* theEnv, DATA_OBJECT_PTR returnValue);
@@ -50,19 +51,19 @@ void InitializeMouseInputFunctions(void* theEnv) {
 void GetMouseLocation(void* theEnv, DATA_OBJECT_PTR returnValue) {
    void* multifieldPtr;
 
-   multifieldPtr = CreateMultifield(2);
-   SetMFType(multifieldPtr, 1, INTEGER);
-   SetMFType(multifieldPtr, 2, INTEGER);
+   multifieldPtr = EnvCreateMultifield(theEnv, 2);
+   EnvSetMFType(theEnv, multifieldPtr, 1, INTEGER);
+   EnvSetMFType(theEnv, multifieldPtr, 2, INTEGER);
    //Stub result
    //change this for different backends
    //{
-   SetMFValue(multifieldPtr, 1, EnvAddInteger(theEnv, 0));
-   SetMFValue(multifieldPtr, 2, EnvAddInteger(theEnv, 0));
+   EnvSetMFValue(theEnv, multifieldPtr, 1, EnvAddLong(theEnv, 0));
+   EnvSetMFValue(theEnv, multifieldPtr, 2, EnvAddLong(theEnv, 0));
    //}
-   SetpType(returnValue, MULTIFIELD);
-   SetpValue(returnValue, multifieldPtr);
-   SetpDOBegin(returnValue, 1);
-   SetpDOEnd(returnValue, 2);
+   EnvSetpType(theEnv, returnValue, MULTIFIELD);
+   EnvSetpValue(theEnv, returnValue, multifieldPtr);
+   EnvSetpDOBegin(theEnv, returnValue, 1);
+   EnvSetpDOEnd(theEnv, returnValue, 2);
 }
 void* GetMouseAction(void* theEnv) {
    //CHANGE THIS STUB CODE {
