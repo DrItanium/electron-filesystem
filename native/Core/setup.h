@@ -121,19 +121,13 @@
 #define WIN_GCC 0   /* Windows XP, with DJGPP 3.21 */
 #endif
 
-/* The following are unsupported: */
-                    
-#ifndef VAX_VMS                    
-#define VAX_VMS 0   /* VAX VMS */
-#endif
 
 /* Use GENERIC if nothing else is used. */
 
 #ifndef GENERIC
 #if (! UNIX_V) && (! LINUX) && (! UNIX_7) && \
     (! MAC_XCD) && (! MAC_MCW) && (! DARWIN) && \
-    (! WIN_MVC) && (! WIN_BTC) && (! WIN_MCW) && (! WIN_GCC) && \
-    (! VAX_VMS)
+    (! WIN_MVC) && (! WIN_BTC) && (! WIN_MCW) && (! WIN_GCC)
 #define GENERIC 1   /* Generic (any machine)                   */
 #else
 #define GENERIC 0   /* Generic (any machine)                   */
