@@ -1613,9 +1613,6 @@ static struct topics *AskForNewHelpTopic(
            RouterData(theEnv)->CommandBufferInputCount -= 2;
           }
        }
-#if VAX_VMS
-   EnvPrintRouter(theEnv,(char*)"whelp",(char*)"\n");
-#endif
 
    RouterData(theEnv)->CommandBufferInputCount = 0;
    RouterData(theEnv)->AwaitingInput = FALSE;
