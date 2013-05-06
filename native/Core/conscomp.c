@@ -181,7 +181,7 @@ globle void ConstructsToCCommand(
    int argCount;
    long long id, max; 
    int nameLength, pathLength;
-#if VAX_VMS || WIN_MVC || WIN_BTC
+#if WIN_MVC || WIN_BTC
    int i;
 #endif
 
@@ -201,12 +201,12 @@ globle void ConstructsToCCommand(
    fileName = DOToString(theArg);
    nameLength = (int) strlen(fileName);
 
-   /*================================*/
-   /* File names for the VAX and IBM */
-   /* PCs can't contain a period.    */
-   /*================================*/
+   /*=================================*/
+   /* File names for the IBM PC can't */
+   /* contain a period.               */
+   /*=================================*/
 
-#if VAX_VMS || WIN_MVC || WIN_BTC
+#if WIN_MVC || WIN_BTC
    for (i = 0 ; *(fileName+i) ; i++)
      {
       if (*(fileName+i) == '.')
