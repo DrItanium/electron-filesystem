@@ -48,15 +48,6 @@
 #include <time.h>
 #include <stdarg.h>
 
-#if   VAX_VMS
-#include timeb
-#include <descrip.h>
-#include <ssdef.h>
-#include <stsdef.h>
-#include signal
-extern int LIB$SPAWN();
-#endif
-
 #if MAC_MCW || MAC_XCD
 #include <Carbon/Carbon.h> 
 #define kTwoPower32 (4294967296.0)      /* 2^32 */
@@ -238,7 +229,7 @@ struct systemDependentData
    static void                    SystemFunctionDefinitions(void *);
    static void                    InitializeKeywords(void *);
    static void                    InitializeNonportableFeatures(void *);
-#if   (VAX_VMS || UNIX_V || LINUX || DARWIN || UNIX_7 || WIN_GCC || WIN_BTC || WIN_MVC) && (! WINDOW_INTERFACE)
+#if   (UNIX_V || LINUX || DARWIN || UNIX_7 || WIN_GCC || WIN_BTC || WIN_MVC) && (! WINDOW_INTERFACE)
    static void                    CatchCtrlC(int);
 #endif
 /*
@@ -786,25 +777,12 @@ globle void gensystem(
    /* Execute the operating system command. */
    /*=======================================*/
 
-#if VAX_VMS
-   if (SystemDependentData(theEnv)->PauseEnvFunction != NULL) (*SystemDependentData(theEnv)->PauseEnvFunction)(theEnv);
-   VMSSystem(commandBuffer);
-   putchar('\n');
-   if (SystemDependentData(theEnv)->ContinueEnvFunction != NULL) (*SystemDependentData(theEnv)->ContinueEnvFunction)(theEnv,1);
-   if (SystemDependentData(theEnv)->RedrawScreenFunction != NULL) (*SystemDependentData(theEnv)->RedrawScreenFunction)(theEnv);
-#endif
-
 #if   UNIX_7 || UNIX_V || LINUX || DARWIN || WIN_MVC || WIN_BTC || WIN_MCW || WIN_GCC || MAC_XCD
    if (SystemDependentData(theEnv)->PauseEnvFunction != NULL) (*SystemDependentData(theEnv)->PauseEnvFunction)(theEnv);
    system(commandBuffer);
    if (SystemDependentData(theEnv)->ContinueEnvFunction != NULL) (*SystemDependentData(theEnv)->ContinueEnvFunction)(theEnv,1);
    if (SystemDependentData(theEnv)->RedrawScreenFunction != NULL) (*SystemDependentData(theEnv)->RedrawScreenFunction)(theEnv);
 #else
-
-#if ! VAX_VMS
-   EnvPrintRouter(theEnv,WDIALOG,
-            (char*)"System function not fully defined for this system.\n");
-#endif
 
 #endif
 
@@ -816,26 +794,6 @@ globle void gensystem(
 
    return;
   }
-
-#if   VAX_VMS
-/*************************************************/
-/* VMSSystem: Implements system command for VMS. */
-/*************************************************/
-globle void VMSSystem(
-  char *cmd)
-  {
-   long status, complcode;
-   struct dsc$descriptor_s cmd_desc;
-
-   cmd_desc.dsc$w_length = strlen(cmd);
-   cmd_desc.dsc$a_pointer = cmd;
-   cmd_desc.dsc$b_class = DSC$K_CLASS_S;
-   cmd_desc.dsc$b_dtype = DSC$K_DTYPE_T;
-
-   status = LIB$SPAWN(&cmd_desc,0,0,0,0,0,&complcode,0,0,0);
-  }
-
-#endif
 
 /*******************************************/
 /* gengetchar: Generic routine for getting */
@@ -954,7 +912,7 @@ static void InitializeNonportableFeatures(
 #endif
 #if ! WINDOW_INTERFACE
 
-#if VAX_VMS || UNIX_V || LINUX || DARWIN || UNIX_7 || WIN_GCC || WIN_BTC || WIN_MVC
+#if UNIX_V || LINUX || DARWIN || UNIX_7 || WIN_GCC || WIN_BTC || WIN_MVC
    signal(SIGINT,CatchCtrlC);
 #endif
 
@@ -990,7 +948,7 @@ static void InitializeNonportableFeatures(
 
 #if ! WINDOW_INTERFACE
 
-#if   VAX_VMS || UNIX_V || LINUX || DARWIN || UNIX_7 || WIN_GCC || WIN_BTC || WIN_MVC || DARWIN
+#if   UNIX_V || LINUX || DARWIN || UNIX_7 || WIN_GCC || WIN_BTC || WIN_MVC || DARWIN
 /**********************************************/
 /* CatchCtrlC: VMS and UNIX specific function */
 /*   to allow control-c interrupts.           */
