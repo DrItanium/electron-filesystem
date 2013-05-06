@@ -551,9 +551,6 @@ globle void OptionsCommand(
 #if GENERIC
    EnvPrintRouter(theEnv,WDISPLAY,(char*)"Generic ");
 #endif
-#if VAX_VMS
-   EnvPrintRouter(theEnv,WDISPLAY,(char*)"VAX VMS ");
-#endif
 #if UNIX_V
    EnvPrintRouter(theEnv,WDISPLAY,(char*)"UNIX System V or 4.2BSD ");
 #endif
@@ -796,10 +793,6 @@ globle void *OperatingSystemFunction(
 
 #if GENERIC
    return(EnvAddSymbol(theEnv,(char*)"UNKNOWN"));
-#endif
-
-#if VAX_VMS
-   return(EnvAddSymbol(theEnv,(char*)"VMS"));
 #endif
 
 #if UNIX_V
