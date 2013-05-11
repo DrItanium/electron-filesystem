@@ -236,6 +236,12 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define OS_NETBSD 0
 #endif
 
+#if defined(__DragonFlyBSD__)
+#define OS_DRAGONFLYBSD 1
+#else
+#define OS_DRAGONFLYBSD 0
+#endif
+
 #if defined(__ANDROID__) || defined(__android__)
 #define OS_ANDROID 1
 #else
@@ -314,7 +320,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     (! OS_OSX) && (! OS_IOS) && (! OS_APPLE_UNKNOWN) && (! OS_OPENBSD) && \
     (! OS_NETBSD) && (!OS_XMB) && (!OS_SONY_UNKNOWN) && (! OS_XBOX1) && \
     (! OS_XBOX360) && (! OS_XBOX_UNKNOWN) && (! OS_WII) && \
-    (! OS_NINTENDO_UNKNOWN)
+    (! OS_NINTENDO_UNKNOWN) && (! OS_DRAGONFLYBSD) 
 #define OS_UNKNOWN 1
 #else
 #define OS_UNKNOWN 0
