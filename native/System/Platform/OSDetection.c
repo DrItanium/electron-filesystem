@@ -41,6 +41,7 @@ extern int OSIsIOS(void* theEnv);
 extern int OSIsFreeBSD(void* theEnv);
 extern int OSIsOpenBSD(void* theEnv);
 extern int OSIsNetBSD(void* theEnv);
+extern int OSIsDragonFlyBSD(void* theEnv);
 extern int OSIsMicrosoftConsole(void* theEnv);
 extern int OSIsSonyConsole(void* theEnv);
 extern int OSIsNintendoConsole(void* theEnv);
@@ -102,6 +103,12 @@ extern void OSDetectionFunctionDefinitions(void* theEnv) {
          (char*)"OSIsNetBSD", 
          (char*)"00a");
    EnvDefineFunction2(theEnv, 
+         (char*)"operating-system-is-dragonflybsd", 
+         'b',
+         PTIEF OSIsDragonFlyBSD, 
+         (char*)"OSIsDragonFlyBSD", 
+         (char*)"00a");
+   EnvDefineFunction2(theEnv, 
          (char*)"operating-system-is-ios", 
          'b',
          PTIEF OSIsIOS, 
@@ -136,6 +143,8 @@ void* OSGetOperatingSystem(void* theEnv) {
    return EnvAddSymbol(theEnv, "OpenBSD");
 #elif OS_NETBSD
    return EnvAddSymbol(theEnv, "NetBSD");
+#elif OS_DRAGONFLYBSD
+   return EnvAddSymbol(theEnv, "DragonFlyBSD");
 #elif OS_ANDROID
    return EnvAddSymbol(theEnv, "Android");
 #elif OS_WIN64
@@ -145,23 +154,23 @@ void* OSGetOperatingSystem(void* theEnv) {
 #elif OS_OSX
    return EnvAddSymbol(theEnv, "OSX");
 #elif OS_IOS
-   return EnvAddSymbol(theEnv, "IOS");
+   return EnvAddSymbol(theEnv, "iOS");
 #elif OS_APPLE_UNKNOWN
    return EnvAddSymbol(theEnv, "AppleUnknown");
 #elif OS_XMB
    return EnvAddSymbol(theEnv, "XMB");
 #elif OS_SONY_UNKNOWN 
-	return EnvAddSymbol(theEnv, "Unknown Sony OS");
+	return EnvAddSymbol(theEnv, "SonyUnknown");
 #elif OS_XBOX1
-   return EnvAddSymbol(theEnv, "XBOX OS");
+   return EnvAddSymbol(theEnv, "Xbox1");
 #elif OS_XBOX360
-   return EnvAddSymbol(theEnv, "XBOX 360 OS");
+   return EnvAddSymbol(theEnv, "Xbox360");
 #elif OS_XBOX_UNKNOWN
-   return EnvAddSymbol(theEnv, "Unknown XBOX OS");
+   return EnvAddSymbol(theEnv, "XboxUnknown");
 #elif OS_WII 
-   return EnvAddSymbol(theEnv, "Nintendo Wii OS");
+   return EnvAddSymbol(theEnv, "Wii");
 #elif OS_NINTENDO_UNKNOWN
-   return EnvAddSymbol(theEnv, "Unknown Nintendo Console OS");
+   return EnvAddSymbol(theEnv, "NintendoUnknown");
 #else
    return EnvAddSymbol(theEnv, "Unknown");
 #endif
@@ -225,8 +234,17 @@ int OSIsOpenBSD(void* theEnv) {
    return FALSE;
 #endif
 }
+
 int OSIsNetBSD(void* theEnv) {
 #if OS_NETBSD
+   return TRUE;
+#else
+   return FALSE;
+#endif
+}
+
+int OSIsDragonFlyBSD(void* theEnv) {
+#if OS_DRAGONFLYBSD 
    return TRUE;
 #else
    return FALSE;
