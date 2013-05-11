@@ -259,7 +259,7 @@ int OSIsDragonFlyBSD(void* theEnv) {
  */
 int OSIsMicrosoftConsole(void* theEnv) {
    //Microsoft's console is easy
-#if PLATFORM_XBOX_FAMILY
+#if PLATFORM_MICROSOFT 
    return TRUE;
 #else
    return FALSE;

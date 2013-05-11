@@ -57,32 +57,10 @@ extern void HardwareDetectionFunctionDefinitions(void* theEnv) {
 }
 
 void* GetHardwarePlatform(void* theEnv) {
-#if PLATFORM_APPLE 
-    #if PLATFORM_IPHONE
-          return EnvAddSymbol(theEnv, "iPhone");
-    #else
-    		return EnvAddSymbol(theEnv, "Apple");
-    #endif
-#elif PLATFORM_PS3
-    return EnvAddSymbol(theEnv, "PS3");
-#elif PLATFORM_PSP
-    return EnvAddSymbol(theEnv, "PSP");
-#elif PLATFORM_WII
-    return EnvAddSymbol(theEnv, "Wii");
-#elif PLATFORM_XBOX_FAMILY
-    #if PLATFORM_XBOX_VERSION < 200
-        return EnvAddSymbol(theEnv, "Xbox");
-    #elif PLATFORM_XBOX_VERSION >= 200
-        return EnvAddSymbol(theEnv, "Xbox360");
-    #else
-        return EnvAddSymbol(theEnv, "XboxUnknown");
-    #endif
-#else
-    return EnvAddSymbol(theEnv, "Generic");
-#endif
+   return EnvAddSymbol(theEnv, PLATFORM_HARDWARE_NAME);
 }
 int HardwarePlatformIsGeneric(void* theEnv) {
-#if (! PLATFORM_GENERIC)
+#if PLATFORM_GENERIC
    return FALSE;
 #else
    return TRUE;
@@ -121,7 +99,7 @@ int HardwarePlatformIsWii(void* theEnv) {
 }
 
 int HardwarePlatformIsXbox(void* theEnv) {
-#if PLATFORM_XBOX_FAMILY && (PLATFORM_XBOX_VERSION < 200)
+#if PLATFORM_XBOX1
    return TRUE;
 #else
    return FALSE;
@@ -129,7 +107,7 @@ int HardwarePlatformIsXbox(void* theEnv) {
 }
 
 int HardwarePlatformIsXbox360(void* theEnv) {
-#if PLATFORM_XBOX_FAMILY && (PLATFORM_XBOX_VERSION >= 200)
+#if PLATFORM_XBOX360
    return TRUE;
 #else
    return FALSE;
