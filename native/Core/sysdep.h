@@ -68,7 +68,6 @@
    LOCALE void                        RerouteStdin(void *,int,char *[]);
    LOCALE double                      gentime(void);
    LOCALE void                        gensystem(void *theEnv);
-   LOCALE void                        VMSSystem(char *);
    LOCALE int                         GenOpenReadBinary(void *,char *,char *);
    LOCALE void                        GetSeekCurBinary(void *,long);
    LOCALE void                        GetSeekSetBinary(void *,long);
