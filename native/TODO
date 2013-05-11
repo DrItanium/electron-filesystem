@@ -1,7 +1,0 @@
-TODO List for the native portion of the AdventureEngine
-
-1) Implement automatic platform detection for compilation purposes
-2) Figure out a way to update the compilation date in constant.h
-3) Finish implementing all of the platform identification code (arch version,
-   etc)
-4) Implement OpenGL and GLUT bindings. 
