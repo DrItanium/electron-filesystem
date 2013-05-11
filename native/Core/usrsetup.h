@@ -132,21 +132,27 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 /* Hardware Platform Specific Defines */
 
 #if defined(__APPLE__)
-#define PLATFORM_APPLE 1
 #include "TargetConditionals.h"
-#if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR 
-#define PLATFORM_IPHONE 1
+#define PLATFORM_APPLE 1
+#if TARGET_OS_MAC
+    #define PLATFORM_APPLE_OSX 1
+    #define PLATFORM_APPLE_IOS 0
+#elif TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
+    #define PLATFORM_APPLE_OSX 0
+    #define PLATFORM_APPLE_IOS 1
 #else
-#define PLATFORM_IPHONE 0
-#endif 
+    #define PLATFORM_APPLE_OSX 0
+    #define PLATFORM_APPLE_IOS 0
+#endif	
 #else
-#define PLATFORM_APPLE 0
-#define PLATFORM_IPHONE 0
+    #define PLATFORM_APPLE 0
+    #define PLATFORM_APPLE_OSX 0
+    #define PLATFORM_APPLE_IOS 0
 #endif
 
 
 
-#if defined(__PPU__)
+#if defined(__PPU__) || defined(PS3)
 #define PLATFORM_PS3 1
 #else
 #define PLATFORM_PS3 0
@@ -158,10 +164,22 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define PLATFORM_PSP 0
 #endif
 
+#if PLATFORM_PS3 || PLATFORM_PSP
+#define PLATFORM_SONY 1
+#else
+#define PLATFORM_SONY 0
+#endif
+
 #if defined(__wii__) || defined(_WII) 
 #define PLATFORM_WII 1
 #else
 #define PLATFORM_WII 0
+#endif
+
+#if PLATFORM_WII
+#define PLATFORM_NINTENDO 1
+#else
+#define PLATFORM_NINTENDO 0
 #endif
 
 /* TODO: Fix this define abstraction */
@@ -173,11 +191,136 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define PLATFORM_XBOX_VERSION -1
 #endif
 
-#if (! PLATFORM_APPLE) && (! PLATFORM_IPHONE) && (! PLATFORM_PS3) && \
-    (! PLATFORM_WII) && (! PLATFORM_XBOX_FAMILY) 
+#if (! PLATFORM_APPLE) && (! PLATFORM_SONY) && (! PLATFORM_NINTENDO) && \
+	 (! PLATFORM_XBOX_FAMILY)
 #define PLATFORM_GENERIC 1
 #else
 #define PLATFORM_GENERIC 0
 #endif
+
+
+/* Operating System Specific Defines */
+#if defined(_WIN32) 
+#define OS_WIN32 1
+#else
+#define OS_WIN32 0
+#endif
+
+#if defined(_WIN64)
+#define OS_WIN64 1
+#else 
+#define OS_WIN64 0
+#endif
+
+#if defined(__linux__)
+#define OS_LINUX 1
+#else
+#define OS_LINUX 0
+#endif
+
+#if defined(__FreeBSD__)
+#define OS_FREEBSD 1
+#else
+#define OS_FREEBSD 0
+#endif
+
+#if defined(__OpenBSD__)
+#define OS_OPENBSD 1
+#else
+#define OS_OPENBSD 0
+#endif
+
+#if defined(__NetBSD__)
+#define OS_NETBSD 1
+#else
+#define OS_NETBSD 0
+#endif
+
+#if defined(__ANDROID__) || defined(__android__)
+#define OS_ANDROID 1
+#else
+#define OS_ANDROID 0
+#endif
+
+#if PLATFORM_APPLE 
+   #if PLATFORM_APPLE_OSX 
+       #define OS_OSX 1
+       #define OS_IOS 0
+       #define OS_APPLE_UNKNOWN 0
+   #elif PLATFORM_APPLE_IOS
+       #define OS_IOS 1
+       #define OS_OSX 0
+       #define OS_APPLE_UNKNOWN 0
+   #else
+       #define OS_IOS 0
+       #define OS_OSX 0
+       #define OS_APPLE_UNKNOWN 1
+#endif
+#else
+       #define OS_IOS 0
+       #define OS_OSX 0
+       #define OS_APPLE_UNKNOWN 0
+#endif
+
+#if PLATFORM_SONY
+    #if PLATFORM_PS3 || PLATFORM_PSP
+	     #define OS_XMB 1
+		  #define OS_SONY_UNKNOWN 0
+    #else
+	     #define OS_XMB 0
+		  #define OS_SONY_UNKNOWN 1
+#endif
+#else
+	     #define OS_XMB 0
+		  #define OS_SONY_UNKNOWN 0
+#endif
+
+#if PLATFORM_XBOX_FAMILY
+    #if PLATFORM_XBOX_VERSION < 200
+        #define OS_XBOX1 1
+        #define OS_XBOX360 0
+        #define OS_XBOX_UNKNOWN 0
+    #elif PLATFORM_XBOX_VERSION >= 200
+        #define OS_XBOX1 0
+        #define OS_XBOX360 1
+        #define OS_XBOX_UNKNOWN 0
+    #else
+        #define OS_XBOX1 0
+        #define OS_XBOX360 0
+        #define OS_XBOX_UNKNOWN 1
+#endif
+#else
+        #define OS_XBOX1 0
+        #define OS_XBOX360 0
+        #define OS_XBOX_UNKNOWN 0
+#endif
+      
+#if PLATFORM_NINTENDO
+    #if PLATFORM_WII
+        #define OS_WII 1
+        #define OS_NINTENDO_UNKNOWN 0
+    #else
+        #define OS_WII 0
+        #define OS_NINTENDO_UNKNOWN 1
+    #endif
+#else
+        #define OS_WII 0
+        #define OS_NINTENDO_UNKNOWN 0
+#endif
+
+   
+
+#if (! OS_WIN32) && (! OS_WIN64) && (! OS_LINUX) && (! OS_FREEBSD) && \
+    (! OS_OSX) && (! OS_IOS) && (! OS_APPLE_UNKNOWN) && (! OS_OPENBSD) && \
+    (! OS_NETBSD) && (!OS_XMB) && (!OS_SONY_UNKNOWN) && (! OS_XBOX1) && \
+    (! OS_XBOX360) && (! OS_XBOX_UNKNOWN) && (! OS_WII) && \
+    (! OS_NINTENDO_UNKNOWN)
+#define OS_UNKNOWN 1
+#else
+#define OS_UNKNOWN 0
+#endif
+
+
+
 
 #endif

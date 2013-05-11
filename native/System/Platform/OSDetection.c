@@ -128,35 +128,40 @@ extern void OSDetectionFunctionDefinitions(void* theEnv) {
 }
 
 void* OSGetOperatingSystem(void* theEnv) {
-#if defined(__linux__)
+#if OS_LINUX
    return EnvAddSymbol(theEnv, "Linux");
-#elif defined(__FreeBSD__)
+#elif OS_FREEBSD
    return EnvAddSymbol(theEnv, "FreeBSD");
-#elif defined(__OpenBSD__)
+#elif OS_OPENBSD
    return EnvAddSymbol(theEnv, "OpenBSD");
-#elif defined(__NetBSD__)
+#elif OS_NETBSD
    return EnvAddSymbol(theEnv, "NetBSD");
-#elif defined(__ANDROID__)
+#elif OS_ANDROID
    return EnvAddSymbol(theEnv, "Android");
-#elif defined(_WIN64)
+#elif OS_WIN64
    return EnvAddSymbol(theEnv, "Windows64");
-#elif defined(_WIN32)
+#elif OS_WIN32
    return EnvAddSymbol(theEnv, "Windows32");
-#elif defined(__APPLE__)
-   #if TARGET_OS_MAC
-      return EnvAddSymbol(theEnv, "OSX");
-   #elif TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
-      return EnvAddSymbol(theEnv, "IOS");
-   #else
-      return EnvAddSymbol(theEnv, "AppleUnknown");
-   #endif
-#elif defined(PS3) || defined(PSP) || defined(__PPU__)
-   return EnvAddSymbol(theEnv, "SonyConsole");
-#elif defined(_XBOX) 
-   return EnvAddSymbol(theEnv, "MicrosoftConsole");
-#elif defined(__wii__) || defined(_WII)
-   return EnvAddSymbol(theEnv, "NintendoConsole");
-//Add more operating systems here
+#elif OS_OSX
+   return EnvAddSymbol(theEnv, "OSX");
+#elif OS_IOS
+   return EnvAddSymbol(theEnv, "IOS");
+#elif OS_APPLE_UNKNOWN
+   return EnvAddSymbol(theEnv, "AppleUnknown");
+#elif OS_XMB
+   return EnvAddSymbol(theEnv, "XMB");
+#elif OS_SONY_UNKNOWN 
+	return EnvAddSymbol(theEnv, "Unknown Sony OS");
+#elif OS_XBOX1
+   return EnvAddSymbol(theEnv, "XBOX OS");
+#elif OS_XBOX360
+   return EnvAddSymbol(theEnv, "XBOX 360 OS");
+#elif OS_XBOX_UNKNOWN
+   return EnvAddSymbol(theEnv, "Unknown XBOX OS");
+#elif OS_WII 
+   return EnvAddSymbol(theEnv, "Nintendo Wii OS");
+#elif OS_NINTENDO_UNKNOWN
+   return EnvAddSymbol(theEnv, "Unknown Nintendo Console OS");
 #else
    return EnvAddSymbol(theEnv, "Unknown");
 #endif
@@ -164,21 +169,21 @@ void* OSGetOperatingSystem(void* theEnv) {
 
 //These are function definitions to find out what OS we're on
 int OSIsLinux(void* theEnv) {
-#if defined(__linux__)
-   return TRUE;
+#if OS_LINUX
+	 return TRUE;
 #else
    return FALSE;
 #endif
 }
 int OSIsWindows64(void* theEnv) {
-#if defined(_WIN64)
+#if OS_WIN64
    return TRUE;
 #else 
    return FALSE;
 #endif
 }
 int OSIsWindows32(void* theEnv) {
-#if defined(_WIN32)
+#if OS_WIN32
 #warning "WIN32 is defined"
    return TRUE;
 #else
@@ -186,42 +191,42 @@ int OSIsWindows32(void* theEnv) {
 #endif
 }
 int OSIsOSX(void* theEnv) {
-#if defined(__APPLE__) && defined(TARGET_OS_MAC)
+#if OS_OSX
    return TRUE;
 #else
    return FALSE;
 #endif
 }
 int OSIsAndroid(void* theEnv) {
-#if defined(__ANDROID__) || defined(__android__)
+#if OS_ANDROID
    return TRUE;
 #else
    return FALSE;
 #endif
 }
 int OSIsIOS(void* theEnv) {
-#if defined(__APPLE__) && defined(TARGET_OS_IPHONE)
+#if OS_IOS
    return TRUE;
 #else
    return FALSE;
 #endif
 }
 int OSIsFreeBSD(void* theEnv) {
-#if defined(__FreeBSD__)
+#if OS_FREEBSD
    return TRUE;
 #else
    return FALSE;
 #endif
 }
 int OSIsOpenBSD(void* theEnv) {
-#if defined(__OpenBSD__)
+#if OS_OPENBSD
    return TRUE;
 #else
    return FALSE;
 #endif
 }
 int OSIsNetBSD(void* theEnv) {
-#if defined(__NetBSD__) 
+#if OS_NETBSD
    return TRUE;
 #else
    return FALSE;
@@ -236,7 +241,7 @@ int OSIsNetBSD(void* theEnv) {
  */
 int OSIsMicrosoftConsole(void* theEnv) {
    //Microsoft's console is easy
-#if defined(_XBOX)
+#if PLATFORM_XBOX_FAMILY
    return TRUE;
 #else
    return FALSE;
@@ -244,7 +249,7 @@ int OSIsMicrosoftConsole(void* theEnv) {
 }
 int OSIsSonyConsole(void* theEnv) {
    //Playstation 2 isn't supported
-#if defined(__PPU__) || defined(PSP) || defined(__psp__) || defined(__PSP__) || defined(_PSP)
+#if PLATFORM_SONY
    return TRUE;
 #else
    return FALSE;
@@ -252,7 +257,7 @@ int OSIsSonyConsole(void* theEnv) {
 }
 int OSIsNintendoConsole(void* theEnv) {
    //GameCube isn't supported...not enough RAM!
-#if defined(__wii__) || defined(_WII)
+#if PLATFORM_NINTENDO
    return TRUE;
 #else
    return FALSE;
