@@ -40,54 +40,11 @@ extern void ArchitectureDetectionFunctionDefinitions(void* theEnv) {
 }
 
 void* GetArchitectureVersion(void* theEnv) {
-#if ARCH_ALPHA
-    #if defined(__alpha_ev4__)
-       return EnvAddSymbol(theEnv, "ev4");
-    #elif defined(__alpha_ev5__)
-       return EnvAddSymbol(theEnv, "ev5");
-    #elif defined(__alpha_ev6__)
-       return EnvAddSymbol(theEnv, "ev6");
-    #else
-       return EnvAddSymbol(theEnv, "Generic");
-    #endif
- //TODO: Continue to implement this...there are a lot of things to add here
-#else
-   return EnvAddSymbol(theEnv, "Generic");
-#endif 
+   return EnvAddSymbol(theEnv, ARCH_VERSION);
 }
 
 void* GetArchitecture(void* theEnv) {
-#if ARCH_X86_32
-   return EnvAddSymbol(theEnv, "x86");
-#elif ARCH_X86_64
-   return EnvAddSymbol(theEnv, "x64");
-#elif ARCH_SPARC
-   return EnvAddSymbol(theEnv, "sparc64");
-#elif ARCH_ITANIUM
-   return EnvAddSymbol(theEnv, "itanium");
-#elif ARCH_POWERPC_32
-   return EnvAddSymbol(theEnv, "ppc");
-#elif ARCH_POWERPC_64
-   return EnvAddSymbol(theEnv, "ppc64");
-#elif ARCH_ARM
-   return EnvAddSymbol(theEnv, "arm");
-#elif ARCH_ARM64
-   return EnvAddSymbol(theEnv, "aarch64");
-#elif ARCH_ALPHA
-   return EnvAddSymbol(theEnv, "alpha");
-#elif ARCH_HPPA
-   return EnvAddSymbol(theEnv, "hppa");
-#elif ARCH_M68K
-   return EnvAddSymbol(theEnv, "m68k");
-#elif ARCH_MIPS
-   return EnvAddSymbol(theEnv, "mips");
-#elif ARCH_SH
-   return EnvAddSymbol(theEnv, "sh");
-#elif ARCH_S390X
-   return EnvAddSymbol(theEnv, "s390x");
-#else
-   return EnvAddSymbol(theEnv, "Unknown");
-#endif
+   return EnvAddSymbol(theEnv, ARCH_STRING);
 }
 
 
