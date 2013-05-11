@@ -26,7 +26,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #include <Core/clips.h>
 #include "HardwareDetection.h"
-#if defined(__APPLE__)
+#if PLATFORM_APPLE
 #include "TargetConditionals.h"
 #endif
 
@@ -41,11 +41,13 @@ extern int HardwarePlatformIsPSP(void* theEnv);
 extern int HardwarePlatformIsWii(void* theEnv); 
 extern int HardwarePlatformIsXbox(void* theEnv);
 extern int HardwarePlatformIsXbox360(void* theEnv);
+extern int HardwarePlatformIsApple(void* theEnv);
 
 //This file contains the code describing specific hardware platforms. 
 extern void HardwareDetectionFunctionDefinitions(void* theEnv) {
    DefinePlatformIdentFunc("hardware", 'w', GetHardwarePlatform);
    DefinePlatformIdentFunc("hardware-is-generic", 'b', HardwarePlatformIsGeneric);
+	DefinePlatformIdentFunc("hardware-is-apple", 'b', HardwarePlatformIsApple);
    DefinePlatformIdentFunc("hardware-is-iphone", 'b', HardwarePlatformIsIPhone);
    DefinePlatformIdentFunc("hardware-is-ps3", 'b', HardwarePlatformIsPS3);
    DefinePlatformIdentFunc("hardware-is-psp", 'b', HardwarePlatformIsPSP);
@@ -55,18 +57,22 @@ extern void HardwareDetectionFunctionDefinitions(void* theEnv) {
 }
 
 void* GetHardwarePlatform(void* theEnv) {
-#if defined(__APPLE__) && ( TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR)
-      return EnvAddSymbol(theEnv, "iPhone");
-#elif defined(__PPU__)
+#if PLATFORM_APPLE 
+    #if PLATFORM_IPHONE
+          return EnvAddSymbol(theEnv, "iPhone");
+    #else
+    		return EnvAddSymbol(theEnv, "Apple");
+    #endif
+#elif PLATFORM_PS3
     return EnvAddSymbol(theEnv, "PS3");
-#elif defined(PSP) || defined (__psp__) || defined(__PSP__) || defined(_PSP)
+#elif PLATFORM_PSP
     return EnvAddSymbol(theEnv, "PSP");
-#elif defined(__wii__) || defined(_WII)
+#elif PLATFORM_WII
     return EnvAddSymbol(theEnv, "Wii");
-#elif defined(_XBOX)
-    #if _XBOX_VER < 200
+#elif PLATFORM_XBOX_FAMILY
+    #if PLATFORM_XBOX_VERSION < 200
         return EnvAddSymbol(theEnv, "Xbox");
-    #elif _XBOX_VER >= 200
+    #elif PLATFORM_XBOX_VERSION >= 200
         return EnvAddSymbol(theEnv, "Xbox360");
     #else
         return EnvAddSymbol(theEnv, "XboxUnknown");
@@ -76,7 +82,7 @@ void* GetHardwarePlatform(void* theEnv) {
 #endif
 }
 int HardwarePlatformIsGeneric(void* theEnv) {
-#if (defined(__APPLE__) && (TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR)) || defined(__PPU__) || defined(PSP) || defined(__psp__) || defined(__PSP__) || defined(_PSP) || defined(__wii__) || defined(_WII) || defined(_XBOX)
+#if (! PLATFORM_GENERIC)
    return FALSE;
 #else
    return TRUE;
@@ -84,7 +90,7 @@ int HardwarePlatformIsGeneric(void* theEnv) {
 }
 
 int HardwarePlatformIsIPhone(void* theEnv) {
-#if defined(__APPLE__) && ( TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR)
+#if PLATFORM_IPHONE
    return TRUE;
 #else
    return FALSE;
@@ -92,14 +98,14 @@ int HardwarePlatformIsIPhone(void* theEnv) {
 }
 
 int HardwarePlatformIsPS3(void* theEnv) {
-#if defined(__PPU__)
+#if PLATFORM_PS3
    return TRUE;
 #else
    return FALSE;
 #endif
 }
 int HardwarePlatformIsPSP(void* theEnv) {
-#if defined(PSP) || defined (__psp__) || defined(__PSP__) || defined(_PSP)
+#if PLATFORM_PSP
    return TRUE;
 #else 
    return FALSE;
@@ -107,7 +113,7 @@ int HardwarePlatformIsPSP(void* theEnv) {
 }
 
 int HardwarePlatformIsWii(void* theEnv) {
-#if defined(__wii__) || defined(_WII) 
+#if PLATFORM_WII
    return TRUE;
 #else
    return FALSE;
@@ -115,7 +121,7 @@ int HardwarePlatformIsWii(void* theEnv) {
 }
 
 int HardwarePlatformIsXbox(void* theEnv) {
-#if defined(_XBOX) && (_XBOX_VER < 200) 
+#if PLATFORM_XBOX_FAMILY && (PLATFORM_XBOX_VERSION < 200)
    return TRUE;
 #else
    return FALSE;
@@ -123,12 +129,21 @@ int HardwarePlatformIsXbox(void* theEnv) {
 }
 
 int HardwarePlatformIsXbox360(void* theEnv) {
-#if defined(_XBOX) && (_XBOX_VER >= 200)
+#if PLATFORM_XBOX_FAMILY && (PLATFORM_XBOX_VERSION >= 200)
    return TRUE;
 #else
    return FALSE;
 #endif
 }
+
+int HardwarePlatformIsApple(void* theEnv) {
+#if PLATFORM_APPLE && (! PLATFORM_IPHONE) 
+	return TRUE;
+#else
+	return FALSE;
+#endif
+}
+
 
 #undef str
 #undef DefinePlatformIdentFunc

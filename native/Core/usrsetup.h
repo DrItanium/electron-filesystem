@@ -128,4 +128,56 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define ARCH_UNKNOWN 0
 #endif
 
+
+/* Hardware Platform Specific Defines */
+
+#if defined(__APPLE__)
+#define PLATFORM_APPLE 1
+#include "TargetConditionals.h"
+#if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR 
+#define PLATFORM_IPHONE 1
+#else
+#define PLATFORM_IPHONE 0
 #endif 
+#else
+#define PLATFORM_APPLE 0
+#define PLATFORM_IPHONE 0
+#endif
+
+
+
+#if defined(__PPU__)
+#define PLATFORM_PS3 1
+#else
+#define PLATFORM_PS3 0
+#endif
+
+#if defined(PSP) || defined(__psp__) || defined(__PSP__) || defined(_PSP)
+#define PLATFORM_PSP 1
+#else
+#define PLATFORM_PSP 0
+#endif
+
+#if defined(__wii__) || defined(_WII) 
+#define PLATFORM_WII 1
+#else
+#define PLATFORM_WII 0
+#endif
+
+/* TODO: Fix this define abstraction */
+#if defined(_XBOX) 
+#define PLATFORM_XBOX_FAMILY 1
+#define PLATFORM_XBOX_VERSION _XBOX_VER
+#else
+#define PLATFORM_XBOX_FAMILY 0
+#define PLATFORM_XBOX_VERSION -1
+#endif
+
+#if (! PLATFORM_APPLE) && (! PLATFORM_IPHONE) && (! PLATFORM_PS3) && \
+    (! PLATFORM_WII) && (! PLATFORM_XBOX_FAMILY) 
+#define PLATFORM_GENERIC 1
+#else
+#define PLATFORM_GENERIC 0
+#endif
+
+#endif
