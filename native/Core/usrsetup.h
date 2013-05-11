@@ -244,48 +244,56 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 /* Operating System Specific Defines */
 #if defined(_WIN32) 
 #define OS_WIN32 1
+#define OS_NAME "Windows32"
 #else
 #define OS_WIN32 0
 #endif
 
 #if defined(_WIN64)
 #define OS_WIN64 1
+#define OS_NAME "Windows64"
 #else 
 #define OS_WIN64 0
 #endif
 
 #if defined(__linux__)
 #define OS_LINUX 1
+#define OS_NAME "Linux"
 #else
 #define OS_LINUX 0
 #endif
 
 #if defined(__FreeBSD__)
 #define OS_FREEBSD 1
+#define OS_NAME "FreeBSD"
 #else
 #define OS_FREEBSD 0
 #endif
 
 #if defined(__OpenBSD__)
 #define OS_OPENBSD 1
+#define OS_NAME "OpenBSD"
 #else
 #define OS_OPENBSD 0
 #endif
 
 #if defined(__NetBSD__)
 #define OS_NETBSD 1
+#define OS_NAME "NetBSD"
 #else
 #define OS_NETBSD 0
 #endif
 
 #if defined(__DragonFlyBSD__)
 #define OS_DRAGONFLYBSD 1
+#define OS_NAME "DragonFlyBSD"
 #else
 #define OS_DRAGONFLYBSD 0
 #endif
 
 #if defined(__ANDROID__) || defined(__android__)
 #define OS_ANDROID 1
+#define OS_NAME "Android"
 #else
 #define OS_ANDROID 0
 #endif
@@ -295,14 +303,17 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
        #define OS_OSX 1
        #define OS_IOS 0
        #define OS_APPLE_UNKNOWN 0
+       #define OS_NAME "OSX"
    #elif PLATFORM_APPLE_IOS
        #define OS_IOS 1
        #define OS_OSX 0
        #define OS_APPLE_UNKNOWN 0
+       #define OS_NAME "iOS"
    #else
        #define OS_IOS 0
        #define OS_OSX 0
        #define OS_APPLE_UNKNOWN 1
+       #define OS_NAME "AppleUnknown"
 #endif
 #else
        #define OS_IOS 0
@@ -314,9 +325,11 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     #if PLATFORM_PS3 || PLATFORM_PSP
 	     #define OS_XMB 1
 		  #define OS_SONY_UNKNOWN 0
+        #define OS_NAME "XMB"
     #else
 	     #define OS_XMB 0
 		  #define OS_SONY_UNKNOWN 1
+        #define OS_NAME "SonyUnknown"
 #endif
 #else
 	     #define OS_XMB 0
@@ -328,14 +341,17 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
         #define OS_XBOX1 1
         #define OS_XBOX360 0
         #define OS_XBOX_UNKNOWN 0
+        #define OS_NAME "Xbox1"
     #elif PLATFORM_XBOX_VERSION >= 200
         #define OS_XBOX1 0
         #define OS_XBOX360 1
         #define OS_XBOX_UNKNOWN 0
+        #define OS_NAME "Xbox360"
     #else
         #define OS_XBOX1 0
         #define OS_XBOX360 0
         #define OS_XBOX_UNKNOWN 1
+        #define OS_NAME "XboxUnknown"
 #endif
 #else
         #define OS_XBOX1 0
@@ -347,9 +363,11 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     #if PLATFORM_WII
         #define OS_WII 1
         #define OS_NINTENDO_UNKNOWN 0
+        #define OS_NAME "Wii"
     #else
         #define OS_WII 0
         #define OS_NINTENDO_UNKNOWN 1
+        #define OS_NAME "NintendoUnknown"
     #endif
 #else
         #define OS_WII 0
@@ -364,6 +382,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     (! OS_XBOX360) && (! OS_XBOX_UNKNOWN) && (! OS_WII) && \
     (! OS_NINTENDO_UNKNOWN) && (! OS_DRAGONFLYBSD) 
 #define OS_UNKNOWN 1
+#define OS_NAME "Unknown"
 #else
 #define OS_UNKNOWN 0
 #endif

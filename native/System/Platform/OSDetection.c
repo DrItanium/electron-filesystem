@@ -135,45 +135,7 @@ extern void OSDetectionFunctionDefinitions(void* theEnv) {
 }
 
 void* OSGetOperatingSystem(void* theEnv) {
-#if OS_LINUX
-   return EnvAddSymbol(theEnv, "Linux");
-#elif OS_FREEBSD
-   return EnvAddSymbol(theEnv, "FreeBSD");
-#elif OS_OPENBSD
-   return EnvAddSymbol(theEnv, "OpenBSD");
-#elif OS_NETBSD
-   return EnvAddSymbol(theEnv, "NetBSD");
-#elif OS_DRAGONFLYBSD
-   return EnvAddSymbol(theEnv, "DragonFlyBSD");
-#elif OS_ANDROID
-   return EnvAddSymbol(theEnv, "Android");
-#elif OS_WIN64
-   return EnvAddSymbol(theEnv, "Windows64");
-#elif OS_WIN32
-   return EnvAddSymbol(theEnv, "Windows32");
-#elif OS_OSX
-   return EnvAddSymbol(theEnv, "OSX");
-#elif OS_IOS
-   return EnvAddSymbol(theEnv, "iOS");
-#elif OS_APPLE_UNKNOWN
-   return EnvAddSymbol(theEnv, "AppleUnknown");
-#elif OS_XMB
-   return EnvAddSymbol(theEnv, "XMB");
-#elif OS_SONY_UNKNOWN 
-	return EnvAddSymbol(theEnv, "SonyUnknown");
-#elif OS_XBOX1
-   return EnvAddSymbol(theEnv, "Xbox1");
-#elif OS_XBOX360
-   return EnvAddSymbol(theEnv, "Xbox360");
-#elif OS_XBOX_UNKNOWN
-   return EnvAddSymbol(theEnv, "XboxUnknown");
-#elif OS_WII 
-   return EnvAddSymbol(theEnv, "Wii");
-#elif OS_NINTENDO_UNKNOWN
-   return EnvAddSymbol(theEnv, "NintendoUnknown");
-#else
-   return EnvAddSymbol(theEnv, "Unknown");
-#endif
+   return EnvAddSymbol(theEnv, OS_NAME); 
 }
 
 //These are function definitions to find out what OS we're on
