@@ -31,7 +31,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define _CORE_USER_SETUP_H
 /* architecture define macros */
 #if defined(__alpha__)
-#define ARCH_ALPHA
+#define ARCH_ALPHA 1
+#else
+#define ARCH_ALPHA 0
 #endif 
 
 #if defined(__i386__) || defined(i386) || defined(__i386) || defined(_M_IX86) \

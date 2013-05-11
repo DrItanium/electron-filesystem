@@ -40,7 +40,7 @@ extern void ArchitectureDetectionFunctionDefinitions(void* theEnv) {
 }
 
 void* GetArchitectureVersion(void* theEnv) {
-#if defined(__alpha__)
+#if ARCH_ALPHA
     #if defined(__alpha_ev4__)
        return EnvAddSymbol(theEnv, "ev4");
     #elif defined(__alpha_ev5__)
@@ -57,33 +57,33 @@ void* GetArchitectureVersion(void* theEnv) {
 }
 
 void* GetArchitecture(void* theEnv) {
-#if defined(__i386__) || defined(i386) || defined(__i386) || defined(_M_IX86) || defined(_X86_) || defined(_i386) || defined(__X86__)
+#if ARCH_X86_32
    return EnvAddSymbol(theEnv, "x86");
-#elif defined(__x86_64__) || defined(_M_X64) || defined(_M_AMD64) || defined(__amd64__) || defined(__amd64) || defined(__x86_64)
+#elif ARCH_X86_64
    return EnvAddSymbol(theEnv, "x64");
-#elif defined(__sparc__)
+#elif ARCH_SPARC
    return EnvAddSymbol(theEnv, "sparc64");
-#elif defined(__ia64__) || defined(_IA64) || defined(__IA64__) || defined(__ia64) || defined(_M_IA64) || defined(__itanium__)
-   return EnvAddSymbol(theEnv, "ia64");
-#elif defined(__ppc__) || defined(__powerpc) || defined(__powerpc__) || defined(__POWERPC__) || defined(_M_PPC) || defined(_ARCH_PPC)
+#elif ARCH_ITANIUM
+   return EnvAddSymbol(theEnv, "itanium");
+#elif ARCH_POWERPC_32
    return EnvAddSymbol(theEnv, "ppc");
-#elif defined(__ppc64__)
+#elif ARCH_POWERPC_64
    return EnvAddSymbol(theEnv, "ppc64");
-#elif defined(__arm__)
+#elif ARCH_ARM
    return EnvAddSymbol(theEnv, "arm");
-#elif defined(__aarch64__)
+#elif ARCH_ARM64
    return EnvAddSymbol(theEnv, "aarch64");
-#elif defined(__alpha__)
+#elif ARCH_ALPHA
    return EnvAddSymbol(theEnv, "alpha");
-#elif defined(__hppa__) || defined(_hppa)
+#elif ARCH_HPPA
    return EnvAddSymbol(theEnv, "hppa");
-#elif defined(__m68k__) || defined(M68000)
+#elif ARCH_M68K
    return EnvAddSymbol(theEnv, "m68k");
-#elif defined(__mips__) || defined(__mips) || defined(__MIPS__)
+#elif ARCH_MIPS
    return EnvAddSymbol(theEnv, "mips");
-#elif defined(__sh__)
+#elif ARCH_SH
    return EnvAddSymbol(theEnv, "sh");
-#elif defined(__s390x__) 
+#elif ARCH_S390X
    return EnvAddSymbol(theEnv, "s390x");
 #else
    return EnvAddSymbol(theEnv, "Unknown");
