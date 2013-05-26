@@ -415,6 +415,17 @@ globle void NetworkAssertLeft(
          if (exprResult)
            { EngineData(theEnv)->leftToRightSucceeds++; }
 #endif
+
+         // Bug Fix - Need to evaluate secondary network test for exists CE
+         // 0881
+
+         if((join->secondaryNetworkTest != NULL) && exprResult && join->patternIsExists) {
+            EngineData(theEnv)->GlobalRHSBinds = rhsBinds;
+            exprResult = EvaluateJoinExpression(theEnv, join->secondaryNetworkTest, join);
+            if(EvaluationData(theEnv)->EvaluationError) {
+               SetEvaluationError(theEnv,FALSE);
+            }
+         }
         }
 
       /*====================================================*/
