@@ -76,6 +76,8 @@ globle void DeveloperCommands(
    EnvDefineFunction2(theEnv,(char*)"disable-gc-heuristics",'v', PTIEF DisableGCHeuristics,(char*)"DisableGCHeuristics",(char*)"00");
 
 #if DEFRULE_CONSTRUCT && DEFTEMPLATE_CONSTRUCT
+   EnvDefineFunction2(theEnv,(char*)"validate-fact-integrity", 'b', PTIEF ValidateFactIntegrity, (char*)"ValidateFactIntegrity", "00");
+
    EnvDefineFunction2(theEnv,(char*)"show-fpn",'v', PTIEF ShowFactPatternNetwork,(char*)"ShowFactPatternNetwork",(char*)"11w");
    EnvDefineFunction2(theEnv,(char*)"show-fht",'v', PTIEF ShowFactHashTable,(char*)"ShowFactHashTable",(char*)"00");
 #endif
@@ -290,7 +292,60 @@ globle void PrimitiveTablesUsage(
   }
 
 #if DEFRULE_CONSTRUCT && DEFTEMPLATE_CONSTRUCT
+/***********************************************/
+/* ValidateFactIntegrity: Command for checking */
+/*   the facts for atom value integrity.       */
+/***********************************************/
+globle intBool ValidateFactIntegrity(void *theEnv) {
+   struct fact *theFact;
+   struct multifield *theSegment;
+   int i;
+   SYMBOL_HN *theSymbol;
+   FLOAT_HN *theFloat;
+   INTEGER_HN *theInteger;
+     
+   if (((struct environmentData *) theEnv)->initialized == FALSE) { 
+      return TRUE; 
+   }
 
+   for (theFact = (struct fact *) EnvGetNextFact(theEnv,NULL);
+        theFact != NULL;
+        theFact = (struct fact *) EnvGetNextFact(theEnv,theFact)) {
+      if (theFact->factHeader.busyCount <= 0) { 
+         return FALSE; 
+      }
+      
+      theSegment = &theFact->theProposition;
+      
+      for (i = 0 ; i < (int) theSegment->multifieldLength ; i++) {
+         if ((theSegment->theFields[i].type == SYMBOL) ||
+             (theSegment->theFields[i].type == STRING) ||
+             (theSegment->theFields[i].type == INSTANCE_NAME)) {
+            theSymbol = theSegment->theFields[i].value;
+            if (theSymbol->count <= 0) {
+               return FALSE; 
+            }
+         }
+
+         if (theSegment->theFields[i].type == INTEGER) {
+            theInteger = theSegment->theFields[i].value;
+            if (theInteger->count <= 0) { 
+               return FALSE; 
+            }
+           }
+
+         if (theSegment->theFields[i].type == FLOAT) {
+            theFloat = theSegment->theFields[i].value;
+            if (theFloat->count <= 0) { 
+               return FALSE; 
+            }
+           }
+        }
+     }
+     
+   return TRUE;
+  }
+  
 /*******************************************************/
 /* ShowFactPatternNetwork: Command for displaying the  */
 /*   fact pattern network for a specified deftemplate. */
@@ -522,6 +577,85 @@ globle void InstanceTableUsage(
   
 #endif
 
+#if DEFRULE_CONSTRUCT
+ 
+/******************/
+/* ExamineMemory: */
+/******************/
+#if WIN_BTC
+#pragma argsused
 #endif
+static void ExamineMemory(
+  void *theEnv,
+  struct joinNode *theJoin,
+  struct betaMemory *theMemory)  {
+#if MAC_MCW || WIN_MCW || MAC_XCD
+#pragma unused(theJoin)
+#endif
+   if (theMemory->size > 10000) { 
+      /* Set a break point here */
+     }
+  }
+  
+/*************************/
+/* TraverseBetaMemories: */
+/*************************/
+static void TraverseBetaMemories(
+  void *theEnv,
+  struct joinNode *theJoin) {
+   if (theJoin == NULL) { 
+      return; 
+   }
+     
+   if (theJoin->lastLevel != NULL) {
+      TraverseBetaMemories(theEnv,theJoin->lastLevel); 
+   }
+     
+   if (theJoin->depth > 2) { 
+      ExamineMemory(theEnv,theJoin,theJoin->leftMemory); 
+   }
+   
+   if (theJoin->joinFromTheRight) { 
+      TraverseBetaMemories(theEnv,(struct joinNode *) theJoin->rightSideEntryStructure); 
+   }
+
+   if ((theJoin->joinFromTheRight) &&
+       (((struct joinNode *) (theJoin->rightSideEntryStructure))->depth > 1)) {
+      ExamineMemory(theEnv,theJoin,theJoin->rightMemory); 
+   }
+  }
+
+/***********************************/  
+/* ValidateRuleBetaMemoriesAction: */
+/***********************************/  
+static void ValidateRuleBetaMemoriesAction(
+  void *theEnv,
+  struct constructHeader *theConstruct,
+  void *buffer) {
+#if MAC_MCW || WIN_MCW || MAC_XCD
+#pragma unused(buffer)
+#endif
+   struct defrule *rulePtr, *tmpPtr;
+
+   for (rulePtr = (struct defrule *) theConstruct, tmpPtr = rulePtr;
+        rulePtr != NULL;
+        rulePtr = rulePtr->disjunct) {
+      TraverseBetaMemories(theEnv,rulePtr->lastJoin);
+     }
+  }
+  
+/************************/
+/* ValidateBetaMemories */
+/************************/
+globle void ValidateBetaMemories(
+  void *theEnv) {
+  EnvPrintRouter(theEnv, WCLIPS, "ValidateBetaMemories");
+   DoForAllConstructs(theEnv,ValidateRuleBetaMemoriesAction,DefruleData(theEnv)->DefruleModuleIndex,FALSE,NULL); 
+  }
+
+#endif
+
+#endif
+
 
 

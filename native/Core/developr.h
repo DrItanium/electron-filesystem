@@ -42,12 +42,16 @@
 
 #if DEFRULE_CONSTRUCT && DEFTEMPLATE_CONSTRUCT
    LOCALE void                           ShowFactPatternNetwork(void *);
+   LOCALE intBool                        ValidateFactIntegrity(void *);
 #endif
 #if DEFRULE_CONSTRUCT && OBJECT_SYSTEM
    LOCALE void                           PrintObjectPatternNetwork(void *);
 #endif
 #if OBJECT_SYSTEM
    LOCALE void                           InstanceTableUsage(void *);
+#endif
+#if DEFRULE_CONSTRUCT
+   LOCALE void                           ValidateBetaMemories(void *);
 #endif
 
 #endif
