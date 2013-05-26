@@ -598,6 +598,7 @@ static struct joinNode *CreateNewJoin(
          newJoin->leftMemory = get_struct(theEnv,betaMemory); 
          newJoin->leftMemory->beta = (struct partialMatch **) genalloc(theEnv,sizeof(struct partialMatch *));
          newJoin->leftMemory->beta[0] = NULL;
+         newJoin->leftMemory->last = NULL;
          newJoin->leftMemory->size = 1;
          newJoin->leftMemory->count = 0;
          }
@@ -606,6 +607,7 @@ static struct joinNode *CreateNewJoin(
          newJoin->leftMemory = get_struct(theEnv,betaMemory); 
          newJoin->leftMemory->beta = (struct partialMatch **) genalloc(theEnv,sizeof(struct partialMatch *) * INITIAL_BETA_HASH_SIZE);
          memset(newJoin->leftMemory->beta,0,sizeof(struct partialMatch *) * INITIAL_BETA_HASH_SIZE);
+         newJoin->leftMemory-last = NULL;
          newJoin->leftMemory->size = INITIAL_BETA_HASH_SIZE;
          newJoin->leftMemory->count = 0;
         }
