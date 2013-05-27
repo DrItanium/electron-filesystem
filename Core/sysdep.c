@@ -61,7 +61,7 @@
 #include <unistd.h>
 #endif
 
-#if WIN_MVC || WIN_BTC
+#if WIN_MVC
 #define _UNICODE
 #define UNICODE 
 #include <Windows.h>
@@ -77,12 +77,6 @@
 #include <signal.h>
 #endif
 
-#if WIN_BTC
-#include <io.h>
-#include <fcntl.h>
-#include <limits.h>
-#include <signal.h>
-#endif
 
 #if WIN_MCW
 #include <io.h>
@@ -198,13 +192,13 @@ struct systemDependentData
 #endif
 #endif
 */
-#if WIN_BTC || WIN_MVC
+#if WIN_MVC
    int BinaryFileHandle;
    unsigned char getcBuffer[7];
    int getcLength;
    int getcPosition;
 #endif
-#if (! WIN_BTC) && (! WIN_MVC)
+#if (! WIN_MVC)
    FILE *BinaryFP;
 #endif
    int (*BeforeOpenFunction)(void *);
@@ -229,7 +223,7 @@ struct systemDependentData
    static void                    SystemFunctionDefinitions(void *);
    static void                    InitializeKeywords(void *);
    static void                    InitializeNonportableFeatures(void *);
-#if   (UNIX_V || LINUX || DARWIN || UNIX_7 || WIN_GCC || WIN_BTC || WIN_MVC) && (! WINDOW_INTERFACE)
+#if   (UNIX_V || LINUX || DARWIN || UNIX_7 || WIN_GCC || WIN_MVC) && (! WINDOW_INTERFACE)
    static void                    CatchCtrlC(int);
 #endif
 /*
@@ -777,7 +771,7 @@ globle void gensystem(
    /* Execute the operating system command. */
    /*=======================================*/
 
-#if   UNIX_7 || UNIX_V || LINUX || DARWIN || WIN_MVC || WIN_BTC || WIN_MCW || WIN_GCC || MAC_XCD
+#if   UNIX_7 || UNIX_V || LINUX || DARWIN || WIN_MVC || WIN_MCW || WIN_GCC || MAC_XCD
    if (SystemDependentData(theEnv)->PauseEnvFunction != NULL) (*SystemDependentData(theEnv)->PauseEnvFunction)(theEnv);
    system(commandBuffer);
    if (SystemDependentData(theEnv)->ContinueEnvFunction != NULL) (*SystemDependentData(theEnv)->ContinueEnvFunction)(theEnv,1);
@@ -803,7 +797,7 @@ globle int gengetchar(
   void *theEnv)
   {
 /*
-#if WIN_BTC || WIN_MVC
+#if WIN_MVC
    if (SystemDependentData(theEnv)->getcLength ==
        SystemDependentData(theEnv)->getcPosition)
      {
@@ -841,7 +835,7 @@ globle int genungetchar(
   int theChar)
   {
   /*
-#if WIN_BTC || WIN_MVC
+#if WIN_MVC
    if (SystemDependentData(theEnv)->getcPosition > 0)
      { 
       SystemDependentData(theEnv)->getcPosition--;
@@ -901,9 +895,6 @@ globle void genprintfile(
 /*   requiring initialization is the interrupt handler     */
 /*   which allows execution to be halted.                  */
 /***********************************************************/
-#if WIN_BTC
-#pragma argsused
-#endif
 static void InitializeNonportableFeatures(
   void *theEnv)
   {
@@ -912,19 +903,10 @@ static void InitializeNonportableFeatures(
 #endif
 #if ! WINDOW_INTERFACE
 
-#if UNIX_V || LINUX || DARWIN || UNIX_7 || WIN_GCC || WIN_BTC || WIN_MVC
+#if UNIX_V || LINUX || DARWIN || UNIX_7 || WIN_GCC || WIN_MVC
    signal(SIGINT,CatchCtrlC);
 #endif
 
-/*
-#if WIN_BTC
-   SystemDependentData(theEnv)->OldCtrlC = getvect(0x23);
-   SystemDependentData(theEnv)->OldBreak = getvect(0x1b);
-   setvect(0x23,CatchCtrlC);
-   setvect(0x1b,CatchCtrlC);
-   atexit(RestoreInterruptVectors);
-#endif
-*/
 /*
 #if WIN_MVC
    SystemDependentData(theEnv)->OldCtrlC = _dos_getvect(0x23);
@@ -948,14 +930,11 @@ static void InitializeNonportableFeatures(
 
 #if ! WINDOW_INTERFACE
 
-#if   UNIX_V || LINUX || DARWIN || UNIX_7 || WIN_GCC || WIN_BTC || WIN_MVC || DARWIN
+#if   UNIX_V || LINUX || DARWIN || UNIX_7 || WIN_GCC || WIN_MVC || DARWIN
 /**********************************************/
 /* CatchCtrlC: VMS and UNIX specific function */
 /*   to allow control-c interrupts.           */
 /**********************************************/
-#if WIN_BTC
-#pragma argsused
-#endif
 static void CatchCtrlC(
   int sgnl)
   {
@@ -1108,9 +1087,6 @@ globle void genseed(
 /* gengetcwd: Generic function for returning */
 /*   the current directory.                  */
 /*********************************************/
-#if WIN_BTC
-#pragma argsused
-#endif
 globle char *gengetcwd(
   char *buffer,
   int buflength)
@@ -1238,13 +1214,9 @@ globle int GenOpenReadBinary(
    if (SystemDependentData(theEnv)->BeforeOpenFunction != NULL)
      { (*SystemDependentData(theEnv)->BeforeOpenFunction)(theEnv); }
 
-#if WIN_BTC || WIN_MVC
-
 #if WIN_MVC
+
    SystemDependentData(theEnv)->BinaryFileHandle = _open(fileName,O_RDONLY | O_BINARY);
-#else
-   SystemDependentData(theEnv)->BinaryFileHandle = open(fileName,O_RDONLY | O_BINARY);
-#endif
    if (SystemDependentData(theEnv)->BinaryFileHandle == -1)
      {
       if (SystemDependentData(theEnv)->AfterOpenFunction != NULL)
@@ -1254,7 +1226,7 @@ globle int GenOpenReadBinary(
      }
 #endif
 
-#if (! WIN_BTC) && (! WIN_MVC)
+#if (! WIN_MVC)
 
    if ((SystemDependentData(theEnv)->BinaryFP = fopen(fileName,"rb")) == NULL)
      {
@@ -1295,22 +1267,7 @@ globle void GenReadBinary(
      { _read(SystemDependentData(theEnv)->BinaryFileHandle,tempPtr,(unsigned int) size); }
 #endif
 
-#if WIN_BTC
-   char *tempPtr;
-
-   tempPtr = (char *) dataPtr;
-   while (size > INT_MAX)
-     {
-      read(SystemDependentData(theEnv)->BinaryFileHandle,tempPtr,INT_MAX);
-      size -= INT_MAX;
-      tempPtr = tempPtr + INT_MAX;
-     }
-
-   if (size > 0) 
-     { read(SystemDependentData(theEnv)->BinaryFileHandle,tempPtr,(STD_SIZE) size); }
-#endif
-
-#if (! WIN_BTC) && (! WIN_MVC)
+#if (! WIN_MVC)
    fread(dataPtr,size,1,SystemDependentData(theEnv)->BinaryFP); 
 #endif
   }
@@ -1323,15 +1280,12 @@ globle void GetSeekCurBinary(
   void *theEnv,
   long offset)
   {
-#if WIN_BTC
-   lseek(SystemDependentData(theEnv)->BinaryFileHandle,offset,SEEK_CUR);
-#endif
 
 #if WIN_MVC
    _lseek(SystemDependentData(theEnv)->BinaryFileHandle,offset,SEEK_CUR);
 #endif
 
-#if (! WIN_BTC) && (! WIN_MVC)
+#if (! WIN_MVC)
    fseek(SystemDependentData(theEnv)->BinaryFP,offset,SEEK_CUR);
 #endif
   }
@@ -1344,15 +1298,12 @@ globle void GetSeekSetBinary(
   void *theEnv,
   long offset)
   {
-#if WIN_BTC
-   lseek(SystemDependentData(theEnv)->BinaryFileHandle,offset,SEEK_SET);
-#endif
 
 #if WIN_MVC
    _lseek(SystemDependentData(theEnv)->BinaryFileHandle,offset,SEEK_SET);
 #endif
 
-#if (! WIN_BTC) && (! WIN_MVC)
+#if (! WIN_MVC)
    fseek(SystemDependentData(theEnv)->BinaryFP,offset,SEEK_SET);
 #endif
   }
@@ -1365,15 +1316,12 @@ globle void GenTellBinary(
   void *theEnv,
   long *offset)
   {
-#if WIN_BTC
-   *offset = lseek(SystemDependentData(theEnv)->BinaryFileHandle,0,SEEK_CUR);
-#endif
 
 #if WIN_MVC
    *offset = _lseek(SystemDependentData(theEnv)->BinaryFileHandle,0,SEEK_CUR);
 #endif
 
-#if (! WIN_BTC) && (! WIN_MVC)
+#if (! WIN_MVC)
    *offset = ftell(SystemDependentData(theEnv)->BinaryFP);
 #endif
   }
@@ -1388,15 +1336,12 @@ globle void GenCloseBinary(
    if (SystemDependentData(theEnv)->BeforeOpenFunction != NULL)
      { (*SystemDependentData(theEnv)->BeforeOpenFunction)(theEnv); }
 
-#if WIN_BTC
-   close(SystemDependentData(theEnv)->BinaryFileHandle);
-#endif
 
 #if WIN_MVC
    _close(SystemDependentData(theEnv)->BinaryFileHandle);
 #endif
 
-#if (! WIN_BTC) && (! WIN_MVC)
+#if (! WIN_MVC)
    fclose(SystemDependentData(theEnv)->BinaryFP);
 #endif
 
@@ -1426,9 +1371,6 @@ globle void GenWrite(
 /*   symbol table so that they are available */
 /*   for command completion.                 */
 /*********************************************/
-#if WIN_BTC && (RUN_TIME || (! WINDOW_INTERFACE))
-#pragma argsused
-#endif
 static void InitializeKeywords(
   void *theEnv)
   {
@@ -1663,32 +1605,3 @@ static void InitializeKeywords(
 #endif
 #endif
   }
-
-#if WIN_BTC
-/*********************************************/
-/* strtoll: Convert string to long long int. */
-/*    Note supported by Turbo C++ 2006.      */
-/*********************************************/
-__int64 _RTLENTRY _EXPFUNC strtoll(
-  const char * str,
-  char**endptr,
-  int base)
-  // convert string to long long int
-  {
-   if (endptr != NULL)
-	 *endptr = (char*)str + (base == 10 ? strspn(str, "0123456789"): 0);
-   return(_atoi64(str));
-  }
-
-/*******************************************/
-/* llabs: absolute value of long long int. */
-/*    Note supported by Turbo C++ 2006.    */
-/*******************************************/
-__int64 _RTLENTRY _EXPFUNC llabs(
-  __int64 val)
-  {
-   if (val >=0) return(val);
-   else	return(-val);
-  }
-
-#endif

@@ -41,7 +41,8 @@
 
 #include <setjmp.h>
 
-#if WIN_BTC || WIN_MVC
+//#if WIN_BTC || WIN_MVC
+#if WIN_MVC
 #include <dos.h>
 #endif
 
@@ -95,10 +96,12 @@
    LOCALE int                         gengetchar(void *);
    LOCALE int                         genungetchar(void *,int);
    
+/*
 #if WIN_BTC
    LOCALE __int64 _RTLENTRY _EXPFUNC  strtoll(const char *,char **,int);
    LOCALE __int64 _RTLENTRY _EXPFUNC  llabs(__int64 val);
 #endif
+*/
 
 #endif
 
