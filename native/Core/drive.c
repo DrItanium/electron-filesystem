@@ -970,8 +970,7 @@ static void EmptyDrive(
      {
 
 #if DEVELOPER
-      if (join->networkTest)
-        { EngineData(theEnv)->rightToLeftComparisons++; }
+      EngineData(theEnv)->rightToLeftComparisons++;
 #endif
       oldLHSBinds = EngineData(theEnv)->GlobalLHSBinds;
       oldRHSBinds = EngineData(theEnv)->GlobalRHSBinds;
@@ -981,6 +980,28 @@ static void EmptyDrive(
       EngineData(theEnv)->GlobalJoin = join;
 
       joinExpr = EvaluateJoinExpression(theEnv,join->networkTest,join);
+      EvaluationData(theEnv)->EvaluationError = FALSE;
+
+      EngineData(theEnv)->GlobalLHSBinds = oldLHSBinds;
+      EngineData(theEnv)->GlobalRHSBinds = oldRHSBinds;
+      EngineData(theEnv)->GlobalJoin = oldJoin;
+
+      if (joinExpr == FALSE) return;
+     }
+
+   if (join->secondaryNetworkTest != NULL)
+     {
+#if DEVELOPER
+      EngineData(theEnv)->rightToLeftComparisons++;
+#endif
+      oldLHSBinds = EngineData(theEnv)->GlobalLHSBinds;
+      oldRHSBinds = EngineData(theEnv)->GlobalRHSBinds;
+      oldJoin = EngineData(theEnv)->GlobalJoin;
+      EngineData(theEnv)->GlobalLHSBinds = NULL;
+      EngineData(theEnv)->GlobalRHSBinds = rhsBinds;
+      EngineData(theEnv)->GlobalJoin = join;
+
+      joinExpr = EvaluateJoinExpression(theEnv,join->secondaryNetworkTest,join);
       EvaluationData(theEnv)->EvaluationError = FALSE;
 
       EngineData(theEnv)->GlobalLHSBinds = oldLHSBinds;

@@ -381,7 +381,22 @@ static void AttachTestCEsToPatternCEs(
          lastNode->networkTest =
             CombineExpressions(theEnv,lastNode->networkTest,theLHS->networkTest);
         }
-        
+
+      /*==============================================================*/
+      /* If an exists with multiple conditions has just a pattern and */
+      /* a test, it should be treated as a single pattern and use the */
+      /* simpler exists logic rather than the logic used for multiple */
+      /* patterns with an exists CE.                                  */
+      /*==============================================================*/
+      
+      if (lastNode->existsNand)
+        {
+         lastNode->existsNand = FALSE;
+         lastNode->exists = TRUE;
+         lastNode->negated = TRUE;
+         lastNode->beginNandDepth = theLHS->endNandDepth;
+        }
+
       theLHS->networkTest = NULL;
       tempNode = theLHS->bottom;
       theLHS->bottom = NULL;
