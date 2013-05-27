@@ -56,6 +56,8 @@ typedef struct expr FUNCTION_REFERENCE;
 
 #define DATA_OBJECT_PTR_ARG DATA_OBJECT_PTR
 
+#define C_POINTER_EXTERNAL_ADDRESS 0
+
 #include "userdata.h"
 
 struct entityRecord
@@ -136,7 +138,7 @@ typedef struct entityRecord * ENTITY_RECORD_PTR;
 #define DOToLong(target) (((struct integerHashNode *) ((target).value))->contents)
 #define DOToInteger(target) ((int) (((struct integerHashNode *) ((target).value))->contents))
 #define DOToPointer(target)        ((target).value)
-#define DOToExternalAddress(target) (((struct externalAddressHashNode *) ((target).value))->externalAddress))
+#define DOToExternalAddress(target) (((struct externalAddressHashNode *) ((target).value))->externalAddress)
 
 #define EnvDOToString(theEnv,target) (((struct symbolHashNode *) ((target).value))->contents)
 #define EnvDOToDouble(theEnv,target) (((struct floatHashNode *) ((target).value))->contents)
@@ -144,7 +146,7 @@ typedef struct entityRecord * ENTITY_RECORD_PTR;
 #define EnvDOToLong(theEnv,target) (((struct integerHashNode *) ((target).value))->contents)
 #define EnvDOToInteger(theEnv,target) ((int) (((struct integerHashNode *) ((target).value))->contents))
 #define EnvDOToPointer(theEnv,target)        ((target).value)
-#define EnvDOToExternalAddress(target) (((struct externalAddressHashNode *) ((target).value))->externalAddress))
+#define EnvDOToExternalAddress(target) (((struct externalAddressHashNode *) ((target).value))->externalAddress)
 
 #define CoerceToLongInteger(t,v) ((t == INTEGER) ? ValueToLong(v) : (long int) ValueToDouble(v))
 #define CoerceToInteger(t,v) ((t == INTEGER) ? (int) ValueToLong(v) : (int) ValueToDouble(v))
