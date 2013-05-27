@@ -1,5 +1,5 @@
 ;------------------------------------------------------------------------------
-;The Adventure Engine
+;Catharsis
 ;Copyright (c) 2013, Joshua Scoggins 
 ;All rights reserved.
 ;
@@ -25,29 +25,14 @@
 ;(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 ;SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ;------------------------------------------------------------------------------
-; Library.clp - Defines the init module and loads all other corresponding
-; files.
-; 
-; Written by Joshua Scoggins 
-; Started on 3/11/2013
+; Screen.clp - Defines the screen to be drawn to. A screen is made up of one or
+; more surfaces which contain tiles.
 ;------------------------------------------------------------------------------
-; Define the module
-;------------------------------------------------------------------------------
-(defmodule Runtime (export ?ALL))
-;------------------------------------------------------------------------------
-; Load the corresponding types and functions 
-;------------------------------------------------------------------------------
-(load* "System/Runtime/GenericDeclareFunctions.clp")
-(batch* "System/Runtime/DeclareLibraryFunctions.clp")
-(batch* "System/Runtime/DeclareApplicationFunctions.clp")
-(batch* "System/Runtime/DeclareLogicFunctions.clp")
-(batch* "System/Runtime/Object.clp")
-(batch* "System/Runtime/Message.clp")
-(batch* "System/Runtime/Stage.clp")
-(batch* "System/Runtime/SymbolDeclarationFunctions.clp")
-(batch* "System/Runtime/DrawableObject.clp")
-(batch* "System/Runtime/Screen.clp")
-(batch* "System/Runtime/Surface.clp")
-(batch* "System/Runtime/Component.clp")
-(batch* "System/Runtime/Panel.clp")
+(defclass Runtime::Screen 
+  "Defines the screen to draw to."
+  (is-a DrawableObject)
+  (role concrete)
+  (pattern-match reactive)
+  (multislot surfaces 
+             (type INSTANCE)))
 ;------------------------------------------------------------------------------

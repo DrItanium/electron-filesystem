@@ -25,29 +25,20 @@
 ;(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 ;SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ;------------------------------------------------------------------------------
-; Library.clp - Defines the init module and loads all other corresponding
-; files.
-; 
-; Written by Joshua Scoggins 
-; Started on 3/11/2013
+; DrawableObject.clp - Base class of objects that represent things to be drawn
+; to the screen
 ;------------------------------------------------------------------------------
-; Define the module
-;------------------------------------------------------------------------------
-(defmodule Runtime (export ?ALL))
-;------------------------------------------------------------------------------
-; Load the corresponding types and functions 
-;------------------------------------------------------------------------------
-(load* "System/Runtime/GenericDeclareFunctions.clp")
-(batch* "System/Runtime/DeclareLibraryFunctions.clp")
-(batch* "System/Runtime/DeclareApplicationFunctions.clp")
-(batch* "System/Runtime/DeclareLogicFunctions.clp")
-(batch* "System/Runtime/Object.clp")
-(batch* "System/Runtime/Message.clp")
-(batch* "System/Runtime/Stage.clp")
-(batch* "System/Runtime/SymbolDeclarationFunctions.clp")
-(batch* "System/Runtime/DrawableObject.clp")
-(batch* "System/Runtime/Screen.clp")
-(batch* "System/Runtime/Surface.clp")
-(batch* "System/Runtime/Component.clp")
-(batch* "System/Runtime/Panel.clp")
+(defclass Runtime::DrawableObject
+  "Base class of objects that can be drawn to the screen"
+  (is-a Object)
+  (role abstract)
+  (pattern-match non-reactive)
+  (slot width 
+        (create-accessor read)
+        (type INTEGER)
+        (visibility public))
+  (slot height 
+        (create-accessor read)
+        (type INTEGER)
+        (visibility public)))
 ;------------------------------------------------------------------------------

@@ -1,4 +1,5 @@
 ;------------------------------------------------------------------------------
+;The Adventure Engine
 ;Copyright (c) 2013, Joshua Scoggins 
 ;All rights reserved.
 ;
@@ -24,6 +25,19 @@
 ;(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 ;SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ;------------------------------------------------------------------------------
-; Loader.clp - Loads all files in the parsing folder
+; Panel.clp - Represents a container of widgets and tiles
 ;------------------------------------------------------------------------------
-(batch* "System/Runtime/parsing/SymbolDeclarationFunctions.clp")
+(defclass Runtime::Panel 
+  "A component that holds other widgets and tiles"
+  (is-a Component)
+  (role concrete)
+  (pattern-match reactive)
+  (multislot child-components 
+   (type INSTANCE))
+  (message-handler is-root-panel primary))
+;------------------------------------------------------------------------------
+(defmessage-handler widget::Panel is-root-panel primary
+ "Checks to see if the target panel is the root panel"
+ ()
+ (return (eq ?self:parent nil)))
+;------------------------------------------------------------------------------

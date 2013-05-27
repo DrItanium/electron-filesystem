@@ -1,4 +1,5 @@
 ;------------------------------------------------------------------------------
+;The Adventure Engine
 ;Copyright (c) 2013, Joshua Scoggins 
 ;All rights reserved.
 ;
@@ -24,8 +25,15 @@
 ;(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 ;SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ;------------------------------------------------------------------------------
-; Loader.clp - Loads all files in the core folder
+; Component.clp - Base class of the widget library
 ;------------------------------------------------------------------------------
-(batch* "System/Runtime/core/Object.clp")
-(batch* "System/Runtime/core/Message.clp")
-(batch* "System/Runtime/core/Stage.clp")
+(defclass Runtime::Component
+  "Base class of the widget library"
+  (is-a Surface)
+  (role abstract)
+  (pattern-match non-reactive)
+  (slot text 
+        (type STRING)
+        (visibility public)
+        (default-dynamic "")))
+;------------------------------------------------------------------------------
