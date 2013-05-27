@@ -129,7 +129,7 @@ longlong Slice(longlong w, longlong s, longlong e) {
    //TODO: fix this code so that it takes the underlying platform into account
    if(s == 0LL && e == 64LL) {
       return w;
-   } else if(s >= 0LL && s <= 64LL && e >= 0LL && e <= 64LL && e > s) {
+   } else if(s <= 64LL && e <= 64LL && e > s) {
       longlong width, ff, fb;
 #ifdef DEBUG
       longlong result;
