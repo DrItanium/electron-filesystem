@@ -148,9 +148,6 @@ static void DeallocateDeftemplateData(
 /* DestroyDeftemplateAction: Action used to remove   */
 /*   deftemplates as a result of DestroyEnvironment. */
 /*****************************************************/
-#if WIN_BTC
-#pragma argsused
-#endif
 static void DestroyDeftemplateAction(
   void *theEnv,
   struct constructHeader *theConstruct,
@@ -410,9 +407,6 @@ globle void DecrementDeftemplateBusyCount(
 /* IncrementDeftemplateBusyCount: Increments the */
 /*   busy count of a deftemplate data structure. */
 /*************************************************/
-#if WIN_BTC
-#pragma argsused
-#endif
 globle void IncrementDeftemplateBusyCount(
   void *theEnv,
   void *vTheTemplate)
@@ -430,9 +424,6 @@ globle void IncrementDeftemplateBusyCount(
 /*   first fact in the template's fact-list. Otherwise returns the */
 /*   next template fact following the fact passed as an argument.  */
 /*******************************************************************/
-#if WIN_BTC
-#pragma argsused
-#endif
 globle void *EnvGetNextFactInTemplate(
   void *theEnv,
   void *theTemplate,
@@ -499,9 +490,6 @@ globle void *CreateDeftemplateScopeMap(
 /*   to each deftemplate construct when a runtime */
 /*   initialization occurs.                       */
 /**************************************************/
-#if WIN_BTC
-#pragma argsused
-#endif
 static void RuntimeDeftemplateAction(
   void *theEnv,
   struct constructHeader *theConstruct,

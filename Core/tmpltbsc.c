@@ -260,9 +260,6 @@ globle void EnvListDeftemplates(
 /* EnvGetDeftemplateWatch: C access routine for retrieving */
 /*   the current watch value of a deftemplate.             */
 /***********************************************************/
-#if WIN_BTC
-#pragma argsused
-#endif
 globle unsigned EnvGetDeftemplateWatch(
   void *theEnv,
   void *theTemplate)
@@ -278,9 +275,6 @@ globle unsigned EnvGetDeftemplateWatch(
 /* EnvSetDeftemplateWatch:  C access routine for setting */
 /*   the current watch value of a deftemplate.           */
 /*********************************************************/
-#if WIN_BTC
-#pragma argsused
-#endif
 globle void EnvSetDeftemplateWatch(
   void *theEnv,
   unsigned newState,
@@ -297,9 +291,6 @@ globle void EnvSetDeftemplateWatch(
 /* DeftemplateWatchAccess: Access routine for setting the */
 /*   watch flag of a deftemplate via the watch command.   */
 /**********************************************************/
-#if WIN_BTC
-#pragma argsused
-#endif
 globle unsigned DeftemplateWatchAccess(
   void *theEnv,
   int code,
@@ -318,9 +309,6 @@ globle unsigned DeftemplateWatchAccess(
 /* DeftemplateWatchPrint: Access routine for printing which deftemplates */
 /*   have their watch flag set via the list-watch-items command.         */
 /*************************************************************************/
-#if WIN_BTC
-#pragma argsused
-#endif
 globle unsigned DeftemplateWatchPrint(
   void *theEnv,
   char *logName,

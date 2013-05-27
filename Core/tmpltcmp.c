@@ -219,9 +219,6 @@ static void CloseDeftemplateFiles(
 /* DeftemplateModuleToCode: Writes the C code representation */
 /*   of a single deftemplate module to the specified file.   */
 /*************************************************************/
-#if WIN_BTC
-#pragma argsused
-#endif
 static void DeftemplateModuleToCode(
   void *theEnv,
   FILE *theFile,
@@ -411,9 +408,6 @@ globle void DeftemplateCConstructReference(
 /* InitDeftemplateCode: Writes out runtime */
 /*   initialization code for deftemplates. */
 /*******************************************/
-#if WIN_BTC
-#pragma argsused
-#endif
 static void InitDeftemplateCode(
   void *theEnv,
   FILE *initFP,

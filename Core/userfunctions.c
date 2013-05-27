@@ -70,9 +70,6 @@ void UserFunctions()
 /*   this function can be deleted from this file and       */
 /*   included in another file.                             */
 /***********************************************************/
-#if WIN_BTC
-#pragma argsused
-#endif
 void EnvUserFunctions(
   void *theEnv)
   {
