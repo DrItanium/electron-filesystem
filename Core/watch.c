@@ -612,9 +612,6 @@ globle void WatchFunctionDefinitions(
 /**************************************************/
 /* RecognizeWatchRouters: Looks for WTRACE prints */
 /**************************************************/
-#if WIN_BTC
-#pragma argsused
-#endif
 static intBool RecognizeWatchRouters(
       void *theEnv,
       char *logName)
@@ -631,9 +628,6 @@ static intBool RecognizeWatchRouters(
 /**************************************************/
 /* CaptureWatchPrints: Suppresses WTRACE messages */
 /**************************************************/
-#if WIN_BTC
-#pragma argsused
-#endif
 static int CaptureWatchPrints(
       void *theEnv,
       char *logName,
