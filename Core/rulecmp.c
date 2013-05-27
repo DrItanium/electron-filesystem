@@ -362,9 +362,6 @@ static void CloseDefruleFiles(
 /* DefruleModuleToCode: Writes the C code representation */
 /*   of a single defrule module to the specified file.   */
 /*********************************************************/
-#if WIN_BTC
-#pragma argsused
-#endif
 static void DefruleModuleToCode(
   void *theEnv,
   FILE *theFile,
@@ -671,9 +668,6 @@ globle void DefruleCModuleReference(
 /*****************************************************************/
 /* InitDefruleCode: Writes out initialization code for defrules. */
 /*****************************************************************/
-#if WIN_BTC
-#pragma argsused
-#endif
 static void InitDefruleCode(
   void *theEnv,
   FILE *initFP,

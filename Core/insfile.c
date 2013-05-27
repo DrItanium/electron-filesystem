@@ -949,9 +949,6 @@ static void WriteBinaryHeader(
   SIDE EFFECTS : Instance slot value atoms marked
   NOTES        : None
  ***************************************************/
-#if WIN_BTC
-#pragma argsused
-#endif
 static void MarkSingleInstance(
   void *theEnv,
   void *theOutput,

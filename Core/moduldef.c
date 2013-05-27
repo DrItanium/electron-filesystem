@@ -495,9 +495,6 @@ globle void *EnvGetNextDefmodule(
 /* EnvGetDefmoduleName: Returns the name */
 /*   of the specified defmodule.         */
 /*****************************************/
-#if WIN_BTC
-#pragma argsused
-#endif
 globle char *EnvGetDefmoduleName(
   void *theEnv,
   void *defmodulePtr)
@@ -513,9 +510,6 @@ globle char *EnvGetDefmoduleName(
 /* EnvGetDefmodulePPForm: Returns the pretty print */
 /*   representation of the specified defmodule.    */
 /***************************************************/
-#if WIN_BTC
-#pragma argsused
-#endif
 globle char *EnvGetDefmodulePPForm(
   void *theEnv,
   void *defmodulePtr)

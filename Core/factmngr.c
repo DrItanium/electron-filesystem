@@ -1364,9 +1364,6 @@ globle void FactDeinstall(
 /* EnvIncrementFactCount: Increments the number */
 /*   of references to a specified fact.         */
 /************************************************/
-#if WIN_BTC
-#pragma argsused
-#endif
 globle void EnvIncrementFactCount(
   void *theEnv,
   void *factPtr)
@@ -1382,9 +1379,6 @@ globle void EnvIncrementFactCount(
 /* EnvDecrementFactCount: Decrements the number */
 /*   of references to a specified fact.         */
 /************************************************/
-#if WIN_BTC
-#pragma argsused
-#endif
 globle void EnvDecrementFactCount(
   void *theEnv,
   void *factPtr)
@@ -1497,9 +1491,6 @@ globle void EnvGetFactPPForm(
 /* EnvFactIndex: C access routine */
 /*   for the fact-index function. */
 /**********************************/
-#if WIN_BTC
-#pragma argsused
-#endif
 globle long long EnvFactIndex(
   void *theEnv,
   void *factPtr)

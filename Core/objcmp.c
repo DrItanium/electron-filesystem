@@ -280,9 +280,6 @@ static void ReadyObjectsForCode(
                  same time as the real slots - thus the
                  references must be predetermined
  ************************************************************/
-#if WIN_BTC
-#pragma argsused
-#endif
 static void MarkDefclassAndSlots(
   void *theEnv,
   struct constructHeader *vTheDefclass,
@@ -352,9 +349,6 @@ static void PrintSlotNameReference(
   SIDE EFFECTS : Writes out initialization code
   NOTES        : None
  *******************************************************/
-#if WIN_BTC
-#pragma argsused
-#endif
 static void InitObjectsCode(
   void *theEnv,
   FILE *initFP,

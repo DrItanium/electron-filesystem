@@ -368,9 +368,6 @@ globle intBool ObjectCmpConstantFunction(
    =========================================
    ***************************************** */
 
-#if WIN_BTC && (! DEVELOPER)
-#pragma argsused
-#endif
 static void PrintObjectGetVarJN1(
   void *theEnv,
   char *logicalName,
@@ -427,9 +424,6 @@ static intBool ObjectGetVarJNFunction1(
    return(TRUE);
   }
 
-#if WIN_BTC && (! DEVELOPER)
-#pragma argsused
-#endif
 static void PrintObjectGetVarJN2(
   void *theEnv,
   char *logicalName,
@@ -478,9 +472,6 @@ static intBool ObjectGetVarJNFunction2(
    return(TRUE);
   }
 
-#if WIN_BTC && (! DEVELOPER)
-#pragma argsused
-#endif
 static void PrintObjectGetVarPN1(
   void *theEnv,
   char *logicalName,
@@ -527,9 +518,6 @@ static intBool ObjectGetVarPNFunction1(
    return(TRUE);
   }
 
-#if WIN_BTC && (! DEVELOPER)
-#pragma argsused
-#endif
 static void PrintObjectGetVarPN2(
   void *theEnv,
   char *logicalName,
@@ -573,9 +561,6 @@ static intBool ObjectGetVarPNFunction2(
    return(TRUE);
   }
 
-#if WIN_BTC && (! DEVELOPER)
-#pragma argsused
-#endif
 static void PrintObjectCmpConstant(
   void *theEnv,
   char *logicalName,
@@ -607,9 +592,6 @@ static void PrintObjectCmpConstant(
 #endif
   }
 
-#if WIN_BTC && (! DEVELOPER)
-#pragma argsused
-#endif
 static void PrintSlotLengthTest(
   void *theEnv,
   char *logicalName,
@@ -654,9 +636,6 @@ static intBool SlotLengthTestFunction(
    return(TRUE);
   }
 
-#if WIN_BTC && (! DEVELOPER)
-#pragma argsused
-#endif
 static void PrintPNSimpleCompareFunction1(
   void *theEnv,
   char *logicalName,
@@ -705,9 +684,6 @@ static intBool PNSimpleCompareFunction1(
    return(rv);
   }
 
-#if WIN_BTC && (! DEVELOPER)
-#pragma argsused
-#endif
 static void PrintPNSimpleCompareFunction2(
   void *theEnv,
   char *logicalName,
@@ -760,9 +736,6 @@ static intBool PNSimpleCompareFunction2(
    return(rv);
   }
 
-#if WIN_BTC && (! DEVELOPER)
-#pragma argsused
-#endif
 static void PrintPNSimpleCompareFunction3(
   void *theEnv,
   char *logicalName,
@@ -817,9 +790,6 @@ static intBool PNSimpleCompareFunction3(
    return(rv);
   }
 
-#if WIN_BTC && (! DEVELOPER)
-#pragma argsused
-#endif
 static void PrintJNSimpleCompareFunction1(
   void *theEnv,
   char *logicalName,
@@ -876,9 +846,6 @@ static intBool JNSimpleCompareFunction1(
    return(rv);
   }
 
-#if WIN_BTC && (! DEVELOPER)
-#pragma argsused
-#endif
 static void PrintJNSimpleCompareFunction2(
   void *theEnv,
   char *logicalName,
@@ -939,9 +906,6 @@ static intBool JNSimpleCompareFunction2(
    return(rv);
   }
 
-#if WIN_BTC && (! DEVELOPER)
-#pragma argsused
-#endif
 static void PrintJNSimpleCompareFunction3(
   void *theEnv,
   char *logicalName,

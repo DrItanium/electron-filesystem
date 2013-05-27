@@ -253,9 +253,6 @@ static void DeallocateDeffunctionData(
 /* DestroyDeffunctionAction: Action used to remove   */
 /*   deffunctions as a result of DestroyEnvironment. */
 /*****************************************************/
-#if WIN_BTC
-#pragma argsused
-#endif
 static void DestroyDeffunctionAction(
   void *theEnv,
   struct constructHeader *theConstruct,
@@ -612,9 +609,6 @@ globle int CheckDeffunctionCall(
   SIDE EFFECTS : Call expression printed
   NOTES        : None
  ***************************************************/
-#if WIN_BTC
-#pragma argsused
-#endif
 static void PrintDeffunctionCall(
   void *theEnv,
   char *logName,
@@ -698,9 +692,6 @@ static void DecrementDeffunctionBusyCount(
   SIDE EFFECTS : Busy count incremented
   NOTES        : None
  ***************************************************/
-#if WIN_BTC
-#pragma argsused
-#endif
 static void IncrementDeffunctionBusyCount(
   void *theEnv,
   void *value)
@@ -955,9 +946,6 @@ static void SaveDeffunctions(
   SIDE EFFECTS : Watch flags set in specified deffunctions
   NOTES        : Accessory function for AddWatchItem()
  ******************************************************************/
-#if WIN_BTC
-#pragma argsused
-#endif
 static unsigned DeffunctionWatchAccess(
   void *theEnv,
   int code,
@@ -985,9 +973,6 @@ static unsigned DeffunctionWatchAccess(
   SIDE EFFECTS : Watch flags displayed for specified deffunctions
   NOTES        : Accessory function for AddWatchItem()
  ***********************************************************************/
-#if WIN_BTC
-#pragma argsused
-#endif
 static unsigned DeffunctionWatchPrint(
   void *theEnv,
   char *logName,
@@ -1013,9 +998,6 @@ static unsigned DeffunctionWatchPrint(
   SIDE EFFECTS : Watch flag for the deffunction set
   NOTES        : None
  *********************************************************/
-#if WIN_BTC
-#pragma argsused
-#endif
 globle void EnvSetDeffunctionWatch(
   void *theEnv,
   unsigned newState,
@@ -1038,9 +1020,6 @@ globle void EnvSetDeffunctionWatch(
   SIDE EFFECTS : None
   NOTES        : None
  *********************************************************/
-#if WIN_BTC
-#pragma argsused
-#endif
 globle unsigned EnvGetDeffunctionWatch(
   void *theEnv,
   void *dptr)

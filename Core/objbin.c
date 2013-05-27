@@ -384,9 +384,6 @@ static void BsaveObjectsFind(
                  ephemerals marked
   NOTES        : None
  ***************************************************/
-#if WIN_BTC
-#pragma argsused
-#endif
 static void MarkDefclassItems(
   void *theEnv,
   struct constructHeader *theDefclass,
@@ -902,9 +899,6 @@ static void BsaveSlots(
   SIDE EFFECTS : Defclass instance template binary data written
   NOTES        : None
  **************************************************************/
-#if WIN_BTC
-#pragma argsused
-#endif
 static void BsaveTemplateSlots(
   void *theEnv,
   struct constructHeader *theDefclass,
@@ -933,9 +927,6 @@ static void BsaveTemplateSlots(
   SIDE EFFECTS : Defclass canonical slot map binary data written
   NOTES        : None
  ***************************************************************/
-#if WIN_BTC
-#pragma argsused
-#endif
 static void BsaveSlotMap(
   void *theEnv,
   struct constructHeader *theDefclass,
@@ -1000,9 +991,6 @@ static void BsaveHandlers(
   SIDE EFFECTS : Defclass message-handler map binary data written
   NOTES        : None
  ****************************************************************/
-#if WIN_BTC
-#pragma argsused
-#endif
 static void BsaveHandlerMap(
   void *theEnv,
   struct constructHeader *theDefclass,

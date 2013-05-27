@@ -166,9 +166,6 @@ static int GetcString(
 /****************************************************/
 /* UngetcString: Ungetc routine for string routers. */
 /****************************************************/
-#if WIN_BTC
-#pragma argsused
-#endif
 static int UngetcString(
   void *theEnv,
   int ch,

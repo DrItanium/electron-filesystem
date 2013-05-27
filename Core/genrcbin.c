@@ -247,9 +247,6 @@ static void BsaveGenericsFind(
   SIDE EFFECTS : Needed items marked
   NOTES        : None
  ***************************************************/
-#if WIN_BTC
-#pragma argsused
-#endif
 static void MarkDefgenericItems(
   void *theEnv,
   struct constructHeader *theDefgeneric,
@@ -599,9 +596,6 @@ static void BsaveMethodRestrictions(
   SIDE EFFECTS : Defgeneric methods' restrictions' types saved
   NOTES        : None
  *************************************************************/
-#if WIN_BTC
-#pragma argsused
-#endif
 static void BsaveRestrictionTypes(
   void *theEnv,
   struct constructHeader *theDefgeneric,

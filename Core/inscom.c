@@ -649,9 +649,6 @@ globle void *EnvFindInstance(
   SIDE EFFECTS : None
   NOTES        : None
  ***************************************************************************/
-#if WIN_BTC
-#pragma argsused
-#endif
 globle int EnvValidInstanceAddress(
   void *theEnv,
   void *iptr)
@@ -755,9 +752,6 @@ globle int EnvDirectPutSlot(
   SIDE EFFECTS : None
   NOTES        : None
  ***************************************************/
-#if WIN_BTC
-#pragma argsused
-#endif
 globle char *EnvGetInstanceName(
   void *theEnv,
   void *iptr)
@@ -795,9 +789,6 @@ globle char *GetInstanceName(
   SIDE EFFECTS : None
   NOTES        : None
  ***************************************************/
-#if WIN_BTC
-#pragma argsused
-#endif
 globle void *EnvGetInstanceClass(
   void *theEnv,
   void *iptr)
@@ -892,9 +883,6 @@ globle void *GetNextInstanceInScope(
   SIDE EFFECTS : None
   NOTES        : None
  ***************************************************/
-#if WIN_BTC
-#pragma argsused
-#endif
 globle void *EnvGetNextInstanceInClass(
   void *theEnv,
   void *cptr,
@@ -1063,9 +1051,6 @@ globle void ClassCommand(
   SIDE EFFECTS : None
   NOTES        : Does nothing. Provided so it can be overridden.
  ******************************************************/
-#if WIN_BTC
-#pragma argsused
-#endif
 globle intBool CreateInstanceHandler(
   void *theEnv)
   {

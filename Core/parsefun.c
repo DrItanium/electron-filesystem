@@ -339,9 +339,6 @@ static void SetErrorCaptureValues(
 /* FindErrorCapture: Find routine */
 /*   for the check-syntax router. */
 /**********************************/
-#if WIN_BTC
-#pragma argsused
-#endif
 static int FindErrorCapture(
   void *theEnv,
   char *logicalName)

@@ -154,9 +154,6 @@ static void DeallocateDefglobalData(
 /* DestroyDefglobalAction: Action used to remove   */
 /*   defglobals as a result of DestroyEnvironment. */
 /***************************************************/
-#if WIN_BTC
-#pragma argsused
-#endif
 static void DestroyDefglobalAction(
   void *theEnv,
   struct constructHeader *theConstruct,
@@ -657,9 +654,6 @@ static void DecrementDefglobalBusyCount(
 /* IncrementDefglobalBusyCount: Increments the busy count */
 /*   of a defglobal data structure.                       */
 /**********************************************************/
-#if WIN_BTC
-#pragma argsused
-#endif
 static void IncrementDefglobalBusyCount(
   void *theEnv,
   void *vTheGlobal)

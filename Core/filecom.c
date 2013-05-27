@@ -189,9 +189,6 @@ static void DeallocateFileCommandData(
 /*****************************************************/
 /* FindDribble: Find routine for the dribble router. */
 /*****************************************************/
-#if WIN_BTC
-#pragma argsused
-#endif
 static int FindDribble(
   void *theEnv,
   char *logicalName)
@@ -366,9 +363,6 @@ static int UngetcDribble(
 /*****************************************************/
 /* ExitDribble: Exit routine for the dribble router. */
 /*****************************************************/
-#if WIN_BTC
-#pragma argsused
-#endif
 static int ExitDribble(
   void *theEnv,
   int num)
@@ -553,9 +547,6 @@ globle void SetDribbleStatusFunction(
 /*************************************************/
 /* FindBatch: Find routine for the batch router. */
 /*************************************************/
-#if WIN_BTC
-#pragma argsused
-#endif
 static int FindBatch(
   void *theEnv,
   char *logicalName)
@@ -661,9 +652,6 @@ globle int LLGetcBatch(
 /*****************************************************/
 /* UngetcBatch: Ungetc routine for the batch router. */
 /*****************************************************/
-#if WIN_BTC
-#pragma argsused
-#endif
 static int UngetcBatch(
   void *theEnv,
   int ch,
@@ -684,9 +672,6 @@ static int UngetcBatch(
 /*************************************************/
 /* ExitBatch: Exit routine for the batch router. */
 /*************************************************/
-#if WIN_BTC
-#pragma argsused
-#endif
 static int ExitBatch(
   void *theEnv,
   int num)

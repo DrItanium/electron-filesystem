@@ -753,9 +753,6 @@ globle void AddAbortBloadFunction(
   SIDE EFFECTS : None
   NOTES        : None
  *******************************************************/
-#if WIN_BTC
-#pragma argsused
-#endif
 static int BloadOutOfMemoryFunction(
   void *theEnv,
   size_t size)

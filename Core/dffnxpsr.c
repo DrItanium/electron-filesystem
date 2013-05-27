@@ -381,9 +381,6 @@ static intBool ValidDeffunctionName(
   SIDE EFFECTS : Deffunction structures allocated
   NOTES        : Assumes deffunction is not executing
  ****************************************************/
-#if WIN_BTC
-#pragma argsused
-#endif
 static DEFFUNCTION *AddDeffunction(
   void *theEnv,
   SYMBOL_HN *name,

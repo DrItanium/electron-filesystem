@@ -123,9 +123,6 @@ globle void *FactRelation(
 /* EnvFactDeftemplate: C access routine */
 /*   to retrieve a fact's deftemplate.  */
 /****************************************/
-#if WIN_BTC
-#pragma argsused
-#endif
 globle void *EnvFactDeftemplate(
   void *theEnv,
   void *vTheFact)
@@ -159,9 +156,6 @@ globle int FactExistpFunction(
 /* EnvFactExistp: C access routine */
 /*   for the fact-existp function. */
 /***********************************/
-#if WIN_BTC
-#pragma argsused
-#endif
 globle int EnvFactExistp(
   void *theEnv,
   void *vTheFact)
@@ -518,11 +512,7 @@ globle void PPFactFunction(
   {
    struct fact *theFact;
    int numberOfArguments;
-#if WIN_BTC
-   char *logicalName;             /* Avoids warning */
-#else
    char *logicalName = NULL;      /* Avoids warning */
-#endif
    int ignoreDefaults = FALSE;
    DATA_OBJECT theArg;
 
@@ -583,9 +573,6 @@ globle void PPFactFunction(
 /* EnvPPFact: C access routine */
 /*   for the ppfact function.  */
 /*******************************/
-#if WIN_BTC
-#pragma argsused
-#endif
 globle void EnvPPFact(
   void *theEnv,
   void *vTheFact,

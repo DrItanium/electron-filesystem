@@ -182,10 +182,6 @@ struct systemDependentData
    void (*ContinueEnvFunction)(void *,int);
 /*
 #if ! WINDOW_INTERFACE
-#if WIN_BTC
-   void interrupt (*OldCtrlC)(void);
-   void interrupt (*OldBreak)(void);
-#endif
 #if WIN_MVC
    void (interrupt *OldCtrlC)(void);
    void (interrupt *OldBreak)(void);
@@ -669,14 +665,6 @@ globle double gentime()
    result = GetTickCount();
 
    return((double) result / 1000.0);
-/*
-#elif   WIN_BTC && (! WINDOW_INTERFACE)
-   unsigned long int result;
-
-   result = biostime(0,(long int) 0);
-
-   return((double) result / 18.2);
-*/
 #elif UNIX_V || DARWIN
 #if defined(_POSIX_TIMERS) && (_POSIX_TIMERS > 0)
    struct timespec now;

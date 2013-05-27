@@ -1408,9 +1408,6 @@ static EXPRESSION *CompactActions(
                  contain deffunctions and generic
                  functions which cannot be used
  ******************************************************/
-#if WIN_BTC
-#pragma argsused
-#endif
 static intBool EvaluateBadCall(
   void *theEnv,
   void *value,

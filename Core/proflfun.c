@@ -585,9 +585,6 @@ static void OutputUserFunctionsInfo(
 /*************************************************/
 /* OutputConstructsCodeInfo:       */
 /*************************************************/
-#if WIN_BTC && (! DEFFUNCTION_CONSTRUCT) && (! DEFGENERIC_CONSTRUCT) && (! OBJECT_SYSTEM) && (! DEFRULE_CONSTRUCT)
-#pragma argsused
-#endif
 static void OutputConstructsCodeInfo(
   void *theEnv)
   {

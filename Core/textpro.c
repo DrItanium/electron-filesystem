@@ -122,13 +122,6 @@ struct lists
 #define BFORMAT "%d%1s%12s%s"   /*Format string for sscanf*/
 #define LIT_DELIM ('$')
 
-/*
-#if WIN_BTC
-#define OPEN_READ "rb"
-#else
-#define OPEN_READ "r"
-#endif
-*/
 #define OPEN_READ (char*)"r"
 
 #define TEXTPRO_DATA 8
@@ -1451,9 +1444,6 @@ globle int TossCommand(
 
 #if HELP_FUNCTIONS
 
-#if WIN_BTC
-#pragma argsused
-#endif
 static int RecognizeHelpRouters(
   void *theEnv,
   char *log_name)
@@ -1467,9 +1457,6 @@ static int RecognizeHelpRouters(
    return(FALSE);
   }
 
-#if WIN_BTC
-#pragma argsused
-#endif
 static int HelpPrint(
   void *theEnv,
   char *log_name,
@@ -1483,9 +1470,6 @@ static int HelpPrint(
    return(1);
   }
 
-#if WIN_BTC
-#pragma argsused
-#endif
 static int HelpGetc(
   void *theEnv,
   char *log_name)
@@ -1497,9 +1481,6 @@ static int HelpGetc(
    return(EnvGetcRouter(theEnv,(char*)"stdin"));
   }
 
-#if WIN_BTC
-#pragma argsused
-#endif
 static int HelpUngetc(
   void *theEnv,
   int ch,

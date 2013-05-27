@@ -121,9 +121,6 @@ static void DeallocateDeffactsData(
 /* DestroyDeffactsAction: Action used to remove deffacts */
 /*   as a result of DestroyEnvironment.                  */
 /*********************************************************/
-#if WIN_BTC
-#pragma argsused
-#endif
 static void DestroyDeffactsAction(
   void *theEnv,
   struct constructHeader *theConstruct,
@@ -234,9 +231,6 @@ globle void *EnvGetNextDeffacts(
 /* EnvIsDeffactsDeletable: Returns TRUE if a particular */
 /*   deffacts can be deleted, otherwise returns FALSE.  */
 /********************************************************/
-#if WIN_BTC
-#pragma argsused
-#endif
 globle intBool EnvIsDeffactsDeletable(
   void *theEnv,
   void *ptr)

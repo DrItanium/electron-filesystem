@@ -85,9 +85,6 @@
 /*   IntegerTable, and FloatTable. It also initializes */
 /*   the TrueSymbol and FalseSymbol.                   */
 /*******************************************************/
-#if WIN_BTC && (! RUN_TIME)
-#pragma argsused
-#endif
 globle void InitializeAtomTables(
   void *theEnv,
   struct symbolHashNode **symbolTable,

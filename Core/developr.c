@@ -582,9 +582,6 @@ globle void InstanceTableUsage(
 /******************/
 /* ExamineMemory: */
 /******************/
-#if WIN_BTC
-#pragma argsused
-#endif
 static void ExamineMemory(
   void *theEnv,
   struct joinNode *theJoin,

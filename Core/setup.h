@@ -109,9 +109,6 @@
    #define WIN_MVC 0
 #endif
 
-//#ifndef WIN_BTC
-//#define WIN_BTC 0   /* Windows XP, with Borland Turbo C++ 2006 */
-//#endif
 
 #ifndef WIN_MCW
 #define WIN_MCW 0   /* Windows XP, with CodeWarrior 9.4 */
@@ -124,7 +121,6 @@
 
 /* Use GENERIC if nothing else is used. */
 
-//(! WIN_BTC) && (! WIN_MCW) && (! WIN_GCC)
 #ifndef GENERIC
 #if (! UNIX_V) && (! LINUX) && (! UNIX_7) && \
     (! MAC_XCD) && (! MAC_MCW) && (! DARWIN) && \
@@ -135,7 +131,6 @@
 #endif
 #endif
 
-//|| WIN_BTC || WIN_MCW
 #if WIN_MVC 
 #define IBM 1
 #else

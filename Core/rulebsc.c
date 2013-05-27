@@ -345,9 +345,6 @@ globle void EnvListDefrules(
 /*   retrieving the current watch value of a defrule's */
 /*   activations.                                      */
 /*******************************************************/
-#if WIN_BTC
-#pragma argsused
-#endif
 globle unsigned EnvGetDefruleWatchActivations(
   void *theEnv,
   void *rulePtr)
@@ -370,9 +367,6 @@ globle unsigned EnvGetDefruleWatchActivations(
 /*   for retrieving the current watch value of */
 /*   a defrule's firings.                      */
 /***********************************************/
-#if WIN_BTC
-#pragma argsused
-#endif
 globle unsigned EnvGetDefruleWatchFirings(
   void *theEnv,
   void *rulePtr)
@@ -395,9 +389,6 @@ globle unsigned EnvGetDefruleWatchFirings(
 /*   for setting the current watch value of a      */
 /*   defrule's activations.                        */
 /***************************************************/
-#if WIN_BTC
-#pragma argsused
-#endif
 globle void EnvSetDefruleWatchActivations(
   void *theEnv,
   unsigned newState,
@@ -419,9 +410,6 @@ globle void EnvSetDefruleWatchActivations(
 /*   setting the current watch value of a defrule's */ 
 /*   firings.                                       */
 /****************************************************/
-#if WIN_BTC
-#pragma argsused
-#endif
 globle void EnvSetDefruleWatchFirings(
   void *theEnv,
   unsigned newState,

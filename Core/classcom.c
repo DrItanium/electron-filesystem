@@ -235,9 +235,6 @@ globle DEFCLASS *LookupDefclassAnywhere(
   SIDE EFFECTS : None
   NOTES        : None
  ***************************************************/
-#if WIN_BTC && (! DEFMODULE_CONSTRUCT)
-#pragma argsused
-#endif
 globle intBool DefclassInScope(
   void *theEnv,
   DEFCLASS *theDefclass,
@@ -414,9 +411,6 @@ globle void EnvListDefclasses(
   SIDE EFFECTS : None
   NOTES        : None
  *********************************************************/
-#if WIN_BTC
-#pragma argsused
-#endif
 globle unsigned EnvGetDefclassWatchInstances(
   void *theEnv,
   void *theClass)
@@ -440,9 +434,6 @@ globle unsigned EnvGetDefclassWatchInstances(
   SIDE EFFECTS : Watch flag for the class set
   NOTES        : None
  *********************************************************/
-#if WIN_BTC
-#pragma argsused
-#endif
 globle void EnvSetDefclassWatchInstances(
   void *theEnv,
   unsigned newState,
@@ -468,9 +459,6 @@ globle void EnvSetDefclassWatchInstances(
   SIDE EFFECTS : None
   NOTES        : None
  *********************************************************/
-#if WIN_BTC
-#pragma argsused
-#endif
 globle unsigned EnvGetDefclassWatchSlots(
   void *theEnv,
   void *theClass)
@@ -493,9 +481,6 @@ globle unsigned EnvGetDefclassWatchSlots(
   SIDE EFFECTS : Watch flag for the class set
   NOTES        : None
  **********************************************************/
-#if WIN_BTC
-#pragma argsused
-#endif
 globle void EnvSetDefclassWatchSlots(
   void *theEnv,
   unsigned newState,
@@ -664,9 +649,6 @@ globle SYMBOL_HN *CheckClassAndSlot(
   SIDE EFFECTS : None
   NOTES        : None
  ***************************************************/
-#if WIN_BTC && (! DEBUGGING_FUNCTIONS)
-#pragma argsused
-#endif
 globle void SaveDefclasses(
   void *theEnv,
   void *theModule,

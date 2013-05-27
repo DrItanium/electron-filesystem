@@ -572,9 +572,6 @@ globle void OptionsCommand(
 #if WIN_MVC
    EnvPrintRouter(theEnv,WDISPLAY,(char*)"Microsoft Windows with Microsoft Visual C++");
 #endif
-#if WIN_BTC
-   EnvPrintRouter(theEnv,WDISPLAY,(char*)"Microsoft Windows with Borland Turbo C++");
-#endif
 #if WIN_MCW
    EnvPrintRouter(theEnv,WDISPLAY,(char*)"Microsoft Windows with Metrowerks CodeWarrior");
 #endif

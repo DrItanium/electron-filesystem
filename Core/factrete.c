@@ -260,9 +260,6 @@ globle intBool FactPNGetVar3(
 /*   comparing a value stored in a single field slot  */
 /*   to a constant for either equality or inequality. */
 /******************************************************/
-#if WIN_BTC
-#pragma argsused
-#endif
 globle intBool FactPNConstant1(
   void *theEnv,
   void *theValue,
@@ -304,9 +301,6 @@ globle intBool FactPNConstant1(
 /*   no multifields to its right (thus it can be retrieved      */
 /*   relative to the beginning).                                */
 /****************************************************************/
-#if WIN_BTC
-#pragma argsused
-#endif
 globle intBool FactPNConstant2(
   void *theEnv,
   void *theValue,
@@ -659,9 +653,6 @@ globle intBool FactSlotLength(
 /* FactJNCompVars1: Fact join network routine for comparing */
 /*   the values of two single field slots.                  */
 /************************************************************/
-#if WIN_BTC
-#pragma argsused
-#endif
 globle int FactJNCompVars1(
   void *theEnv,
   void *theValue,
@@ -719,9 +710,6 @@ globle int FactJNCompVars1(
 /*   This function is provided so that variable comparisons of   */
 /*   implied deftemplates will be faster.                        */
 /*****************************************************************/
-#if WIN_BTC
-#pragma argsused
-#endif
 globle int FactJNCompVars2(
   void *theEnv,
   void *theValue,
@@ -851,9 +839,6 @@ globle int FactPNCompVars1(
 /*   variable ?z) would be 8 since $?x binds to 2 fields and $?y binds   */
 /*   to 3 fields.                                                        */
 /*************************************************************************/
-#if WIN_BTC
-#pragma argsused
-#endif
 globle unsigned short AdjustFieldPosition(
   void *theEnv,
   struct multifieldMarker *markList,
@@ -919,9 +904,6 @@ globle unsigned short AdjustFieldPosition(
 /*   number of multifield functions for grouping a   */
 /*   series of valuesinto a single multifield value. */
 /*****************************************************/
-#if WIN_BTC
-#pragma argsused
-#endif
 globle int FactStoreMultifield(
   void *theEnv,
   void *theValue,

@@ -41,9 +41,6 @@
 
 #include <stdlib.h>
 
-#if WIN_BTC
-#include <alloc.h>
-#endif
 #if WIN_MVC
 #include <malloc.h>
 #endif
@@ -146,9 +143,6 @@ globle void *genalloc(
 /* DefaultOutOfMemoryFunction: Function called */
 /*   when the KB runs out of memory.           */
 /***********************************************/
-#if WIN_BTC
-#pragma argsused
-#endif
 globle int DefaultOutOfMemoryFunction(
   void *theEnv,
   size_t size)
@@ -489,30 +483,7 @@ globle unsigned long PoolSize(
 globle unsigned long ActualPoolSize(
   void *theEnv)
   {
-#if WIN_BTC
-   register int i;
-   struct memoryPtr *memPtr;
-   unsigned long cnt = 0;
-
-   for (i = sizeof(char *) ; i < MEM_TABLE_SIZE ; i++)
-     {
-      memPtr = MemoryData(theEnv)->MemoryTable[i];
-      while (memPtr != NULL)
-        {
-         /*==============================================================*/
-         /* For a block of size n, the Turbo-C Library routines require  */
-         /* a header of size 8 bytes and further require that all memory */
-         /* allotments be paragraph (16-bytes) aligned.                  */
-         /*==============================================================*/
-
-         cnt += (((unsigned long) i) + 19L) & 0xfffffff0L;
-         memPtr = memPtr->next;
-        }
-     }
-   return(cnt);
-#else
    return(PoolSize(theEnv));
-#endif
   }
 
 /********************************************/

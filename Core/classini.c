@@ -292,9 +292,6 @@ static void DeallocateDefclassData(
 /* DestroyDefclassAction: Action used to remove defclass */
 /*   as a result of DestroyEnvironment.                  */
 /*********************************************************/
-#if WIN_BTC
-#pragma argsused
-#endif
 static void DestroyDefclassAction(
   void *theEnv,
   struct constructHeader *theConstruct,

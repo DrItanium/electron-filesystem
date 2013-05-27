@@ -99,9 +99,6 @@ static void DeassignClassID(void *,unsigned);
   SIDE EFFECTS : Busy count incremented
   NOTES        : None
  ***************************************************/
-#if WIN_BTC
-#pragma argsused
-#endif
 globle void IncrementDefclassBusyCount(
   void *theEnv,
   void *theDefclass)

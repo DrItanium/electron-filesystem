@@ -377,9 +377,6 @@ static RESTRICTION *ParseRestrictionType(
                  environment, they are pointers
                  to classes
  ***************************************************/
-#if WIN_BTC
-#pragma argsused
-#endif
 static EXPRESSION *GenTypeExpression(
   void *theEnv,
   EXPRESSION *top,

@@ -308,9 +308,6 @@ static void DeallocateDefgenericData(
 /* DestroyDefgenericAction: Action used to remove   */
 /*   defgenerics as a result of DestroyEnvironment. */
 /****************************************************/
-#if WIN_BTC
-#pragma argsused
-#endif
 static void DestroyDefgenericAction(
   void *theEnv,
   struct constructHeader *theConstruct,
@@ -423,9 +420,6 @@ globle void *EnvGetNextDefgeneric(
   NOTES        : If index == 0, the index of the first
                    method is returned
  ***********************************************************/
-#if WIN_BTC
-#pragma argsused
-#endif
 globle long EnvGetNextDefmethod(
   void *theEnv,
   void *ptr,
@@ -761,9 +755,6 @@ globle void EnvGetDefmethodDescription(
   SIDE EFFECTS : None
   NOTES        : None
  *********************************************************/
-#if WIN_BTC
-#pragma argsused
-#endif
 globle unsigned EnvGetDefgenericWatch(
   void *theEnv,
   void *theGeneric)
@@ -786,9 +777,6 @@ globle unsigned EnvGetDefgenericWatch(
   SIDE EFFECTS : Watch flag for the generic set
   NOTES        : None
  *********************************************************/
-#if WIN_BTC
-#pragma argsused
-#endif
 globle void EnvSetDefgenericWatch(
   void *theEnv,
   unsigned newState,
@@ -812,9 +800,6 @@ globle void EnvSetDefgenericWatch(
   SIDE EFFECTS : None
   NOTES        : None
  *********************************************************/
-#if WIN_BTC
-#pragma argsused
-#endif
 globle unsigned EnvGetDefmethodWatch(
   void *theEnv,
   void *theGeneric,
@@ -843,9 +828,6 @@ globle unsigned EnvGetDefmethodWatch(
   SIDE EFFECTS : Watch flag for the method set
   NOTES        : None
  *********************************************************/
-#if WIN_BTC
-#pragma argsused
-#endif
 globle void EnvSetDefmethodWatch(
   void *theEnv,
   unsigned newState,
@@ -947,9 +929,6 @@ globle void ListDefmethodsCommand(
   SIDE EFFECTS : None
   NOTES        : None
  ***************************************************************/
-#if WIN_BTC
-#pragma argsused
-#endif
 globle char *EnvGetDefmethodPPForm(
   void *theEnv,
   void *ptr,
@@ -1305,9 +1284,6 @@ globle void EnvGetMethodRestrictions(
   SIDE EFFECTS : Call expression printed
   NOTES        : None
  ***************************************************/
-#if WIN_BTC && (! DEVELOPER)
-#pragma argsused
-#endif
 static void PrintGenericCall(
   void *theEnv,
   char *logName,
@@ -1391,9 +1367,6 @@ static void DecrementGenericBusyCount(
   SIDE EFFECTS : Busy count incremented
   NOTES        : None
  ***************************************************/
-#if WIN_BTC
-#pragma argsused
-#endif
 static void IncrementGenericBusyCount(
   void *theEnv,
   void *value)
@@ -1567,9 +1540,6 @@ static long ListMethodsForGeneric(
   SIDE EFFECTS : Watch flags set in specified generics
   NOTES        : Accessory function for AddWatchItem()
  ******************************************************************/
-#if WIN_BTC
-#pragma argsused
-#endif
 static unsigned DefgenericWatchAccess(
   void *theEnv,
   int code,
@@ -1597,9 +1567,6 @@ static unsigned DefgenericWatchAccess(
   SIDE EFFECTS : Watch flags displayed for specified generics
   NOTES        : Accessory function for AddWatchItem()
  ***********************************************************************/
-#if WIN_BTC
-#pragma argsused
-#endif
 static unsigned DefgenericWatchPrint(
   void *theEnv,
   char *logName,
@@ -1627,9 +1594,6 @@ static unsigned DefgenericWatchPrint(
   SIDE EFFECTS : Watch flags set in specified methods
   NOTES        : Accessory function for AddWatchItem()
  ******************************************************************/
-#if WIN_BTC
-#pragma argsused
-#endif
 static unsigned DefmethodWatchAccess(
   void *theEnv,
   int code,
@@ -1658,9 +1622,6 @@ static unsigned DefmethodWatchAccess(
   SIDE EFFECTS : Watch flags displayed for specified methods
   NOTES        : Accessory function for AddWatchItem()
  ***********************************************************************/
-#if WIN_BTC
-#pragma argsused
-#endif
 static unsigned DefmethodWatchPrint(
   void *theEnv,
   char *logName,

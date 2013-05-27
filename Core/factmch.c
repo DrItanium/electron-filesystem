@@ -801,9 +801,6 @@ static int SkipFactPatternNode(
 /*  that the nodes were traversed ("initialized") by the       */
 /*  incremental reset.                                         */
 /***************************************************************/
-#if WIN_BTC
-#pragma argsused
-#endif
 globle void MarkFactPatternForIncrementalReset(
   void *theEnv,
   struct patternNodeHeader *thePattern,

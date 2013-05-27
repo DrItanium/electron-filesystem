@@ -104,9 +104,6 @@ globle void PrintDefmoduleReference(
 /* InitDefmoduleCode: Writes out initialization */
 /*   code for defmodules for a run-time module. */
 /************************************************/
-#if WIN_BTC
-#pragma argsused
-#endif
 static void InitDefmoduleCode(
   void *theEnv,
   FILE *initFP,

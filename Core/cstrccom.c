@@ -642,9 +642,6 @@ globle char *GetConstructNameString(
 /* EnvGetConstructNameString: Generic routine for */
 /*   returning the name string of a construct.    */
 /**************************************************/
-#if WIN_BTC
-#pragma argsused
-#endif
 globle char *EnvGetConstructNameString(
   void *theEnv,
   struct constructHeader *theConstruct)
@@ -758,11 +755,7 @@ globle void GetConstructList(
    SYMBOL_HN *theName;
    struct defmodule *loopModule;
    int allModules = FALSE;
-#if WIN_BTC
-   size_t largestConstructNameSize, bufferSize = 80;      /* prevents warning */
-#else
    size_t largestConstructNameSize = 0, bufferSize = 80;  /* prevents warning */
-#endif
    char *buffer;
    
    /*==========================*/
@@ -1116,9 +1109,6 @@ globle struct defmoduleItemHeader *GetConstructModuleItem(
 /* GetConstructPPForm: Returns the pretty print  */
 /*   representation for the specified construct. */
 /*************************************************/
-#if WIN_BTC
-#pragma argsused
-#endif
 globle char *GetConstructPPForm(
   void *theEnv,
   struct constructHeader *theConstruct)
@@ -1634,9 +1624,6 @@ globle void *LookupConstruct(
 /* ConstructsDeletable: Returns a boolean value indicating */
 /*   whether constructs in general can be deleted.         */
 /***********************************************************/
-#if WIN_BTC
-#pragma argsused
-#endif
 globle intBool ConstructsDeletable(
   void *theEnv)
   {

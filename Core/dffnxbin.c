@@ -197,9 +197,6 @@ static void BsaveDeffunctionFind(
   SIDE EFFECTS : Needed items marked
   NOTES        : None
  ***************************************************/
-#if WIN_BTC
-#pragma argsused
-#endif
 static void MarkDeffunctionItems(
   void *theEnv,
   struct constructHeader *theDeffunction,

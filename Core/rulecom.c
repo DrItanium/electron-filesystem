@@ -442,9 +442,6 @@ static int ListBetaMatches(
 /****************************/
 /* PrintMatchesMemory: */
 /****************************/
-#if WIN_BTC
-#pragma argsused
-#endif
 static void PrintMatchesMemory(
   void *theEnv,
   struct joinNode *theJoin,

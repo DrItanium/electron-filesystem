@@ -147,9 +147,6 @@ globle int FindFile(
 /********************************************/
 /* ExitFile:  Exit routine for file router. */
 /********************************************/
-#if WIN_BTC
-#pragma argsused
-#endif
 static int ExitFile(
   void *theEnv,
   int num)

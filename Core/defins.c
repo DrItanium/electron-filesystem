@@ -241,9 +241,6 @@ static void DeallocateDefinstancesData(
 /* DestroyDefinstancesAction: Action used to remove  */
 /*   definstances as a result of DestroyEnvironment. */
 /*****************************************************/
-#if WIN_BTC
-#pragma argsused
-#endif
 static void DestroyDefinstancesAction(
   void *theEnv,
   struct constructHeader *theConstruct,
@@ -859,9 +856,6 @@ static intBool ClearDefinstancesReady(
                  if definstances is not busy
                  (assumed to be initialized to 1)
  ***************************************************/
-#if WIN_BTC
-#pragma argsused
-#endif
 static void CheckDefinstancesBusy(
   void *theEnv,
   struct constructHeader *theDefinstances,
@@ -907,9 +901,6 @@ static void ResetDefinstances(
   SIDE EFFECTS : Instances created
   NOTES        : None
  ***************************************************/
-#if WIN_BTC
-#pragma argsused
-#endif
 static void ResetDefinstancesAction(
   void *theEnv,
   struct constructHeader *vDefinstances,

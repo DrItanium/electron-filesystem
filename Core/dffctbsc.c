@@ -112,9 +112,6 @@ static void ResetDeffacts(
 /* ResetDeffactsAction: Action to be applied to each */
 /*   deffacts construct during a reset command.      */
 /*****************************************************/
-#if WIN_BTC
-#pragma argsused
-#endif
 static void ResetDeffactsAction(
   void *theEnv,
   struct constructHeader *theConstruct,

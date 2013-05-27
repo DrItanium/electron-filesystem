@@ -526,9 +526,6 @@ globle HANDLER_LINK *JoinHandlerLinks(
   SIDE EFFECTS : Expression printed
   NOTES        : None
  ***************************************************/
-#if WIN_BTC && (! DEVELOPER)
-#pragma argsused
-#endif
 globle void PrintHandlerSlotGetFunction(
   void *theEnv,
   char *logicalName,
@@ -649,9 +646,6 @@ HandlerGetError:
   SIDE EFFECTS : Expression printed
   NOTES        : None
  ***************************************************/
-#if WIN_BTC && (! DEVELOPER)
-#pragma argsused
-#endif
 globle void PrintHandlerSlotPutFunction(
   void *theEnv,
   char *logicalName,
@@ -1184,11 +1178,7 @@ static void CallHandlers(
   void *theEnv,
   DATA_OBJECT *result)
   {
-#if WIN_BTC
-   HANDLER_LINK *oldCurrent,*oldNext;                /* prevents warning */
-#else
    HANDLER_LINK *oldCurrent = NULL,*oldNext = NULL;  /* prevents warning */
-#endif
    DATA_OBJECT temp;
 #if PROFILING_FUNCTIONS
    struct profileFrameInfo profileFrame;

@@ -245,9 +245,6 @@ static void DeallocateMessageHandlerData(
   SIDE EFFECTS : None
   NOTES        : None
  *****************************************************/
-#if WIN_BTC
-#pragma argsused
-#endif
 char *EnvGetDefmessageHandlerName(
   void *theEnv,
   void *ptr,
@@ -289,9 +286,6 @@ globle char *EnvGetDefmessageHandlerType(
   NOTES        : If index == 0, the first handler array index
                  (i.e. 1) returned
  **************************************************************/
-#if WIN_BTC
-#pragma argsused
-#endif
 globle int EnvGetNextDefmessageHandler(
   void *theEnv,
   void *ptr,
@@ -340,9 +334,6 @@ globle HANDLER *GetDefmessageHandlerPointer(
   SIDE EFFECTS : None
   NOTES        : None
  *********************************************************/
-#if WIN_BTC
-#pragma argsused
-#endif
 globle unsigned EnvGetDefmessageHandlerWatch(
   void *theEnv,
   void *theClass,
@@ -367,9 +358,6 @@ globle unsigned EnvGetDefmessageHandlerWatch(
   SIDE EFFECTS : Watch flag for the handler set
   NOTES        : None
  *********************************************************/
-#if WIN_BTC
-#pragma argsused
-#endif
 globle void EnvSetDefmessageHandlerWatch(
   void *theEnv,
   int newState,
@@ -689,9 +677,6 @@ globle void PreviewSendCommand(
   SIDE EFFECTS : None
   NOTES        : None
  ********************************************************/
-#if WIN_BTC
-#pragma argsused
-#endif
 globle char *EnvGetDefmessageHandlerPPForm(
   void *theEnv,
   void *ptr,
@@ -911,9 +896,6 @@ static int WildDeleteHandler(
   SIDE EFFECTS : Watch flags set in specified classes
   NOTES        : Accessory function for AddWatchItem()
  ******************************************************************/
-#if WIN_BTC
-#pragma argsused
-#endif
 static unsigned DefmessageHandlerWatchAccess(
   void *theEnv,
   int code,
@@ -945,9 +927,6 @@ static unsigned DefmessageHandlerWatchAccess(
   SIDE EFFECTS : Watch flags displayed for specified classes
   NOTES        : Accessory function for AddWatchItem()
  ***********************************************************************/
-#if WIN_BTC
-#pragma argsused
-#endif
 static unsigned DefmessageHandlerWatchPrint(
   void *theEnv,
   char *logName,

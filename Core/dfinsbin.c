@@ -194,9 +194,6 @@ static void BsaveDefinstancesFind(
   SIDE EFFECTS : Needed items marked
   NOTES        : None
  ***************************************************/
-#if WIN_BTC
-#pragma argsused
-#endif
 static void MarkDefinstancesItems(
   void *theEnv,
   struct constructHeader *theDefinstances,

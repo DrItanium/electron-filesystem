@@ -190,9 +190,6 @@ static void CloseDeffactsFiles(
 /* DeffactsModuleToCode: Writes the C code representation */
 /*   of a single deffacts module to the specified file.   */
 /**********************************************************/
-#if WIN_BTC
-#pragma argsused
-#endif
 static void DeffactsModuleToCode(
   void *theEnv,
   FILE *theFile,

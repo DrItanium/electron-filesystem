@@ -351,9 +351,6 @@ globle void SlotCardinalityCommand(
   SIDE EFFECTS : None
   NOTES        : None
  ********************************************************************/
-#if WIN_BTC
-#pragma argsused
-#endif
 globle intBool EnvClassAbstractP(
   void *theEnv,
   void *clsptr)
@@ -375,9 +372,6 @@ globle intBool EnvClassAbstractP(
   SIDE EFFECTS : None
   NOTES        : None
  ********************************************************************/
-#if WIN_BTC
-#pragma argsused
-#endif
 globle intBool EnvClassReactiveP(
   void *theEnv,
   void *clsptr)

@@ -1060,9 +1060,6 @@ globle void EnvHalt(
 /* EnvSetBreak: C access routine */
 /*   for the set-break command.  */
 /*********************************/
-#if WIN_BTC
-#pragma argsused
-#endif
 globle void EnvSetBreak(
   void *theEnv,
   void *theRule)
@@ -1082,9 +1079,6 @@ globle void EnvSetBreak(
 /* EnvRemoveBreak: C access routine */
 /*   for the remove-break command.  */
 /************************************/
-#if WIN_BTC
-#pragma argsused
-#endif
 globle intBool EnvRemoveBreak(
   void *theEnv,
   void *theRule)
@@ -1145,9 +1139,6 @@ globle void EnvShowBreaks(
 /* EnvDefruleHasBreakpoint: Indicates whether */
 /*   the specified rule has a breakpoint set. */
 /**********************************************/
-#if WIN_BTC
-#pragma argsused
-#endif
 globle intBool EnvDefruleHasBreakpoint(
   void *theEnv,
   void *theRule)
