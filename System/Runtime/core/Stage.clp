@@ -1,4 +1,5 @@
 ;------------------------------------------------------------------------------
+;The Adventure Engine
 ;Copyright (c) 2013, Joshua Scoggins 
 ;All rights reserved.
 ;
@@ -24,8 +25,11 @@
 ;(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 ;SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ;------------------------------------------------------------------------------
-; Loader.clp - Loads all files in the core folder
+; Stage.clp - Standardized mechanism for providing stage control facts
 ;------------------------------------------------------------------------------
-(batch* "System/Runtime/core/Object.clp")
-(batch* "System/Runtime/core/Message.clp")
-(batch* "System/Runtime/core/Stage.clp")
+(deftemplate Runtime::stage
+             "Standardized mechanism for providing stage control facts"
+             (slot id (type SYMBOL) (default-dynamic (gensym*)))
+             (slot at (type SYMBOL))
+             (multislot rest (type SYMBOL)))
+;------------------------------------------------------------------------------
