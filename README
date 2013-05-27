@@ -3,21 +3,25 @@ most of my modern works the code uses an expert system to do the dirty work.
 This is because the expert system makes different aspects of the adventure game
 easy to do. 
 
-This includes inventory management, combination, and character interaction. All
-of the information used to keep track of this information can be easily kept
-track of through the use of facts and instances within the expert system. The
-only part that has to be handled outside the expert system is things such as
-input handling, sound playing, and drawing to the screen. 
-
-The src folder contains the C source code that clips interacts with. The game
-folder contains all of the types and game logic that are written within CLIPS
+Currently, this is in an experimental phase and is quite fluid in layout and
+features. I probably will never have a super stable branch but a relatively
+stable one. However, this may change with time. 
 
 
 Folder layout:
-native/ - contains all of the C code (including CLIPS)
-tools/ - contains tools used by the adventure engine in one way or another
-lib/ - contains all the functions, templates, and classes used by the adventure engine
-logic/ - contains all the rules for the different modules that make up the adventure engine
-init/ - contains a special module that contains functions to make writing
-programs using the adventure engine easier. This should always be loaded first.
-application/ - contains the entry point into a given adventure engine program 
+Core/ - CLIPS runtime C code
+System/ - C and CLIPS code for the base of the engine
+  Initialization/ - Contains functions that are fired on application start
+  Input/ - Contains functions to provide a standardized method for getting
+           data from different input methods (keyboard, mouse, etc)
+  Runtime/ - Base CLIPS code that the rest of the engine builds on top of.
+             The code in here should be the first thing loaded on startup.
+  Platform/ - CLIPS native functions that provide information about OS,
+              architecture, and hardware that the adventure engine is running
+              on.
+application/ - Contains the entry point into a given adventure engine program
+lib/ - Contains all of the user defined functions, templates, methods, and
+       classes used by the adventure engine.
+logic/ - Contains all the rules for the different modules that make up an
+         adventure engine program. These rules are provided by the game
+         designer.
