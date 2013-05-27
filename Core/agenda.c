@@ -330,9 +330,6 @@ globle void *EnvGetNextActivation(
 /* EnvGetActivationName: Returns the name of */
 /*   the rule associated with an activation. */
 /*********************************************/
-#if WIN_BTC
-#pragma argsused
-#endif
 globle char *EnvGetActivationName(
   void *theEnv,
   void *actPtr)
@@ -348,9 +345,6 @@ globle char *EnvGetActivationName(
 /* EnvSetActivationSalience: Sets the */
 /*   salience value of an activation. */
 /**************************************/
-#if WIN_BTC
-#pragma argsused
-#endif
 globle int EnvSetActivationSalience(
   void *theEnv,
   void *actPtr,
