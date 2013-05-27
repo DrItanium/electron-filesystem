@@ -61,9 +61,9 @@ void* GetHardwarePlatform(void* theEnv) {
 }
 int HardwarePlatformIsGeneric(void* theEnv) {
 #if PLATFORM_GENERIC
-   return FALSE;
-#else
    return TRUE;
+#else
+   return FALSE;
 #endif
 }
 
