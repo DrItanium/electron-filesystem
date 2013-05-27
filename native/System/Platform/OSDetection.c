@@ -45,6 +45,7 @@ extern int OSIsDragonFlyBSD(void* theEnv);
 extern int OSIsMicrosoftConsole(void* theEnv);
 extern int OSIsSonyConsole(void* theEnv);
 extern int OSIsNintendoConsole(void* theEnv);
+extern int OSIsCygwin(void* theEnv);
 
 extern void OSDetectionFunctionDefinitions(void* theEnv) {
    //capture the standard operating system call
@@ -132,6 +133,12 @@ extern void OSDetectionFunctionDefinitions(void* theEnv) {
          PTIEF OSIsNintendoConsole, 
          (char*)"OSIsNintendoConsole", 
          (char*)"00a");
+   EnvDefineFunction2(theEnv, 
+         (char*)"operating-system-is-cygwin", 
+         'b', 
+         PTIEF OSIsCygwin, 
+         (char*)"OSIsCygwin", 
+         (char*)"00a");
 }
 
 void* OSGetOperatingSystem(void* theEnv) {
@@ -141,6 +148,13 @@ void* OSGetOperatingSystem(void* theEnv) {
 //These are function definitions to find out what OS we're on
 int OSIsLinux(void* theEnv) {
 #if OS_LINUX
+	 return TRUE;
+#else
+   return FALSE;
+#endif
+}
+int OSIsCygwin(void* theEnv) {
+#if OS_CYGWIN 
 	 return TRUE;
 #else
    return FALSE;
