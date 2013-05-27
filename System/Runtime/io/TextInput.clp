@@ -24,30 +24,9 @@
 ;(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 ;SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ;------------------------------------------------------------------------------
-; DeclareLibraryFunctions.clp - Defines a series of functions used to
-; streamline the loading of libraries in the adventure engine
-; 
-; Written by Joshua Scoggins 
-; Started on 3/11/2013
+; TextInput.clp - Loads all files in the io folder
 ;------------------------------------------------------------------------------
-(defgeneric init::load-library "Loads a given library header")
-;------------------------------------------------------------------------------
-(defgeneric init::library-files "Loads the contents of a target library")
-;------------------------------------------------------------------------------
-(defmethod init::load-library 
-  "Loads an adventure engine library from the root of the src folder"
-  ((?name LEXEME))
-  (generic-load lib ?name Library.clp))
-;------------------------------------------------------------------------------
-(defmethod init::library-files 
-  "Loads the files that make up the target library"
-  ((?offset LEXEME)
-   ($?names LEXEME))
-  (generic-load lib ?offset ?names))
-;------------------------------------------------------------------------------
-(defmethod init::library-files
-  "Loads the files that make up the target library"
-  ((?offset LEXEME)
-   (?names LEXEME MULTIFIELD))
-  (generic-load lib ?offset ?names))
+(deftemplate Runtime::TextInput
+ "A template to represent a piece of input provided by the user"
+ (slot input (type STRING)))
 ;------------------------------------------------------------------------------

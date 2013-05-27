@@ -24,9 +24,6 @@
 ;(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 ;SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ;------------------------------------------------------------------------------
-; TextInput.clp - Loads all files in the io folder
+; Loader.clp - Loads all files in the parsing folder
 ;------------------------------------------------------------------------------
-(deftemplate cortex::TextInput
- "A template to represent a piece of input provided by the user"
- (slot input (type STRING)))
-;------------------------------------------------------------------------------
+(batch* "System/Runtime/parsing/SymbolDeclarationFunctions.clp")

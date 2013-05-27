@@ -24,6 +24,12 @@
 ;(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 ;SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ;------------------------------------------------------------------------------
-; Loader.clp - Loads all files in the io folder
+; Object.clp - Contains basic object classes 
 ;------------------------------------------------------------------------------
-(batch* "lib/cortex/io/TextInput.clp")
+(defclass Runtime::Object 
+  "Base class of all objects"
+  (is-a USER)
+  (slot parent 
+        (type INSTANCE SYMBOL) 
+        (visibility public)))
+;------------------------------------------------------------------------------

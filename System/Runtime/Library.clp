@@ -1,4 +1,5 @@
 ;------------------------------------------------------------------------------
+;The Adventure Engine
 ;Copyright (c) 2013, Joshua Scoggins 
 ;All rights reserved.
 ;
@@ -24,50 +25,24 @@
 ;(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 ;SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ;------------------------------------------------------------------------------
-; GenericDeclareFunctions.clp - Contains generic backing methods for loading
-; code
+; Library.clp - Defines the init module and loads all other corresponding
+; files.
 ; 
 ; Written by Joshua Scoggins 
-; Started on 3/13/2013
+; Started on 3/11/2013
 ;------------------------------------------------------------------------------
-(defgeneric init::generic-load
- "Loads a single file in an abstract way")
+; Define the module
 ;------------------------------------------------------------------------------
-(defmethod init::generic-load
- ((?path LEXEME))
- (batch* ?path))
+(defmodule Runtime (export ?ALL))
 ;------------------------------------------------------------------------------
-(defmethod init::generic-load
- "Loads a single file in an abstract way"
- ((?folder-name LEXEME)
-  (?path-to-folder LEXEME)
-  (?file-name LEXEME))
- (generic-load (format nil "%s/%s/%s" ?folder-name ?path-to-folder ?file-name)))
+; Load the corresponding types and functions 
 ;------------------------------------------------------------------------------
-(defmethod init::generic-load
- ((?folder-name LEXEME)
-  (?path-to-folder LEXEME)
-  (?files MULTIFIELD LEXEME (= (length$ ?files) 1)))
- (generic-load ?folder-name ?path-to-folder (nth$ 1 ?files)))
+(load* "System/Runtime/GenericDeclareFunctions.clp")
+(batch* "System/Runtime/DeclareLibraryFunctions.clp")
+(batch* "System/Runtime/DeclareApplicationFunctions.clp")
+(batch* "System/Runtime/DeclareLogicFunctions.clp")
+(batch* "System/Runtime/core/Loader.clp")
+(batch* "System/Runtime/io/Loader.clp")
+(batch* "System/Runtime/parsing/Loader.clp")
 ;------------------------------------------------------------------------------
-(defmethod init::generic-load
- ((?folder-name LEXEME)
-  (?path-to-folder LEXEME)
-  (?files MULTIFIELD LEXEME (> (length$ ?files) 1)))
- (bind ?core-offset (format nil "%s/%s/%s" 
-                     ?folder-name ?path-to-folder "%s"))
- (progn$ (?a ?files)
-  (generic-load (format nil ?core-offset ?a))))
-;------------------------------------------------------------------------------
-(defmethod init::generic-load
- ((?folder-name LEXEME)
-  (?path-to-folder LEXEME)
-  ($?files LEXEME (> (length$ ?files) 1)))
- (generic-load ?folder-name ?path-to-folder $?files))
-;------------------------------------------------------------------------------
-(defmethod init::generic-load
- ((?folder-name LEXEME)
-  (?path-to-folder LEXEME)
-  ($?files LEXEME (= (length$ ?files) 1)))
- (generic-load ?folder-name ?path-to-folder (nth$ 1 ?files)))
-;------------------------------------------------------------------------------
+

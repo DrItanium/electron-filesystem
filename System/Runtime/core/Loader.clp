@@ -2,7 +2,8 @@
 ;Copyright (c) 2013, Joshua Scoggins 
 ;All rights reserved.
 ;
-;Redistribution and use in source and binary forms, with or without ;modification, are permitted provided that the following conditions are met:
+;Redistribution and use in source and binary forms, with or without
+;modification, are permitted provided that the following conditions are met:
 ;    * Redistributions of source code must retain the above copyright
 ;      notice, this list of conditions and the following disclaimer.
 ;    * Redistributions in binary form must reproduce the above copyright
@@ -23,22 +24,7 @@
 ;(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 ;SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ;------------------------------------------------------------------------------
-; Library.clp - Defines the cortex module and loads all other corresponding
-; files.
-; 
-; Written by Joshua Scoggins 
-; Started on 2/14/2013
+; Loader.clp - Loads all files in the core folder
 ;------------------------------------------------------------------------------
-; Define the module
-;------------------------------------------------------------------------------
-(defmodule cortex 
-           (import init ?ALL)
-           (export ?ALL))
-;------------------------------------------------------------------------------
-; Load the corresponding types and functions 
-;------------------------------------------------------------------------------
-(library-files "cortex"
-               "core/Loader.clp"
-               "io/Loader.clp"
-               "parsing/Loader.clp")
-;------------------------------------------------------------------------------
+(batch* "System/Runtime/core/Object.clp")
+(batch* "System/Runtime/core/Message.clp")

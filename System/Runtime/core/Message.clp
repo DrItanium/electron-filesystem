@@ -24,16 +24,17 @@
 ;(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 ;SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ;------------------------------------------------------------------------------
-; DeclareApplicationFunctions.clp - Defines a series of functions used to
-; streamline the loading of a given game/application/sample/etc
-; 
-; Written by Joshua Scoggins 
-; Started on 3/13/2013
+; Message.clp - Contains the message template which is a standard way to pass
+; knowledge between modules that have no knowledge of one another.
+;
+; Use of messages also allows programmers to use modify and duplicate to cut
+; down on the amount of redundant typing which can potentially lead to a 
+; reduction in the overall error rate.
 ;------------------------------------------------------------------------------
-(defgeneric init::load-application "Loads an application")
-;------------------------------------------------------------------------------
-(defmethod init::load-application
- "Loads an application from the application folder with the specified name"
- ((?root-folder-name LEXEME))
- (generic-load application ?root-folder-name Application.clp))
+(deftemplate Runtime::message
+             "Provides a communication medium between modules"
+             (slot to (type SYMBOL))
+             (slot from (type SYMBOL))
+             (slot action (type SYMBOL))
+             (multislot arguments))
 ;------------------------------------------------------------------------------

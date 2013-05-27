@@ -40,5 +40,5 @@ void InitializeAdventureEngineFunctions(void* theEnv) {
 int InitializeBaseAdventureEngine(void* theEnv) {
    //clear the environment first to make sure that we have a clean environment
    EnvClear(theEnv);
-   return EnvBatchStar(theEnv,(char*)"System/Runtime/init/Library.clp");
+   return EnvBatchStar(theEnv,(char*)"System/Runtime/Library.clp");
 }

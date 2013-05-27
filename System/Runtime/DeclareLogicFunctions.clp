@@ -24,6 +24,30 @@
 ;(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 ;SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ;------------------------------------------------------------------------------
-; Loader.clp - Loads all files in the parsing folder
+; DeclareLogicFunctions.clp - Defines functions to load code from the
+; logic folder 
+; 
+; Written by Joshua Scoggins 
+; Started on 3/13/2013
 ;------------------------------------------------------------------------------
-(batch* "lib/cortex/parsing/SymbolDeclarationFunctions.clp")
+(defgeneric Runtime::load-logic)
+;------------------------------------------------------------------------------
+(defgeneric Runtime::logic-files)
+;------------------------------------------------------------------------------
+(defmethod Runtime::load-logic
+             "Loads logic/<folder-name>/Entry.clp." 
+             ((?folder-name LEXEME))
+             (generic-load logic ?folder-name Entry.clp))
+;------------------------------------------------------------------------------
+(defmethod Runtime::logic-files
+             "Loads a series of logic files from the specified path"
+             ((?offset LEXEME) 
+              ($?files LEXEME))
+             (generic-load logic ?offset ?files))
+;------------------------------------------------------------------------------
+(defmethod Runtime::logic-files
+             "Loads a series of logic files from the specified path"
+             ((?offset LEXEME) 
+              (?files LEXEME MULTIFIELD))
+             (generic-load logic ?offset ?files))
+;------------------------------------------------------------------------------

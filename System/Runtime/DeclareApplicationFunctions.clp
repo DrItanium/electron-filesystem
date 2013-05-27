@@ -24,12 +24,16 @@
 ;(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 ;SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ;------------------------------------------------------------------------------
-; Object.clp - Contains basic object classes 
+; DeclareApplicationFunctions.clp - Defines a series of functions used to
+; streamline the loading of a given game/application/sample/etc
+; 
+; Written by Joshua Scoggins 
+; Started on 3/13/2013
 ;------------------------------------------------------------------------------
-(defclass cortex::Object 
-  "Base class of all objects"
-  (is-a USER)
-  (slot parent 
-        (type INSTANCE SYMBOL) 
-        (visibility public)))
+(defgeneric Runtime::load-application "Loads an application")
+;------------------------------------------------------------------------------
+(defmethod Runtime::load-application
+ "Loads an application from the application folder with the specified name"
+ ((?root-folder-name LEXEME))
+ (generic-load application ?root-folder-name Application.clp))
 ;------------------------------------------------------------------------------

@@ -24,9 +24,7 @@
 ;(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 ;SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ;------------------------------------------------------------------------------
-; LoadEngine.clp - Runs the GLConstantConversion expert system
+; LoadEngine.clp - Entry point into the adventure engine.
 ; Written by Joshua Scoggins
 ;------------------------------------------------------------------------------
 (initialize-adventure-engine)
-;------------------------------------------------------------------------------
-(load-library cortex)

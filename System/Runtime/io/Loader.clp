@@ -24,17 +24,6 @@
 ;(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 ;SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ;------------------------------------------------------------------------------
-; Message.clp - Contains the message template which is a standard way to pass
-; knowledge between modules that have no knowledge of one another.
-;
-; Use of messages also allows programmers to use modify and duplicate to cut
-; down on the amount of redundant typing which can potentially lead to a 
-; reduction in the overall error rate.
+; Loader.clp - Loads all files in the io folder
 ;------------------------------------------------------------------------------
-(deftemplate cortex::message
-             "Provides a communication medium between modules"
-             (slot to (type SYMBOL))
-             (slot from (type SYMBOL))
-             (slot action (type SYMBOL))
-             (multislot arguments))
-;------------------------------------------------------------------------------
+(batch* "System/Runtime/io/TextInput.clp")

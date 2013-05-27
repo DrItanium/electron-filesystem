@@ -24,11 +24,11 @@
 ;(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 ;SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ;------------------------------------------------------------------------------
-(deffunction cortex::blank-on-empty-string(?str)
+(deffunction Runtime::blank-on-empty-string(?str)
  "Returns a blank multifield if the given input string is empty"
              (if (> (str-length ?str) 0) then ?str else (create$)))
 ;------------------------------------------------------------------------------
-(deffunction cortex::split-on-symbol (?sp ?i)
+(deffunction Runtime::split-on-symbol (?sp ?i)
              (bind ?str (if (stringp ?i) then ?i else (str-cat ?i)))
              (bind ?ind (str-index ?sp ?str))
              (bind ?p0 (sub-string 1 (- ?ind 1) ?str))
@@ -36,12 +36,12 @@
              (create$ (blank-on-empty-string ?p0) ?sp
                       (blank-on-empty-string ?p1)))
 ;------------------------------------------------------------------------------
-(deffunction cortex::input-is-target-symbol (?sp ?input)
+(deffunction Runtime::input-is-target-symbol (?sp ?input)
              (bind ?str (str-cat ?input))
              (and (neq 0 (str-compare ?str ?sp))
                   (str-index ?sp ?str)))
 ;------------------------------------------------------------------------------
-(deffunction cortex::defsymbol-lexer
+(deffunction Runtime::defsymbol-lexer
  "Builds a rule for parsing a given input string for the given symbol"
              (?module-name ?symbol ?name ?docString)
              (build (format nil "(defrule %s::%s 

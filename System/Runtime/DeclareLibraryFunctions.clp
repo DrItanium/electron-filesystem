@@ -24,20 +24,30 @@
 ;(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 ;SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ;------------------------------------------------------------------------------
-; Library.clp - Defines the init module and loads all other corresponding
-; files.
+; DeclareLibraryFunctions.clp - Defines a series of functions used to
+; streamline the loading of libraries in the adventure engine
 ; 
 ; Written by Joshua Scoggins 
 ; Started on 3/11/2013
 ;------------------------------------------------------------------------------
-; Define the module
+(defgeneric Runtime::load-library "Loads a given library header")
 ;------------------------------------------------------------------------------
-(defmodule init (export ?ALL))
+(defgeneric Runtime::library-files "Loads the contents of a target library")
 ;------------------------------------------------------------------------------
-; Load the corresponding types and functions 
+(defmethod Runtime::load-library 
+  "Loads an adventure engine library from the root of the src folder"
+  ((?name LEXEME))
+  (generic-load lib ?name Library.clp))
 ;------------------------------------------------------------------------------
-(load* "init/GenericDeclareFunctions.clp")
-(batch* "init/DeclareLibraryFunctions.clp")
-(batch* "init/DeclareApplicationFunctions.clp")
-(batch* "init/DeclareLogicFunctions.clp")
+(defmethod Runtime::library-files 
+  "Loads the files that make up the target library"
+  ((?offset LEXEME)
+   ($?names LEXEME))
+  (generic-load lib ?offset ?names))
+;------------------------------------------------------------------------------
+(defmethod Runtime::library-files
+  "Loads the files that make up the target library"
+  ((?offset LEXEME)
+   (?names LEXEME MULTIFIELD))
+  (generic-load lib ?offset ?names))
 ;------------------------------------------------------------------------------
