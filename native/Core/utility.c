@@ -748,6 +748,132 @@ globle void DeallocateCallList(
    }
 }
 
+  
+/***************************************************************/
+/* AddFunctionToCallListWithArg: Adds a function to a list of  */
+/*   functions which are called to perform certain operations  */
+/*   (e.g. clear,reset, and bload functions).                  */
+/***************************************************************/
+globle struct callFunctionItemWithArg *AddFunctionToCallListWithArg(
+  void *theEnv,
+  char *name,
+  int priority,
+  void (*func)(void *, void *),
+  struct callFunctionItemWithArg *head,
+  intBool environmentAware)
+  {
+   return AddFunctionToCallListWithArgWithContext(theEnv,name,priority,func,head,environmentAware,NULL);
+  }
+  
+/***********************************************************/
+/* AddFunctionToCallListWithArgWithContext: Adds a function to a  */
+/*   list of functions which are called to perform certain */
+/*   operations (e.g. clear, reset, and bload functions).  */
+/***********************************************************/
+globle struct callFunctionItemWithArg *AddFunctionToCallListWithArgWithContext(
+  void *theEnv,
+  char *name,
+  int priority,
+  void (*func)(void *, void *),
+  struct callFunctionItemWithArg *head,
+  intBool environmentAware,
+  void *context)
+  {
+   struct callFunctionItemWithArg *newPtr, *currentPtr, *lastPtr = NULL;
+
+   newPtr = get_struct(theEnv,callFunctionItemWithArg);
+
+   newPtr->name = name;
+   newPtr->func = func;
+   newPtr->priority = priority;
+   newPtr->environmentAware = (short) environmentAware;
+   newPtr->context = context;
+
+   if (head == NULL)
+     {
+      newPtr->next = NULL;
+      return(newPtr);
+     }
+
+   currentPtr = head;
+   while ((currentPtr != NULL) ? (priority < currentPtr->priority) : FALSE)
+     {
+      lastPtr = currentPtr;
+      currentPtr = currentPtr->next;
+     }
+
+   if (lastPtr == NULL)
+     {
+      newPtr->next = head;
+      head = newPtr;
+     }
+   else
+     {
+      newPtr->next = currentPtr;
+      lastPtr->next = newPtr;
+     }
+
+   return(head);
+  }
+
+/**************************************************************/
+/* RemoveFunctionFromCallListWithArg: Removes a function from */
+/*   a list of functions which are called to perform certain  */
+/*   operations (e.g. clear, reset, and bload functions).     */
+/**************************************************************/
+globle struct callFunctionItemWithArg *RemoveFunctionFromCallListWithArg(
+  void *theEnv,
+  char *name,
+  struct callFunctionItemWithArg *head,
+  int *found)
+  {
+   struct callFunctionItemWithArg *currentPtr, *lastPtr;
+
+   *found = FALSE;
+   lastPtr = NULL;
+   currentPtr = head;
+
+   while (currentPtr != NULL)
+     {
+      if (strcmp(name,currentPtr->name) == 0)
+        {
+         *found = TRUE;
+         if (lastPtr == NULL)
+           { head = currentPtr->next; }
+         else
+           { lastPtr->next = currentPtr->next; }
+
+         rtn_struct(theEnv,callFunctionItemWithArg,currentPtr);
+         return(head);
+        }
+
+      lastPtr = currentPtr;
+      currentPtr = currentPtr->next;
+     }
+
+   return(head);
+  }
+
+/**************************************************************/
+/* DeallocateCallListWithArg: Removes all functions from a list of   */
+/*   functions which are called to perform certain operations */
+/*   (e.g. clear, reset, and bload functions).                */
+/**************************************************************/
+globle void DeallocateCallListWithArg(
+  void *theEnv,
+  struct callFunctionItemWithArg *theList)
+  {
+   struct callFunctionItemWithArg *tmpPtr, *nextPtr;
+   
+   tmpPtr = theList;
+   while (tmpPtr != NULL)
+     {
+      nextPtr = tmpPtr->next;
+      rtn_struct(theEnv,callFunctionItemWithArg,tmpPtr);
+      tmpPtr = nextPtr;
+     }
+  }
+
 /*****************************************/
 /* ItemHashValue: Returns the hash value */
 /*   for the specified value.            */

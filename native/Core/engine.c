@@ -77,7 +77,6 @@
 /* LOCAL INTERNAL FUNCTION DEFINITIONS */
 /***************************************/
 
-   static struct activation      *NextActivationToFire(void *);
    static struct defmodule       *RemoveFocus(void *,struct defmodule *);
    static void                    DeallocateEngineData(void *);
 
@@ -107,6 +106,7 @@ static void DeallocateEngineData(
    struct focus *tmpPtr, *nextPtr;
    
    DeallocateCallList(theEnv,EngineData(theEnv)->ListOfRunFunctions);
+   DeallocateCallListWithArg(theEnv,EngineData(theEnv)->ListOfBeforeRunFunctions);
 
    tmpPtr = EngineData(theEnv)->CurrentFocus;
    while (tmpPtr != NULL)
@@ -137,6 +137,7 @@ globle long long EnvRun(
   {
    long long rulesFired = 0;
    DATA_OBJECT result;
+   struct callFunctionItemWithArg* theBeforeRunFunction;
    struct callFunctionItem *theRunFunction;
 #if DEBUGGING_FUNCTIONS
    unsigned long maxActivations = 0, sumActivations = 0;
@@ -218,6 +219,22 @@ globle long long EnvRun(
           (EvaluationData(theEnv)->HaltExecution == FALSE) &&
           (EngineData(theEnv)->HaltRules == FALSE))
      {
+      /*========================================*/
+      /* Execute the list of functions that are */
+      /* to be called before each rule firing.  */
+      /*========================================*/
+
+      for (theBeforeRunFunction = EngineData(theEnv)->ListOfBeforeRunFunctions;
+           theBeforeRunFunction != NULL;
+           theBeforeRunFunction = theBeforeRunFunction->next)
+        { 
+         SetEnvironmentCallbackContext(theEnv,theBeforeRunFunction->context);
+         if (theBeforeRunFunction->environmentAware)
+           { (*theBeforeRunFunction->func)(theEnv,theActivation); }
+         else            
+           { ((void (*)(void *))(*theBeforeRunFunction->func))(theActivation); }
+        }
+
       /*===========================================*/
       /* Detach the activation from the agenda and */
       /* determine which rule is firing.           */
@@ -607,7 +624,7 @@ globle long long EnvRun(
 /* NextActivationToFire: Returns the next activation which */
 /*   should be executed based on the current focus.        */
 /***********************************************************/
-static struct activation *NextActivationToFire(
+globle struct activation *NextActivationToFire(
   void *theEnv)
   {
    struct activation *theActivation;
@@ -868,6 +885,25 @@ globle intBool AddRunFunction(
                              EngineData(theEnv)->ListOfRunFunctions,TRUE);
    return(1);
   }
+
+/*****************************************/
+/* AddBeforeRunFunction: Adds a function */
+/*   to the ListOfBeforeRunFunctions.    */
+/*****************************************/
+globle intBool AddBeforeRunFunction(
+  char *name,
+  void (*functionPtr)(void *),
+  int priority)
+  {
+   void *theEnv;
+   
+   theEnv = GetCurrentEnvironment();
+
+   EngineData(theEnv)->ListOfBeforeRunFunctions = 
+       AddFunctionToCallListWithArg(theEnv,name,priority,(void (*)(void *,void *)) functionPtr,
+                             EngineData(theEnv)->ListOfBeforeRunFunctions,TRUE);
+   return(1);
+  }
 #endif
 
 /**************************************/
@@ -885,6 +921,21 @@ globle intBool EnvAddRunFunction(
                                               EngineData(theEnv)->ListOfRunFunctions,TRUE);
    return(1);
   }
+
+/********************************************/
+/* EnvAddBeforeRunFunction: Adds a function */
+/*   to the ListOfBeforeRunFunctions.       */
+/********************************************/
+globle intBool EnvAddBeforeRunFunction(
+  void *theEnv,
+  char *name,
+  void (*functionPtr)(void *, void *),
+  int priority) {
+   EngineData(theEnv)->ListOfBeforeRunFunctions = AddFunctionToCallListWithArg(theEnv,name,priority,
+                                              functionPtr,
+                                              EngineData(theEnv)->ListOfBeforeRunFunctions,TRUE);
+   return(1);
+}
   
 /*****************************************/
 /* EnvAddRunFunctionWithContext: Adds a  */
@@ -904,6 +955,24 @@ globle intBool EnvAddRunFunctionWithContext(
    return(1);
   }
   
+/***********************************************/
+/* EnvAddBeforeRunFunctionWithContext: Adds a  */
+/*   function to the ListOfBeforeRunFunctions. */
+/***********************************************/
+globle intBool EnvAddBeforeRunFunctionWithContext(
+  void *theEnv,
+  char *name,
+  void (*functionPtr)(void *, void *),
+  int priority,
+  void *context)
+  {
+   EngineData(theEnv)->ListOfBeforeRunFunctions = 
+      AddFunctionToCallListWithArgWithContext(theEnv,name,priority,functionPtr,
+                                       EngineData(theEnv)->ListOfBeforeRunFunctions,
+                                       TRUE,context);
+   return(1);
+  }
+  
 /********************************************/
 /* EnvRemoveRunFunction: Removes a function */
 /*   from the ListOfRunFunctions.           */
@@ -917,6 +986,24 @@ globle intBool EnvRemoveRunFunction(
    EngineData(theEnv)->ListOfRunFunctions = 
       RemoveFunctionFromCallList(theEnv,name,EngineData(theEnv)->ListOfRunFunctions,&found);
 
+   if (found) return(TRUE);
+
+   return(FALSE);
+  }
+  
+/**************************************************/
+/* EnvRemoveBeforeRunFunction: Removes a function */
+/*   from the ListOfBeforeRunFunctions.           */
+/**************************************************/
+globle intBool EnvRemoveBeforeRunFunction(
+  void *theEnv,
+  char *name)
+  {
+   int found;
+
+   EngineData(theEnv)->ListOfBeforeRunFunctions = 
+      RemoveFunctionFromCallListWithArg(theEnv,name,EngineData(theEnv)->ListOfBeforeRunFunctions,&found);
+ 
    if (found) return(TRUE);
 
    return(FALSE);

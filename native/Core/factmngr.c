@@ -251,6 +251,8 @@ static void DeallocateFactData(
       ReturnFact(theEnv,tmpFactPtr);
       tmpFactPtr = nextFactPtr; 
      }
+   DeallocateCallListWithArg(theEnv,FactData(theEnv)->ListOfAssertFunctions);
+   DeallocateCallListWithArg(theEnv,FactData(theEnv)->ListOfRetractFunctions);
   }
 
 /**********************************************/
@@ -416,6 +418,7 @@ globle intBool EnvRetract(
   {
    struct fact *theFact = (struct fact *) vTheFact;
    struct deftemplate *theTemplate = theFact->whichDeftemplate;
+   struct callFunctionItemWithArg* theRetractFunction;
 
    /*===========================================*/
    /* A fact can not be retracted while another */
@@ -445,6 +448,22 @@ globle intBool EnvRetract(
    /*======================================================*/
 
    if (theFact->garbage) return(FALSE);
+   
+   /*==========================================*/
+   /* Execute the list of functions that are   */
+   /* to be called before each fact assertion. */
+   /*==========================================*/
+
+   for (theRetractFunction = FactData(theEnv)->ListOfRetractFunctions;
+        theRetractFunction != NULL;
+        theRetractFunction = theRetractFunction->next) {
+      SetEnvironmentCallbackContext(theEnv,theRetractFunction->context);
+      if (theRetractFunction->environmentAware) { 
+         (*theRetractFunction->func)(theEnv,theFact); 
+      } else { 
+         ((void (*)(void *))(*theRetractFunction->func))(theFact); 
+      }
+     }
 
    /*============================*/
    /* Print retraction output if */
@@ -632,6 +651,7 @@ globle void *EnvAssert(
    struct field *theField;
    struct fact *theFact = (struct fact *) vTheFact;
    intBool duplicate;
+   struct callFunctionItemWithArg *theAssertFunction;
 
    /*==========================================*/
    /* A fact can not be asserted while another */
@@ -726,6 +746,23 @@ globle void *EnvAssert(
    /*=====================*/
 
    FactInstall(theEnv,theFact);
+
+   
+   /*==========================================*/
+   /* Execute the list of functions that are   */
+   /* to be called before each fact assertion. */
+   /*==========================================*/
+
+   for (theAssertFunction = FactData(theEnv)->ListOfAssertFunctions;
+        theAssertFunction != NULL;
+        theAssertFunction = theAssertFunction->next) {
+      SetEnvironmentCallbackContext(theEnv,theAssertFunction->context);
+      if (theAssertFunction->environmentAware) { 
+         (*theAssertFunction->func)(theEnv,theFact); 
+      } else { 
+         ((void (*)(void *))(*theAssertFunction->func))(theFact); 
+      }
+     }
 
    /*==========================*/
    /* Print assert output if   */
@@ -1607,6 +1644,155 @@ globle struct fact *FindIndexedFact(
 
    return(NULL);
   }
+
+#if ALLOW_ENVIRONMENT_GLOBALS
+/********************************************/
+/* AddAssertFunction: Adds a function */
+/*   to the ListOfAssertFunctions.    */
+/********************************************/
+globle intBool AddAssertFunction(
+  char *name,
+  void (*functionPtr)(void *,void *),
+  int priority)
+  {
+   void *theEnv;
+   
+   theEnv = GetCurrentEnvironment();
+
+   FactData(theEnv)->ListOfAssertFunctions =
+       AddFunctionToCallListWithArg(theEnv,name,priority,(void (*)(void *, void *)) functionPtr,
+                             FactData(theEnv)->ListOfAssertFunctions,TRUE);
+   return(1);
+  }
+#endif
+
+/***********************************************/
+/* EnvAddAssertFunction: Adds a function */
+/*   to the ListOfAssertFunctions.       */
+/***********************************************/
+globle intBool EnvAddAssertFunction(
+  void *theEnv,
+  char *name,
+  void (*functionPtr)(void *, void *),
+  int priority)
+  {
+   FactData(theEnv)->ListOfAssertFunctions =
+      AddFunctionToCallListWithArg(theEnv,name,priority,
+                                              functionPtr,
+                                              FactData(theEnv)->ListOfAssertFunctions,TRUE);
+   return(1);
+  }
+    
+/**************************************************/
+/* EnvAddAssertFunctionWithContext: Adds a  */
+/*   function to the ListOfAssertFunctions. */
+/**************************************************/
+globle intBool EnvAddAssertFunctionWithContext(
+  void *theEnv,
+  char *name,
+  void (*functionPtr)(void *, void *),
+  int priority,
+  void *context)
+  {
+   FactData(theEnv)->ListOfAssertFunctions =
+      AddFunctionToCallListWithArgWithContext(theEnv,name,priority,functionPtr,
+                                       FactData(theEnv)->ListOfAssertFunctions,
+                                       TRUE,context);
+   return(1);
+  }
+    
+/*****************************************************/
+/* EnvRemoveAssertFunction: Removes a function */
+/*   from the ListOfAssertFunctions.           */
+/*****************************************************/
+globle intBool EnvRemoveAssertFunction(
+  void *theEnv,
+  char *name)
+  {
+   int found;
+
+   FactData(theEnv)->ListOfAssertFunctions =
+      RemoveFunctionFromCallListWithArg(theEnv,name,FactData(theEnv)->ListOfAssertFunctions,&found);
+
+   if (found) return(TRUE);
+
+   return(FALSE);
+  }
+  
+#if ALLOW_ENVIRONMENT_GLOBALS
+/********************************************/
+/* AddRetractFunction: Adds a function */
+/*   to the ListOfRetractFunctions.    */
+/********************************************/
+globle intBool AddRetractFunction(
+  char *name,
+  void (*functionPtr)(void *,void *),
+  int priority)
+  {
+   void *theEnv;
+   
+   theEnv = GetCurrentEnvironment();
+
+   FactData(theEnv)->ListOfRetractFunctions =
+       AddFunctionToCallListWithArg(theEnv,name,priority,(void (*)(void *, void *)) functionPtr,
+                             FactData(theEnv)->ListOfRetractFunctions,TRUE);
+   return(1);
+  }
+#endif
+
+/************************************************/
+/* EnvAddRetractFunction: Adds a function */
+/*   to the ListOfRetractFunctions.       */
+/************************************************/
+globle intBool EnvAddRetractFunction(
+  void *theEnv,
+  char *name,
+  void (*functionPtr)(void *, void *),
+  int priority)
+  {
+   FactData(theEnv)->ListOfRetractFunctions =
+      AddFunctionToCallListWithArg(theEnv,name,priority,
+                                              functionPtr,
+                                              FactData(theEnv)->ListOfRetractFunctions,TRUE);
+   return(1);
+  }
+    
+/***************************************************/
+/* EnvAddRetractFunctionWithContext: Adds a  */
+/*   function to the ListOfRetractFunctions. */
+/***************************************************/
+globle intBool EnvAddRetractFunctionWithContext(
+  void *theEnv,
+  char *name,
+  void (*functionPtr)(void *, void *),
+  int priority,
+  void *context)
+  {
+   FactData(theEnv)->ListOfRetractFunctions =
+      AddFunctionToCallListWithArgWithContext(theEnv,name,priority,functionPtr,
+                                       FactData(theEnv)->ListOfRetractFunctions,
+                                       TRUE,context);
+   return(1);
+  }
+    
+/******************************************************/
+/* EnvRemoveRetractFunction: Removes a function */
+/*   from the ListOfRetractFunctions.           */
+/******************************************************/
+globle intBool EnvRemoveRetractFunction(
+  void *theEnv,
+  char *name)
+  {
+   int found;
+
+   FactData(theEnv)->ListOfRetractFunctions =
+      RemoveFunctionFromCallListWithArg(theEnv,name,FactData(theEnv)->ListOfRetractFunctions,&found);
+
+   if (found) return(TRUE);
+
+   return(FALSE);
+  }
+
 
 #endif /* DEFTEMPLATE_CONSTRUCT && DEFRULE_CONSTRUCT */
 

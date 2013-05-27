@@ -74,6 +74,7 @@ struct engineData
    struct dependency *UnsupportedDataEntities;
    int alreadyEntered;
    struct callFunctionItem *ListOfRunFunctions;
+   struct callFunctionItemWithArg* ListOfBeforeRunFunctions;
    struct focus *CurrentFocus;
    int FocusChanged;
 #if DEBUGGING_FUNCTIONS
@@ -153,6 +154,12 @@ struct engineData
                                                                void (*)(void *),int,void *);
    LOCALE intBool                 AddRunFunction(char *,void (*)(void),int);
    LOCALE intBool                 EnvRemoveRunFunction(void *,char *);
+   LOCALE intBool                 EnvAddBeforeRunFunction(void *,char *,
+                                                    void (*)(void *,void *),int);
+   LOCALE intBool                 EnvAddBeforeRunFunctionWithContext(void *,char *,
+                                                               void (*)(void *, void *),int,void *);
+   LOCALE intBool                 AddBeforeRunFunction(char *,void (*)(void *),int);
+   LOCALE intBool                 EnvRemoveBeforeRunFunction(void *,char *);
    LOCALE void                    InitializeEngine(void *);
    LOCALE void                    EnvSetBreak(void *,void *);
    LOCALE void                    EnvHalt(void *);
@@ -182,6 +189,7 @@ struct engineData
    LOCALE void                   *EnvGetFocus(void *);
    LOCALE intBool                 EnvGetHaltRules(void *);
    LOCALE void                    EnvSetHaltRules(void *,intBool);
+   LOCALE struct activation      *NextActivationToFire(void *);
 
 #endif
 
