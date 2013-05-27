@@ -256,6 +256,13 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define OS_WIN64 0
 #endif
 
+#if defined(__CYGWIN__)
+#define OS_CYGWIN 1
+#define OS_NAME "Cygwin"
+#else
+#define OS_CYGWIN 0
+#endif
+
 #if defined(__linux__)
 #define OS_LINUX 1
 #define OS_NAME "Linux"
@@ -380,7 +387,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     (! OS_OSX) && (! OS_IOS) && (! OS_APPLE_UNKNOWN) && (! OS_OPENBSD) && \
     (! OS_NETBSD) && (!OS_XMB) && (!OS_SONY_UNKNOWN) && (! OS_XBOX1) && \
     (! OS_XBOX360) && (! OS_XBOX_UNKNOWN) && (! OS_WII) && \
-    (! OS_NINTENDO_UNKNOWN) && (! OS_DRAGONFLYBSD) 
+    (! OS_NINTENDO_UNKNOWN) && (! OS_DRAGONFLYBSD) && (! OS_CYGWIN)
 #define OS_UNKNOWN 1
 #define OS_NAME "Unknown"
 #else
