@@ -42,7 +42,6 @@
 (batch* "System/Runtime/DeclareApplicationFunctions.clp")
 (batch* "System/Runtime/DeclareLogicFunctions.clp")
 (batch* "System/Runtime/core/Loader.clp")
-(batch* "System/Runtime/io/Loader.clp")
 (batch* "System/Runtime/parsing/Loader.clp")
 ;------------------------------------------------------------------------------
 
