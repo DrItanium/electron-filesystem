@@ -183,10 +183,15 @@ globle void FactPatternMatch(
               
             if (tempPtr != NULL)
               {
-               if (tempPtr->header.stopNode)
-                 { ProcessFactAlphaMatch(theEnv,theFact,markers,tempPtr); }
-               
-               patternPtr = GetNextFactPatternNode(theEnv,FALSE,tempPtr);
+               if (SkipFactPatternNode(theEnv,tempPtr))
+                 { patternPtr = GetNextFactPatternNode(theEnv,TRUE,patternPtr); }
+               else
+                 {
+                  if (tempPtr->header.stopNode)
+                    { ProcessFactAlphaMatch(theEnv,theFact,markers,tempPtr); }
+                
+                  patternPtr = GetNextFactPatternNode(theEnv,FALSE,tempPtr);
+                 }
               }
             else
               { patternPtr = GetNextFactPatternNode(theEnv,TRUE,patternPtr); }
