@@ -151,15 +151,9 @@ static int ExitFile(
   void *theEnv,
   int num)
   {
-#if MAC_MCW || WIN_MCW || MAC_XCD
-#pragma unused(num)
-#endif
 #if IO_FUNCTIONS
    CloseAllFiles(theEnv);
 #else
-#if MAC_MCW || WIN_MCW || MAC_XCD
-#pragma unused(theEnv)
-#endif
 #endif
    return(1);
   }

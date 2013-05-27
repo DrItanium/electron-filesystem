@@ -73,9 +73,6 @@ globle void ReturnDefrule(
   void *theEnv,
   void *vWaste)
   {
-#if (MAC_MCW || WIN_MCW) && (RUN_TIME || BLOAD_ONLY)
-#pragma unused(theEnv,vWaste)
-#endif
 
 #if (! RUN_TIME) && (! BLOAD_ONLY)
    struct defrule *waste = (struct defrule *) vWaste;

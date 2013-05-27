@@ -1465,9 +1465,6 @@ static void MarkConstruct(
   void *vTheBuffer)
   {
    long *count = (long *) vTheBuffer;
-#if MAC_MCW || WIN_MCW || MAC_XCD
-#pragma unused(theEnv)
-#endif
 
    theConstruct->bsaveID = (*count)++;
   }
@@ -1596,9 +1593,6 @@ globle void ConstructModuleToCode(
 void ConstructsToCCommand(
   void *theEnv) 
   {
-#if MAC_MCW || WIN_MCW || MAC_XCD
-#pragma unused(theEnv)
-#endif
   }
 
 #endif /* CONSTRUCT_COMPILER && (! RUN_TIME) */

@@ -297,9 +297,6 @@ static void DestroyDefclassAction(
   struct constructHeader *theConstruct,
   void *buffer)
   {
-#if MAC_MCW || WIN_MCW || MAC_XCD
-#pragma unused(buffer)
-#endif
    struct defclass *theDefclass = (struct defclass *) theConstruct;
 
    if (theDefclass == NULL) return;
@@ -307,9 +304,6 @@ static void DestroyDefclassAction(
 #if (! BLOAD_ONLY) 
    DestroyDefclass(theEnv,theDefclass);
 #else
-#if MAC_MCW || WIN_MCW || MAC_XCD
-#pragma unused(theEnv)
-#endif
 #endif
   }
 #endif

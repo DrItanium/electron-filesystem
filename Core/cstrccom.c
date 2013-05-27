@@ -152,9 +152,6 @@ globle intBool DeleteNamedConstruct(
 
    return(FALSE);
 #else
-#if MAC_MCW || WIN_MCW || MAC_XCD
-#pragma unused(theEnv,constructName,constructClass)
-#endif
    return(FALSE);
 #endif
   }
@@ -458,11 +455,6 @@ globle intBool Undefconstruct(
   struct construct *constructClass)
   {
 #if BLOAD_ONLY || RUN_TIME
-#if MAC_MCW || WIN_MCW || MAC_XCD
-#pragma unused(theConstruct)
-#pragma unused(constructClass)
-#pragma unused(theEnv)
-#endif
    return(FALSE);
 #else
    void *currentConstruct,*nextConstruct;
@@ -646,9 +638,6 @@ globle char *EnvGetConstructNameString(
   void *theEnv,
   struct constructHeader *theConstruct)
   { 
-#if MAC_MCW || WIN_MCW || MAC_XCD
-#pragma unused(theEnv)
-#endif
 
    return(ValueToString(theConstruct->name)); 
   }
@@ -1113,9 +1102,6 @@ globle char *GetConstructPPForm(
   void *theEnv,
   struct constructHeader *theConstruct)
   { 
-#if MAC_MCW || WIN_MCW || MAC_XCD
-#pragma unused(theEnv)
-#endif
 
    return(theConstruct->ppForm); 
   }
@@ -1628,9 +1614,6 @@ globle intBool ConstructsDeletable(
   void *theEnv)
   {
 #if BLOAD_ONLY || RUN_TIME || ((! BLOAD) && (! BLOAD_AND_BSAVE))
-#if MAC_MCW || WIN_MCW || MAC_XCD
-#pragma unused(theEnv)
-#endif
 #endif
 
 #if BLOAD_ONLY || RUN_TIME

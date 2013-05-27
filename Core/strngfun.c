@@ -84,9 +84,6 @@ globle void StringFunctionDefinitions(
    EnvDefineFunction2(theEnv,(char*)"build", 'b', PTIEF BuildFunction, (char*)"BuildFunction", (char*)"11k");
    EnvDefineFunction2(theEnv,(char*)"string-to-field", 'u', PTIEF StringToFieldFunction, (char*)"StringToFieldFunction", (char*)"11j");
 #else
-#if MAC_MCW || WIN_MCW || MAC_XCD
-#pragma unused(theEnv)
-#endif
 #endif
   }
 
@@ -895,10 +892,6 @@ globle int EnvEval(
   char *theString,
   DATA_OBJECT_PTR returnValue)
   {
-#if (MAC_MCW || WIN_MCW) && (RUN_TIME || BLOAD_ONLY)
-#pragma unused(theString)
-#endif
-
    PrintErrorID(theEnv,(char*)"STRNGFUN",1,FALSE);
    EnvPrintRouter(theEnv,WERROR,(char*)"Function eval does not work in run time modules.\n");
    SetpType(returnValue,SYMBOL);
@@ -1069,10 +1062,6 @@ globle int EnvBuild(
   void *theEnv,
   char *theString)
   { 
-#if (MAC_MCW || WIN_MCW) && (RUN_TIME || BLOAD_ONLY)
-#pragma unused(theString)
-#endif
-
    PrintErrorID(theEnv,(char*)"STRNGFUN",1,FALSE);
    EnvPrintRouter(theEnv,WERROR,(char*)"Function build does not work in run time modules.\n");
    return(FALSE);

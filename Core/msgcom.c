@@ -250,9 +250,6 @@ char *EnvGetDefmessageHandlerName(
   void *ptr,
   int theIndex)
   {
-#if MAC_MCW || WIN_MCW || MAC_XCD
-#pragma unused(theEnv)
-#endif
 
    return(ValueToString(((DEFCLASS *) ptr)->handlers[theIndex-1].name));
   }
@@ -292,9 +289,6 @@ globle int EnvGetNextDefmessageHandler(
   int theIndex)
   {
    DEFCLASS *cls;
-#if MAC_MCW || WIN_MCW || MAC_XCD
-#pragma unused(theEnv)
-#endif
 
    cls = (DEFCLASS *) ptr;
    if (theIndex == 0)
@@ -339,10 +333,6 @@ globle unsigned EnvGetDefmessageHandlerWatch(
   void *theClass,
   int theIndex)
   {
-#if MAC_MCW || WIN_MCW || MAC_XCD
-#pragma unused(theEnv)
-#endif
-
    return(((DEFCLASS *) theClass)->handlers[theIndex-1].trace);
   }
 
@@ -364,10 +354,6 @@ globle void EnvSetDefmessageHandlerWatch(
   void *theClass,
   int theIndex)
   {
-#if MAC_MCW || WIN_MCW || MAC_XCD
-#pragma unused(theEnv)
-#endif
-
    ((DEFCLASS *) theClass)->handlers[theIndex-1].trace = newState;
   }
 
@@ -506,11 +492,6 @@ globle int EnvUndefmessageHandler(
   void *vptr,
   int mhi)
   {
-#if (MAC_MCW || WIN_MCW) && (RUN_TIME || BLOAD_ONLY)
-#pragma unused(vptr)
-#pragma unused(mhi)
-#endif
-
 #if RUN_TIME || BLOAD_ONLY
    PrintErrorID(theEnv,(char*)"MSGCOM",3,FALSE);
    EnvPrintRouter(theEnv,WERROR,(char*)"Unable to delete message-handlers.\n");
@@ -682,10 +663,6 @@ globle char *EnvGetDefmessageHandlerPPForm(
   void *ptr,
   int theIndex)
   {
-#if MAC_MCW || WIN_MCW || MAC_XCD
-#pragma unused(theEnv)
-#endif
-
    return(((DEFCLASS *) ptr)->handlers[theIndex-1].ppForm);
   }
 
@@ -902,9 +879,6 @@ static unsigned DefmessageHandlerWatchAccess(
   unsigned newState,
   EXPRESSION *argExprs)
   {
-#if MAC_MCW || WIN_MCW || MAC_XCD
-#pragma unused(code)
-#endif
    if (newState)
      return(DefmessageHandlerWatchSupport(theEnv,(char*)"watch",NULL,newState,
                                         NULL,EnvSetDefmessageHandlerWatch,argExprs));
@@ -933,9 +907,6 @@ static unsigned DefmessageHandlerWatchPrint(
   int code,
   EXPRESSION *argExprs)
   {
-#if MAC_MCW || WIN_MCW || MAC_XCD
-#pragma unused(code)
-#endif
    return(DefmessageHandlerWatchSupport(theEnv,(char*)"list-watch-items",logName,-1,
                                         PrintHandlerWatchFlag,NULL,argExprs));
   }

@@ -98,9 +98,6 @@ static void DeallocateCommandLineData(
    if (CommandLineData(theEnv)->CurrentCommand != NULL) 
      { ReturnExpression(theEnv,CommandLineData(theEnv)->CurrentCommand); }
 #else
-#if MAC_MCW || WIN_MCW || MAC_XCD
-#pragma unused(theEnv)
-#endif
 #endif
   }
 

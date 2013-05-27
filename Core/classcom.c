@@ -250,9 +250,6 @@ globle intBool DefclassInScope(
    moduleID = (int) theModule->bsaveID;
    return(TestBitMap(scopeMap,moduleID) ? TRUE : FALSE);
 #else
-#if MAC_MCW || WIN_MCW || MAC_XCD
-#pragma unused(theEnv,theDefclass,theModule)
-#endif
    return(TRUE);
 #endif
   }
@@ -331,9 +328,6 @@ globle intBool EnvUndefclass(
   void *theEnv,
   void *theDefclass)
   {
-#if (MAC_MCW || WIN_MCW) && (RUN_TIME || BLOAD_ONLY)
-#pragma unused(theEnv,theDefclass)
-#endif
 
 #if RUN_TIME || BLOAD_ONLY
    return(FALSE);
@@ -415,9 +409,6 @@ globle unsigned EnvGetDefclassWatchInstances(
   void *theEnv,
   void *theClass)
   {
-#if MAC_MCW || WIN_MCW || MAC_XCD
-#pragma unused(theEnv)
-#endif
 
    return(((DEFCLASS *) theClass)->traceInstances);
   }
@@ -439,9 +430,6 @@ globle void EnvSetDefclassWatchInstances(
   unsigned newState,
   void *theClass)
   {
-#if MAC_MCW || WIN_MCW || MAC_XCD
-#pragma unused(theEnv)
-#endif
 
    if (((DEFCLASS *) theClass)->abstract)
      return;
@@ -463,9 +451,6 @@ globle unsigned EnvGetDefclassWatchSlots(
   void *theEnv,
   void *theClass)
   {
-#if MAC_MCW || WIN_MCW || MAC_XCD
-#pragma unused(theEnv)
-#endif
 
    return(((DEFCLASS *) theClass)->traceSlots);
   }
@@ -486,9 +471,6 @@ globle void EnvSetDefclassWatchSlots(
   unsigned newState,
   void *theClass)
   {
-#if MAC_MCW || WIN_MCW || MAC_XCD
-#pragma unused(theEnv)
-#endif
 
    ((DEFCLASS *) theClass)->traceSlots = newState;
   }
@@ -657,9 +639,6 @@ globle void SaveDefclasses(
 #if DEBUGGING_FUNCTIONS
    DoForAllConstructsInModule(theEnv,theModule,SaveDefclass,DefclassData(theEnv)->DefclassModuleIndex,FALSE,(void *) logName);
 #else
-#if MAC_MCW || WIN_MCW || MAC_XCD
-#pragma unused(theEnv,theModule,logName)
-#endif
 #endif
   }
 

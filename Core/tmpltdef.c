@@ -153,9 +153,6 @@ static void DestroyDeftemplateAction(
   struct constructHeader *theConstruct,
   void *buffer)
   {
-#if MAC_MCW || WIN_MCW || MAC_XCD
-#pragma unused(buffer)
-#endif
    struct deftemplate *theDeftemplate = (struct deftemplate *) theConstruct;
    
    if (theDeftemplate == NULL) return;
@@ -273,9 +270,6 @@ static void ReturnDeftemplate(
   void *theEnv,
   void *vTheConstruct)
   {
-#if (MAC_MCW || WIN_MCW) && (RUN_TIME || BLOAD_ONLY)
-#pragma unused(theEnv,vTheConstruct)
-#endif
 
 #if (! BLOAD_ONLY) && (! RUN_TIME)
    struct deftemplate *theConstruct = (struct deftemplate *) vTheConstruct;
@@ -329,9 +323,6 @@ static void DestroyDeftemplate(
   void *theEnv,
   void *vTheConstruct)
   {
-#if (MAC_MCW || WIN_MCW) && (RUN_TIME || BLOAD_ONLY)
-#pragma unused(vTheConstruct)
-#endif
 
    struct deftemplate *theConstruct = (struct deftemplate *) vTheConstruct;
 #if (! BLOAD_ONLY) && (! RUN_TIME)
@@ -371,9 +362,6 @@ globle void ReturnSlots(
   void *theEnv,
   struct templateSlot *slotPtr)
   {
-#if (MAC_MCW || WIN_MCW) && (RUN_TIME || BLOAD_ONLY)
-#pragma unused(theEnv,slotPtr)
-#endif
 
 #if (! BLOAD_ONLY) && (! RUN_TIME)
    struct templateSlot *nextSlot;
@@ -412,9 +400,6 @@ globle void IncrementDeftemplateBusyCount(
   void *vTheTemplate)
   {
    struct deftemplate *theTemplate = (struct deftemplate *) vTheTemplate;
-#if MAC_MCW || WIN_MCW || MAC_XCD
-#pragma unused(theEnv)
-#endif
 
    theTemplate->busyCount++;
   }
@@ -429,9 +414,6 @@ globle void *EnvGetNextFactInTemplate(
   void *theTemplate,
   void *factPtr)
   {
-#if MAC_MCW || WIN_MCW || MAC_XCD
-#pragma unused(theEnv)
-#endif
    if (factPtr == NULL)
      { return((void *) ((struct deftemplate *) theTemplate)->factList); }
 
@@ -495,9 +477,6 @@ static void RuntimeDeftemplateAction(
   struct constructHeader *theConstruct,
   void *buffer)
   {
-#if MAC_MCW || WIN_MCW || MAC_XCD
-#pragma unused(buffer)
-#endif
    struct deftemplate *theDeftemplate = (struct deftemplate *) theConstruct;
    
    SearchForHashedPatternNodes(theEnv,theDeftemplate->patternNetwork);

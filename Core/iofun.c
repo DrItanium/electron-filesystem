@@ -131,9 +131,6 @@ globle void IOFunctionDefinitions(
    EnvDefineFunction2(theEnv,(char*)"read-number",       'u', PTIEF ReadNumberFunction,  (char*)"ReadNumberFunction", (char*)"*1");
 #endif
 #else
-#if MAC_MCW || WIN_MCW || MAC_XCD
-#pragma unused(theEnv)
-#endif
 #endif
   }
 

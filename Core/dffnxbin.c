@@ -202,9 +202,6 @@ static void MarkDeffunctionItems(
   struct constructHeader *theDeffunction,
   void *userBuffer)
   {
-#if MAC_MCW || WIN_MCW || MAC_XCD
-#pragma unused(userBuffer)
-#endif
 
    MarkConstructHeaderNeededItems(theDeffunction,DeffunctionBinaryData(theEnv)->DeffunctionCount++);
    ExpressionData(theEnv)->ExpressionCount += ExpressionSize(((DEFFUNCTION *) theDeffunction)->code);

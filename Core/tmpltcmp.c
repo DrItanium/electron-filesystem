@@ -227,9 +227,6 @@ static void DeftemplateModuleToCode(
   int maxIndices,
   int moduleCount)
   {
-#if MAC_MCW || WIN_MCW || MAC_XCD
-#pragma unused(moduleCount)
-#endif
 
    fprintf(theFile,"{");
 
@@ -414,11 +411,6 @@ static void InitDeftemplateCode(
   int imageID,
   int maxIndices)
   {
-#if MAC_MCW || WIN_MCW || MAC_XCD
-#pragma unused(theEnv)
-#pragma unused(imageID)
-#pragma unused(maxIndices)
-#endif
 
    fprintf(initFP,"   DeftemplateRunTimeInitialize(theEnv);\n");
   }

@@ -198,9 +198,6 @@ static void DeffactsModuleToCode(
   int maxIndices,
   int moduleCount)
   {
-#if MAC_MCW || WIN_MCW || MAC_XCD
-#pragma unused(moduleCount)
-#endif
    
    fprintf(theFile,"{");
 

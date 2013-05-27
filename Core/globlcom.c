@@ -64,9 +64,6 @@ globle void DefglobalCommandDefinitions(
 #endif
 
 #else
-#if MAC_MCW || WIN_MCW || MAC_XCD
-#pragma unused(theEnv)
-#endif
 #endif
   }
 

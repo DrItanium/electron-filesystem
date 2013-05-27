@@ -653,9 +653,6 @@ globle int EnvValidInstanceAddress(
   void *theEnv,
   void *iptr)
   {
-#if MAC_MCW || WIN_MCW || MAC_XCD
-#pragma unused(theEnv)
-#endif
 
    return((((INSTANCE_TYPE *) iptr)->garbage == 0) ? 1 : 0);
   }
@@ -756,9 +753,6 @@ globle char *EnvGetInstanceName(
   void *theEnv,
   void *iptr)
   {
-#if MAC_MCW || WIN_MCW || MAC_XCD
-#pragma unused(theEnv)
-#endif
 
    if (((INSTANCE_TYPE *) iptr)->garbage == 1)
      return(NULL);
@@ -793,9 +787,6 @@ globle void *EnvGetInstanceClass(
   void *theEnv,
   void *iptr)
   {
-#if MAC_MCW || WIN_MCW || MAC_XCD
-#pragma unused(theEnv)
-#endif
 
    if (((INSTANCE_TYPE *) iptr)->garbage == 1)
      return(NULL);
@@ -888,9 +879,6 @@ globle void *EnvGetNextInstanceInClass(
   void *cptr,
   void *iptr)
   {
-#if MAC_MCW || WIN_MCW || MAC_XCD
-#pragma unused(theEnv)
-#endif
 
    if (iptr == NULL)
      return((void *) ((DEFCLASS *) cptr)->instanceList);
@@ -1054,9 +1042,6 @@ globle void ClassCommand(
 globle intBool CreateInstanceHandler(
   void *theEnv)
   {
-#if MAC_MCW || WIN_MCW || MAC_XCD
-#pragma unused(theEnv)
-#endif
 
    return(TRUE);
   }

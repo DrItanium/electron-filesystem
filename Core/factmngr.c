@@ -1368,9 +1368,6 @@ globle void EnvIncrementFactCount(
   void *theEnv,
   void *factPtr)
   {
-#if MAC_MCW || WIN_MCW || MAC_XCD
-#pragma unused(theEnv)
-#endif
 
    ((struct fact *) factPtr)->factHeader.busyCount++;
   }
@@ -1383,9 +1380,6 @@ globle void EnvDecrementFactCount(
   void *theEnv,
   void *factPtr)
   {
-#if MAC_MCW || WIN_MCW || MAC_XCD
-#pragma unused(theEnv)
-#endif
 
    ((struct fact *) factPtr)->factHeader.busyCount--;
   }
@@ -1495,9 +1489,6 @@ globle long long EnvFactIndex(
   void *theEnv,
   void *factPtr)
   {
-#if MAC_MCW || WIN_MCW || MAC_XCD
-#pragma unused(theEnv)
-#endif
 
    return(((struct fact *) factPtr)->factIndex);
   }

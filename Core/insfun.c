@@ -114,9 +114,6 @@ globle void EnvIncrementInstanceCount(
   void *theEnv,
   void *vptr)
   {
-#if MAC_MCW || WIN_MCW || MAC_XCD
-#pragma unused(theEnv)
-#endif
 
    ((INSTANCE_TYPE *) vptr)->busy++;
   }
@@ -134,9 +131,6 @@ globle void EnvDecrementInstanceCount(
   void *theEnv,
   void *vptr)
   {
-#if MAC_MCW || WIN_MCW || MAC_XCD
-#pragma unused(theEnv)
-#endif
 
    ((INSTANCE_TYPE *) vptr)->busy--;
   }
@@ -1183,9 +1177,6 @@ globle intBool NetworkSynchronized(
   void *theEnv,
   void *vins)
   {
-#if MAC_MCW || WIN_MCW || MAC_XCD
-#pragma unused(theEnv)
-#endif
 
    return(((INSTANCE_TYPE *) vins)->reteSynchronized);
   }

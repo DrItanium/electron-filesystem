@@ -302,9 +302,6 @@ globle void InitializeConstructs(
    AddWatchItem(theEnv,(char*)"compilations",0,&ConstructData(theEnv)->WatchCompilations,30,NULL,NULL);
 #endif
 #else
-#if MAC_MCW || WIN_MCW || MAC_XCD
-#pragma unused(theEnv)
-#endif
 #endif
   }
 
@@ -893,11 +890,6 @@ globle intBool AddSaveFunction(
   void (*functionPtr)(void *,void *,char *),
   int priority)
   {
-#if (MAC_MCW || WIN_MCW) && (RUN_TIME || BLOAD_ONLY)
-#pragma unused(name)
-#pragma unused(functionPtr)
-#pragma unused(priority)
-#endif
 
 #if (! RUN_TIME) && (! BLOAD_ONLY)
    ConstructData(theEnv)->ListOfSaveFunctions =
@@ -905,9 +897,6 @@ globle intBool AddSaveFunction(
                            (void (*)(void *)) functionPtr,
                            ConstructData(theEnv)->ListOfSaveFunctions,TRUE);
 #else
-#if MAC_MCW || WIN_MCW || MAC_XCD
-#pragma unused(theEnv)
-#endif
 #endif
 
    return(1);

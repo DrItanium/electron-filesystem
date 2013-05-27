@@ -73,10 +73,7 @@ void UserFunctions()
 void EnvUserFunctions(
   void *theEnv)
   {
-#if MAC_MCW || WIN_MCW || MAC_XCD
-#pragma unused(theEnv)
-#endif
-	  BinaryOperationsFunctionDefinitions(theEnv);
+     BinaryOperationsFunctionDefinitions(theEnv);
      InitializeSystem(theEnv);
   }
 

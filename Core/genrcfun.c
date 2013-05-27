@@ -378,9 +378,6 @@ globle void DestroyMethodInfo(
   {
    register int j;
    register RESTRICTION *rptr;
-#if MAC_MCW || WIN_MCW || MAC_XCD
-#pragma unused(gfunc)
-#endif
 
    ReturnPackedExpression(theEnv,meth->actions);
    
@@ -560,9 +557,6 @@ globle void PrintMethod(
   int buflen,
   DEFMETHOD *meth)
   {
-#if MAC_MCW || WIN_MCW || MAC_XCD
-#pragma unused(theEnv)
-#endif
    long j,k;
    register RESTRICTION *rptr;
    char numbuf[15];

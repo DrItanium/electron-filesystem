@@ -544,11 +544,6 @@ globle void PrintHandlerSlotGetFunction(
    sd = theDefclass->instanceTemplate[theDefclass->slotNameMap[theReference->slotID] - 1];
    EnvPrintRouter(theEnv,logicalName,ValueToString(sd->slotName->name));
 #else
-#if MAC_MCW || WIN_MCW || MAC_XCD
-#pragma unused(theEnv)
-#pragma unused(logicalName)
-#pragma unused(theValue)
-#endif
 #endif
   }
 
@@ -670,11 +665,6 @@ globle void PrintHandlerSlotPutFunction(
      }
    EnvPrintRouter(theEnv,logicalName,(char*)")");
 #else
-#if MAC_MCW || WIN_MCW || MAC_XCD
-#pragma unused(theEnv)
-#pragma unused(logicalName)
-#pragma unused(theValue)
-#endif
 #endif
   }
 

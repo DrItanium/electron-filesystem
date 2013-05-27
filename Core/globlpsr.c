@@ -72,9 +72,6 @@ globle intBool ParseDefglobal(
   char *readSource)
   {
    int defglobalError = FALSE;
-#if (MAC_MCW || WIN_MCW) && (RUN_TIME || BLOAD_ONLY)
-#pragma unused(theEnv,readSource)
-#endif
 
 #if (! RUN_TIME) && (! BLOAD_ONLY)
 

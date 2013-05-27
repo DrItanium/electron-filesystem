@@ -395,9 +395,6 @@ static DEFFUNCTION *AddDeffunction(
 #if DEBUGGING_FUNCTIONS
    unsigned DFHadWatch = FALSE;
 #else
-#if MAC_MCW || WIN_MCW || MAC_XCD
-#pragma unused(headerp)
-#endif
 #endif
 
    /*===============================================================*/

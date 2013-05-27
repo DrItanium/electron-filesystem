@@ -954,9 +954,6 @@ static void MarkSingleInstance(
   void *theOutput,
   INSTANCE_TYPE *theInstance)
   {
-#if MAC_MCW || WIN_MCW || MAC_XCD
-#pragma unused(theOutput)
-#endif
    INSTANCE_SLOT *sp;
    long i, j;
 

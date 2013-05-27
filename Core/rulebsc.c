@@ -350,9 +350,6 @@ globle unsigned EnvGetDefruleWatchActivations(
   void *rulePtr)
   {
    struct defrule *thePtr;
-#if MAC_MCW || WIN_MCW || MAC_XCD
-#pragma unused(theEnv)
-#endif
 
    for (thePtr = (struct defrule *) rulePtr;
         thePtr != NULL;
@@ -372,9 +369,6 @@ globle unsigned EnvGetDefruleWatchFirings(
   void *rulePtr)
   {
    struct defrule *thePtr;
-#if MAC_MCW || WIN_MCW || MAC_XCD
-#pragma unused(theEnv)
-#endif
 
    for (thePtr = (struct defrule *) rulePtr;
         thePtr != NULL;
@@ -395,9 +389,6 @@ globle void EnvSetDefruleWatchActivations(
   void *rulePtr)
   {
    struct defrule *thePtr;
-#if MAC_MCW || WIN_MCW || MAC_XCD
-#pragma unused(theEnv)
-#endif
 
    for (thePtr = (struct defrule *) rulePtr;
         thePtr != NULL;
@@ -416,9 +407,6 @@ globle void EnvSetDefruleWatchFirings(
   void *rulePtr)
   {
    struct defrule *thePtr;
-#if MAC_MCW || WIN_MCW || MAC_XCD
-#pragma unused(theEnv)
-#endif
 
    for (thePtr = (struct defrule *) rulePtr;
         thePtr != NULL;

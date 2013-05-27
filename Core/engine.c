@@ -1064,9 +1064,6 @@ globle void EnvSetBreak(
   void *theEnv,
   void *theRule)
   {
-#if MAC_MCW || WIN_MCW || MAC_XCD
-#pragma unused(theEnv)
-#endif
    struct defrule *thePtr;
 
    for (thePtr = (struct defrule *) theRule;
@@ -1083,9 +1080,6 @@ globle intBool EnvRemoveBreak(
   void *theEnv,
   void *theRule)
   {
-#if MAC_MCW || WIN_MCW || MAC_XCD
-#pragma unused(theEnv)
-#endif
    struct defrule *thePtr;
    int rv = FALSE;
 
@@ -1143,9 +1137,6 @@ globle intBool EnvDefruleHasBreakpoint(
   void *theEnv,
   void *theRule)
   {
-#if MAC_MCW || WIN_MCW || MAC_XCD
-#pragma unused(theEnv)
-#endif
 
    return(((struct defrule *) theRule)->afterBreakpoint);
   }

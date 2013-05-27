@@ -616,10 +616,6 @@ static intBool RecognizeWatchRouters(
       void *theEnv,
       char *logName)
 {
-#if MAC_MCW || WIN_MCW || MAC_XCD
-#pragma unused(theEnv)
-#endif
-
    if (strcmp(logName,WTRACE) == 0) return(TRUE);
 
    return(FALSE);
@@ -633,11 +629,6 @@ static int CaptureWatchPrints(
       char *logName,
       char *str)
 {
-#if MAC_MCW || WIN_MCW || MAC_XCD
-#pragma unused(logName)
-#pragma unused(str)
-#pragma unused(theEnv)
-#endif
    return(1);
 }
 

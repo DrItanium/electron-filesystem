@@ -370,9 +370,6 @@ static void DefruleModuleToCode(
   int maxIndices,
   int moduleCount)
   {
-#if MAC_MCW || WIN_MCW || MAC_XCD
-#pragma unused(moduleCount)
-#endif
 
    fprintf(theFile,"{");
 
@@ -674,11 +671,6 @@ static void InitDefruleCode(
   int imageID,
   int maxIndices)
   {
-#if MAC_MCW || WIN_MCW || MAC_XCD
-#pragma unused(maxIndices)
-#pragma unused(theEnv)
-#pragma unused(imageID)
-#endif
 
    fprintf(initFP,"   DefruleRunTimeInitialize(theEnv,");
 

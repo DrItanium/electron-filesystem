@@ -93,13 +93,6 @@ globle void InitializeAtomTables(
   struct bitMapHashNode **bitmapTable,
   struct externalAddressHashNode **externalAddressTable)
   {
-#if MAC_MCW || WIN_MCW || MAC_XCD
-#pragma unused(symbolTable)
-#pragma unused(floatTable)
-#pragma unused(integerTable)
-#pragma unused(bitmapTable)
-#pragma unused(externalAddressTable)
-#endif
    unsigned long i;
    
    AllocateEnvironmentData(theEnv,SYMBOL_DATA,sizeof(struct symbolData),DeallocateSymbolData);

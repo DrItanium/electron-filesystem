@@ -69,9 +69,6 @@ globle void IncrementalReset(
   void *theEnv,
   struct defrule *tempRule)
   {
-#if (MAC_MCW || WIN_MCW) && (RUN_TIME || BLOAD_ONLY)
-#pragma unused(theEnv,tempRule)
-#endif
 
 #if (! RUN_TIME) && (! BLOAD_ONLY)
    struct defrule *tempPtr;

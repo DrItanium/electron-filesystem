@@ -354,9 +354,6 @@ globle intBool EnvSuperclassP(
   void *firstClass,
   void *secondClass)
   {
-#if MAC_MCW || WIN_MCW || MAC_XCD
-#pragma unused(theEnv)
-#endif
 
    return(HasSuperclass((DEFCLASS *) secondClass,(DEFCLASS *) firstClass));
   }
@@ -396,9 +393,6 @@ globle intBool EnvSubclassP(
   void *firstClass,
   void *secondClass)
   {
-#if MAC_MCW || WIN_MCW || MAC_XCD
-#pragma unused(theEnv)
-#endif
 
    return(HasSuperclass((DEFCLASS *) firstClass,(DEFCLASS *) secondClass));
   }

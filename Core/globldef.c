@@ -159,9 +159,6 @@ static void DestroyDefglobalAction(
   struct constructHeader *theConstruct,
   void *buffer)
   {
-#if MAC_MCW || WIN_MCW || MAC_XCD
-#pragma unused(buffer)
-#endif
 #if (! BLOAD_ONLY)
    struct defglobal *theDefglobal = (struct defglobal *) theConstruct;
    
@@ -169,9 +166,6 @@ static void DestroyDefglobalAction(
 
    DestroyDefglobal(theEnv,theDefglobal);
 #else
-#if MAC_MCW || WIN_MCW || MAC_XCD
-#pragma unused(theEnv,theConstruct)
-#endif
 #endif
   }
 
@@ -281,9 +275,6 @@ static void ReturnDefglobal(
   void *theEnv,
   void *vTheDefglobal)
   {
-#if (MAC_MCW || WIN_MCW) && (RUN_TIME || BLOAD_ONLY)
-#pragma unused(theEnv,vTheDefglobal)
-#endif
    
 #if (! BLOAD_ONLY) && (! RUN_TIME)
    struct defglobal *theDefglobal = (struct defglobal *) vTheDefglobal;
@@ -335,9 +326,6 @@ static void DestroyDefglobal(
   void *theEnv,
   void *vTheDefglobal)
   {
-#if (MAC_MCW || WIN_MCW) && BLOAD_ONLY
-#pragma unused(theEnv,vTheDefglobal)
-#endif
    
 #if (! BLOAD_ONLY)
    struct defglobal *theDefglobal = (struct defglobal *) vTheDefglobal;
@@ -659,9 +647,6 @@ static void IncrementDefglobalBusyCount(
   void *vTheGlobal)
   {
    struct defglobal *theGlobal = (struct defglobal *) vTheGlobal;
-#if MAC_MCW || WIN_MCW || MAC_XCD
-#pragma unused(theEnv)
-#endif
 
    theGlobal->busyCount++;
   }

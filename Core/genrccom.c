@@ -297,9 +297,6 @@ static void DeallocateDefgenericData(
       rtn_struct(theEnv,defgenericModule,theModuleItem);
      }
 #else
-#if MAC_MCW || WIN_MCW || MAC_XCD
-#pragma unused(theEnv)
-#endif
 #endif
   }
   
@@ -313,9 +310,6 @@ static void DestroyDefgenericAction(
   struct constructHeader *theConstruct,
   void *buffer)
   {
-#if MAC_MCW || WIN_MCW || MAC_XCD
-#pragma unused(buffer)
-#endif
 #if (! BLOAD_ONLY) && (! RUN_TIME)
    struct defgeneric *theDefgeneric = (struct defgeneric *) theConstruct;
    long i;
@@ -332,9 +326,6 @@ static void DestroyDefgenericAction(
 
    rtn_struct(theEnv,defgeneric,theDefgeneric);
 #else
-#if MAC_MCW || WIN_MCW || MAC_XCD
-#pragma unused(theEnv,theConstruct)
-#endif
 #endif
   }
 #endif
@@ -427,9 +418,6 @@ globle long EnvGetNextDefmethod(
   {
    DEFGENERIC *gfunc;
    long mi;
-#if MAC_MCW || WIN_MCW || MAC_XCD
-#pragma unused(theEnv)
-#endif
 
    gfunc = (DEFGENERIC *) ptr;
    if (theIndex == 0)
@@ -605,9 +593,6 @@ globle intBool EnvUndefgeneric(
   void *theEnv,
   void *vptr)
   {
-#if (MAC_MCW || WIN_MCW) && (RUN_TIME || BLOAD_ONLY)
-#pragma unused(theEnv,vptr)
-#endif
 
 #if RUN_TIME || BLOAD_ONLY
    return(FALSE);
@@ -736,9 +721,6 @@ globle void EnvGetDefmethodDescription(
   {
    DEFGENERIC *gfunc;
    long mi;
-#if MAC_MCW || WIN_MCW || MAC_XCD
-#pragma unused(theEnv)
-#endif
 
    gfunc = (DEFGENERIC *) ptr;
    mi = FindMethodByIndex(gfunc,theIndex);
@@ -759,9 +741,6 @@ globle unsigned EnvGetDefgenericWatch(
   void *theEnv,
   void *theGeneric)
   {
-#if MAC_MCW || WIN_MCW || MAC_XCD
-#pragma unused(theEnv)
-#endif
 
    return(((DEFGENERIC *) theGeneric)->trace);
   }
@@ -782,9 +761,6 @@ globle void EnvSetDefgenericWatch(
   unsigned newState,
   void *theGeneric)
   {
-#if MAC_MCW || WIN_MCW || MAC_XCD
-#pragma unused(theEnv)
-#endif
 
    ((DEFGENERIC *) theGeneric)->trace = newState;
   }
@@ -807,9 +783,6 @@ globle unsigned EnvGetDefmethodWatch(
   {
    DEFGENERIC *gfunc;
    long mi;
-#if MAC_MCW || WIN_MCW || MAC_XCD
-#pragma unused(theEnv)
-#endif
 
    gfunc = (DEFGENERIC *) theGeneric;
    mi = FindMethodByIndex(gfunc,theIndex);
@@ -836,9 +809,6 @@ globle void EnvSetDefmethodWatch(
   {
    DEFGENERIC *gfunc;
    long mi;
-#if MAC_MCW || WIN_MCW || MAC_XCD
-#pragma unused(theEnv)
-#endif
 
    gfunc = (DEFGENERIC *) theGeneric;
    mi = FindMethodByIndex(gfunc,theIndex);
@@ -936,9 +906,6 @@ globle char *EnvGetDefmethodPPForm(
   {
    DEFGENERIC *gfunc;
    int mi;
-#if MAC_MCW || WIN_MCW || MAC_XCD
-#pragma unused(theEnv)
-#endif
 
    gfunc = (DEFGENERIC *) ptr;
    mi = FindMethodByIndex(gfunc,theIndex);
@@ -1300,11 +1267,6 @@ static void PrintGenericCall(
      }
    EnvPrintRouter(theEnv,logName,(char*)")");
 #else
-#if MAC_MCW || WIN_MCW || MAC_XCD
-#pragma unused(theEnv)
-#pragma unused(logName)
-#pragma unused(value)
-#endif
 #endif
   }
 
@@ -1371,9 +1333,6 @@ static void IncrementGenericBusyCount(
   void *theEnv,
   void *value)
   {
-#if MAC_MCW || WIN_MCW || MAC_XCD
-#pragma unused(theEnv)
-#endif
    ((DEFGENERIC *) value)->busy++;
   }
 
@@ -1546,10 +1505,6 @@ static unsigned DefgenericWatchAccess(
   unsigned newState,
   EXPRESSION *argExprs)
   {
-#if MAC_MCW || WIN_MCW || MAC_XCD
-#pragma unused(code)
-#endif
-
    return(ConstructSetWatchAccess(theEnv,DefgenericData(theEnv)->DefgenericConstruct,newState,argExprs,
                                     EnvGetDefgenericWatch,EnvSetDefgenericWatch));
   }
@@ -1573,10 +1528,6 @@ static unsigned DefgenericWatchPrint(
   int code,
   EXPRESSION *argExprs)
   {
-#if MAC_MCW || WIN_MCW || MAC_XCD
-#pragma unused(code)
-#endif
-
    return(ConstructPrintWatchAccess(theEnv,DefgenericData(theEnv)->DefgenericConstruct,logName,argExprs,
                                     EnvGetDefgenericWatch,EnvSetDefgenericWatch));
   }
@@ -1600,9 +1551,6 @@ static unsigned DefmethodWatchAccess(
   unsigned newState,
   EXPRESSION *argExprs)
   {
-#if MAC_MCW || WIN_MCW || MAC_XCD
-#pragma unused(code)
-#endif
    if (newState)
      return(DefmethodWatchSupport(theEnv,(char*)"watch",NULL,newState,NULL,EnvSetDefmethodWatch,argExprs));
    else
@@ -1628,9 +1576,6 @@ static unsigned DefmethodWatchPrint(
   int code,
   EXPRESSION *argExprs)
   {
-#if MAC_MCW || WIN_MCW || MAC_XCD
-#pragma unused(code)
-#endif
    return(DefmethodWatchSupport(theEnv,(char*)"list-watch-items",logName,0,
                                 PrintMethodWatchFlag,NULL,argExprs));
   }

@@ -103,9 +103,6 @@ globle void IncrementDefclassBusyCount(
   void *theEnv,
   void *theDefclass)
   {
-#if MAC_MCW || WIN_MCW || MAC_XCD
-#pragma unused(theEnv)
-#endif
 
    ((DEFCLASS *) theDefclass)->busy++;
   }
@@ -803,9 +800,6 @@ LOCALE void DestroyDefclass(
 
    rtn_struct(theEnv,defclass,cls);
 #else
-#if MAC_MCW || WIN_MCW || MAC_XCD
-#pragma unused(hnd)
-#endif
 #endif
   }
   

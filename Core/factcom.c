@@ -109,9 +109,6 @@ globle void FactCommandDefinitions(
    AddFunctionParser(theEnv,(char*)"assert",AssertParse);
    FuncSeqOvlFlags(theEnv,(char*)"assert",FALSE,FALSE);
 #else
-#if MAC_MCW || WIN_MCW || MAC_XCD
-#pragma unused(theEnv)
-#endif
 #endif
   }
 

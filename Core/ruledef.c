@@ -191,9 +191,6 @@ static void DestroyDefruleAction(
   struct constructHeader *theConstruct,
   void *buffer)
   {
-#if MAC_MCW || WIN_MCW || MAC_XCD
-#pragma unused(buffer)
-#endif
    struct defrule *theDefrule = (struct defrule *) theConstruct;
    
    DestroyDefrule(theEnv,theDefrule);

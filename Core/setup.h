@@ -95,24 +95,12 @@
    #define DARWIN 0
 #endif
 
-#ifndef MAC_XCD
-#define MAC_XCD 0   /* MacOS 10.5, with Xcode 3.0 and Cocoa GUI */
-#endif
-
-#ifndef MAC_MCW
-#define MAC_MCW 0   /* MacOS 10.5, with CodeWarrior 9.6 */
-#endif
-
 #if defined(_WIN32) || defined(_WIN64)
 	#define WIN_MVC 1
 #else
    #define WIN_MVC 0
 #endif
 
-
-#ifndef WIN_MCW
-#define WIN_MCW 0   /* Windows XP, with CodeWarrior 9.4 */
-#endif
 
 #ifndef WIN_GCC
 #define WIN_GCC 0   /* Windows XP, with DJGPP 3.21 */
@@ -123,8 +111,7 @@
 
 #ifndef GENERIC
 #if (! UNIX_V) && (! LINUX) && (! UNIX_7) && \
-    (! MAC_XCD) && (! MAC_MCW) && (! DARWIN) && \
-    (! WIN_MVC) && (! WIN_GCC)
+    (! DARWIN) && (! WIN_MVC) && (! WIN_GCC)
 #define GENERIC 1   /* Generic (any machine)                   */
 #else
 #define GENERIC 0   /* Generic (any machine)                   */

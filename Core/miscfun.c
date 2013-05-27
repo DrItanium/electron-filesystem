@@ -563,17 +563,8 @@ globle void OptionsCommand(
 #if UNIX_7
    EnvPrintRouter(theEnv,WDISPLAY,(char*)"UNIX System III Version 7 or Sun Unix ");
 #endif
-#if MAC_MCW
-   EnvPrintRouter(theEnv,WDISPLAY,(char*)"Apple Macintosh with CodeWarrior");
-#endif
-#if MAC_XCD
-   EnvPrintRouter(theEnv,WDISPLAY,(char*)"Apple Macintosh with Xcode");
-#endif
 #if WIN_MVC
    EnvPrintRouter(theEnv,WDISPLAY,(char*)"Microsoft Windows with Microsoft Visual C++");
-#endif
-#if WIN_MCW
-   EnvPrintRouter(theEnv,WDISPLAY,(char*)"Microsoft Windows with Metrowerks CodeWarrior");
 #endif
 #if WIN_GCC
    EnvPrintRouter(theEnv,WDISPLAY,(char*)"Microsoft Windows with DJGPP");
@@ -806,10 +797,6 @@ globle void *OperatingSystemFunction(
 
 #if DARWIN
    return(EnvAddSymbol(theEnv,(char*)"DARWIN"));
-#endif
-
-#if MAC_XCD || MAC_MCW
-   return(EnvAddSymbol(theEnv,(char*)"MAC-OS-X"));
 #endif
 
 #if IBM && (! WINDOW_INTERFACE)

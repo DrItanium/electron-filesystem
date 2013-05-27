@@ -147,9 +147,6 @@ globle int DefaultOutOfMemoryFunction(
   void *theEnv,
   size_t size)
   {
-#if MAC_MCW || WIN_MCW || MAC_XCD
-#pragma unused(size)
-#endif
 
    PrintErrorID(theEnv,(char*)"MEMORY",1,TRUE);
    EnvPrintRouter(theEnv,WERROR,(char*)"Out of memory.\n");

@@ -172,9 +172,6 @@ static int UngetcString(
   char *logicalName)
   {
    struct stringRouter *head;
-#if MAC_MCW || WIN_MCW || MAC_XCD
-#pragma unused(ch)
-#endif
 
    head = FindStringRouter(theEnv,logicalName);
 

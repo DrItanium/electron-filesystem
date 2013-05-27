@@ -355,9 +355,6 @@ globle intBool EnvClassAbstractP(
   void *theEnv,
   void *clsptr)
   {
-#if MAC_MCW || WIN_MCW || MAC_XCD
-#pragma unused(theEnv)
-#endif
 
    return(((DEFCLASS *) clsptr)->abstract);
   }
@@ -376,9 +373,6 @@ globle intBool EnvClassReactiveP(
   void *theEnv,
   void *clsptr)
   {
-#if MAC_MCW || WIN_MCW || MAC_XCD
-#pragma unused(theEnv)
-#endif
 
    return(((DEFCLASS *) clsptr)->reactive);
   }

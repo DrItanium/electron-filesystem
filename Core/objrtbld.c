@@ -309,9 +309,6 @@ static struct lhsParseNode *ObjectLHSParse(
   char *readSource,
   struct token *lastToken)
   {
-#if MAC_MCW || WIN_MCW || MAC_XCD
-#pragma unused(lastToken)
-#endif
    struct token theToken;
    struct lhsParseNode *firstNode = NULL,*lastNode = NULL,*tmpNode;
    CLASS_BITMAP *clsset,*tmpset;
@@ -1578,9 +1575,6 @@ static void *CopyClassBitMap(
   void *theEnv,
   void *gset)
   {
-#if MAC_MCW || WIN_MCW || MAC_XCD
-#pragma unused(theEnv)
-#endif
 
    if (gset != NULL)
      IncrementBitMapCount(gset);
@@ -2312,9 +2306,6 @@ static void MarkObjectPtnIncrementalReset(
   struct patternNodeHeader *thePattern,
   int value)
   {
-#if MAC_MCW || WIN_MCW || MAC_XCD
-#pragma unused(theEnv)
-#endif
 
    if (thePattern->initialize == FALSE)
      return;

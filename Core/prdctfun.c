@@ -76,9 +76,6 @@ globle void PredicateFunctionDefinitions(
    EnvDefineFunction2(theEnv,(char*)"sequencep",'b', MultifieldpFunction, (char*)"MultifieldpFunction", (char*)"11");
    EnvDefineFunction2(theEnv,(char*)"pointerp", 'b', PointerpFunction, (char*)"PointerpFunction", (char*)"11");
 #else
-#if MAC_MCW || WIN_MCW || MAC_XCD
-#pragma unused(theEnv)
-#endif
 #endif
   }
 

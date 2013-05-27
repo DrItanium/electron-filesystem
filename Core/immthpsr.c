@@ -384,16 +384,6 @@ static EXPRESSION *GenTypeExpression(
   int primitiveCode,
   char *COOLName)
   {
-#if OBJECT_SYSTEM
-#if MAC_MCW || WIN_MCW || MAC_XCD
-#pragma unused(nonCOOLCode)
-#endif
-#else
-#if MAC_MCW || WIN_MCW || MAC_XCD
-#pragma unused(primitiveCode)
-#pragma unused(COOLName)
-#endif
-#endif
    EXPRESSION *tmp;
 
 #if OBJECT_SYSTEM

@@ -230,9 +230,6 @@ static void DeallocateDefinstancesData(
       rtn_struct(theEnv,definstancesModule,theModuleItem);
      }
 #else
-#if MAC_MCW || WIN_MCW || MAC_XCD
-#pragma unused(theEnv)
-#endif
 #endif
   }
 
@@ -246,9 +243,6 @@ static void DestroyDefinstancesAction(
   struct constructHeader *theConstruct,
   void *buffer)
   {
-#if MAC_MCW || WIN_MCW || MAC_XCD
-#pragma unused(buffer)
-#endif
 #if (! BLOAD_ONLY) && (! RUN_TIME)
    struct definstances *theDefinstances = (struct definstances *) theConstruct;
    
@@ -260,9 +254,6 @@ static void DestroyDefinstancesAction(
 
    rtn_struct(theEnv,definstances,theDefinstances);
 #else
-#if MAC_MCW || WIN_MCW || MAC_XCD
-#pragma unused(theConstruct,theEnv)
-#endif
 #endif
   }
 #endif
@@ -363,9 +354,6 @@ globle intBool EnvUndefinstances(
   void *vptr)
   {
 #if RUN_TIME || BLOAD_ONLY
-#if MAC_MCW || WIN_MCW || MAC_XCD
-#pragma unused(theEnv,vptr)
-#endif
    return(FALSE);
 #else
    DEFINSTANCES *dptr;
@@ -861,9 +849,6 @@ static void CheckDefinstancesBusy(
   struct constructHeader *theDefinstances,
   void *userBuffer)
   {
-#if MAC_MCW || WIN_MCW || MAC_XCD
-#pragma unused(theEnv)
-#endif
 
    if (((DEFINSTANCES *) theDefinstances)->busy > 0)
      * (int *) userBuffer = FALSE;
@@ -906,9 +891,6 @@ static void ResetDefinstancesAction(
   struct constructHeader *vDefinstances,
   void *userBuffer)
   {
-#if MAC_MCW || WIN_MCW || MAC_XCD
-#pragma unused(userBuffer)
-#endif
    DEFINSTANCES *theDefinstances = (DEFINSTANCES *) vDefinstances;
    EXPRESSION *theExp;
    DATA_OBJECT temp;

@@ -1448,9 +1448,6 @@ static int RecognizeHelpRouters(
   void *theEnv,
   char *log_name)
   {
-#if MAC_MCW || WIN_MCW || MAC_XCD
-#pragma unused(theEnv)
-#endif
 
    if (strcmp(log_name,"whelp") == 0)
      return(TRUE);
@@ -1462,9 +1459,6 @@ static int HelpPrint(
   char *log_name,
   char *str)
   {
-#if MAC_MCW || WIN_MCW || MAC_XCD
-#pragma unused(log_name)
-#endif
 
    EnvPrintRouter(theEnv,(char*)"stdout",str);
    return(1);
@@ -1474,9 +1468,6 @@ static int HelpGetc(
   void *theEnv,
   char *log_name)
   {
-#if MAC_MCW || WIN_MCW || MAC_XCD
-#pragma unused(log_name)
-#endif
 
    return(EnvGetcRouter(theEnv,(char*)"stdin"));
   }
@@ -1486,9 +1477,6 @@ static int HelpUngetc(
   int ch,
   char *log_name)
   {
-#if MAC_MCW || WIN_MCW || MAC_XCD
-#pragma unused(log_name)
-#endif
 
    return(EnvUngetcRouter(theEnv,ch,(char*)"stdin"));
   }

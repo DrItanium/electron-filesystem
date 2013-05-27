@@ -138,9 +138,6 @@ static void ClearDeftemplates(
 
    CreateImpliedDeftemplate(theEnv,(SYMBOL_HN *) EnvAddSymbol(theEnv,(char*)"initial-fact"),FALSE);
 #else
-#if MAC_MCW || WIN_MCW || MAC_XCD
-#pragma unused(theEnv)
-#endif
 #endif
   }
 
@@ -264,9 +261,6 @@ globle unsigned EnvGetDeftemplateWatch(
   void *theEnv,
   void *theTemplate)
   { 
-#if MAC_MCW || WIN_MCW || MAC_XCD
-#pragma unused(theEnv)
-#endif
 
    return(((struct deftemplate *) theTemplate)->watch); 
   }
@@ -280,9 +274,6 @@ globle void EnvSetDeftemplateWatch(
   unsigned newState,
   void *theTemplate)
   {
-#if MAC_MCW || WIN_MCW || MAC_XCD
-#pragma unused(theEnv)
-#endif
 
    ((struct deftemplate *) theTemplate)->watch = newState; 
   }
@@ -297,9 +288,6 @@ globle unsigned DeftemplateWatchAccess(
   unsigned newState,
   EXPRESSION *argExprs)
   {
-#if MAC_MCW || WIN_MCW || MAC_XCD
-#pragma unused(code)
-#endif
 
    return(ConstructSetWatchAccess(theEnv,DeftemplateData(theEnv)->DeftemplateConstruct,newState,argExprs,
                                   EnvGetDeftemplateWatch,EnvSetDeftemplateWatch));
@@ -315,9 +303,6 @@ globle unsigned DeftemplateWatchPrint(
   int code,
   EXPRESSION *argExprs)
   {
-#if MAC_MCW || WIN_MCW || MAC_XCD
-#pragma unused(code)
-#endif
 
    return(ConstructPrintWatchAccess(theEnv,DeftemplateData(theEnv)->DeftemplateConstruct,logName,argExprs,
                                     EnvGetDeftemplateWatch,EnvSetDeftemplateWatch));

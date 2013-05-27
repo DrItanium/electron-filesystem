@@ -499,10 +499,6 @@ globle char *EnvGetDefmoduleName(
   void *theEnv,
   void *defmodulePtr)
   { 
-#if MAC_MCW || WIN_MCW || MAC_XCD
-#pragma unused(theEnv)
-#endif
-
    return(ValueToString(((struct defmodule *) defmodulePtr)->name)); 
   }
 
@@ -514,9 +510,6 @@ globle char *EnvGetDefmodulePPForm(
   void *theEnv,
   void *defmodulePtr)
   { 
-#if MAC_MCW || WIN_MCW || MAC_XCD
-#pragma unused(theEnv)
-#endif
 
    return(((struct defmodule *) defmodulePtr)->ppForm); 
   }

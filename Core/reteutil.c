@@ -594,9 +594,6 @@ globle void InitializePatternHeader(
   void *theEnv,
   struct patternNodeHeader *theHeader)
   {
-#if MAC_MCW || WIN_MCW || MAC_XCD
-#pragma unused(theEnv)
-#endif
    theHeader->firstHash = NULL;
    theHeader->lastHash = NULL;
    theHeader->entryJoin = NULL;

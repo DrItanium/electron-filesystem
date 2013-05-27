@@ -1413,9 +1413,6 @@ static intBool EvaluateBadCall(
   void *value,
   DATA_OBJECT *result)
   {
-#if MAC_MCW || WIN_MCW || MAC_XCD
-#pragma unused(value)
-#endif
    PrintErrorID(theEnv,(char*)"PRCCODE",1,FALSE);
    EnvPrintRouter(theEnv,WERROR,(char*)"Attempted to call a deffunction/generic function ");
    EnvPrintRouter(theEnv,WERROR,(char*)"which does not exist.\n");

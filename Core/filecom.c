@@ -193,9 +193,6 @@ static int FindDribble(
   void *theEnv,
   char *logicalName)
   {
-#if MAC_MCW || WIN_MCW || MAC_XCD
-#pragma unused(theEnv)
-#endif
 
    if ( (strcmp(logicalName,"stdout") == 0) ||
         (strcmp(logicalName,"stdin") == 0) ||
@@ -367,9 +364,6 @@ static int ExitDribble(
   void *theEnv,
   int num)
   {
-#if MAC_MCW || WIN_MCW || MAC_XCD
-#pragma unused(num)
-#endif
 
    if (FileCommandData(theEnv)->DribbleCurrentPosition > 0)
      { fprintf(FileCommandData(theEnv)->DribbleFP,"%s",FileCommandData(theEnv)->DribbleBuffer); }
@@ -551,9 +545,6 @@ static int FindBatch(
   void *theEnv,
   char *logicalName)
   {
-#if MAC_MCW || WIN_MCW || MAC_XCD
-#pragma unused(theEnv)
-#endif
 
    if (strcmp(logicalName,"stdin") == 0)
      { return(TRUE); }
@@ -657,9 +648,6 @@ static int UngetcBatch(
   int ch,
   char *logicalName)
   {
-#if MAC_MCW || WIN_MCW || MAC_XCD
-#pragma unused(logicalName)
-#endif
 
    if (FileCommandData(theEnv)->BatchCurrentPosition > 0) FileCommandData(theEnv)->BatchCurrentPosition--;
    if (FileCommandData(theEnv)->BatchBuffer != NULL) FileCommandData(theEnv)->BatchBuffer[FileCommandData(theEnv)->BatchCurrentPosition] = EOS;
@@ -676,9 +664,6 @@ static int ExitBatch(
   void *theEnv,
   int num)
   {
-#if MAC_MCW || WIN_MCW || MAC_XCD
-#pragma unused(num)
-#endif
    CloseAllBatchSources(theEnv);
    return(1);
   }
@@ -1047,9 +1032,6 @@ globle int EnvBatchStar(
   void *theEnv,
   char *fileName)
   {
-#if (MAC_MCW || WIN_MCW) && RUN_TIME
-#pragma unused(fileName)
-#endif
 
    PrintErrorID(theEnv,(char*)"FILECOM",1,FALSE);
    EnvPrintRouter(theEnv,WERROR,(char*)"Function batch* does not work in run time modules.\n");

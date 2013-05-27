@@ -83,9 +83,6 @@ globle void FactFunctionDefinitions(
    EnvDefineFunction2(theEnv,(char*)"get-fact-list",'m',PTIEF GetFactListFunction,(char*)"GetFactListFunction",(char*)"01w");
    EnvDefineFunction2(theEnv,(char*)"ppfact",'v',PTIEF PPFactFunction,(char*)"PPFactFunction",(char*)"13*z");
 #else
-#if MAC_MCW || WIN_MCW || MAC_XCD
-#pragma unused(theEnv)
-#endif
 #endif
   }
 
@@ -127,9 +124,6 @@ globle void *EnvFactDeftemplate(
   void *theEnv,
   void *vTheFact)
   {
-#if MAC_MCW || WIN_MCW || MAC_XCD
-#pragma unused(theEnv)
-#endif
 
    struct fact *theFact = (struct fact *) vTheFact;
 
@@ -160,9 +154,6 @@ globle int EnvFactExistp(
   void *theEnv,
   void *vTheFact)
   {
-#if MAC_MCW || WIN_MCW || MAC_XCD
-#pragma unused(theEnv)
-#endif
    struct fact *theFact = (struct fact *) vTheFact;
 
    if (theFact == NULL) return(FALSE);
@@ -579,9 +570,6 @@ globle void EnvPPFact(
   char *logicalName,
   int ignoreDefaults)
   {
-#if MAC_MCW || WIN_MCW || MAC_XCD
-#pragma unused(theEnv)
-#endif
    struct fact *theFact = (struct fact *) vTheFact;
 
    if (theFact == NULL) return;

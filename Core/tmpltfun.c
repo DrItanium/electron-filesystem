@@ -122,9 +122,6 @@ globle void DeftemplateFunctions(
    FuncSeqOvlFlags(theEnv,(char*)"modify",FALSE,FALSE);
    FuncSeqOvlFlags(theEnv,(char*)"duplicate",FALSE,FALSE);
 #else
-#if MAC_MCW || WIN_MCW || MAC_XCD
-#pragma unused(theEnv)
-#endif
 #endif
   }
 

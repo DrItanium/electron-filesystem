@@ -242,9 +242,6 @@ static void DeallocateDeffunctionData(
       rtn_struct(theEnv,deffunctionModule,theModuleItem);
      }
 #else
-#if MAC_MCW || WIN_MCW || MAC_XCD
-#pragma unused(theEnv)
-#endif
 #endif
   }
   
@@ -258,9 +255,6 @@ static void DestroyDeffunctionAction(
   struct constructHeader *theConstruct,
   void *buffer)
   {
-#if MAC_MCW || WIN_MCW || MAC_XCD
-#pragma unused(buffer)
-#endif
 #if (! BLOAD_ONLY) && (! RUN_TIME)
    struct deffunctionStruct *theDeffunction = (struct deffunctionStruct *) theConstruct;
    
@@ -272,9 +266,6 @@ static void DestroyDeffunctionAction(
    
    rtn_struct(theEnv,deffunctionStruct,theDeffunction);
 #else
-#if MAC_MCW || WIN_MCW || MAC_XCD
-#pragma unused(theConstruct,theEnv)
-#endif
 #endif
   }
 #endif
@@ -346,9 +337,6 @@ globle intBool EnvUndeffunction(
   void *theEnv,
   void *vptr)
   {
-#if (MAC_MCW || WIN_MCW) && (RUN_TIME || BLOAD_ONLY)
-#pragma unused(theEnv,vptr)
-#endif
 
 #if BLOAD_ONLY || RUN_TIME
    return(FALSE);
@@ -625,11 +613,6 @@ static void PrintDeffunctionCall(
      }
    EnvPrintRouter(theEnv,logName,(char*)")");
 #else
-#if MAC_MCW || WIN_MCW || MAC_XCD
-#pragma unused(theEnv)
-#pragma unused(logName)
-#pragma unused(value)
-#endif
 #endif
   }
 
@@ -696,9 +679,6 @@ static void IncrementDeffunctionBusyCount(
   void *theEnv,
   void *value)
   {
-#if MAC_MCW || WIN_MCW || MAC_XCD
-#pragma unused(theEnv)
-#endif
 
    ((DEFFUNCTION *) value)->busy++;
   }
@@ -952,9 +932,6 @@ static unsigned DeffunctionWatchAccess(
   unsigned newState,
   EXPRESSION *argExprs)
   {
-#if MAC_MCW || WIN_MCW || MAC_XCD
-#pragma unused(code)
-#endif
 
    return(ConstructSetWatchAccess(theEnv,DeffunctionData(theEnv)->DeffunctionConstruct,newState,argExprs,
                                     EnvGetDeffunctionWatch,EnvSetDeffunctionWatch));
@@ -979,9 +956,6 @@ static unsigned DeffunctionWatchPrint(
   int code,
   EXPRESSION *argExprs)
   {
-#if MAC_MCW || WIN_MCW || MAC_XCD
-#pragma unused(code)
-#endif
 
    return(ConstructPrintWatchAccess(theEnv,DeffunctionData(theEnv)->DeffunctionConstruct,logName,argExprs,
                                     EnvGetDeffunctionWatch,EnvSetDeffunctionWatch));
@@ -1003,9 +977,6 @@ globle void EnvSetDeffunctionWatch(
   unsigned newState,
   void *dptr)
   {
-#if MAC_MCW || WIN_MCW || MAC_XCD
-#pragma unused(theEnv)
-#endif
 
    ((DEFFUNCTION *) dptr)->trace = (unsigned short) newState;
   }
@@ -1024,9 +995,6 @@ globle unsigned EnvGetDeffunctionWatch(
   void *theEnv,
   void *dptr)
   {
-#if MAC_MCW || WIN_MCW || MAC_XCD
-#pragma unused(theEnv)
-#endif
 
    return(((DEFFUNCTION *) dptr)->trace);
   }

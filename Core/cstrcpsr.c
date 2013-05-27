@@ -417,9 +417,6 @@ globle SYMBOL_HN *GetConstructNameAndComment(
   int getComment,
   int moduleNameAllowed)
   {
-#if (MAC_MCW || WIN_MCW || MAC_XCD) && (! DEBUGGING_FUNCTIONS)
-#pragma unused(fullMessageCR)
-#endif
    SYMBOL_HN *name, *moduleName;
    int redefining = FALSE;
    void *theConstruct;

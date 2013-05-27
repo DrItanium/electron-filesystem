@@ -114,9 +114,6 @@ globle void ExtendedMathFunctionDefinitions(
    EnvDefineFunction2(theEnv,(char*)"round",    'g', PTIEF RoundFunction,    (char*)"RoundFunction", (char*)"11n");
    EnvDefineFunction2(theEnv,(char*)"multiply-add", 'n', PTIEF MultiplyAddFunction, (char*)"MultiplyAddFunction", (char*)"33n");
 #else
-#if MAC_MCW || WIN_MCW || MAC_XCD
-#pragma unused(theEnv)
-#endif
 #endif
   }
 

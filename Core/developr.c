@@ -586,9 +586,6 @@ static void ExamineMemory(
   void *theEnv,
   struct joinNode *theJoin,
   struct betaMemory *theMemory)  {
-#if MAC_MCW || WIN_MCW || MAC_XCD
-#pragma unused(theJoin)
-#endif
    if (theMemory->size > 10000) { 
       /* Set a break point here */
      }
@@ -629,9 +626,6 @@ static void ValidateRuleBetaMemoriesAction(
   void *theEnv,
   struct constructHeader *theConstruct,
   void *buffer) {
-#if MAC_MCW || WIN_MCW || MAC_XCD
-#pragma unused(buffer)
-#endif
    struct defrule *rulePtr, *tmpPtr;
 
    for (rulePtr = (struct defrule *) theConstruct, tmpPtr = rulePtr;

@@ -334,10 +334,6 @@ globle char *EnvGetActivationName(
   void *theEnv,
   void *actPtr)
   {
-#if MAC_MCW || WIN_MCW || MAC_XCD
-#pragma unused(theEnv)
-#endif
-
    return(ValueToString(((struct activation *) actPtr)->theRule->header.name)); 
   }
 
@@ -351,10 +347,6 @@ globle int EnvSetActivationSalience(
   int value)
   {
    int temp;
-#if MAC_MCW || WIN_MCW || MAC_XCD
-#pragma unused(theEnv)
-#endif
-
    temp = ((struct activation *) actPtr)->salience;
    ((struct activation *) actPtr)->salience = value;
    return(temp);

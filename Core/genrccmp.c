@@ -584,10 +584,6 @@ static void TypeToCode(
    PrintClassReference(theEnv,theFile,(DEFCLASS *) theType,imageID,maxIndices);
 #else
 
-#if MAC_MCW || WIN_MCW || MAC_XCD
-#pragma unused(imageID)
-#pragma unused(maxIndices)
-#endif
 
    PrintIntegerReference(theEnv,theFile,(INTEGER_HN *) theType);
 #endif

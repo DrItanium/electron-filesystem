@@ -48,19 +48,6 @@
 #include <time.h>
 #include <stdarg.h>
 
-#if MAC_MCW || MAC_XCD
-#include <Carbon/Carbon.h> 
-#define kTwoPower32 (4294967296.0)      /* 2^32 */
-#endif
-
-#if MAC_MCW || MAC_XCD
-#include <strings.h>
-#endif
-
-#if MAC_MCW || WIN_MCW || MAC_XCD 
-#include <unistd.h>
-#endif
-
 #if WIN_MVC
 #define _UNICODE
 #define UNICODE 
@@ -78,10 +65,6 @@
 #endif
 
 
-#if WIN_MCW
-#include <io.h>
-#include <limits.h>
-#endif
 
 #if   UNIX_7 || WIN_GCC
 #include <sys/types.h>
@@ -652,20 +635,7 @@ static void SystemFunctionDefinitions(
 /*********************************************************/
 globle double gentime()
   {
-#if   MAC_XCD || MAC_MCW
-   UnsignedWide result;
-
-   Microseconds(&result);
-
-   return(((((double) result.hi) * kTwoPower32) + result.lo) / 1000000.0);
-
-#elif WIN_MCW
-   unsigned long int result;
-
-   result = GetTickCount();
-
-   return((double) result / 1000.0);
-#elif UNIX_V || DARWIN
+#if UNIX_V || DARWIN
 #if defined(_POSIX_TIMERS) && (_POSIX_TIMERS > 0)
    struct timespec now;
    clock_gettime(
@@ -759,7 +729,7 @@ globle void gensystem(
    /* Execute the operating system command. */
    /*=======================================*/
 
-#if   UNIX_7 || UNIX_V || LINUX || DARWIN || WIN_MVC || WIN_MCW || WIN_GCC || MAC_XCD
+#if   UNIX_7 || UNIX_V || LINUX || DARWIN || WIN_MVC || WIN_GCC 
    if (SystemDependentData(theEnv)->PauseEnvFunction != NULL) (*SystemDependentData(theEnv)->PauseEnvFunction)(theEnv);
    system(commandBuffer);
    if (SystemDependentData(theEnv)->ContinueEnvFunction != NULL) (*SystemDependentData(theEnv)->ContinueEnvFunction)(theEnv,1);
@@ -886,9 +856,6 @@ globle void genprintfile(
 static void InitializeNonportableFeatures(
   void *theEnv)
   {
-#if MAC_MCW || WIN_MCW || MAC_XCD
-#pragma unused(theEnv)
-#endif
 #if ! WINDOW_INTERFACE
 
 #if UNIX_V || LINUX || DARWIN || UNIX_7 || WIN_GCC || WIN_MVC
@@ -1079,13 +1046,7 @@ globle char *gengetcwd(
   char *buffer,
   int buflength)
   {
-#if MAC_MCW || WIN_MCW || MAC_XCD
    return(getcwd(buffer,buflength));
-#endif
-
-   if (buffer != NULL)
-     { buffer[0] = 0; }
-   return(buffer);
   }
 
 /****************************************************/
@@ -1588,8 +1549,5 @@ static void InitializeKeywords(
    ts = EnvAddSymbol(theEnv,"focus");
    IncrementSymbolCount(ts);
 #else
-#if MAC_MCW || WIN_MCW || MAC_XCD
-#pragma unused(theEnv)
-#endif
 #endif
   }
