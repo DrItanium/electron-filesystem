@@ -36,7 +36,7 @@
    (type INSTANCE))
   (message-handler is-root-panel primary))
 ;------------------------------------------------------------------------------
-(defmessage-handler widget::Panel is-root-panel primary
+(defmessage-handler Runtime::Panel is-root-panel primary
  "Checks to see if the target panel is the root panel"
  ()
  (return (eq ?self:parent nil)))

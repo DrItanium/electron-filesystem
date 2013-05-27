@@ -34,7 +34,7 @@
 ; Modify these global values to change tile size. 
 ; Only do this if you know what you're doing
 ;------------------------------------------------------------------------------
-(defclass engine::Surface
+(defclass Runtime::Surface
   "Defines the screen to draw to. A screen is made up of one or more surfaces
   which contain tiles."
   (is-a DrawableObject)
@@ -60,5 +60,6 @@
         (type SYMBOL)
         (allowed-symbols FALSE TRUE)
         (visibility public))
-  (multislot tiles (type SYMBOL)))
+  (multislot children 
+             (type INSTANCE)))
 ;------------------------------------------------------------------------------
