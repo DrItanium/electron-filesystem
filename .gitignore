@@ -2,3 +2,4 @@
 adventure-engine
 *.o
 *.swp
+libAdventureEngine.a
