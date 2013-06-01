@@ -10,7 +10,7 @@ OUTPUT = adventure-engine
 SUBDIRS = System
 #the user defines this
 ifndef BACKEND_SPECIFIC
-BACKEND_GENERIC ?= 1
+export BACKEND_GENERIC := 1
 endif 
 OBJS = System/Core/agenda.o System/Core/analysis.o System/Core/argacces.o System/Core/bload.o System/Core/bmathfun.o System/Core/bsave.o \
  	System/Core/classcom.o System/Core/classexm.o System/Core/classfun.o System/Core/classinf.o System/Core/classini.o \
@@ -45,17 +45,19 @@ OBJS = System/Core/agenda.o System/Core/analysis.o System/Core/argacces.o System
 	System/Platform/OSDetection.o System/Platform/HardwareDetection.o System/Platform/Platform.o \
 	System/Initialization/AdventureEngineInit.o System/System.o System/Input/Input.o \
 	System/Input/MouseInput.o System/Input/KeyboardInput.o 
+
+
 ifdef BACKEND_GENERIC 
 OBJS += System/Backends/Generic/KeyboardImplementation.o System/Backends/Generic/MouseImplementation.o
-BACKEND_DEFINED := 1
-TARGET_BACKEND ?= Generic
+export BACKEND_DEFINED := 1
+export TARGET_BACKEND := Generic
 endif
 
 
 #ifdef BACKEND_SCUMMVM
 #OBJS += System/Backends/Scummvm/
-#BACKEND_DEFINED := 1
-#TARGET_BACKEND ?= Scummvm
+#export BACKEND_DEFINED := 1
+#export TARGET_BACKEND ?= Scummvm
 #endif
 
 ifdef BACKEND_SPECIFIC

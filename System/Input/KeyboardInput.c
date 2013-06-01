@@ -29,8 +29,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <System/Input/KeyboardInput.h> 
 
 
-extern void GetCurrentlyPressedKeys(void* theEnv, DATA_OBJECT_PTR returnValue);
-
 void InitializeKeyboardInputFunctions(void* theEnv) {
    EnvDefineFunction2(theEnv,
          (char*)"get-currently-pressed-keys",
@@ -38,20 +36,4 @@ void InitializeKeyboardInputFunctions(void* theEnv) {
          PTIEF GetCurrentlyPressedKeys,
          (char*)"GetCurrentlyPressedKeys",
          (char*)"00a");
-}
-
-void GetCurrentlyPressedKeys(void* theEnv, DATA_OBJECT_PTR returnValue) {
-   void* multifieldPtr;
-
-   //Stub result
-   //change this for different backends
-   //{
-   multifieldPtr = EnvCreateMultifield(theEnv, 1);
-   EnvSetMFType(theEnv, multifieldPtr, 1, SYMBOL);
-   EnvSetMFValue(theEnv, multifieldPtr, 1, EnvAddSymbol(theEnv, "Nothing"));
-   EnvSetpType(theEnv, returnValue, MULTIFIELD);
-   EnvSetpValue(theEnv, returnValue, multifieldPtr);
-   EnvSetpDOBegin(theEnv, returnValue, 1);
-   EnvSetpDOEnd(theEnv, returnValue, 1);
-   //}
 }

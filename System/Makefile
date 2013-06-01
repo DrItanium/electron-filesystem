@@ -1,5 +1,7 @@
-
-SUBDIRS = Core Initialization Platform Input
+ifndef BACKEND_DEFINED 
+$(error Run make from the root of this project not here!) 
+endif
+SUBDIRS = Core Initialization Platform Input Backends
 OBJS = System.o
 
 .PHONY: all subdirs $(SUBDIRS)

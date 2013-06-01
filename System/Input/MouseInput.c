@@ -28,10 +28,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <System/Core/clips.h>
 #include <System/Input/MouseInput.h> 
 
-
-extern void GetMouseLocation(void* theEnv, DATA_OBJECT_PTR returnValue);
-extern void* GetMouseAction(void* theEnv);
-
 void InitializeMouseInputFunctions(void* theEnv) {
    EnvDefineFunction2(theEnv, 
          (char*)"get-mouse-action",
@@ -45,27 +41,4 @@ void InitializeMouseInputFunctions(void* theEnv) {
          PTIEF GetMouseLocation,
          (char*)"GetMouseLocation",
          (char*)"00a");
-}
-
-void GetMouseLocation(void* theEnv, DATA_OBJECT_PTR returnValue) {
-   void* multifieldPtr;
-
-   multifieldPtr = EnvCreateMultifield(theEnv, 2);
-   EnvSetMFType(theEnv, multifieldPtr, 1, INTEGER);
-   EnvSetMFType(theEnv, multifieldPtr, 2, INTEGER);
-   //Stub result
-   //change this for different backends
-   //{
-   EnvSetMFValue(theEnv, multifieldPtr, 1, EnvAddLong(theEnv, 0));
-   EnvSetMFValue(theEnv, multifieldPtr, 2, EnvAddLong(theEnv, 0));
-   //}
-   EnvSetpType(theEnv, returnValue, MULTIFIELD);
-   EnvSetpValue(theEnv, returnValue, multifieldPtr);
-   EnvSetpDOBegin(theEnv, returnValue, 1);
-   EnvSetpDOEnd(theEnv, returnValue, 2);
-}
-void* GetMouseAction(void* theEnv) {
-   //CHANGE THIS STUB CODE {
-   return EnvAddSymbol(theEnv, "Nothing");
-   //}
 }

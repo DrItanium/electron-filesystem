@@ -27,7 +27,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #ifndef _KEYBOARD_INPUT__H
 #define _KEYBOARD_INPUT__H
+#include <System/Core/clips.h>
 
 extern void InitializeKeyboardInputFunctions(void* theEnv);
+extern void GetCurrentlyPressedKeys(void* theEnv, DATA_OBJECT_PTR returnValue);
 
 #endif 

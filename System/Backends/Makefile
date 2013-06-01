@@ -1,8 +1,9 @@
 ifndef BACKEND_DEFINED 
-$(error Run make from the root of this project instead of here!) 
+$(error No backend defined. Run make at the root of the project)
 endif
+
 ifndef TARGET_BACKEND
-$(error Run make from the root of this project instead of here!)
+$(error No backend defined. Run make at the root of the project)
 endif
 
 SUBDIRS = $(TARGET_BACKEND)
