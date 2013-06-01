@@ -8,6 +8,10 @@ export srcroot ?= $(progroot)
 CC = gcc 
 OUTPUT = adventure-engine 
 SUBDIRS = System
+#the user defines this
+ifndef BACKEND_SPECIFIC
+BACKEND_GENERIC ?= 1
+endif 
 OBJS = System/Core/agenda.o System/Core/analysis.o System/Core/argacces.o System/Core/bload.o System/Core/bmathfun.o System/Core/bsave.o \
  	System/Core/classcom.o System/Core/classexm.o System/Core/classfun.o System/Core/classinf.o System/Core/classini.o \
 	System/Core/classpsr.o System/Core/clsltpsr.o System/Core/commline.o System/Core/conscomp.o System/Core/constrct.o \
@@ -40,7 +44,25 @@ OBJS = System/Core/agenda.o System/Core/analysis.o System/Core/argacces.o System
  	System/Core/utility.o System/Core/watch.o System/Core/main.o System/Core/binary_operations.o System/Platform/ArchitectureDetection.o \
 	System/Platform/OSDetection.o System/Platform/HardwareDetection.o System/Platform/Platform.o \
 	System/Initialization/AdventureEngineInit.o System/System.o System/Input/Input.o \
-	System/Input/MouseInput.o System/Input/KeyboardInput.o
+	System/Input/MouseInput.o System/Input/KeyboardInput.o 
+ifdef BACKEND_GENERIC 
+OBJS += System/Backends/Generic/KeyboardImplementation.o System/Backends/Generic/MouseImplementation.o
+BACKEND_DEFINED := 1
+TARGET_BACKEND ?= Generic
+endif
+
+
+#ifdef BACKEND_SCUMMVM
+#OBJS += System/Backends/Scummvm/
+#BACKEND_DEFINED := 1
+#TARGET_BACKEND ?= Scummvm
+#endif
+
+ifdef BACKEND_SPECIFIC
+ifndef BACKEND_DEFINED
+  $(error Specific backend desired but an invalid backend was provided)
+endif
+endif
 
 program: subdirs 
 	$(CC) $(CFLAGS) -o $(OUTPUT) $(OBJS) -lm -lncurses
