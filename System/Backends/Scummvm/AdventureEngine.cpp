@@ -35,6 +35,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "common/EventRecorder.h"
 #include "common/file.h"
 #include "common/fs.h"
+#include "common/timer.h"
 
 #include "engines/util.h"
 
@@ -47,8 +48,29 @@ extern "C" {
 
 namespace AdventureEngine {
 
+void AdventureEngineEngine::setPreviousMouseCommand(unsigned value) {
+   _previousMouseCommand = value;
+}
+unsigned AdventureEngineEngine::previousMouseCommand() {
+   return _previousMouseCommand;
+}
+void AdventureEngineEngine::setExpertSystemStalled(bool value) {
+   _expertSystemStalled = value;
+}
+
+bool AdventureEngineEngine::expertSystemStalled() {
+   return _expertSystemStalled;
+}
+
+static void interruptExpertSystem(void* refCon) {
+   AdventureEngineEngine *engine = (AdventureEngineEngine*)refCon;
+   //add code for pausing the game at some point
+   engine->setExpertSystemStalled(true);
+}
 AdventureEngineEngine::AdventureEngineEngine(OSystem *syst) 
 : Engine(syst) {
+   _previousMouseCommand = 0;
+   _expertSystemStalled = false;
   clipsEnv = CreateEnvironment();
   debug("AdventureEngineEngine::AdventureEngineEngine: Created CLIPS Environment");
   // Put your engine in a sane state, but do nothing big yet;
@@ -85,7 +107,10 @@ AdventureEngineEngine::~AdventureEngineEngine() {
 
 Common::Error AdventureEngineEngine::run() {
   _console = new Console(this);
+  _timer->installTimerProc(interruptExpertSystem, 1000000 / 60, this, "clipsSlowDown"); 
+  EnvReset(clipsEnv);
   EnvRun(clipsEnv, -1L);
+  _timer->removeTimerProc(interruptExpertSystem);
   return Common::kNoError;
 }
 

@@ -42,11 +42,17 @@ public:
 	~AdventureEngineEngine();
 
 	virtual Common::Error run();
+   void setExpertSystemStalled(bool value);
+   bool expertSystemStalled();
+   void setPreviousMouseCommand(unsigned command);
+   unsigned previousMouseCommand();
  
 private:
 	Console *_console;
    void* clipsEnv; 
 	Common::RandomSource *_rnd;
+   bool _expertSystemStalled;
+   unsigned _previousMouseCommand;
 };
  
 class Console : public GUI::Debugger {
