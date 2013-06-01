@@ -24,8 +24,8 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-#include <Core/clips.h>
-#include "AdventureEngineInit.h"
+#include <System/Core/clips.h>
+#include <System/Initialization/AdventureEngineInit.h>
 
 extern int InitializeBaseAdventureEngine(void* theEnv);
 

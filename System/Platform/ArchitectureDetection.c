@@ -25,8 +25,8 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#include <Core/clips.h>
-#include "ArchitectureDetection.h"
+#include <System/Core/clips.h>
+#include <System/Platform/ArchitectureDetection.h>
 
 #define str(x) #x
 #define DefineArchIdentFunc(kn, r, cn) \
