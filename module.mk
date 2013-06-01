@@ -1,6 +1,6 @@
 MODULE := engines/AdventureEngine
-#We use the userfunctions.c in System/Backends/Scummvm/ so that we don't
-#clutter up the generic one
+# We use the userfunctions.c in System/Backends/Scummvm/ so that we don't
+# clutter up the generic one
 MODULE_OBJS := System/Core/agenda.o \
 					System/Core/analysis.o \
 					System/Core/argacces.o \
@@ -178,7 +178,7 @@ MODULE_OBJS := System/Core/agenda.o \
 					System/Backends/Scummvm/scummvm.o \
 					System/Backends/Scummvm/scummvm-routers.o \
 					System/Backends/Scummvm/detection.o \
-					System/Backends/Scummvm/AdventureEngine.o 
+					System/Backends/Scummvm/AdventureEngine.o \
 					System/Backends/Scummvm/MouseImplementation.o \
 					System/Backends/Scummvm/KeyboardImplementation.o 
 
