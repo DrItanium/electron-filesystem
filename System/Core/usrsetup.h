@@ -394,7 +394,17 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define OS_UNKNOWN 0
 #endif
 
+//Different backend implementations
+#if defined(ScUMMVM) 
+#define BACKEND_SCUMMVM 1
+#else
+#define BACKEND_SCUMMVM 0
+#endif
 
-
+#if (! BACKEND_SCUMMVM) 
+#define BACKEND_GENERIC 1
+#else
+#define BACKEND_GENERIC 0
+#endif
 
 #endif
