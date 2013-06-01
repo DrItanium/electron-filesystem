@@ -1,4 +1,6 @@
 MODULE := engines/AdventureEngine
+#We use the userfunctions.c in System/Backends/Scummvm/ so that we don't
+#clutter up the generic one
 MODULE_OBJS := System/Core/agenda.o \
 					System/Core/analysis.o \
 					System/Core/argacces.o \
@@ -159,7 +161,6 @@ MODULE_OBJS := System/Core/agenda.o \
 					System/Core/tmpltrhs.o \
 					System/Core/tmpltutl.o \
 					System/Core/userdata.o \
-					System/Core/userfunctions.o \
 					System/Core/utility.o \
 					System/Core/watch.o \
 					System/Core/main.o \
@@ -172,7 +173,15 @@ MODULE_OBJS := System/Core/agenda.o \
 					System/Input/MouseInput.o \
 					System/Input/KeyboardInput.o \
 					System/Input/Input.o \
-					System/System.o 
+					System/System.o \
+					System/Backends/Scummvm/userfunctions.o \
+					System/Backends/Scummvm/scummvm.o \
+					System/Backends/Scummvm/scummvm-routers.o \
+					System/Backends/Scummvm/detection.o \
+					System/Backends/Scummvm/AdventureEngine.o 
+					System/Backends/Scummvm/MouseImplementation.o \
+					System/Backends/Scummvm/KeyboardImplementation.o 
+
 MODULE_DIRS += \
 				engines/AdventureEngine
 
@@ -180,6 +189,9 @@ ifeq ($(ENABLE_ADVENTURENGINE), DYNAMIC_PLUGIN)
 	PLUGIN := 1
 endif
 
+# This engine should not depend on scummvm as its only backend. Because of
+# this, I include this path so that the native code can be dropped in without
+# worry.
 CPPFLAGS += -I$(srcdir)/engines/AdventureEngine/
 #Include common rules
 include $(srcdir)/rules.mk
