@@ -9,8 +9,9 @@ stable one. However, this may change with time.
 
 
 Folder layout:
-Core/ - CLIPS runtime C code
 System/ - C and CLIPS code for the base of the engine
+  Backends/ - Contains platform specific implementations of provided functions
+  Core/ - CLIPS runtime C code
   Initialization/ - Contains functions that are fired on application start
   Input/ - Contains functions to provide a standardized method for getting
            data from different input methods (keyboard, mouse, etc)
@@ -25,3 +26,11 @@ lib/ - Contains all of the user defined functions, templates, methods, and
 logic/ - Contains all the rules for the different modules that make up an
          adventure engine program. These rules are provided by the game
          designer.
+
+Currently, it has two backends: Generic and Scummvm.
+
+The Generic backend is the default backend and is used if the code is compiled
+as a standalone project. The Scummvm backend is activated if the project is
+added to a scummvm (version 1.5.0 or greater) source tree (appropriate
+modifications needs to be made to several files as well) and compiled using
+./configure ; make in scummvm. 
