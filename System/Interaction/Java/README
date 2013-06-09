@@ -1,0 +1,4 @@
+This folder contains the Java side of the CLIPS-JNI interface. 
+
+The clips folder should be included with your source code in the appropriate
+location in a java project. 
