@@ -1,7 +1,7 @@
 
 #include "clips_Environment.h"
 
-#include "clips.h"
+#include <System/Core/clips.h>
 
 #define CLIPSJNI_DATA 67
 
