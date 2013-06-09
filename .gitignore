@@ -6,3 +6,4 @@ libAdventureEngine.a
 .deps/
 obj/
 libs/
+*.class
