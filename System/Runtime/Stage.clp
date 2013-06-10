@@ -29,7 +29,12 @@
 ;------------------------------------------------------------------------------
 (deftemplate Runtime::stage
              "Standardized mechanism for providing stage control facts"
-             (slot id (type SYMBOL) (default-dynamic (gensym*)))
-             (slot at (type SYMBOL))
-             (multislot rest (type SYMBOL)))
+             (slot id 
+                   (type SYMBOL) 
+                   (default-dynamic (gensym*)))
+             (slot at 
+                   (type SYMBOL)
+                   (default ?NONE))
+             (multislot rest 
+                        (type SYMBOL)))
 ;------------------------------------------------------------------------------
