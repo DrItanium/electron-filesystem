@@ -43,11 +43,13 @@
   (slot width 
         (source composite)
         (create-accessor read-write)
-        (range 0 ?VARIABLE))
+        (range 0 ?VARIABLE)
+        (default ?NONE))
   (slot height 
         (source composite)
         (create-accessor read-write)
-        (range 0 ?VARIABLE))
+        (range 0 ?VARIABLE)
+        (default ?NONE))
   (slot position-x 
         (type INTEGER)
         (visibility public)
