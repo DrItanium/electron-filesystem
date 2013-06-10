@@ -33,8 +33,13 @@
 ;------------------------------------------------------------------------------
 (deftemplate Runtime::message
              "Provides a communication medium between modules"
-             (slot to (type SYMBOL))
-             (slot from (type SYMBOL))
-             (slot action (type SYMBOL))
+             (slot to 
+                   (type SYMBOL)
+                   (default ?NONE))
+             (slot from 
+                   (type SYMBOL))
+             (slot action 
+                   (type SYMBOL)
+                   (default ?NONE))
              (multislot arguments))
 ;------------------------------------------------------------------------------
