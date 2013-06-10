@@ -39,5 +39,5 @@
 (defmessage-handler Runtime::Panel is-root-panel primary
  "Checks to see if the target panel is the root panel"
  ()
- (return (eq ?self:parent nil)))
+ (eq ?self:parent nil))
 ;------------------------------------------------------------------------------
