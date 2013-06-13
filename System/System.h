@@ -1,5 +1,5 @@
 /*
-The Adventure Engine
+electron
 Copyright (c) 2013, Joshua Scoggins 
 All rights reserved.
 
