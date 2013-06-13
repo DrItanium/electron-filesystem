@@ -1,8 +1,7 @@
-#ignore the adventure engine executable and the object files
-adventure-engine
+#ignore the electron executable and the object files
+electron
 *.o
 *.swp
-libAdventureEngine.a
 .deps/
 obj/
 libs/
