@@ -1,2 +1,0 @@
-The code in this class is the base runtime of the adventure engine. This is
-automatically loaded by calling initialize-adventure-engine
