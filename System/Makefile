@@ -1,7 +1,8 @@
-ifndef BACKEND_DEFINED 
-$(error Run make from the root of this project not here!) 
-endif
-SUBDIRS = Core Initialization Platform Input Backends
+# We need to make this as simple as possible
+# Add folders that contain makefiles here
+SUBDIRS = Core Platform 
+# Add files that are meant to be compiled and are in this level of the project
+# here
 OBJS = System.o
 
 .PHONY: all subdirs $(SUBDIRS)
