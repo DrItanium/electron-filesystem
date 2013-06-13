@@ -67,23 +67,27 @@
 #endif
 
 #ifndef APPLICATION_NAME
-#define APPLICATION_NAME "AdventureEngine"
+#define APPLICATION_NAME "electron"
 #endif
 
 #ifndef COMMAND_PROMPT
-#define COMMAND_PROMPT "Adventure Engine> "
+#define COMMAND_PROMPT APPLICATION_NAME "> "
 #endif
 
 #ifndef VERSION_STRING
-#define VERSION_STRING "6.30"
+#define VERSION_STRING "9.0"
 #endif
 
 #ifndef CREATION_DATE_STRING
 #define CREATION_DATE_STRING __DATE__
 #endif
 
+#ifndef CREATION_TIME_STAMP
+#define CREATION_TIME_STAMP __TIME__
+#endif
+
 #ifndef BANNER_STRING
-#define BANNER_STRING "The Adventure Engine (Compiled on " __DATE__ " at " __TIME__ ")\n"
+#define BANNER_STRING APPLICATION_NAME " (Compiled on " CREATION_DATE_STRING " at " CREATION_TIME_STAMP ")\n"
 #endif
 
 /*************************/
