@@ -37,8 +37,7 @@ OBJS = System/Core/agenda.o System/Core/analysis.o System/Core/argacces.o System
  	System/Core/tmpltbin.o System/Core/tmpltbsc.o System/Core/tmpltcmp.o System/Core/tmpltdef.o System/Core/tmpltfun.o System/Core/tmpltlhs.o \
  	System/Core/tmpltpsr.o System/Core/tmpltrhs.o System/Core/tmpltutl.o System/Core/userdata.o System/Core/userfunctions.o \
  	System/Core/utility.o System/Core/watch.o System/Core/main.o System/Core/binary_operations.o System/Platform/ArchitectureDetection.o \
-	System/Platform/OSDetection.o System/Platform/HardwareDetection.o System/Platform/Platform.o \
-	System/Initialization/ElectronInit.o System/System.o 
+	System/Platform/OSDetection.o System/Platform/HardwareDetection.o System/Platform/Platform.o System/System.o
 
 
 program: subdirs 
