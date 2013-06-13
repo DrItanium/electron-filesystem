@@ -1,17 +1,13 @@
-########### MAKEFILE FOR THE ADVENTURE ENGINE ###########
+########### MAKEFILE FOR ELECTRON ###########
 export progroot ?= $(CURDIR)
 export srcroot ?= $(progroot)
-#########################################################
-# While I don't like gcc as much as clang, I realize that 
-# gcc is more prevalent these days
-#########################################################
-CC = gcc 
-OUTPUT = adventure-engine 
+# Let's not be a total asshole and just set this to cc
+CC = cc
+OUTPUT = electron
 SUBDIRS = System
-#the user defines this
-ifndef BACKEND_SPECIFIC
-export BACKEND_GENERIC := 1
-endif 
+
+# I really need to fix this one of these days...dohwell we'll fix this at some
+# point
 OBJS = System/Core/agenda.o System/Core/analysis.o System/Core/argacces.o System/Core/bload.o System/Core/bmathfun.o System/Core/bsave.o \
  	System/Core/classcom.o System/Core/classexm.o System/Core/classfun.o System/Core/classinf.o System/Core/classini.o \
 	System/Core/classpsr.o System/Core/clsltpsr.o System/Core/commline.o System/Core/conscomp.o System/Core/constrct.o \
@@ -20,8 +16,7 @@ OBJS = System/Core/agenda.o System/Core/analysis.o System/Core/argacces.o System
  	System/Core/cstrnutl.o System/Core/default.o System/Core/defins.o System/Core/developr.o System/Core/dffctbin.o System/Core/dffctbsc.o \
  	System/Core/dffctcmp.o System/Core/dffctdef.o System/Core/dffctpsr.o System/Core/dffnxbin.o System/Core/dffnxcmp.o \
 	System/Core/dffnxexe.o System/Core/dffnxfun.o System/Core/dffnxpsr.o System/Core/dfinsbin.o System/Core/dfinscmp.o System/Core/drive.o \
-	System/Core/emathfun.o \
- 	System/Core/engine.o System/Core/envrnmnt.o System/Core/evaluatn.o System/Core/expressn.o System/Core/exprnbin.o System/Core/exprnops.o \
+	System/Core/emathfun.o System/Core/engine.o System/Core/envrnmnt.o System/Core/evaluatn.o System/Core/expressn.o System/Core/exprnbin.o System/Core/exprnops.o \
  	System/Core/exprnpsr.o System/Core/extnfunc.o System/Core/factbin.o System/Core/factbld.o System/Core/factcmp.o System/Core/factcom.o \
  	System/Core/factfun.o System/Core/factgen.o System/Core/facthsh.o System/Core/factlhs.o System/Core/factmch.o System/Core/factmngr.o \
  	System/Core/factprt.o System/Core/factqpsr.o System/Core/factqury.o System/Core/factrete.o System/Core/factrhs.o System/Core/filecom.o \
@@ -43,28 +38,8 @@ OBJS = System/Core/agenda.o System/Core/analysis.o System/Core/argacces.o System
  	System/Core/tmpltpsr.o System/Core/tmpltrhs.o System/Core/tmpltutl.o System/Core/userdata.o System/Core/userfunctions.o \
  	System/Core/utility.o System/Core/watch.o System/Core/main.o System/Core/binary_operations.o System/Platform/ArchitectureDetection.o \
 	System/Platform/OSDetection.o System/Platform/HardwareDetection.o System/Platform/Platform.o \
-	System/Initialization/AdventureEngineInit.o System/System.o System/Input/Input.o \
-	System/Input/MouseInput.o System/Input/KeyboardInput.o 
+	System/Initialization/ElectronInit.o System/System.o 
 
-
-ifdef BACKEND_GENERIC 
-OBJS += System/Backends/Generic/KeyboardImplementation.o System/Backends/Generic/MouseImplementation.o
-export BACKEND_DEFINED := 1
-export TARGET_BACKEND := Generic
-endif
-
-
-#ifdef BACKEND_SCUMMVM
-#OBJS += System/Backends/Scummvm/
-#export BACKEND_DEFINED := 1
-#export TARGET_BACKEND ?= Scummvm
-#endif
-
-ifdef BACKEND_SPECIFIC
-ifndef BACKEND_DEFINED
-  $(error Specific backend desired but an invalid backend was provided)
-endif
-endif
 
 program: subdirs 
 	$(CC) $(CFLAGS) -o $(OUTPUT) $(OBJS) -lm -lncurses
