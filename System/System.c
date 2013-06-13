@@ -1,5 +1,5 @@
 /*
-The Adventure Engine
+electron
 Copyright (c) 2013, Joshua Scoggins 
 All rights reserved.
 
@@ -26,12 +26,10 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #include <System/System.h>
-#include <System/Initialization/AdventureEngineInit.h>
 #include <System/Platform/Platform.h>
-#include <System/Input/Input.h>
 
 void InitializeSystem(void* theEnv) {
-   InitializeAdventureEngineFunctions(theEnv); 
    PlatformDetectionFunctionDefinitions(theEnv);
-   InputFunctionDefinitions(theEnv);
+   /* TODO: Add custom declarations here to streamline adding custom */
+   /* functionality into electron */
 }
