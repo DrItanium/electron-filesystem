@@ -28,6 +28,7 @@
 ; Assembler.clp - An assembler for the theoretical processor.
 ;-------------------------------------------------------------------------------
 (defglobal MAIN ; human readable form
+           ?*symbol-label-instruction* = label
            ?*symbol-terminate-instruction* = terminate
            ?*symbol-nop-instruction* = nop
            ?*symbol-add-instruction* = add
@@ -47,15 +48,16 @@
            ?*symbol-load-instruction* = load
            ?*symbol-store-instruction* = store
            ?*symbol-set-instruction* = set
-           ?*symbol-interrupt-instruction* = interrupt
-           )
+           ?*symbol-interrupt-instruction* = interrupt)
 ;-------------------------------------------------------------------------------
-(deftemplate input-line 
+(deftemplate input-line
              (slot line-number
                    (type INTEGER)
                    (default ?NONE))
+             (slot original-input
+                   (type STRING)
+                   (default ?NONE))
              (multislot raw-input))
-
 ;-------------------------------------------------------------------------------
 (deftemplate operation
              (slot line-number
@@ -64,17 +66,64 @@
              (slot operation
                    (type SYMBOL)
                    (default ?NONE))
-             (slot destination 
+             (multislot arguments))
+;-------------------------------------------------------------------------------
+(deftemplate instruction
+             (slot tag 
+                   (type SYMBOL))
+             (slot arg-count
+                   (type INTEGER))
+             (slot is-macro ; is it a convienience instruction/operation?
                    (type SYMBOL)
-                   (default ?NONE))
-             (slot source0
-                   (type NUMBER INSTANCE)
-                   (default ?NONE))
-             (slot source1
-                   (type INSTANCE)))
+                   (allowed-symbols FALSE TRUE)))
+;-------------------------------------------------------------------------------
+(deffacts argument-conversion-counts
+          (instruction (tag ?*symbol-terminate-instruction*)
+                       (arg-count 0))
+          (instruction (tag ?*symbol-nop-instruction*)
+                       (arg-count 0))
+          (instruction (tag ?*symbol-add-instruction*)
+                       (arg-count 3))
+          (instruction (tag ?*symbol-subtract-instruction*)
+                       (arg-count 3))
+          (instruction (tag ?*symbol-multiply-instruction*)
+                       (arg-count 3))
+          (instruction (tag ?*symbol-divide-instruction*)
+                       (arg-count 3))
+          (instruction (tag ?*symbol-right-shift-instruction*)
+                       (arg-count 3))
+          (instruction (tag ?*symbol-left-shift-instruction*)
+                       (arg-count 3))
+          (instruction (tag ?*symbol-equal-instruction*)
+                       (arg-count 3))
+          (instruction (tag ?*symbol-not-equal-instruction*)
+                       (arg-count 3))
+          (instruction (tag ?*symbol-less-than-instruction*)
+                       (arg-count 3))
+          (instruction (tag ?*symbol-greater-than-instruction*)
+                       (arg-count 3))
+          (instruction (tag ?*symbol-and-instruction*)
+                       (arg-count 3))
+          (instruction (tag ?*symbol-or-instruction*)
+                       (arg-count 3))
+          (instruction (tag ?*symbol-not-instruction*)
+                       (arg-count 2))
+          (instruction (tag ?*symbol-branch-instruction*)
+                       (arg-count 2))
+          (instruction (tag ?*symbol-load-instruction*)
+                       (arg-count 2))
+          (instruction (tag ?*symbol-store-instruction*)
+                       (arg-count 2))
+          (instruction (tag ?*symbol-set-instruction*)
+                       (arg-count 2))
+          (instruction (tag ?*symbol-interrupt-instruction*)
+                       (arg-count 1))
+          (instruction (tag ?*symbol-label-instruction*)
+                       (arg-count 1)
+                       (is-macro TRUE)))
 ;-------------------------------------------------------------------------------
 (defgeneric to-char)
-
+;-------------------------------------------------------------------------------
 (defmethod to-char
   ((?i INTEGER (>= ?i 0)) ; no negative numbers
    (?stream SYMBOL))
@@ -84,12 +133,14 @@
   ((?i INTEGER (>= ?i 0)))
   (to-char ?i nil))
 
+;-------------------------------------------------------------------------------
 ; since we can't do "knowledge construction" in the standard sense we need to
 ; pull input from standard-in.
+;-------------------------------------------------------------------------------
 (defrule initialize-assembler
          (initial-fact)
          =>
-         (assert (read-to-end 0)))
+         (assert (read-to-end 1)))
 
 (defrule build-input-line
          ?f <- (read-to-end ?i)
@@ -99,7 +150,10 @@
          (if (neq ?input EOF) then
            (assert (read-to-end (+ ?i 1))
                    (input-line (line-number ?i)
-                               (raw-input (explode$ ?input))))))
+                               (original-input ?input)
+                               (raw-input (explode$ ?input))))
+           else
+           (assert (translate-input))))
 
 (defrule throw-out-empty-lines
          "remove lines that are completely comments or just plain empty"
@@ -107,37 +161,57 @@
          ?f <- (input-line (raw-input))
          =>
          (retract ?f))
-
-(defrule process-input-line:two-input
-         (declare (salience 1)) ; evaluate each line as it goes through
-         ?f <- (input-line (raw-input ?operation ?dest ?source)
-                           (line-number ?l))
+(defrule invalid-line-found
+         (declare (salience 2))
+         (input-line (line-number ?i)
+                     (original-input ?line)
+                     (raw-input $?input))
+         (test (or (> (length$ $?input) 4)))
          =>
-         (retract ?f)
-         (assert (operation (line-number ?l)
-                            (operation ?operation)
-                            (destination ?dest)
-                            (source0 ?source))))
+         (printout werror "ERROR: line " ?i " is invalid" crlf
+                   "     " ?line crlf)
+         (halt))
 
-(defrule process-input-line:three-input
-         (declare (salience 1)) ; evaluate each line as it goes through
-         ?f <- (input-line (raw-input ?operation ?dest ?source0 ?source1)
-                           (line-number ?l))
-         =>
-         (retract ?f)
-         (assert (operation (line-number ?l)
-                            (operation ?operation)
-                            (destination ?dest)
-                            (source0 ?source0)
-                            (source1 ?source1))))
 (defrule is-invalid-instruction
-         ?f <- (operation (line-number ?l)
-                          (operation ?operation&:(not (instruction-exists
-                                                       ?operation))))
+         (declare (salience 2)) 
+         (input-line (raw-input ?op $?)
+                     (line-number ?l)
+                     (original-input ?input))
+         (not (exists (instruction (tag ?op))))
          =>
-         (
+         (printout werror 
+                   (format nil "ERROR: Instruction %s on line %d is invalid%n" ?op ?l)
+                   (format nil " Line: %s%n%n" ?input))
+         (halt))
+(defrule invalid-argument-count-for-operation
+         (declare (salience 2))
+         (input-line (raw-input ?operation $?rest)
+                     (line-number ?l)
+                     (original-input ?input))
+         (instruction (tag ?operation)
+                      (arg-count ?ac&:(!= ?ac (length$ $?rest))))
+         =>
+         (printout werror 
+                   (format nil "ERROR: Invalid number of arguments for %s on line %d%n"
+                           ?operation ?l)
+                   (format nil " Line: %s%n%n" ?input))
+         (halt))
 
+(defrule process-input-line
+         (declare (salience 1)) ; evaluate each line as it goes through
+         ?f <- (input-line (raw-input ?operation $?rest)
+                           (line-number ?l))
+         (instruction (tag ?operation)
+                      (arg-count =(length$ $?rest)))
+
+         =>
+         (retract ?f)
+         (assert (operation (line-number ?l)
+                            (operation ?operation)
+                            (arguments $?rest))))
 ;-------------------------------------------------------------------------------
 ; this becomes a script that reads from standard input
+;-------------------------------------------------------------------------------
+(reset) ; load the instruction information for our purposes
 (run)
 (exit)
