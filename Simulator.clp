@@ -33,21 +33,6 @@
 ;                 processor architecture. It has an 8-bit direct address space
 ;                 that can be extended through the use of jump instructions.
 ;-------------------------------------------------------------------------------
-(defclass operation
- "Represents an instruction to execute"
- (is-a USER)
- (role abstract)
- (slot address
-  (type INTEGER)
-  (visibility public)
-  (storage local)
-  (range 0 ?VARIABLE)
-  (default ?NONE))
- (slot name
-  (type SYMBOL)
-  (visibility public)
-  (storage local)
-  (default ?NONE)))
 (defclass cell 
   (is-a USER)
   (role abstract)
@@ -114,9 +99,6 @@
          ?s <- (Machine setup)
          ?f <- (load ?program-path into memory)
          =>
-         ; the encoding of this processor can change from time to time but my
-         ; current idea is to have a 255 byte window that represents a set of
-         ; actions to be performed by the machine itself.
          (retract ?s ?f)
          ;build the memory cells right now
          (if (open ?program-path file "r") then
@@ -140,13 +122,110 @@
          (retract ?f)
          (if (> (length$ ?rest) 0) then
            (assert (stage $?rest))))
-(defrule decode-instruction
+(defrule load-instruction-into-decoder 
          (stage decode $?)
          (object (is-a register)
                  (name [pc])
                  (value ?location))
          (object (is-a memory-cell)
-          (address ?location)
-          (value ?operation))
+                 (address ?location)
+                 (value ?operation))
+         =>
+         ;tee hee, silly computer scientist, it's not a fixed 
+         ;decoder location :D. But it will serve our purposes
+         ;well.
+         (assert (invoke operation ?operation at ?location)))
 
+(defrule decode:invalid
+         (declare (salience -1))
+         (stage decode $?)
+         ?f <- (invoke operation ? at ?)
+         =>
+         (retract ?f)
+         (printout t "ERROR: Target operation is not valid" crlf)
+         (halt))
+; MACHINE SPECIFIC DESCRIPTION CODE FOLLOWS:
+; With the exception of one instruction, the rest of the instruction
+; set operates on available registers (which is why there are 255 of
+; them). This only applies to the externally visible instruction set
+; which is transformed internally to provide on the fly optimizations.
+;
+; This is the basis of the procedurally declarative processor design
+; I'm implementing. Eventually, this will have more features but at
+; this point it is important to get a basic implementation.
+;
+; TODO: Modify the instruction set to define the program counter
+(defglobal MAIN 
+ ; finding a zero will cause the processor to terminate instruction
+ ; execution
+ ?*terminate-instruction* = 0
+ ?*nop-instruction* = 1
+ ?*add-instruction* = 2
+ ?*subtract-instruction* = 3
+ ?*multiply-instruction* = 4
+ ?*divide-instruction* = 5
+ ?*right-shift-instruction*= 6
+ ?*left-shift-instruction* = 7
+ ?*equal-instruction* = 8
+ ?*not-equal-instruction* = 9
+ ?*less-than-instruction* = 10
+ ?*greater-than-instruction* = 11
+ ?*and-instruction* = 12
+ ?*or-instruction* = 13
+ ?*not-instruction* = 14
+ ; uses a register as a predicate 
+ ; br r1 [r2]
+ ?*branch-instruction* = 15
+ ; load r1 <= [r2] is the only supported load instruction
+ ?*load-instruction* = 16 
+ ; store [r1] <= r2 is the only supported store instruction
+ ?*store-instruction* = 17
+ ; set r1 <= constant is the only immediate operation in the
+ ; instruction set
+ ?*set-instruction* = 18
+ ; system r1
+ ?*interrupt-instruction* = 250
+ ?*terminate-instruction* = 255)
+(defrule decode:nop
+ "defines a nop instruction"
+ (stage decode $?)
+ ?f <- (invoke operation 0 at ?location)
+ =>
+ (retract ?f)
+ (assert (nop)))
 
+(defrule decode:load:base
+ "the current operation is a load, further analysis required"
+ (stage decode $?)
+ ?f <- (invoke operation 1 at ?location)
+ =>
+ (retract ?f)
+ (assert (determine:load ?location)))
+
+(defrule decode:load:register<=immediate
+ (stage decode $?)
+ ?f <- (determine:load ?offset)
+ ;grab the status code
+ (object (is-a memory-cell)
+         (address =(+ ?offset 1))
+         (value 0))
+ =>
+ (retract ?f)
+ (assert (load register<=immediate ?destl ?srcl)))
+(defrule decode:load:register<=register-immediate
+ (stage decode $?)
+ ?f <- (load 1 ?destl ?srcl)
+ =>
+ (retract ?f)
+ (assert (load register<=register-immediate ?destl ?srcl)))
+(defrule decode:store:base
+ (stage decode $?)
+ ?f <- (invoke operation 2 at ?location
+(defrule add-operation
+ (stage execute $?)
+
+; NOTES
+; the encoding of this processor can change from time to time but my
+; current idea is to have a 255 byte window that represents a set of
+; actions to be performed by the machine itself. This isn't valid at
+; this point but I may come back to this at another point
