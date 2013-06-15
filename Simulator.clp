@@ -33,27 +33,120 @@
 ;                 processor architecture. It has an 8-bit direct address space
 ;                 that can be extended through the use of jump instructions.
 ;-------------------------------------------------------------------------------
-(defclass memory-cell
+(defclass operation
+ "Represents an instruction to execute"
+ (is-a USER)
+ (role abstract)
+ (slot address
+  (type INTEGER)
+  (visibility public)
+  (storage local)
+  (range 0 ?VARIABLE)
+  (default ?NONE))
+ (slot name
+  (type SYMBOL)
+  (visibility public)
+  (storage local)
+  (default ?NONE)))
+(defclass cell 
   (is-a USER)
+  (role abstract)
+  (slot cell-type
+        (type SYMBOL)
+        (storage shared)
+        (access read-only)
+        (default unknown))
   (slot address
         (type INTEGER)
+        (visibility public)
+        (storage local)
         (range 0 ?VARIABLE))
   (slot value
         (type INTEGER)
         (range 0 255)
+        (visibility public)
         (default-dynamic 0)))
+(defclass memory-cell
+  (is-a cell)
+  (role concrete)
+  (slot cell-type
+        (source composite)
+        (default memory)))
 
+(defclass cache-cell
+  (is-a cell)
+  (role concrete)
+  (slot address 
+        (source composite)
+        (storage shared)
+        (access initialize-only)
+        (default 0))
+  (slot cell-type
+        (source composite)
+        (default cache)))
 
 (defclass register
- "Represents a storage location that is \"close\" to the procesor"
+  "Represents a storage location that is \"close\" to the procesor"
   (is-a USER)
   (slot offset
         (type INTEGER)
-        (range 0 255)
         (storage local)
         (default ?NONE))
   (slot value
-        (type INTEGER)
-        (range 0 255)
-        (default-dynamic 0)))
+        (type INTEGER)))
+
+(defclass machine
+  (is-a USER)
+  (multislot registers 
+             (type INSTANCE)
+             (allowed-classes register)))
 ;TODO: automate the generation of the register set
+(defrule setup-machine
+         (initial-fact)
+         =>
+         (bind ?registers (instance-name (make-instance pc of register (offset 256))))
+         (loop-for-count (?i 0 255) do
+                         (bind ?registers (create$ ?registers (instance-name (make-instance (sym-cat r ?i) of register (offset ?i))))))
+         (make-instance proc of machine 
+                        (registers ?registers))
+         (assert (Machine setup)))
+(defrule load-program-into-memory
+         ?s <- (Machine setup)
+         ?f <- (load ?program-path into memory)
+         =>
+         ; the encoding of this processor can change from time to time but my
+         ; current idea is to have a 255 byte window that represents a set of
+         ; actions to be performed by the machine itself.
+         (retract ?s ?f)
+         ;build the memory cells right now
+         (if (open ?program-path file "r") then
+           (bind ?this (get-char file))
+           (bind ?i 0)
+           (while (!= ?this -1) do
+                  (make-instance of memory-cell
+                                 (address ?i)
+                                 (value ?this))
+                  (bind ?this (get-char file))
+                  (bind ?i (+ ?i 1)))
+           (close ?file)
+           (assert (stage decode execute restart))
+           else
+           (printout t "ERROR: Couldn't load program" crlf)
+           (halt)))
+(defrule next-stage
+         (declare (salience -10000))
+         ?f <- (stage ? $?rest)
+         =>
+         (retract ?f)
+         (if (> (length$ ?rest) 0) then
+           (assert (stage $?rest))))
+(defrule decode-instruction
+         (stage decode $?)
+         (object (is-a register)
+                 (name [pc])
+                 (value ?location))
+         (object (is-a memory-cell)
+          (address ?location)
+          (value ?operation))
+
+
