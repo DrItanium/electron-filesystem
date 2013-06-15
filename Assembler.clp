@@ -166,7 +166,7 @@
          (input-line (line-number ?i)
                      (original-input ?line)
                      (raw-input $?input))
-         (test (or (> (length$ $?input) 4)))
+         (test (> (length$ $?input) 4))
          =>
          (printout werror "ERROR: line " ?i " is invalid" crlf
                    "     " ?line crlf)
