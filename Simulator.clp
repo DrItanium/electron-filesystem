@@ -54,6 +54,7 @@
 (defclass memory-cell
   (is-a cell)
   (role concrete)
+  (pattern-match reactive)
   (slot cell-type
         (source composite)
         (default memory)))
@@ -61,6 +62,7 @@
 (defclass cache-cell
   (is-a cell)
   (role concrete)
+  (pattern-match reactive)
   (slot address 
         (source composite)
         (storage shared)
@@ -85,6 +87,94 @@
   (multislot registers 
              (type INSTANCE)
              (allowed-classes register)))
+
+(defgeneric next)
+(defgeneric next-one)
+(defgeneric next-two)
+(defgeneric next-three)
+(defmethod next
+  ((?value NUMBER)
+   (?count NUMBER (> ?count 3))
+   (?inc NUMBER (!= ?inc 1)))
+  (bind ?out (create$))
+  (loop-for-count (?i 1 ?count) do
+                  (bind ?out (create$ ?out (+ ?value (* ?i ?inc)))))
+  (return ?out))
+
+(defmethod next
+  ((?value NUMBER)
+   (?count NUMBER (> ?count 3))
+   (?inc NUMBER (= ?inc 1)))
+  (bind ?out (create$))
+  (loop-for-count (?i 1 ?count) do
+                  (bind ?out (create$ ?out (+ ?value ?i))))
+  (return ?out))
+(defmethod next
+  ((?value NUMBER)
+   (?count NUMBER (= ?count 1))
+   (?inc NUMBER))
+  (create$ (+ ?value ?inc)))
+(defmethod next
+  ((?value NUMBER)
+   (?count NUMBER (= ?count 2))
+   (?inc NUMBER (!= ?count 1)))
+  (create$ (+ ?value ?inc)
+           (+ ?value ?inc ?inc)))
+(defmethod next
+  ((?value NUMBER)
+   (?count NUMBER (= ?count 2))
+   (?inc NUMBER (= ?count 1)))
+  (create$ (+ ?value 1)
+           (+ ?value 2)))
+
+(defmethod next
+  ((?value NUMBER)
+   (?count NUMBER (= ?count 3))
+   (?inc NUMBER (!= ?count 1)))
+  (create$ (+ ?value ?inc)
+           (+ ?value ?inc ?inc)
+           (+ ?value ?inc ?inc ?inc)))
+
+(defmethod next 
+  ((?value NUMBER)
+   (?count NUMBER (= ?count 3))
+   (?inc NUMBER (= ?count 1)))
+  (create$ (+ ?value 1)
+           (+ ?value 2)
+           (+ ?value 3)))
+
+(defmethod next
+  ((?value NUMBER)
+   (?count NUMBER))
+  (next ?value ?count 1))
+
+
+(defmethod next-one
+  ((?value NUMBER)
+   (?inc NUMBER))
+  (next ?value 1 ?inc))
+
+(defmethod next-one
+  ((?value NUMBER))
+  (next ?value 1 1))
+
+(defmethod next-two
+  ((?value NUMBER)
+   (?inc NUMBER))
+  (next ?value 2 ?inc))
+
+(defmethod next-two
+  ((?value NUMBER))
+  (next ?value 2 1))
+
+(defmethod next-three
+  ((?value NUMBER)
+   (?inc NUMBER))
+  (next ?value 3 ?inc))
+
+(defmethod next-three
+  ((?value NUMBER))
+  (next ?value 3 1))
 ;TODO: automate the generation of the register set
 (defrule setup-machine
          (initial-fact)
@@ -110,7 +200,7 @@
                                  (value ?this))
                   (bind ?this (get-char file))
                   (bind ?i (+ ?i 1)))
-           (close ?file)
+           (close file)
            (assert (stage decode execute restart))
            else
            (printout t "ERROR: Couldn't load program" crlf)
@@ -144,6 +234,8 @@
          (retract ?f)
          (printout t "ERROR: Target operation is not valid" crlf)
          (halt))
+
+
 ; MACHINE SPECIFIC DESCRIPTION CODE FOLLOWS:
 ; With the exception of one instruction, the rest of the instruction
 ; set operates on available registers (which is why there are 255 of
@@ -156,76 +248,95 @@
 ;
 ; TODO: Modify the instruction set to define the program counter
 (defglobal MAIN 
- ; finding a zero will cause the processor to terminate instruction
- ; execution
- ?*terminate-instruction* = 0
- ?*nop-instruction* = 1
- ?*add-instruction* = 2
- ?*subtract-instruction* = 3
- ?*multiply-instruction* = 4
- ?*divide-instruction* = 5
- ?*right-shift-instruction*= 6
- ?*left-shift-instruction* = 7
- ?*equal-instruction* = 8
- ?*not-equal-instruction* = 9
- ?*less-than-instruction* = 10
- ?*greater-than-instruction* = 11
- ?*and-instruction* = 12
- ?*or-instruction* = 13
- ?*not-instruction* = 14
- ; uses a register as a predicate 
- ; br r1 [r2]
- ?*branch-instruction* = 15
- ; load r1 <= [r2] is the only supported load instruction
- ?*load-instruction* = 16 
- ; store [r1] <= r2 is the only supported store instruction
- ?*store-instruction* = 17
- ; set r1 <= constant is the only immediate operation in the
- ; instruction set
- ?*set-instruction* = 18
- ; system r1
- ?*interrupt-instruction* = 250
- ?*terminate-instruction* = 255)
+           ; finding a zero will cause the processor to terminate instruction
+           ; execution
+           ?*terminate-instruction* = 0
+           ?*nop-instruction* = 1
+           ?*add-instruction* = 2
+           ?*subtract-instruction* = 3
+           ?*multiply-instruction* = 4
+           ?*divide-instruction* = 5
+           ?*right-shift-instruction* = 6
+           ?*left-shift-instruction* = 7
+           ?*equal-instruction* = 8
+           ?*not-equal-instruction* = 9
+           ?*less-than-instruction* = 10
+           ?*greater-than-instruction* = 11
+           ?*and-instruction* = 12
+           ?*or-instruction* = 13
+           ?*not-instruction* = 14
+           ?*branch-instruction* = 15
+           ; load r1 <= [r2] is the only supported load instruction
+           ?*load-instruction* = 16 
+           ; store [r1] <= r2 is the only supported store instruction
+           ?*store-instruction* = 17
+           ; set r1 <= constant is the only immediate operation in the
+           ; instruction set
+           ?*set-instruction* = 18
+           ; system r1
+           ?*interrupt-instruction* = 250
+           )
 (defrule decode:nop
- "defines a nop instruction"
- (stage decode $?)
- ?f <- (invoke operation 0 at ?location)
- =>
- (retract ?f)
- (assert (nop)))
+         "defines a nop instruction"
+         (stage decode $?)
+         ?f <- (invoke operation ?x&:(= ?x ?*nop-instruction*) at ?)
+         =>
+         (retract ?f)
+         (assert (nop)))
 
-(defrule decode:load:base
- "the current operation is a load, further analysis required"
- (stage decode $?)
- ?f <- (invoke operation 1 at ?location)
- =>
- (retract ?f)
- (assert (determine:load ?location)))
+(defrule decode:load
+         (stage decode $?)
+         ?f <- (invoke operation ?x&:(= ?*load-instruction* ?x) at ?loc)
+         =>
+         (retract ?f)
+         (assert (load (next-two ?loc))))
 
-(defrule decode:load:register<=immediate
- (stage decode $?)
- ?f <- (determine:load ?offset)
- ;grab the status code
- (object (is-a memory-cell)
-         (address =(+ ?offset 1))
-         (value 0))
- =>
- (retract ?f)
- (assert (load register<=immediate ?destl ?srcl)))
-(defrule decode:load:register<=register-immediate
- (stage decode $?)
- ?f <- (load 1 ?destl ?srcl)
- =>
- (retract ?f)
- (assert (load register<=register-immediate ?destl ?srcl)))
-(defrule decode:store:base
- (stage decode $?)
- ?f <- (invoke operation 2 at ?location
-(defrule add-operation
- (stage execute $?)
+(defrule decode:store
+         (stage decode $?)
+         ?f <- (invoke operation ?x&:(= ?x ?*store-instruction*) at ?loc)
+         =>
+         (retract ?f)
+         (assert (store (next-two ?loc))))
+
+(defrule decode:add
+         (stage decode $?)
+         ?f <- (invoke operation ?x&:(= ?x ?*add-instruction*) at ?loc)
+         =>
+         (retract ?f)
+         (assert (add (next-three ?loc))))
+
+(defrule decode:subtract
+         (stage decode $?)
+         ?f <- (invoke operation ?x&:(= ?x ?*subtract-instruction*) at ?loc)
+         =>
+         (retract ?f)
+         (assert (subtract (next-three ?loc))))
+
+(defrule decode:multiply
+         (stage decode $?)
+         ?f <- (invoke operation ?x&:(= ?x ?*multiply-instruction*) at ?loc)
+         =>
+         (retract ?f)
+         (assert (multiply (next-three ?loc))))
+
+(defrule decode:divide
+         (stage decode $?)
+         ?f <- (invoke operation ?x&:(= ?x ?*divide-instruction*) at ?loc)
+         =>
+         (retract ?f)
+         (assert (divide (next-three ?loc))))
+
+(defrule decode:equal
+         (stage decode $?)
+         ?f <- (invoke operation ?x&:(= ?x ?*equal-instruction*) at ?loc)
+         =>
+         (retract ?f)
+         (assert (equal (next-three ?loc))))
 
 ; NOTES
 ; the encoding of this processor can change from time to time but my
 ; current idea is to have a 255 byte window that represents a set of
 ; actions to be performed by the machine itself. This isn't valid at
 ; this point but I may come back to this at another point
+
+
