@@ -31,6 +31,13 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define _CORE_USER_SETUP_H
 #define ARCH_VERSION "Generic"
 /* architecture define macros */
+#if defined(__theoretical__)
+#define ARCH_THEORETICAL 1
+#define ARCH_STRING "theoretical"
+#else
+#define ARCH_THEORETICAL 0
+#endif 
+
 #if defined(__alpha__)
 #define ARCH_ALPHA 1
 #define ARCH_STRING "alpha"
@@ -137,7 +144,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #if (! ARCH_ALPHA) && (! ARCH_X86_32) && (! ARCH_X86_64) && (! ARCH_SPARC) && \
 	 (! ARCH_ITANIUM) && (! ARCH_POWERPC_32) && (! ARCH_POWERPC_32) && (!ARCH_ARM) && \
     (! ARCH_ARM64) && (! ARCH_HPPA) && (! ARCH_M68K) && (! ARCH_MIPS) && (!ARCH_SH) && \
-    (! ARCH_S390X) 
+    (! ARCH_S390X) && (! ARCH_THEORETICAL)
 #define ARCH_UNKNOWN 1
 #define ARCH_STRING "unknown"
 #else
