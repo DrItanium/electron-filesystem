@@ -311,4 +311,7 @@
 ; actions to be performed by the machine itself. This isn't valid at
 ; this point but I may come back to this at another point
 
+(reset)
+(run)
+(exit)
 
