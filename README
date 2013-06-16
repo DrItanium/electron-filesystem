@@ -25,3 +25,7 @@ AND MUCH MUCH MORE.....
 This platform will have many branches and some of them will be integrated back
 into the mainline but expect tons of branches with many leading nowhere
 existing as a testament to research and trying new things.
+
+I am currently writing a tool chain for this project. Change to the
+theoretical-emulator branch to see the status of it. Generally speaking, I try
+to merge it back to master but I sometimes forget

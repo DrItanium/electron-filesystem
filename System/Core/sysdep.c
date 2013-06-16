@@ -147,10 +147,12 @@
 /* DEFINITIONS */
 /***************/
 
-#define NO_SWITCH         0
-#define BATCH_SWITCH      1
-#define BATCH_STAR_SWITCH 2
-#define LOAD_SWITCH       3
+#define NO_SWITCH              0
+#define BATCH_SWITCH           1
+#define BATCH_STAR_SWITCH      2
+#define LOAD_SWITCH            3
+/* Make it possible to assert facts on the command line */
+#define FACTS_FROM_COMMAND_LINE 4
 
 /********************/
 /* ENVIRONMENT DATA */
@@ -529,34 +531,38 @@ globle void RerouteStdin(
 #if ! RUN_TIME
       else if (strcmp(argv[i],"-f2") == 0) theSwitch = BATCH_STAR_SWITCH;
       else if (strcmp(argv[i],"-l") == 0) theSwitch = LOAD_SWITCH;
+      else if (strcmp(argv[i], "-args") == 0) {
+         theSwitch = FACTS_FROM_COMMAND_LINE;
+      }
 #endif
       else if (theSwitch == NO_SWITCH)
         {
          PrintErrorID(theEnv,(char*)"SYSDEP",2,FALSE);
          EnvPrintRouter(theEnv,WERROR,(char*)"Invalid option\n");
         }
-
       if (i > (argc-1))
         {
          PrintErrorID(theEnv,(char*)"SYSDEP",1,FALSE);
-         EnvPrintRouter(theEnv,WERROR,(char*)"No file found for ");
+         if(theSwitch != FACTS_FROM_COMMAND_LINE) {
+            EnvPrintRouter(theEnv,WERROR,(char*)"No file found for ");
+            switch(theSwitch)
+              {
+               case BATCH_SWITCH:
+                  EnvPrintRouter(theEnv,WERROR,(char*)"-f");
+                  break;
+               case BATCH_STAR_SWITCH:
+                  EnvPrintRouter(theEnv,WERROR,(char*)"-f2");
+                  break;
+               case LOAD_SWITCH:
+                  EnvPrintRouter(theEnv,WERROR,(char*)"-l");
+              }
+               EnvPrintRouter(theEnv,WERROR,(char*)" option\n");
+            return;
+         } else {
+            EnvPrintRouter(theEnv, WERROR, (char*)"No input provided for the --args option\n");
+            return;
+         }
 
-         switch(theSwitch)
-           {
-            case BATCH_SWITCH:
-               EnvPrintRouter(theEnv,WERROR,(char*)"-f");
-               break;
-
-            case BATCH_STAR_SWITCH:
-               EnvPrintRouter(theEnv,WERROR,(char*)"-f2");
-               break;
-
-            case LOAD_SWITCH:
-               EnvPrintRouter(theEnv,WERROR,(char*)"-l");
-           }
-
-         EnvPrintRouter(theEnv,WERROR,(char*)" option\n");
-         return;
         }
 
       switch(theSwitch)
@@ -572,6 +578,23 @@ globle void RerouteStdin(
 
          case LOAD_SWITCH:
             EnvLoad(theEnv,argv[++i]);
+            break;
+         case FACTS_FROM_COMMAND_LINE:
+            {
+               if(i < (argc - 1)) {
+                  size_t size = 33 + strlen(argv[++i]);
+                  char* ptr = (char*)genalloc(theEnv, size);
+                  gensprintf(ptr, "(args \"%s\")", argv[i]);
+                  EnvAssertString(theEnv, ptr);
+                  genfree(theEnv, ptr, size);
+                  break;
+               } else {
+                  PrintErrorID(theEnv,(char*)"SYSDEP",1,FALSE);
+                  EnvPrintRouter(theEnv, WERROR, (char*)"No input provided for the -args option\n");
+                  break;
+               }
+            }
+         default:
             break;
 #endif
         }
