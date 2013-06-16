@@ -1,0 +1,33 @@
+The theoretical architecture is my experiments into machine simulation as well
+as what it is like to write a tool chain from scratch. I'm also going to
+eventually use it to do research into microarchitectures and dynamic
+instruction recombination.
+
+
+I am trying to make this as simple as possible at first but here are the specs
+of the machine so far.
+
+256 8-bit registers (256 is the program counter [pc])
+Reduced instruction set (There should never be more than 50 instructions and
+                         even that is high)
+Only one instruction acts on immediate values. Every other instruction operates
+on registers.
+
+Asynchronous design that takes advantage of an expert system to do instruction
+recombination in place of a pipeline. 
+
+-------------------------------------------------------------------------------
+
+Some other ideas I want to explore are:
+1) Seeing if we can break the processor's large register set into a series of
+instruction streams that is set by the programmer in the assembler. 
+2) Superscalar (dynamic scheduling)
+3) VLIW/EPIC (static scheduling [differing levels])
+4) Declarative execution (The architecture is somewhat like this now but this
+   would be a fully declarative processor that would take cues from both 
+   superscalar and VLIW/EPIC designs.
+5) No Instruction Set Computing - Directly expose the functional units to the
+   programmer to the point that they have to control each one. VLIW/EPIC expose
+   a microarchitecture to the programmer where as this is a nanoarchitecture or
+   the hardware itself. It is so processor specific that it makes VLIW/EPIC
+   look somewhat automated.
