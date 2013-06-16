@@ -94,6 +94,7 @@
          ?f <- (input-line (raw-input))
          =>
          (retract ?f))
+
 (defrule invalid-line-found
          (declare (salience 2))
          (input-line (line-number ?i)
@@ -142,6 +143,10 @@
          (assert (operation (line-number ?l)
                             (operation ?operation)
                             (arguments $?rest))))
+
+;TODO: Build assembly generator
+;TODO: Mark labels and data instructions as a way to setup a jump table ahead
+;      of time.
 ;-------------------------------------------------------------------------------
 ; this becomes a script that reads from standard input
 ;-------------------------------------------------------------------------------
