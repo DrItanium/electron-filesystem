@@ -33,6 +33,7 @@
 ;                 processor architecture. It has an 8-bit direct address space
 ;                 that can be extended through the use of jump instructions.
 ;-------------------------------------------------------------------------------
+(load* MachineCommon.clp)
 (defclass cell 
   (is-a USER)
   (role abstract)
@@ -175,7 +176,7 @@
 (defmethod next-three
   ((?value NUMBER))
   (next ?value 3 1))
-;TODO: automate the generation of the register set
+
 (defrule setup-machine
          (initial-fact)
          =>
@@ -247,35 +248,6 @@
 ; this point it is important to get a basic implementation.
 ;
 ; TODO: Modify the instruction set to define the program counter
-(defglobal MAIN 
-           ; finding a zero will cause the processor to terminate instruction
-           ; execution
-           ?*terminate-instruction* = 0
-           ?*nop-instruction* = 1
-           ?*add-instruction* = 2
-           ?*subtract-instruction* = 3
-           ?*multiply-instruction* = 4
-           ?*divide-instruction* = 5
-           ?*right-shift-instruction* = 6
-           ?*left-shift-instruction* = 7
-           ?*equal-instruction* = 8
-           ?*not-equal-instruction* = 9
-           ?*less-than-instruction* = 10
-           ?*greater-than-instruction* = 11
-           ?*and-instruction* = 12
-           ?*or-instruction* = 13
-           ?*not-instruction* = 14
-           ?*branch-instruction* = 15
-           ; load r1 <= [r2] is the only supported load instruction
-           ?*load-instruction* = 16 
-           ; store [r1] <= r2 is the only supported store instruction
-           ?*store-instruction* = 17
-           ; set r1 <= constant is the only immediate operation in the
-           ; instruction set
-           ?*set-instruction* = 18
-           ; system r1
-           ?*interrupt-instruction* = 250
-           )
 (defrule decode:nop
          "defines a nop instruction"
          (stage decode $?)

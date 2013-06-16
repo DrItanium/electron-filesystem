@@ -27,28 +27,15 @@
 ;-------------------------------------------------------------------------------
 ; Assembler.clp - An assembler for the theoretical processor.
 ;-------------------------------------------------------------------------------
-(defglobal MAIN ; human readable form
+(load* MachineCommon.clp)
+;-------------------------------------------------------------------------------
+(defglobal MAIN
            ?*symbol-label-instruction* = label
-           ?*symbol-terminate-instruction* = terminate
-           ?*symbol-nop-instruction* = nop
-           ?*symbol-add-instruction* = add
-           ?*symbol-subtract-instruction* = sub
-           ?*symbol-multiply-instruction* = mul
-           ?*symbol-divide-instruction* = div
-           ?*symbol-right-shift-instruction* = right-shift
-           ?*symbol-left-shift-instruction* = left-shift
-           ?*symbol-equal-instruction* = eq
-           ?*symbol-not-equal-instruction* = neq
-           ?*symbol-less-than-instruction* = lt
-           ?*symbol-greater-than-instruction* = gt
-           ?*symbol-and-instruction* = and
-           ?*symbol-or-instruction* = or
-           ?*symbol-not-instruction* = not
-           ?*symbol-branch-instruction* = branch
-           ?*symbol-load-instruction* = load
-           ?*symbol-store-instruction* = store
-           ?*symbol-set-instruction* = set
-           ?*symbol-interrupt-instruction* = interrupt)
+           )
+(deffacts macro-instructions
+          (instruction (tag ?*symbol-label-instruction*)
+                       (arg-count 1)
+                       (is-macro TRUE)))
 ;-------------------------------------------------------------------------------
 (deftemplate input-line
              (slot line-number
@@ -67,60 +54,6 @@
                    (type SYMBOL)
                    (default ?NONE))
              (multislot arguments))
-;-------------------------------------------------------------------------------
-(deftemplate instruction
-             (slot tag 
-                   (type SYMBOL))
-             (slot arg-count
-                   (type INTEGER))
-             (slot is-macro ; is it a convienience instruction/operation?
-                   (type SYMBOL)
-                   (allowed-symbols FALSE TRUE)))
-;-------------------------------------------------------------------------------
-(deffacts argument-conversion-counts
-          (instruction (tag ?*symbol-terminate-instruction*)
-                       (arg-count 0))
-          (instruction (tag ?*symbol-nop-instruction*)
-                       (arg-count 0))
-          (instruction (tag ?*symbol-add-instruction*)
-                       (arg-count 3))
-          (instruction (tag ?*symbol-subtract-instruction*)
-                       (arg-count 3))
-          (instruction (tag ?*symbol-multiply-instruction*)
-                       (arg-count 3))
-          (instruction (tag ?*symbol-divide-instruction*)
-                       (arg-count 3))
-          (instruction (tag ?*symbol-right-shift-instruction*)
-                       (arg-count 3))
-          (instruction (tag ?*symbol-left-shift-instruction*)
-                       (arg-count 3))
-          (instruction (tag ?*symbol-equal-instruction*)
-                       (arg-count 3))
-          (instruction (tag ?*symbol-not-equal-instruction*)
-                       (arg-count 3))
-          (instruction (tag ?*symbol-less-than-instruction*)
-                       (arg-count 3))
-          (instruction (tag ?*symbol-greater-than-instruction*)
-                       (arg-count 3))
-          (instruction (tag ?*symbol-and-instruction*)
-                       (arg-count 3))
-          (instruction (tag ?*symbol-or-instruction*)
-                       (arg-count 3))
-          (instruction (tag ?*symbol-not-instruction*)
-                       (arg-count 2))
-          (instruction (tag ?*symbol-branch-instruction*)
-                       (arg-count 2))
-          (instruction (tag ?*symbol-load-instruction*)
-                       (arg-count 2))
-          (instruction (tag ?*symbol-store-instruction*)
-                       (arg-count 2))
-          (instruction (tag ?*symbol-set-instruction*)
-                       (arg-count 2))
-          (instruction (tag ?*symbol-interrupt-instruction*)
-                       (arg-count 1))
-          (instruction (tag ?*symbol-label-instruction*)
-                       (arg-count 1)
-                       (is-macro TRUE)))
 ;-------------------------------------------------------------------------------
 (defgeneric to-char)
 ;-------------------------------------------------------------------------------
