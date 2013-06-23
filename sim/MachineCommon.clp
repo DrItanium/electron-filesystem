@@ -31,7 +31,7 @@
 (defglobal MAIN 
            ; finding a zero will cause the processor to terminate instruction
            ; execution
-           ?*terminate-instruction* = 255
+           ?*terminate-instruction* = 0
            ?*nop-instruction* = 1
            ?*add-instruction* = 2
            ?*subtract-instruction* = 3
@@ -54,6 +54,9 @@
            ; set r1 <= constant is the only immediate operation in the
            ; instruction set
            ?*set-instruction* = 18
+           ; tells the processor that this is the end of something
+           ; it is not the same as halting
+           ?*stop-instruction* = 19 
            ; system r1
            ?*interrupt-instruction* = 250
            ;Human representation
@@ -76,6 +79,7 @@
            ?*symbol-load-instruction* = load
            ?*symbol-store-instruction* = store
            ?*symbol-set-instruction* = set
+           ?*symbol-stop-instruction* = stop
            ?*symbol-interrupt-instruction* = interrupt)
 ;-------------------------------------------------------------------------------
 (deftemplate instruction
@@ -147,6 +151,9 @@
           (instruction (tag ?*symbol-set-instruction*)
                        (machine-tag ?*set-instruction*)
                        (arg-count 2))
+          (instruction (tag ?*symbol-stop-instruction*
+                       (machine-tag ?*stop-instruction*)
+                       (arg-count 0))
           (instruction (tag ?*symbol-interrupt-instruction*)
                        (machine-tag ?*interrupt-instruction*)
                        (arg-count 1)))
