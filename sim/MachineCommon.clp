@@ -31,7 +31,7 @@
 (defglobal MAIN 
            ; finding a zero will cause the processor to terminate instruction
            ; execution
-           ?*terminate-instruction* = 0
+           ?*terminate-instruction* = 255
            ?*nop-instruction* = 1
            ?*add-instruction* = 2
            ?*subtract-instruction* = 3
@@ -150,4 +150,10 @@
           (instruction (tag ?*symbol-interrupt-instruction*)
                        (machine-tag ?*interrupt-instruction*)
                        (arg-count 1)))
+;-------------------------------------------------------------------------------
+(defgeneric register-name-to-index)
+;-------------------------------------------------------------------------------
+(defmethod register-name-to-index
+           ((?register-name SYMBOL))
+           (string-to-field (sub-string 2 (str-length ?register-name) ?register-name)))
 ;-------------------------------------------------------------------------------

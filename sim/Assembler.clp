@@ -55,18 +55,6 @@
                    (default ?NONE))
              (multislot arguments))
 ;-------------------------------------------------------------------------------
-(defgeneric to-char)
-;-------------------------------------------------------------------------------
-(defmethod to-char
-  ((?i INTEGER (>= ?i 0)) ; no negative numbers
-   (?stream SYMBOL))
-  (format ?stream "%c" ?i))
-
-(defmethod to-char
-  ((?i INTEGER (>= ?i 0)))
-  (to-char ?i nil))
-
-;-------------------------------------------------------------------------------
 ; since we can't do "knowledge construction" in the standard sense we need to
 ; pull input from standard-in.
 ;-------------------------------------------------------------------------------
@@ -147,6 +135,40 @@
 ;TODO: Build assembly generator
 ;TODO: Mark labels and data instructions as a way to setup a jump table ahead
 ;      of time.
+(defrule encode-operation:core-instruction:set
+         "Take a generated operation and construct an encoded version"
+         (declare (salience 2))
+         ?op <- (operation (line-number ?l)
+                           (operation set)
+                           (arguments $?rest))
+         ?inst <- (instruction (tag set)
+                               (machine-tag ?mt)
+                               (is-macro FALSE))
+         =>
+         ; encode the machine tag in the first "byte"
+         (retract ?op)
+         (put-char ?mt)
+         (put-char (register-name-to-index (nth$ 1 ?rest)))
+         (progn$ (?z (slice8 (nth$ 2 ?rest)))
+                 (put-char ?z)))
+         
+(defrule encode-operation:core-instruction:generic
+         "Take a generated operation and construct an encoded version"
+         (declare (salience 1))
+         ?op <- (operation (line-number ?l)
+                           (operation ?operation&~set)
+                           (arguments $?rest))
+         ?inst <- (instruction (tag ?operation)
+                               (machine-tag ?mt)
+                               (is-macro FALSE))
+         =>
+         ; encode the machine tag in the first "byte"
+         (retract ?op)
+         (put-char ?mt)
+         (progn$ (?r $?rest)
+                 (put-char (register-name-to-index ?r))))
+         
+         
 ;-------------------------------------------------------------------------------
 ; this becomes a script that reads from standard input
 ;-------------------------------------------------------------------------------
