@@ -151,7 +151,7 @@
           (instruction (tag ?*symbol-set-instruction*)
                        (machine-tag ?*set-instruction*)
                        (arg-count 2))
-          (instruction (tag ?*symbol-stop-instruction*
+          (instruction (tag ?*symbol-stop-instruction*)
                        (machine-tag ?*stop-instruction*)
                        (arg-count 0))
           (instruction (tag ?*symbol-interrupt-instruction*)
