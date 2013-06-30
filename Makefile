@@ -2,7 +2,8 @@
 export progroot ?= $(CURDIR)
 export srcroot ?= $(progroot)
 # Let's not be a total asshole and just set this to cc
-CC = cc
+CC := cc
+LD := cc
 OUTPUT = electron
 SUBDIRS = System
 
@@ -41,7 +42,7 @@ OBJS = System/Core/agenda.o System/Core/analysis.o System/Core/argacces.o System
 
 
 program: subdirs 
-	$(CC) $(CFLAGS) -o $(OUTPUT) $(OBJS) -lm -lncurses
+	$(LD) $(LDFLAGS) -o $(OUTPUT) $(OBJS) -lm -lncurses
 
 
 .PHONY: clean sub-clean subdirs $(SUBDIRS)
