@@ -123,7 +123,14 @@
 #else
 #define IBM 0
 #endif
-
+/***********************************************/
+/* Check for plan9port flag (Compile with 9c)  */
+/***********************************************/
+#ifdef PLAN9PORT
+#define CAN_USE_PLAN9_FEATURES 1
+#else
+#define CAN_USE_PLAN9_FEATURES 0
+#endif
 /***********************************************/
 /* Some definitions for use with declarations. */
 /***********************************************/
