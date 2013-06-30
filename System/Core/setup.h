@@ -123,6 +123,7 @@
 #else
 #define IBM 0
 #endif
+
 /***********************************************/
 /* Check for plan9port flag (Compile with 9c)  */
 /***********************************************/
@@ -481,6 +482,21 @@
 #define Bogus(x) assert(! (x))
 #else
 #define Bogus(x)
+#endif
+
+/******************************************************************************/
+/* Plan 9 Extensions.                                                         */
+/* Enables the use of plan 9 from user space extensions.                      */
+/* The p9p libraries will be statically linked into the electron executable   */
+/* automatically by 9c. This only works on unix and unix-like platforms.      */
+/******************************************************************************/
+#ifndef USE_PLAN9_EXTENSIONS 
+#define USE_PLAN9_EXTENSIONS 1
+#endif
+
+#if ! CAN_USE_PLAN9_FEATURES 
+#undef USE_PLAN9_EXTENSIONS
+#define USE_PLAN9_EXTENSIONS 0
 #endif
 
 /***************************/
