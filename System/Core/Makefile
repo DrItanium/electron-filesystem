@@ -30,12 +30,12 @@ OBJS = agenda.o analysis.o argacces.o bload.o bmathfun.o bsave.o \
  	strngrtr.o symblbin.o symblcmp.o symbol.o sysdep.o textpro.o \
  	tmpltbin.o tmpltbsc.o tmpltcmp.o tmpltdef.o tmpltfun.o tmpltlhs.o \
  	tmpltpsr.o tmpltrhs.o tmpltutl.o userdata.o userfunctions.o \
- 	utility.o watch.o main.o binary_operations.o 
+ 	utility.o watch.o main.o binops.o 
 
 .c.o :
 	$(CC) -c $(CFLAGS) -DALLOW_ENVIRONMENT_GLOBALS=0 -std=c99 -Wall -Wundef -Wpointer-arith -Wshadow -Wcast-qual \
 	    -Wcast-align -Winline -Wmissing-declarations -Wredundant-decls \
-	    -Woverloaded-virtual -Wmissing-prototypes -Wnested-externs \
+	    -Wmissing-prototypes -Wnested-externs \
 	    -Wstrict-prototypes -Waggregate-return -Wno-implicit -I$(srcroot) $<
 all: $(OBJS)
 
@@ -1246,7 +1246,7 @@ watch.o: watch.c setup.h envrnmnt.h symbol.h usrsetup.h constant.h \
   userdata.h evaluatn.h expressn.h exprnops.h exprnpsr.h extnfunc.h \
   scanner.h pprint.h symblcmp.h modulpsr.h utility.h argacces.h watch.h
 
-binary_operations.o: binary_operations.c clips.h binary_operations.h
+binops.o: binops.c clips.h binops.h
 
 .PHONY: clean 
 

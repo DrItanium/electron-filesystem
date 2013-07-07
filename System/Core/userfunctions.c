@@ -42,7 +42,7 @@
 /***************************************************************************/
 
 #include "clips.h"
-#include "binary_operations.h"
+#include "binops.h"
 #include <System/System.h>
 
 void UserFunctions(void);

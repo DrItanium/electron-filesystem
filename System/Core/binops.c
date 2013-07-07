@@ -1,5 +1,5 @@
 #include "clips.h" 
-#include "binary_operations.h"
+#include "binops.h"
 
 //private definitions
 typedef unsigned long long longlong;

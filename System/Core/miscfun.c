@@ -768,6 +768,14 @@ EnvPrintRouter(theEnv,WDISPLAY,(char*)"Run time module is ");
 #else
   EnvPrintRouter(theEnv,WDISPLAY,(char*)"OFF\n");
 #endif
+
+EnvPrintRouter(theEnv, WDISPLAY,(char*)"Plan 9 extensions are ");
+#if USE_PLAN9_EXTENSIONS
+  EnvPrintRouter(theEnv, WDISPLAY, (char*)"ON\n");
+#else
+  EnvPrintRouter(theEnv, WDISPLAY, (char*)"OFF\n");
+#endif
+  
   }
 
 /***********************************************/

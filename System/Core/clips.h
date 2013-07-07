@@ -130,6 +130,8 @@
 #include "objrtmch.h"
 #endif
 
+#if USE_PLAN9_EXTENSIONS
+#endif
 
 #endif
 
