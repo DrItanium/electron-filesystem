@@ -1,2 +1,6 @@
 The theoretical-architecture is a virtual architecture that I'm creating to
 explore different aspects of low-level system design.
+
+
+This project depends on the electron platform to run. You will need to clone
+the electron repo and build the executable. 
