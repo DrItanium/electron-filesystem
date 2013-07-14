@@ -41,10 +41,15 @@
          =>
          (bind ?registers (instance-name (make-instance pc of register (offset 256))))
          (loop-for-count (?i 0 255) do
-                         (bind ?registers (create$ ?registers (instance-name (make-instance (sym-cat r ?i) of register (offset ?i))))))
+                         (bind ?registers 
+                               (create$ ?registers 
+                                        (instance-name 
+                                          (make-instance (sym-cat r ?i) of register 
+                                                         (offset ?i))))))
          (make-instance proc of machine 
                         (registers ?registers))
          (assert (Machine setup)))
+
 (defrule load-program-into-memory
          ?s <- (Machine setup)
          =>
@@ -59,6 +64,7 @@
                 (bind ?this (get-char))
                 (bind ?i (+ ?i 1)))
          (assert (stage decode execute restart)))
+
 (defrule next-stage
          (declare (salience -10000))
          ?f <- (stage ? $?rest)
@@ -66,6 +72,7 @@
          (retract ?f)
          (if (> (length$ ?rest) 0) then
            (assert (stage $?rest))))
+
 (defrule load-instruction-into-decoder 
          (stage decode $?)
          (object (is-a register)
@@ -156,8 +163,11 @@
          (declare (salience 1))
          (stage execute $?)
          ?f <- (op set ?r ?m0 ?m1 ?m2 ?m3 ?m4 ?m5 ?m6 ?m7)
+         (object (is-a memory-cell)
+                 (address ?r)
+                 (value ?e))
          ?reg <- (object (is-a register)
-                         (offset ?r))
+                         (offset ?e))
          (object (is-a memory-cell)
                  (address ?m0)
                  (value ?v0))
@@ -186,6 +196,7 @@
          (retract ?f)
          (assert (advance pc 10))
          (send ?reg put-value (merge (create$ ?v0 ?v1 ?v2 ?v3 ?v4 ?v5 ?v6 ?v7))))
+
 (defrule execute:nop
          (declare (salience 1))
          (stage execute $?)
@@ -203,16 +214,25 @@
 
 (defrule execute:three-operand-exec
          (stage execute $?)
-         ?f <- (op ?action ?dest ?s0 ?s1)
+         ?f <- (op ?action ?mdest ?m0 ?m1)
          (instruction (tag ?action)
                       (funcall ?fn))
+         (object (is-a memory-cell)
+                 (address ?mdest)
+                 (value ?rdest))
          ?destination <- (object (is-a register)
-                                 (offset ?dest))
+                                 (offset ?rdest))
+         (object (is-a memory-cell)
+                 (address ?m0)
+                 (value ?r0))
          (object (is-a register)
-                 (offset ?s0)
+                 (offset ?r0)
                  (value ?v0))
+         (object (is-a memory-cell)
+                 (address ?m1)
+                 (value ?r1))
          (object (is-a register)
-                 (offset ?s1)
+                 (offset ?r1)
                  (value ?v1))
          =>
          (retract ?f)
@@ -223,50 +243,125 @@
          ?f <- (op ?action ?dest ?s0)
          (instruction (tag ?action)
                       (funcall ?fn))
+         (object (is-a memory-cell)
+                 (address ?dest)
+                 (value ?rd))
          ?destination <- (object (is-a register)
-                                 (offset ?dest))
+                                 (offset ?rd))
+         (object (is-a memory-cell)
+                 (address ?s0)
+                 (value ?r0))
          (object (is-a register)
-                 (offset ?s0)
+                 (offset ?r0)
                  (value ?v0))
          =>
          (retract ?f)
          (assert (advance pc 3))
          (send ?destination put-value (funcall ?fn ?v0)))
+(defrule execute:store-operand-decompose
+         (declare (salience 1))
+         (stage execute $?)
+         ?f <- (op store ?dest ?s0)
+         (object (is-a memory-cell)
+                 (address ?dest)
+                 (value ?rd))
+         ?d <- (object (is-a register)
+                       (offset ?rd)
+                       (value ?v0))
+         (object (is-a memory-cell)
+                 (address ?s0)
+                 (value ?r0))
+         (object (is-a register)
+                 (offset ?r0)
+                 (value ?v1))
+         =>
+         (retract ?f)
+         ;we need to decompose our number into 
+         ;eight cells for writing.
+         (assert (to ?v0 write (slice8 ?v1))))
+
+(defrule execute:store-operand-exec:new-cell
+         (stage execute $?)
+         ?f <- (to ?dest write ?a $?rest)
+         (not (exists (object (is-a memory-cell)
+                              (address ?dest))))
+         =>
+         (make-instance of memory-cell
+                        (address ?dest)
+                        (value ?a))
+         (retract ?f)
+         (assert (to (+ ?dest 1) write $?rest)))
+
+(defrule execute:store-operand-exec:existent-cell
+         (stage execute $?)
+         ?f <- (to ?dest write ?a $?rest)
+         ?d <- (object (is-a memory-cell)
+                       (address ?dest))
+         =>
+         (retract ?f)
+         (assert (to (+ ?dest 1) write $?rest))
+         (send ?d put-value ?a))
+
+(defrule execute:store-operand-finish
+         (stage execute $?)
+         ?f <- (to ?dest write)
+         =>
+         (assert (advance pc 3))
+         (retract ?f))
+
+(defrule execute:load-operand-decompose
+         (declare (salience 1))
+         (stage execute $?)
+         ?f <- (op load ?dest ?s0)
+         (object (is-a memory-cell)
+                 (address ?dest)
+                 (value ?rd))
+         ?d <- (object (is-a register)
+                       (offset ?rd))
+         (object (is-a memory-cell)
+                 (address ?s0)
+                 (value ?r0))
+         (object (is-a register)
+                 (offset ?r0)
+                 (value ?v0))
+         =>
+         ;start at this position and pull in eight cells
+         (retract ?f)
+         (assert (from ?v0 into ?d acquire 8 cells as )))
 
 (defrule execute:load-operand-exec:new-cell
-         (declare (salience 1))
          (stage execute $?)
-         ?f <- (op load ?dest ?s0)
-         ?d <- (object (is-a register)
-                       (offset ?dest))
-         ?s <- (object (is-a register)
-                       (offset ?s0)
-                       (value ?v0))
+         ?f <- (from ?s into ?d acquire ?j&:(> ?j 0) cells as $?cells) 
          (not (exists (object (is-a memory-cell)
-                              (address ?v0))))
+                              (address ?s))))
          =>
          (make-instance of memory-cell 
-                        (address ?v0)
+                        (address ?s)
                         (value 0))
-         (send ?d put-value 0)
-         (retract ?f))
+         (retract ?f)
+         (assert (from (+ ?s 1) into ?d acquire (- ?j 1) cells as $?cells 0)))
 
 (defrule execute:load-operand-exec:existent-cell
-         (declare (salience 1))
          (stage execute $?)
-         ?f <- (op load ?dest ?s0)
-         ?d <- (object (is-a register)
-                       (offset ?dest))
-         ?s <- (object (is-a register)
-                       (offset ?s0)
-                       (value ?a))
+         ?f <- (from ?s into ?d acquire ?j&:(> ?j 0) cells as $?cells) 
          (object (is-a memory-cell)
-                 (address ?a)
+                 (address ?s)
                  (value ?v))
          =>
-         (send ?d put-value ?v)
-         (retract ?f))
-                 
+         (retract ?f)
+         (assert (from (+ ?s 1) into ?d acquire (- ?j 1) cells as $?cells ?v )))
+
+(defrule execute:finish-load-operation
+         (stage execute $?)
+         ?f <- (from ? into ?d acquire 0 cells as $?cells)
+         =>
+         (retract ?f)
+         ; Have to wrap this in a create$ call to make it work
+         ; correctly :/
+         (bind ?result (merge (create$ $?cells)))
+         (send ?d put-value ?result)
+         (assert (advance pc 3)))
+
 
 (defrule advance-program-counter:explicit-value
          (declare (salience 1))
