@@ -233,6 +233,41 @@
          (assert (advance pc 3))
          (send ?destination put-value (funcall ?fn ?v0)))
 
+(defrule execute:load-operand-exec:new-cell
+         (declare (salience 1))
+         (stage execute $?)
+         ?f <- (op load ?dest ?s0)
+         ?d <- (object (is-a register)
+                       (offset ?dest))
+         ?s <- (object (is-a register)
+                       (offset ?s0)
+                       (value ?v0))
+         (not (exists (object (is-a memory-cell)
+                              (address ?v0))))
+         =>
+         (make-instance of memory-cell 
+                        (address ?v0)
+                        (value 0))
+         (send ?d put-value 0)
+         (retract ?f))
+
+(defrule execute:load-operand-exec:existent-cell
+         (declare (salience 1))
+         (stage execute $?)
+         ?f <- (op load ?dest ?s0)
+         ?d <- (object (is-a register)
+                       (offset ?dest))
+         ?s <- (object (is-a register)
+                       (offset ?s0)
+                       (value ?a))
+         (object (is-a memory-cell)
+                 (address ?a)
+                 (value ?v))
+         =>
+         (send ?d put-value ?v)
+         (retract ?f))
+                 
+
 (defrule advance-program-counter:explicit-value
          (declare (salience 1))
          ?f2 <- (stage restart)
