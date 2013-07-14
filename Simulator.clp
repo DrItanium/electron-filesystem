@@ -34,149 +34,8 @@
 ;                 that can be extended through the use of jump instructions.
 ;-------------------------------------------------------------------------------
 (load* MachineCommon.clp)
-(defclass cell 
-  (is-a USER)
-  (role abstract)
-  (slot cell-type
-        (type SYMBOL)
-        (storage shared)
-        (access read-only)
-        (default unknown))
-  (slot address
-        (type INTEGER)
-        (visibility public)
-        (storage local)
-        (range 0 ?VARIABLE))
-  (slot value
-        (type INTEGER)
-        (range 0 255)
-        (visibility public)
-        (default-dynamic 0)))
-(defclass memory-cell
-  (is-a cell)
-  (role concrete)
-  (pattern-match reactive)
-  (slot cell-type
-        (source composite)
-        (default memory)))
-
-(defclass cache-cell
-  (is-a cell)
-  (role concrete)
-  (pattern-match reactive)
-  (slot address 
-        (source composite)
-        (storage shared)
-        (access initialize-only)
-        (default 0))
-  (slot cell-type
-        (source composite)
-        (default cache)))
-
-(defclass register
-  "Represents a storage location that is \"close\" to the procesor"
-  (is-a USER)
-  (slot offset
-        (type INTEGER)
-        (storage local)
-        (default ?NONE))
-  (slot value
-        (type INTEGER)))
-
-(defclass machine
-  (is-a USER)
-  (multislot registers 
-             (type INSTANCE)
-             (allowed-classes register)))
-
-(defgeneric next)
-(defgeneric next-one)
-(defgeneric next-two)
-(defgeneric next-three)
-(defmethod next
-  ((?value NUMBER)
-   (?count NUMBER (> ?count 3))
-   (?inc NUMBER (!= ?inc 1)))
-  (bind ?out (create$))
-  (loop-for-count (?i 1 ?count) do
-                  (bind ?out (create$ ?out (+ ?value (* ?i ?inc)))))
-  (return ?out))
-
-(defmethod next
-  ((?value NUMBER)
-   (?count NUMBER (> ?count 3))
-   (?inc NUMBER (= ?inc 1)))
-  (bind ?out (create$))
-  (loop-for-count (?i 1 ?count) do
-                  (bind ?out (create$ ?out (+ ?value ?i))))
-  (return ?out))
-(defmethod next
-  ((?value NUMBER)
-   (?count NUMBER (= ?count 1))
-   (?inc NUMBER))
-  (create$ (+ ?value ?inc)))
-(defmethod next
-  ((?value NUMBER)
-   (?count NUMBER (= ?count 2))
-   (?inc NUMBER (!= ?count 1)))
-  (create$ (+ ?value ?inc)
-           (+ ?value ?inc ?inc)))
-(defmethod next
-  ((?value NUMBER)
-   (?count NUMBER (= ?count 2))
-   (?inc NUMBER (= ?count 1)))
-  (create$ (+ ?value 1)
-           (+ ?value 2)))
-
-(defmethod next
-  ((?value NUMBER)
-   (?count NUMBER (= ?count 3))
-   (?inc NUMBER (!= ?count 1)))
-  (create$ (+ ?value ?inc)
-           (+ ?value ?inc ?inc)
-           (+ ?value ?inc ?inc ?inc)))
-
-(defmethod next 
-  ((?value NUMBER)
-   (?count NUMBER (= ?count 3))
-   (?inc NUMBER (= ?count 1)))
-  (create$ (+ ?value 1)
-           (+ ?value 2)
-           (+ ?value 3)))
-
-(defmethod next
-  ((?value NUMBER)
-   (?count NUMBER))
-  (next ?value ?count 1))
-
-
-(defmethod next-one
-  ((?value NUMBER)
-   (?inc NUMBER))
-  (next ?value 1 ?inc))
-
-(defmethod next-one
-  ((?value NUMBER))
-  (next ?value 1 1))
-
-(defmethod next-two
-  ((?value NUMBER)
-   (?inc NUMBER))
-  (next ?value 2 ?inc))
-
-(defmethod next-two
-  ((?value NUMBER))
-  (next ?value 2 1))
-
-(defmethod next-three
-  ((?value NUMBER)
-   (?inc NUMBER))
-  (next ?value 3 ?inc))
-
-(defmethod next-three
-  ((?value NUMBER))
-  (next ?value 3 1))
-
+(load* SimulatorComponents.clp)
+;-------------------------------------------------------------------------------
 (defrule setup-machine
          (initial-fact)
          =>
@@ -188,24 +47,18 @@
          (assert (Machine setup)))
 (defrule load-program-into-memory
          ?s <- (Machine setup)
-         ?f <- (load ?program-path into memory)
          =>
-         (retract ?s ?f)
+         (retract ?s)
          ;build the memory cells right now
-         (if (open ?program-path file "r") then
-           (bind ?this (get-char file))
-           (bind ?i 0)
-           (while (!= ?this -1) do
-                  (make-instance of memory-cell
-                                 (address ?i)
-                                 (value ?this))
-                  (bind ?this (get-char file))
-                  (bind ?i (+ ?i 1)))
-           (close file)
-           (assert (stage decode execute restart))
-           else
-           (printout t "ERROR: Couldn't load program" crlf)
-           (halt)))
+         (bind ?this (get-char))
+         (bind ?i 0)
+         (while (!= ?this -1) do
+                (make-instance of memory-cell
+                               (address ?i)
+                               (value ?this))
+                (bind ?this (get-char))
+                (bind ?i (+ ?i 1)))
+         (assert (stage decode execute restart)))
 (defrule next-stage
          (declare (salience -10000))
          ?f <- (stage ? $?rest)
@@ -271,9 +124,9 @@
 
 (defrule decode:set
          "Decode the set operation, it has to be handled differently"
-         (declare (salience 1))
+         (declare (salience 2))
          (stage decode $?)
-         ?f <- (invoke operation =?*set-instruction* at ?loc)
+         ?f <- (invoke operation ?x&:(= ?x ?*set-instruction*) at ?loc)
          =>
          (retract ?f)
          (assert (op set (next ?loc 9)))) 
@@ -298,11 +151,38 @@
          (retract ?f)
          (assert (op ?t (next-three ?loc))))
 
-; NOTES
-; the encoding of this processor can change from time to time but my
-; current idea is to have a 255 byte window that represents a set of
-; actions to be performed by the machine itself. This isn't valid at
-; this point but I may come back to this at another point
+(defrule execute:set-operation
+         (stage execute $?)
+         ?f <- (op set ?r ?m0 ?m1 ?m2 ?m3 ?m4 ?m5 ?m6 ?m7)
+         ?reg <- (object (is-a register)
+                         (offset ?r))
+                 (object (is-a memory-cell)
+                         (address ?m0)
+                         (value ?v0))
+                 (object (is-a memory-cell)
+                         (address ?m1)
+                         (value ?v1))
+                 (object (is-a memory-cell)
+                         (address ?m2)
+                         (value ?v2))
+                 (object (is-a memory-cell)
+                         (address ?m3)
+                         (value ?v3))
+                 (object (is-a memory-cell)
+                         (address ?m4)
+                         (value ?v4))
+                 (object (is-a memory-cell)
+                         (address ?m5)
+                         (value ?v5))
+                 (object (is-a memory-cell)
+                         (address ?m6)
+                         (value ?v6))
+                 (object (is-a memory-cell)
+                         (address ?m7)
+                         (value ?v7))
+         =>
+         (retract ?f)
+         (send ?reg put-value (merge (create$ ?v0 ?v1 ?v2 ?v3 ?v4 ?v5 ?v6 ?v7))))
 
 (reset)
 (run)
