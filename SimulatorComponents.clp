@@ -90,14 +90,14 @@
 (defgeneric next-one)
 (defgeneric next-two)
 (defgeneric next-three)
- 
+
 (defmethod next
   "A method that makes the next method more understandable"
   ((?n NUMBER)
    (?cells SYMBOL (eq ?cells cells))
    (?from SYMBOL (eq ?from from))
    (?loc NUMBER))
-   (next ?n ?loc 1))
+  (next ?n ?loc 1))
 
 (defmethod next
   ((?value NUMBER)
@@ -182,3 +182,9 @@
 (defmethod next-three
   ((?value NUMBER))
   (next ?value 3 1))
+
+(deffunction !! 
+             "Used as an error function"
+             ($?args)
+             (printout werror "ERROR: instruction does not have a funcall!!! Halting!" crlf)
+             (halt))
