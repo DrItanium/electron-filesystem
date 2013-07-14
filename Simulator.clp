@@ -184,6 +184,7 @@
                  (value ?v7))
          =>
          (retract ?f)
+         (assert (advance pc 10))
          (send ?reg put-value (merge (create$ ?v0 ?v1 ?v2 ?v3 ?v4 ?v5 ?v6 ?v7))))
 (defrule execute:nop
          (declare (salience 1))
@@ -194,11 +195,11 @@
 
 (defrule execute:terminate
          (declare (salience 1))
-         (stage execute $?)
+         ?f2 <- (stage execute $?)
          ?f <- (op terminate)
          =>
-         (retract ?f)
-         (assert (Terminate execution)))
+         ;stop execution
+         (retract ?f ?f2))
 
 (defrule execute:three-operand-exec
          (stage execute $?)
@@ -215,6 +216,7 @@
                  (value ?v1))
          =>
          (retract ?f)
+         (assert (advance pc 4))
          (send ?destination put-value (funcall ?fn ?v0 ?v1)))
 (defrule execute:two-operand-exec
          (stage execute $?)
@@ -228,7 +230,28 @@
                  (value ?v0))
          =>
          (retract ?f)
+         (assert (advance pc 3))
          (send ?destination put-value (funcall ?fn ?v0)))
+
+(defrule advance-program-counter:explicit-value
+         (declare (salience 1))
+         ?f2 <- (stage restart)
+         ?f <- (advance pc ?z)
+         ?pc <- (object (is-a register)
+                        (name [pc])
+                        (value ?location))
+         =>
+         (retract ?f ?f2)
+         (send ?pc put-value (+ ?location ?z))
+         (assert (stage decode execute restart)))
+(defrule advance-program-counter:one
+         ?f <- (stage restart)
+         ?pc <- (object (is-a register)
+                        (name [pc])
+                        (value ?location))
+         =>
+         (retract ?f)
+         (send ?pc put-value (+ ?location 1)))
 
 (reset)
 (run)
