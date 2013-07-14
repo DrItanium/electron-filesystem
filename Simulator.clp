@@ -248,62 +248,55 @@
 ; this point it is important to get a basic implementation.
 ;
 ; TODO: Modify the instruction set to define the program counter
-(defrule decode:nop
-         "defines a nop instruction"
+(defrule decode:zero-arg-instruction
+         "decodes a zero-argument instruction"
          (stage decode $?)
-         ?f <- (invoke operation ?x&:(= ?x ?*nop-instruction*) at ?)
+         ?f <- (invoke operation ?x at ?)
+         (instruction (machine-tag ?x)
+                      (arg-count 0)
+                      (tag ?t))
          =>
          (retract ?f)
-         (assert (nop)))
+         (assert (op ?t)))
 
-(defrule decode:load
+(defrule decode:one-arg-instruction
          (stage decode $?)
-         ?f <- (invoke operation ?x&:(= ?*load-instruction* ?x) at ?loc)
+         ?f <- (invoke operation ?x at ?loc)
+         (instruction (machine-tag ?x)
+                      (arg-count 1)
+                      (tag ?t))
          =>
          (retract ?f)
-         (assert (load (next-two ?loc))))
+         (assert (op ?t (next ?loc 1))))
 
-(defrule decode:store
+(defrule decode:set
+         "Decode the set operation, it has to be handled differently"
+         (declare (salience 1))
          (stage decode $?)
-         ?f <- (invoke operation ?x&:(= ?x ?*store-instruction*) at ?loc)
+         ?f <- (invoke operation =?*set-instruction* at ?loc)
          =>
          (retract ?f)
-         (assert (store (next-two ?loc))))
+         (assert (op set (next ?loc 9)))) 
 
-(defrule decode:add
+(defrule decode:two-arg-instruction
          (stage decode $?)
-         ?f <- (invoke operation ?x&:(= ?x ?*add-instruction*) at ?loc)
+         ?f <- (invoke operation ?x at ?loc)
+         (instruction (machine-tag ?x)
+                      (arg-count 2)
+                      (tag ?t))
          =>
          (retract ?f)
-         (assert (add (next-three ?loc))))
+         (assert (op ?t (next-two ?loc))))
 
-(defrule decode:subtract
+(defrule decode:three-arg-instruction
          (stage decode $?)
-         ?f <- (invoke operation ?x&:(= ?x ?*subtract-instruction*) at ?loc)
+         ?f <- (invoke operation ?x at ?loc)
+         (instruction (machine-tag ?x)
+                      (arg-count 3)
+                      (tag ?t))
          =>
          (retract ?f)
-         (assert (subtract (next-three ?loc))))
-
-(defrule decode:multiply
-         (stage decode $?)
-         ?f <- (invoke operation ?x&:(= ?x ?*multiply-instruction*) at ?loc)
-         =>
-         (retract ?f)
-         (assert (multiply (next-three ?loc))))
-
-(defrule decode:divide
-         (stage decode $?)
-         ?f <- (invoke operation ?x&:(= ?x ?*divide-instruction*) at ?loc)
-         =>
-         (retract ?f)
-         (assert (divide (next-three ?loc))))
-
-(defrule decode:equal
-         (stage decode $?)
-         ?f <- (invoke operation ?x&:(= ?x ?*equal-instruction*) at ?loc)
-         =>
-         (retract ?f)
-         (assert (equal (next-three ?loc))))
+         (assert (op ?t (next-three ?loc))))
 
 ; NOTES
 ; the encoding of this processor can change from time to time but my
