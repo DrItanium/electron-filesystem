@@ -1,0 +1,4 @@
+Put your electron/clips source code here. To access different libraries, make
+sure that you use the import  command, not the load or batch commands. The
+import command uses the system variables defined in etc/sys.clp and also is
+really flexible in allowing load, load*, batch, and batch* behavior.
