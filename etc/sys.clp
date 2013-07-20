@@ -25,26 +25,18 @@
 ;(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 ;SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ;------------------------------------------------------------------------------
-; sys.clp - Defines system variables that the rest of the filesystem uses
-; By default, the electron-fs looks for the following shell variables 
-;             ElectronFSRoot - location of the root of the electron-filesystem
-; 
-; These variables are case sensitive!
+; sys.clp - Defines system variables that the rest of the filesystem uses. This
+;           is the bootstrap
 ;------------------------------------------------------------------------------
+; Define filesystem base points 
 (defglobal MAIN
- ; root of the electron file system
- ?*fsys* = (progn (bind ?loc (get-shell-variable ElectronFSRoot))
-                       (if ?loc then
-                        ?loc
-                        else
-                        (printout werror "ERROR: ElectronFSRoot is not defined!" crlf)
-                        (exit)))
- ; lib directory
- ?*lib* = (format nil "%s/lib" ?*fsys*)
- ; data directory
- ?*data* = (format nil "%s/data" ?*fsys*)
- ; bin directory
- ?*bin* = (format nil "%s/bin" ?*fsys*)
- ; etc directory
- ?*etc* = (format nil "%s/etc" ?*fsys*)
- ?*path* = (create$ ?*lib*))
+           ; lib directory
+           ?*lib* = (format nil "%s/lib" ?*fsys*)
+           ; data directory
+           ?*data* = (format nil "%s/data" ?*fsys*)
+           ; bin directory
+           ?*bin* = (format nil "%s/bin" ?*fsys*)
+           ; etc directory
+           ?*etc* = (format nil "%s/etc" ?*fsys*)
+           ?*path* = (create$ ?*lib*))
+
