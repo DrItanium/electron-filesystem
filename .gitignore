@@ -1,0 +1,4 @@
+src/github.com/DrItanium/electron
+bin/electron
+*.o 
+*.swp
