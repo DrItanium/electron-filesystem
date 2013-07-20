@@ -26,7 +26,7 @@
 ;SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ;------------------------------------------------------------------------------
 ; sys.clp - Defines system variables that the rest of the filesystem uses. This
-;           is the bootstrap
+;           is called by the system bootstrap after finding out where it is
 ;------------------------------------------------------------------------------
 ; Define filesystem base points 
 (defglobal MAIN
