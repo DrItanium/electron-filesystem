@@ -33,8 +33,8 @@
 ;                 processor architecture. It has an 8-bit direct address space
 ;                 that can be extended through the use of jump instructions.
 ;-------------------------------------------------------------------------------
-(load* MachineCommon.clp)
-(load* SimulatorComponents.clp)
+(import load* MachineCommon.clp)
+(import load* SimulatorComponents.clp)
 ;-------------------------------------------------------------------------------
 (defrule setup-machine
          (initial-fact)
@@ -382,8 +382,3 @@
          =>
          (retract ?f)
          (send ?pc put-value (+ ?location 1)))
-
-(reset)
-(run)
-(exit)
-

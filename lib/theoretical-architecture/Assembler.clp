@@ -27,7 +27,7 @@
 ;-------------------------------------------------------------------------------
 ; Assembler.clp - An assembler for the theoretical processor.
 ;-------------------------------------------------------------------------------
-(load* MachineCommon.clp)
+(import load* "theoretical-architecture/MachineCommon.clp")
 ;-------------------------------------------------------------------------------
 (defglobal MAIN
            ?*symbol-label-instruction* = label
@@ -167,11 +167,3 @@
          (put-char ?mt)
          (progn$ (?r $?rest)
                  (put-char (register-name-to-index ?r))))
-         
-         
-;-------------------------------------------------------------------------------
-; this becomes a script that reads from standard input
-;-------------------------------------------------------------------------------
-(reset) ; load the instruction information for our purposes
-(run)
-(exit)
