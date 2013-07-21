@@ -1,4 +1,5 @@
 src/github.com/DrItanium/electron
 bin/electron
+bin/theoretical
 *.o 
 *.swp
