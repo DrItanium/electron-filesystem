@@ -48,4 +48,3 @@
 (load* (format nil "%s/import/import.clp" ?*lib*))
 (import load* util/message.clp)
 (import load* util/strings.clp)
-(import batch* os/os.clp)
