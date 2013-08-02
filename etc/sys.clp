@@ -31,12 +31,89 @@
 ; Define filesystem base points 
 (defglobal MAIN
            ; lib directory
-           ?*lib* = (format nil "%s/lib" ?*fsys*)
+           ?*/lib* = (fs /lib)
            ; data directory
-           ?*data* = (format nil "%s/data" ?*fsys*)
+           ?*/data* = (fs /data)
            ; bin directory
-           ?*bin* = (format nil "%s/bin" ?*fsys*)
+           ?*/bin* = (fs /bin)
            ; etc directory
-           ?*etc* = (format nil "%s/etc" ?*fsys*)
-           ?*path* = (create$ ?*lib*))
+           ?*/etc* = (fs /etc)
+           ; logic directory
+           ?*/logic* = (fs /logic)
+           ; path variable
+           ?*path* = (create$ ?*/lib*))
+;------------------------------------------------------------------------------
+; Define the different element base points
+; Makes loading code far more elegant :D
+;------------------------------------------------------------------------------
+(defgeneric /etc)
+(defgeneric /data)
+(defgeneric /lib)
+(defgeneric /logic)
+(defgeneric /data/input)
+(defgeneric /data/output)
+;------------------------------------------------------------------------------
+(defmethod /etc 
+  () 
+  ?*/etc*)
 
+(defmethod /etc 
+  ((?atoms MULTIFIELD))
+  (fs /etc ?atoms))
+
+(defmethod /etc
+  ($?atoms)
+  (/etc ?atoms))
+;------------------------------------------------------------------------------
+(defmethod /data 
+  () 
+  ?*/data*)
+
+(defmethod /data 
+  ((?atoms MULTIFIELD))
+  (fs /data ?atoms))
+
+(defmethod /data
+  ($?atoms)
+  (/data ?atoms))
+;------------------------------------------------------------------------------
+(defmethod /lib 
+  () 
+  ?*/lib*)
+
+(defmethod /lib 
+  ((?atoms MULTIFIELD))
+  (fs /lib ?atoms))
+
+(defmethod /lib
+  ($?atoms)
+  (/lib ?atoms))
+;------------------------------------------------------------------------------
+(defmethod /logic 
+  () 
+  ?*/logic*)
+
+(defmethod /logic 
+  ((?atoms MULTIFIELD))
+  (fs /logic ?atoms))
+
+(defmethod /logic
+  ($?atoms)
+  (/logic ?atoms))
+;------------------------------------------------------------------------------
+(defmethod /data/input 
+  ((?atoms MULTIFIELD))
+  (fs /data/input ?atoms))
+
+(defmethod /data/input
+  ($?atoms)
+  (/data/input ?atoms))
+;------------------------------------------------------------------------------
+(defmethod /data/output 
+  ((?atoms MULTIFIELD))
+  (fs /data/output ?atoms))
+
+(defmethod /data/output
+  ($?atoms)
+  (/data/output ?atoms))
+;------------------------------------------------------------------------------

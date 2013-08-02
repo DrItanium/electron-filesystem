@@ -25,26 +25,39 @@
 ;(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 ;SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ;------------------------------------------------------------------------------
-; shell.clp - Logic used to startup the electron shell with all of the electron
-;             settings activated.
+; shell.clp - starts up the electron shell with all libraries loaded
+;
+; This file has to be batched
 ;------------------------------------------------------------------------------
 (defglobal MAIN
            ; Change the value of this global to change the name of the
            ; corresponding shell variable.
            ?*electron-fs-root* = ElectronFSRoot
            ; Use this to make sure that we fail out if we can't bootstrap
-           ?*fsys* = (progn (bind ?result (get-shell-variable ?*electron-fs-root*))
-                            (if (not ?result) then
-                              (printout t "ERROR: " ?*electron-fs-root* " not defined - Exiting" crlf)
-                              (exit)
-                              else
-                              ?result)))
-; Can't do loads within defglobal calls because it could cause crashes if
-; we do a defglobal within a defglobal.
-
-; Load the filesystem base points
-(load* (format nil "%s/etc/sys.clp" ?*fsys*))
-; Load the system base (import commands)
-(load* (format nil "%s/import/import.clp" ?*lib*))
+           ?*fs* = (progn (bind ?result (get-shell-variable ?*electron-fs-root*))
+                           (if (not ?result) then
+                             (printout t "ERROR: " ?*electron-fs-root* " not defined - Exiting" crlf)
+                             (exit)
+                             else
+                             ?result)))
+;------------------------------------------------------------------------------
+; Now that we have a base point we can really define some elegant fs points
+; Use fs as a builder of paths. I believe it's quite elegant :D
+;------------------------------------------------------------------------------
+(defgeneric fs)
+;------------------------------------------------------------------------------
+(defmethod fs () ?*fs*)
+(defmethod fs 
+  "Builds a path around the electron file system from the root"
+  ((?atoms MULTIFIELD))
+  (str-cat ?*fs* (expand$ ?atoms)))
+(defmethod fs 
+  ($?atoms) 
+  (fs ?atoms))
+;------------------------------------------------------------------------------
+; load the base system definitions
+(load* (fs /etc/sys.clp))
+; define the import statements
+(load* (/lib /import/import.clp))
 (import load* util/message.clp)
 (import load* util/strings.clp)
