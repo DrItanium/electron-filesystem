@@ -1,3 +1,0 @@
-#!/bin/bash
-
-$ElectronFSRoot/bin/electron -f2 $ElectronFSRoot/logic/$1.clp

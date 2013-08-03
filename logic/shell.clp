@@ -29,35 +29,5 @@
 ;
 ; This file has to be batched
 ;------------------------------------------------------------------------------
-(defglobal MAIN
-           ; Change the value of this global to change the name of the
-           ; corresponding shell variable.
-           ?*electron-fs-root* = ElectronFSRoot
-           ; Use this to make sure that we fail out if we can't bootstrap
-           ?*fs* = (progn (bind ?result (get-shell-variable ?*electron-fs-root*))
-                           (if (not ?result) then
-                             (printout t "ERROR: " ?*electron-fs-root* " not defined - Exiting" crlf)
-                             (exit)
-                             else
-                             ?result)))
-;------------------------------------------------------------------------------
-; Now that we have a base point we can really define some elegant fs points
-; Use fs as a builder of paths. I believe it's quite elegant :D
-;------------------------------------------------------------------------------
-(defgeneric fs)
-;------------------------------------------------------------------------------
-(defmethod fs () ?*fs*)
-(defmethod fs 
-  "Builds a path around the electron file system from the root"
-  ((?atoms MULTIFIELD))
-  (str-cat ?*fs* (expand$ ?atoms)))
-(defmethod fs 
-  ($?atoms) 
-  (fs ?atoms))
-;------------------------------------------------------------------------------
-; load the base system definitions
-(load* (fs /etc/sys.clp))
-; define the import statements
-(load* (/lib /import/import.clp))
-(import load* util/message.clp)
-(import load* util/strings.clp)
+(load* (fs /sys/core/message.clp))
+(load* (fs /sys/core/strings.clp))

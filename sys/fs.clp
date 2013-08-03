@@ -25,10 +25,8 @@
 ;(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 ;SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ;------------------------------------------------------------------------------
-; bootstrap.clp - Bootstraps the file system and loads sys.clp. It is up to a
-; shell script to call electron with the customized version of this file.
-;
-; This file has to be batched
+; fs.clp - Initializes the file system and handlers. This is the entry point
+;          into the filesystem
 ;------------------------------------------------------------------------------
 (defglobal MAIN
            ; Change the value of this global to change the name of the
@@ -56,7 +54,17 @@
   ($?atoms) 
   (fs ?atoms))
 ;------------------------------------------------------------------------------
-; load the base system definitions
-(load* (fs /etc/sys.clp))
-; define the import statements
-(load* (/lib /import/import.clp))
+; Define the filesystem now
+;------------------------------------------------------------------------------
+(defglobal MAIN
+           ; lib directory
+           ?*/lib* = (fs /lib)
+           ; data directory
+           ?*/data* = (fs /data)
+           ; bin directory
+           ?*/bin* = (fs /bin)
+           ; etc directory
+           ?*/etc* = (fs /etc)
+           ; logic directory
+           ?*/logic* = (fs /logic))
+
