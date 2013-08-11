@@ -34,11 +34,11 @@
            ?*electron-fs-root* = ElectronFSRoot
            ; Use this to make sure that we fail out if we can't bootstrap
            ?*fs* = (progn (bind ?result (get-shell-variable ?*electron-fs-root*))
-                           (if (not ?result) then
-                             (printout t "ERROR: " ?*electron-fs-root* " not defined - Exiting" crlf)
-                             (exit)
-                             else
-                             ?result)))
+                          (if (not ?result) then
+                            (printout t "ERROR: " ?*electron-fs-root* " not defined - Exiting" crlf)
+                            (exit)
+                            else
+                            ?result)))
 ;------------------------------------------------------------------------------
 ; Now that we have a base point we can really define some elegant fs points
 ; Use fs as a builder of paths. I believe it's quite elegant :D
@@ -53,10 +53,13 @@
 (defmethod fs 
   ($?atoms) 
   (fs ?atoms))
+
 ;------------------------------------------------------------------------------
 ; Define the filesystem now
 ;------------------------------------------------------------------------------
 (defglobal MAIN
+           ; dev directory - put fifos here to read and write from
+           ?*/dev* = (fs /dev)
            ; lib directory
            ?*/lib* = (fs /lib)
            ; data directory
