@@ -25,49 +25,43 @@
 ;(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 ;SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ;------------------------------------------------------------------------------
-; fs.clp - Initializes the file system and handlers. This is the entry point
-;          into the filesystem
+; permissions.clp - provides functions to compute unix file permissions
 ;------------------------------------------------------------------------------
-(defglobal MAIN
-           ; Change the value of this global to change the name of the
-           ; corresponding shell variable.
-           ?*electron-fs-root* = ElectronFSRoot
-           ; Use this to make sure that we fail out if we can't bootstrap
-           ?*fs* = (progn (bind ?result (get-shell-variable ?*electron-fs-root*))
-                          (if (not ?result) then
-                            (printout t "ERROR: " ?*electron-fs-root* " not defined - Exiting" crlf)
-                            (exit)
-                            else
-                            ?result)))
-;------------------------------------------------------------------------------
-; Now that we have a base point we can really define some elegant fs points
-; Use fs as a builder of paths. I believe it's quite elegant :D
-;------------------------------------------------------------------------------
-(defgeneric fs)
-;------------------------------------------------------------------------------
-(defmethod fs () ?*fs*)
-(defmethod fs 
-  "Builds a path around the electron file system from the root"
-  ((?atoms MULTIFIELD))
-  (str-cat ?*fs* (expand$ ?atoms)))
-(defmethod fs 
-  ($?atoms) 
-  (fs ?atoms))
 
 ;------------------------------------------------------------------------------
-; Define the filesystem now
+; Make umask, mkdir, and mkfifo a little less raw to work with
 ;------------------------------------------------------------------------------
-(defglobal MAIN
-           ; dev directory - put fifos here to read and write from
-           ?*/dev* = (fs /dev)
-           ; lib directory
-           ?*/lib* = (fs /lib)
-           ; data directory
-           ?*/data* = (fs /data)
-           ; bin directory
-           ?*/bin* = (fs /bin)
-           ; etc directory
-           ?*/etc* = (fs /etc)
-           ; logic directory
-           ?*/logic* = (fs /logic))
+(defgeneric compute-perms)
+;------------------------------------------------------------------------------
+(defmethod compute-perms
+  ((?self INTEGER (and (>= ?self 0)
+                       (< ?self 8)))
+   (?group INTEGER (and (>= ?group 0)
+                        (< ?group 8)))
+   (?all INTEGER (and (>= ?all 0)
+                      (< ?all 8))))
+  (binary-or (left-shift ?self 6) 
+             (binary-or (left-shift ?group 3)
+                        ?all)))
+(defmethod compute-perms 
+  ((?self SYMBOL)
+   (?group SYMBOL)
+   (?all SYMBOL))
+  (compute-perms (compute-perms ?self)
+                 (compute-perms ?group)
+                 (compute-perms ?all)))
 
+(defmethod compute-perms
+  ((?set SYMBOL (eq ?set r))) 4)
+(defmethod compute-perms
+  ((?set SYMBOL (eq ?set w))) 2)
+(defmethod compute-perms
+  ((?set SYMBOL (eq ?set x))) 1)
+(defmethod compute-perms
+  ((?set SYMBOL (eq ?set rwx))) 7)
+(defmethod compute-perms
+  ((?set SYMBOL (eq ?set rw))) 6)
+(defmethod compute-perms
+  ((?set SYMBOL (eq ?set rx))) 5)
+(defmethod compute-perms
+  ((?set SYMBOL (eq ?set wx))) 3)
