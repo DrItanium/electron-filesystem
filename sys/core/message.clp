@@ -30,6 +30,7 @@
 ;------------------------------------------------------------------------------
 (deftemplate message
              "A standard way to pass information around"
+             (slot interface)
              (slot to)
              (slot from)
              (slot action)
