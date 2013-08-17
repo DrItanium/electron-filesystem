@@ -1,4 +1,6 @@
 src/github.com/DrItanium/electron
+src/suckless.org/swk
+lib/native
 bin/electron
 *.o 
 *.swp
