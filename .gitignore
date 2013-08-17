@@ -1,3 +1,6 @@
-sys/
+sys/bin
+sys/lib
+sys/include
+sys/src
 *.o 
 *.swp
