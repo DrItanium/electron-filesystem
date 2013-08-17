@@ -4,14 +4,16 @@ newer versions of electron.
 
 The default file system is as follows
 
-bin/ - (Optional) stores the electron executable
 conf/ - Contains configuration information
 data/ - Default place to store input and output data
 lib/ - User provided libraries
+lib/sys/ - Contains system libraries and expert system chunks
 logic/ - User provided expert systems
-src/ - (Optional) Contains the electron runtime source code (C source)
-sys/ - System libraries and expert system chunks
-
+sys/ - Stores the native libraries and the electron executable 
+sys/src - Contains electron source code and any other source code necessary
+sys/bin - Contains the native electron binary
+sys/include - Contains the headers for electron 
+sys/lib - Contains dynamic and static libraries of electron and other libs
 
 If you want to change things around then go ahead, just realize that this is 
 the layout that is most logical to me.
