@@ -25,26 +25,10 @@
 ;(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 ;SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ;------------------------------------------------------------------------------
-; bootstrap.clp - Bootstraps the file system and loads sys.clp. It is up to a
-; shell script to call electron with the customized version of this file.
+; /conf/srv/interface.clp - example config file for an interface server
 ;
-; This file has to be batched
 ;------------------------------------------------------------------------------
-(defglobal MAIN
-           ; Change the value of this global to change the name of the
-           ; corresponding shell variable.
-           ?*electron-fs-root* = ElectronFSRoot
-           ; Use this to make sure that we fail out if we can't bootstrap
-           ?*fsys* = (progn (bind ?result (get-shell-variable ?*electron-fs-root*))
-                            (if (not ?result) then
-                              (printout t "ERROR: " ?*electron-fs-root* " not defined - Exiting" crlf)
-                              (exit)
-                              else
-                              ?result)))
-; Can't do loads within defglobal calls because it could cause crashes if
-; we do a defglobal within a defglobal.
 
-; Load the filesystem base points
-(load* (format nil "%s/etc/sys.clp" ?*fsys*))
-; Load the system base (import commands)
-(load* (format nil "%s/import/import.clp" ?*lib*))
+(deffacts interface
+          (message (action declare-target-interface)
+                   (contents int0 (fs /dev/int0))))

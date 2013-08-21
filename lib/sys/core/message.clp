@@ -25,18 +25,14 @@
 ;(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 ;SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ;------------------------------------------------------------------------------
-; sys.clp - Defines system variables that the rest of the filesystem uses. This
-;           is called by the system bootstrap after finding out where it is
+; message.clp - Defines the standard message template. Useful for passing 
+; information between modules and making it possible to have reusable code.
 ;------------------------------------------------------------------------------
-; Define filesystem base points 
-(defglobal MAIN
-           ; lib directory
-           ?*lib* = (format nil "%s/lib" ?*fsys*)
-           ; data directory
-           ?*data* = (format nil "%s/data" ?*fsys*)
-           ; bin directory
-           ?*bin* = (format nil "%s/bin" ?*fsys*)
-           ; etc directory
-           ?*etc* = (format nil "%s/etc" ?*fsys*)
-           ?*path* = (create$ ?*lib*))
-
+(deftemplate message
+             "A standard way to pass information around"
+             (slot interface)
+             (slot to)
+             (slot from)
+             (slot action)
+             (multislot contents))
+;------------------------------------------------------------------------------

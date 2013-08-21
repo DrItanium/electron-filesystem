@@ -1,5 +1,7 @@
-src/github.com/DrItanium/electron
-bin/electron
-bin/theoretical
+sys/bin
+sys/lib
+sys/include
+sys/src
+sys/share/man
 *.o 
 *.swp

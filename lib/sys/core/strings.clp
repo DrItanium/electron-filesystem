@@ -25,28 +25,50 @@
 ;(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 ;SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ;------------------------------------------------------------------------------
-; import.clp - Defines the import method, a wrapper over load, load*, batch,
-; and batch* that makes it possible to do relative includes without having to
-; worry about absolute paths
+; strings.clp - Defines useful string operations to save time
 ;------------------------------------------------------------------------------
-; Assume that etc/sys.clp has already been loaded
-(defglobal MAIN
-           ?*valid-import-actions* = (create$ load load* batch batch*))
-(defgeneric import)
+(defgeneric starts-with)
+(defgeneric contains)
+(defgeneric char-at)
+(defgeneric to-lexeme)
+;------------------------------------------------------------------------------
+(defmethod starts-with
+  "Checks to see if a given lexeme starts with another lexeme"
+  ((?looking-for LEXEME)
+   (?in LEXEME))
+  (eq 1 (str-index ?looking-for ?in)))
 
-(defmethod import 
-  ((?action SYMBOL (neq ?action (expand$ ?*valid-import-actions*)))
-   (?local-path LEXEME))
-  (printout t 
-            (format nil "Provided action %s is not valid for import" ?action) crlf
-            "Valid actions are: " ?*valid-import-actions* crlf)
-  (return FALSE))
+(defmethod starts-with
+  (?looking-for ?in)
+  (starts-with (to-lexeme ?looking-for)
+               (to-lexeme ?in)))
+;------------------------------------------------------------------------------
+(defmethod contains
+  ((?looking-for LEXEME)
+   (?in LEXEME))
+  (neq (str-index ?looking-for ?in) FALSE))
 
-(defmethod import 
-  ((?action SYMBOL (not (neq ?action (expand$ ?*valid-import-actions*))))
-   (?local-path LEXEME))
-  (progn$ (?front ?*path*)
-          (if (funcall ?action 
-                       (format nil "%s/%s" ?front ?local-path)) then
-            (return TRUE)))
-  (return FALSE))
+(defmethod contains
+  (?looking-for ?in)
+  (contains (to-lexeme ?looking-for)
+            (to-lexeme ?in)))
+
+;------------------------------------------------------------------------------
+(defmethod char-at 
+ ((?index INTEGER)
+  (?string LEXEME))
+ (sub-string ?index ?index ?string))
+
+(defmethod char-at
+ ((?index FLOAT)
+  (?string LEXEME))
+ (char-at (integer ?index) ?string))
+;------------------------------------------------------------------------------
+(defmethod to-lexeme
+ ((?value LEXEME))
+ ?value)
+
+(defmethod to-lexeme
+ ((?value (not (lexemep ?value))))
+ (str-cat ?value))
+;------------------------------------------------------------------------------
