@@ -33,8 +33,9 @@
 ;                 processor architecture. It has an 8-bit direct address space
 ;                 that can be extended through the use of jump instructions.
 ;-------------------------------------------------------------------------------
-(import load* MachineCommon.clp)
-(import load* SimulatorComponents.clp)
+(load* (fs /logic/arch/theoretical/header.clp))
+(load* (fs /lib/arch/theoretical/SimulatorComponents.clp))
+(batch* (fs /conf/arch/theoretical/sim.clp))
 ;-------------------------------------------------------------------------------
 (defrule setup-machine
          (initial-fact)

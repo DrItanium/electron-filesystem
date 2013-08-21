@@ -1,6 +1,6 @@
 ;------------------------------------------------------------------------------
 ;theoretical-architecture
-;Copyright (c) 2013, Joshua Scoggins 
+;Copyright (c) 2012-2013, Joshua Scoggins 
 ;All rights reserved.
 ;
 ;Redistribution and use in source and binary forms, with or without
@@ -24,32 +24,10 @@
 ;ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 ;(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 ;SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-;------------------------------------------------------------------------------
-; asm.clp - Bootstrap interface for the theoretical architecture assembler
-;
-; This file has to be batched
-;------------------------------------------------------------------------------
-(defglobal MAIN
-           ; Change the value of this global to change the name of the
-           ; corresponding shell variable.
-           ?*electron-fs-root* = TheoreticalFSRoot 
-           ; Use this to make sure that we fail out if we can't bootstrap
-           ?*fsys* = (progn (bind ?result (get-shell-variable ?*electron-fs-root*))
-                            (if (not ?result) then
-                              (printout t "ERROR: " ?*electron-fs-root* " not defined - Exiting" crlf)
-                              (exit)
-                              else
-                              ?result)))
-; Can't do loads within defglobal calls because it could cause crashes if
-; we do a defglobal within a defglobal.
-
-; Load the filesystem base points
-(load* (format nil "%s/etc/sys.clp" ?*fsys*))
-; Load the system base (import commands)
-(load* (format nil "%s/import/import.clp" ?*lib*))
-; Load the code for the theoretical assembler
-(import batch* "theoretical-architecture/Assembler.clp")
-
-(reset)
-(run)
-(exit)
+;-------------------------------------------------------------------------------
+; Header.clp - Common includes for the theoretical architecture
+;-------------------------------------------------------------------------------
+(load* (fs /lib/sys/core/message.clp))
+(load* (fs /lib/sys/core/strings.clp))
+(load* (fs /lib/arch/theoretical/MachineCommon.clp))
+(load* (fs /conf/arch/theoretical/machine.clp))

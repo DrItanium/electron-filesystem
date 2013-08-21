@@ -27,7 +27,8 @@
 ;-------------------------------------------------------------------------------
 ; Assembler.clp - An assembler for the theoretical processor.
 ;-------------------------------------------------------------------------------
-(import load* "theoretical-architecture/MachineCommon.clp")
+(load* (fs /logic/arch/theoretical/header.clp))
+(batch* (fs /conf/arch/theoretical/asm.clp))
 ;-------------------------------------------------------------------------------
 (defglobal MAIN
            ?*symbol-label-instruction* = label
